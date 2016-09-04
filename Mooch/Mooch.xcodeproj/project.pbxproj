@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F5191E13E1E0DBDDA1BF774 /* Pods_Mooch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0E009C963A57DE569D9584C /* Pods_Mooch.framework */; };
 		810A82321D7A11780086B40F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82311D7A11780086B40F /* AppDelegate.swift */; };
 		810A82341D7A11780086B40F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82331D7A11780086B40F /* ViewController.swift */; };
 		810A82371D7A11780086B40F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 810A82351D7A11780086B40F /* Main.storyboard */; };
@@ -14,6 +15,8 @@
 		810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 810A823A1D7A11780086B40F /* LaunchScreen.storyboard */; };
 		810A82471D7A11780086B40F /* MoochTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82461D7A11780086B40F /* MoochTests.swift */; };
 		810A82521D7A11780086B40F /* MoochUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82511D7A11780086B40F /* MoochUITests.swift */; };
+		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
+		DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +37,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1EA14F966101333946798EDD /* Pods-MoochTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoochTests/Pods-MoochTests.debug.xcconfig"; sourceTree = "<group>"; };
+		344DB53745D16AAC3B92C2BE /* Pods-Mooch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mooch.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mooch/Pods-Mooch.release.xcconfig"; sourceTree = "<group>"; };
+		7D77BF2B345F516CDE894771 /* Pods-MoochTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochTests/Pods-MoochTests.release.xcconfig"; sourceTree = "<group>"; };
+		8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		810A822E1D7A11780086B40F /* Mooch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mooch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		810A82311D7A11780086B40F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		810A82331D7A11780086B40F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +54,11 @@
 		810A824D1D7A11780086B40F /* MoochUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoochUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		810A82511D7A11780086B40F /* MoochUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoochUITests.swift; sourceTree = "<group>"; };
 		810A82531D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
+		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB0A3D9FB6A1E3D95ECCCD45 /* Pods-Mooch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mooch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mooch/Pods-Mooch.debug.xcconfig"; sourceTree = "<group>"; };
+		E49A73BAC724FE7A87D6C8A0 /* Pods-MoochUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F5191E13E1E0DBDDA1BF774 /* Pods_Mooch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,12 +82,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B91402C9D4B6589D5280DC0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B0E009C963A57DE569D9584C /* Pods_Mooch.framework */,
+				8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */,
+				AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5399173EB279E166083DD354 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DB0A3D9FB6A1E3D95ECCCD45 /* Pods-Mooch.debug.xcconfig */,
+				344DB53745D16AAC3B92C2BE /* Pods-Mooch.release.xcconfig */,
+				1EA14F966101333946798EDD /* Pods-MoochTests.debug.xcconfig */,
+				7D77BF2B345F516CDE894771 /* Pods-MoochTests.release.xcconfig */,
+				E49A73BAC724FE7A87D6C8A0 /* Pods-MoochUITests.debug.xcconfig */,
+				AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		810A82251D7A11780086B40F = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +119,8 @@
 				810A82451D7A11780086B40F /* MoochTests */,
 				810A82501D7A11780086B40F /* MoochUITests */,
 				810A822F1D7A11780086B40F /* Products */,
+				5399173EB279E166083DD354 /* Pods */,
+				0B91402C9D4B6589D5280DC0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,9 +172,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 810A82561D7A11780086B40F /* Build configuration list for PBXNativeTarget "Mooch" */;
 			buildPhases = (
+				A931E33EEFF74287C07B4A55 /* [CP] Check Pods Manifest.lock */,
 				810A822A1D7A11780086B40F /* Sources */,
 				810A822B1D7A11780086B40F /* Frameworks */,
 				810A822C1D7A11780086B40F /* Resources */,
+				8DE9C4BBE7428CDE01E8A034 /* [CP] Embed Pods Frameworks */,
+				DEEA8DEC962BE26C3D62ABAF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -149,9 +192,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 810A82591D7A11780086B40F /* Build configuration list for PBXNativeTarget "MoochTests" */;
 			buildPhases = (
+				573D55E362BD6C9ABBE55CFB /* [CP] Check Pods Manifest.lock */,
 				810A823E1D7A11780086B40F /* Sources */,
 				810A823F1D7A11780086B40F /* Frameworks */,
 				810A82401D7A11780086B40F /* Resources */,
+				E2FD106A82788069B2C8E0B8 /* [CP] Embed Pods Frameworks */,
+				D92297FAD5D560B7ED87BACF /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -167,9 +213,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 810A825C1D7A11780086B40F /* Build configuration list for PBXNativeTarget "MoochUITests" */;
 			buildPhases = (
+				E337FD1624DFF82DA18C888B /* [CP] Check Pods Manifest.lock */,
 				810A82491D7A11780086B40F /* Sources */,
 				810A824A1D7A11780086B40F /* Frameworks */,
 				810A824B1D7A11780086B40F /* Resources */,
+				2D9E397BA88879D9FB656B75 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -250,6 +298,129 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2D9E397BA88879D9FB656B75 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		573D55E362BD6C9ABBE55CFB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8DE9C4BBE7428CDE01E8A034 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mooch/Pods-Mooch-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A931E33EEFF74287C07B4A55 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D92297FAD5D560B7ED87BACF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MoochTests/Pods-MoochTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DEEA8DEC962BE26C3D62ABAF /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mooch/Pods-Mooch-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E2FD106A82788069B2C8E0B8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MoochTests/Pods-MoochTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E337FD1624DFF82DA18C888B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		810A822A1D7A11780086B40F /* Sources */ = {
@@ -399,6 +570,7 @@
 		};
 		810A82571D7A11780086B40F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB0A3D9FB6A1E3D95ECCCD45 /* Pods-Mooch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Mooch/Info.plist;
@@ -410,6 +582,7 @@
 		};
 		810A82581D7A11780086B40F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 344DB53745D16AAC3B92C2BE /* Pods-Mooch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Mooch/Info.plist;
@@ -421,6 +594,7 @@
 		};
 		810A825A1D7A11780086B40F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1EA14F966101333946798EDD /* Pods-MoochTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = MoochTests/Info.plist;
@@ -433,6 +607,7 @@
 		};
 		810A825B1D7A11780086B40F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D77BF2B345F516CDE894771 /* Pods-MoochTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = MoochTests/Info.plist;
@@ -445,6 +620,7 @@
 		};
 		810A825D1D7A11780086B40F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E49A73BAC724FE7A87D6C8A0 /* Pods-MoochUITests.debug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = MoochUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -456,6 +632,7 @@
 		};
 		810A825E1D7A11780086B40F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = MoochUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -484,6 +661,7 @@
 				810A82581D7A11780086B40F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		810A82591D7A11780086B40F /* Build configuration list for PBXNativeTarget "MoochTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +670,7 @@
 				810A825B1D7A11780086B40F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		810A825C1D7A11780086B40F /* Build configuration list for PBXNativeTarget "MoochUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +679,7 @@
 				810A825E1D7A11780086B40F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
