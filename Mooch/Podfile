@@ -4,11 +4,19 @@
 use_frameworks!
 
 target 'Mooch' do
-
+	pod 'Alamofire', '~> 3.4'
+	pod 'AlamofireImage', '~> 2.4'
+	pod 'OHHTTPStubs' # Default subspecs, including support for NSURLSession & JSON etc
+	pod 'OHHTTPStubs/Swift' # Adds the Swiftier API wrapper too
+	pod 'SwiftyJSON', '~> 2.3'
 end
 
 target 'MoochTests' do
-
+	pod 'Alamofire', '~> 3.4'
+        pod 'AlamofireImage', '~> 2.4'
+        pod 'OHHTTPStubs' # Default subspecs, including support for NSURLSession & JSON etc
+        pod 'OHHTTPStubs/Swift' # Adds the Swiftier API wrapper too
+        pod 'SwiftyJSON', '~> 2.3'
 end
 
 target 'MoochUITests' do
