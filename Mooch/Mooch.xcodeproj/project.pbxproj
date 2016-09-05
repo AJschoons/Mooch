@@ -10,11 +10,11 @@
 		7F5191E13E1E0DBDDA1BF774 /* Pods_Mooch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0E009C963A57DE569D9584C /* Pods_Mooch.framework */; };
 		810A82321D7A11780086B40F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82311D7A11780086B40F /* AppDelegate.swift */; };
 		810A82341D7A11780086B40F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82331D7A11780086B40F /* ViewController.swift */; };
-		810A82371D7A11780086B40F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 810A82351D7A11780086B40F /* Main.storyboard */; };
 		810A82391D7A11780086B40F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 810A82381D7A11780086B40F /* Assets.xcassets */; };
 		810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 810A823A1D7A11780086B40F /* LaunchScreen.storyboard */; };
 		810A82471D7A11780086B40F /* MoochTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82461D7A11780086B40F /* MoochTests.swift */; };
 		810A82521D7A11780086B40F /* MoochUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82511D7A11780086B40F /* MoochUITests.swift */; };
+		810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810A825F1D7D1B2A0086B40F /* ViewController.xib */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
 		DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */; };
 /* End PBXBuildFile section */
@@ -44,7 +44,6 @@
 		810A822E1D7A11780086B40F /* Mooch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mooch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		810A82311D7A11780086B40F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		810A82331D7A11780086B40F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		810A82361D7A11780086B40F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		810A82381D7A11780086B40F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		810A823B1D7A11780086B40F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		810A823D1D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -54,6 +53,7 @@
 		810A824D1D7A11780086B40F /* MoochUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoochUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		810A82511D7A11780086B40F /* MoochUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoochUITests.swift; sourceTree = "<group>"; };
 		810A82531D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		810A825F1D7D1B2A0086B40F /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,7 +139,7 @@
 			children = (
 				810A82311D7A11780086B40F /* AppDelegate.swift */,
 				810A82331D7A11780086B40F /* ViewController.swift */,
-				810A82351D7A11780086B40F /* Main.storyboard */,
+				810A825F1D7D1B2A0086B40F /* ViewController.xib */,
 				810A82381D7A11780086B40F /* Assets.xcassets */,
 				810A823A1D7A11780086B40F /* LaunchScreen.storyboard */,
 				810A823D1D7A11780086B40F /* Info.plist */,
@@ -278,8 +278,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */,
+				810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */,
 				810A82391D7A11780086B40F /* Assets.xcassets in Resources */,
-				810A82371D7A11780086B40F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,14 +464,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		810A82351D7A11780086B40F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				810A82361D7A11780086B40F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		810A823A1D7A11780086B40F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
