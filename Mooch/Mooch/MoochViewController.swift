@@ -13,7 +13,7 @@ import UIKit
 class MoochViewController: UIViewController {
     
     //Flag for whether or this this view controller will need a network connection
-    private var requiresNetworkReachability = true
+    var requiresNetworkReachability = true
     
     //Flag for whether or not the network reachability verification view controller is being shown
     private var isShowingNetworkReachabilityVerificationViewController = false
@@ -60,9 +60,8 @@ class MoochViewController: UIViewController {
         
         isShowingNetworkReachabilityVerificationViewController = true
         
-        let nrvvc = UIViewController()
+        let nrvvc = NetworkReachabilityVerificationViewController()
         networkReachabilityVerificationViewController = nrvvc
-        nrvvc.view.backgroundColor = UIColor.redColor()
         nrvvc.modalTransitionStyle = .CrossDissolve
         nrvvc.modalPresentationStyle = .OverFullScreen
         presentViewController(nrvvc, animated: true, completion: nil)

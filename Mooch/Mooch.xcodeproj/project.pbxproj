@@ -17,6 +17,8 @@
 		810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810A825F1D7D1B2A0086B40F /* ViewController.xib */; };
 		810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A827F1D7E3EDE0086B40F /* MoochViewController.swift */; };
 		810A82831D7E5DA40086B40F /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
+		815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */; };
+		815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
 		DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */; };
 /* End PBXBuildFile section */
@@ -58,6 +60,8 @@
 		810A825F1D7D1B2A0086B40F /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		810A827F1D7E3EDE0086B40F /* MoochViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochViewController.swift; sourceTree = "<group>"; };
 		810A82821D7E5DA40086B40F /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityVerificationViewController.swift; sourceTree = "<group>"; };
+		815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NetworkReachabilityVerificationViewController.xib; sourceTree = "<group>"; };
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,15 +145,14 @@
 		810A82301D7A11780086B40F /* Mooch */ = {
 			isa = PBXGroup;
 			children = (
-				810A82811D7E5D8E0086B40F /* Constants */,
 				810A82751D7D237D0086B40F /* Managers */,
 				810A82761D7D23910086B40F /* Models */,
 				810A82771D7D23A60086B40F /* Networking */,
+				810A82811D7E5D8E0086B40F /* Resources */,
 				810A827A1D7E2D430086B40F /* Superclasses */,
 				810A82791D7D23CE0086B40F /* Supporting Files */,
 				810A82741D7D23500086B40F /* UI */,
 				810A82781D7D23BF0086B40F /* Utility */,
-				810A82381D7A11780086B40F /* Assets.xcassets */,
 			);
 			path = Mooch;
 			sourceTree = "<group>";
@@ -178,6 +181,8 @@
 				810A823A1D7A11780086B40F /* LaunchScreen.storyboard */,
 				810A82331D7A11780086B40F /* ViewController.swift */,
 				810A825F1D7D1B2A0086B40F /* ViewController.xib */,
+				815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */,
+				815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -227,12 +232,13 @@
 			name = Superclasses;
 			sourceTree = "<group>";
 		};
-		810A82811D7E5D8E0086B40F /* Constants */ = {
+		810A82811D7E5D8E0086B40F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				810A82381D7A11780086B40F /* Assets.xcassets */,
 				810A82821D7E5DA40086B40F /* Strings.swift */,
 			);
-			name = Constants;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -351,6 +357,7 @@
 				810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */,
 				810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */,
 				810A82391D7A11780086B40F /* Assets.xcassets in Resources */,
+				815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,6 +507,7 @@
 			files = (
 				810A82341D7A11780086B40F /* ViewController.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
+				815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */,
 				810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */,
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
 			);
