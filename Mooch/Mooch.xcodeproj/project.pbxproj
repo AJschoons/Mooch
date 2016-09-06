@@ -15,6 +15,8 @@
 		810A82471D7A11780086B40F /* MoochTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82461D7A11780086B40F /* MoochTests.swift */; };
 		810A82521D7A11780086B40F /* MoochUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82511D7A11780086B40F /* MoochUITests.swift */; };
 		810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810A825F1D7D1B2A0086B40F /* ViewController.xib */; };
+		810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A827F1D7E3EDE0086B40F /* MoochViewController.swift */; };
+		810A82831D7E5DA40086B40F /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
 		DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */; };
 /* End PBXBuildFile section */
@@ -54,6 +56,8 @@
 		810A82511D7A11780086B40F /* MoochUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoochUITests.swift; sourceTree = "<group>"; };
 		810A82531D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		810A825F1D7D1B2A0086B40F /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
+		810A827F1D7E3EDE0086B40F /* MoochViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochViewController.swift; sourceTree = "<group>"; };
+		810A82821D7E5DA40086B40F /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,9 +141,11 @@
 		810A82301D7A11780086B40F /* Mooch */ = {
 			isa = PBXGroup;
 			children = (
+				810A82811D7E5D8E0086B40F /* Constants */,
 				810A82751D7D237D0086B40F /* Managers */,
 				810A82761D7D23910086B40F /* Models */,
 				810A82771D7D23A60086B40F /* Networking */,
+				810A827A1D7E2D430086B40F /* Superclasses */,
 				810A82791D7D23CE0086B40F /* Supporting Files */,
 				810A82741D7D23500086B40F /* UI */,
 				810A82781D7D23BF0086B40F /* Utility */,
@@ -211,6 +217,22 @@
 				810A823D1D7A11780086B40F /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		810A827A1D7E2D430086B40F /* Superclasses */ = {
+			isa = PBXGroup;
+			children = (
+				810A827F1D7E3EDE0086B40F /* MoochViewController.swift */,
+			);
+			name = Superclasses;
+			sourceTree = "<group>";
+		};
+		810A82811D7E5D8E0086B40F /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				810A82821D7E5DA40086B40F /* Strings.swift */,
+			);
+			name = Constants;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +311,7 @@
 				TargetAttributes = {
 					810A822D1D7A11780086B40F = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 2ZW34Q8J6R;
 					};
 					810A82411D7A11780086B40F = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -476,6 +499,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				810A82341D7A11780086B40F /* ViewController.swift in Sources */,
+				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
+				810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */,
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -613,6 +638,7 @@
 			baseConfigurationReference = DB0A3D9FB6A1E3D95ECCCD45 /* Pods-Mooch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Mooch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.Mooch;
@@ -625,6 +651,7 @@
 			baseConfigurationReference = 344DB53745D16AAC3B92C2BE /* Pods-Mooch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Mooch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.Mooch;
