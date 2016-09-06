@@ -12,13 +12,19 @@
 		810A82341D7A11780086B40F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82331D7A11780086B40F /* ViewController.swift */; };
 		810A82391D7A11780086B40F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 810A82381D7A11780086B40F /* Assets.xcassets */; };
 		810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 810A823A1D7A11780086B40F /* LaunchScreen.storyboard */; };
-		810A82471D7A11780086B40F /* MoochTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82461D7A11780086B40F /* MoochTests.swift */; };
-		810A82521D7A11780086B40F /* MoochUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82511D7A11780086B40F /* MoochUITests.swift */; };
 		810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810A825F1D7D1B2A0086B40F /* ViewController.xib */; };
 		810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A827F1D7E3EDE0086B40F /* MoochViewController.swift */; };
 		810A82831D7E5DA40086B40F /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
 		815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */; };
 		815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */; };
+		815BCF011D7E77D80022F806 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
+		815BCF031D7E77E70022F806 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF021D7E77E70022F806 /* Errors.swift */; };
+		815BCF051D7E78290022F806 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF041D7E78290022F806 /* User.swift */; };
+		815BCF071D7E78FD0022F806 /* Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF061D7E78FD0022F806 /* Community.swift */; };
+		815BCF081D7E7F070022F806 /* Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF061D7E78FD0022F806 /* Community.swift */; };
+		815BCF091D7E7F0B0022F806 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF041D7E78290022F806 /* User.swift */; };
+		815BCF0B1D7E7F5C0022F806 /* CommunityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */; };
+		815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF021D7E77E70022F806 /* Errors.swift */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
 		DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */; };
 /* End PBXBuildFile section */
@@ -52,16 +58,19 @@
 		810A823B1D7A11780086B40F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		810A823D1D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		810A82421D7A11780086B40F /* MoochTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoochTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		810A82461D7A11780086B40F /* MoochTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoochTests.swift; sourceTree = "<group>"; };
 		810A82481D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		810A824D1D7A11780086B40F /* MoochUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoochUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		810A82511D7A11780086B40F /* MoochUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoochUITests.swift; sourceTree = "<group>"; };
 		810A82531D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		810A825F1D7D1B2A0086B40F /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		810A827F1D7E3EDE0086B40F /* MoochViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochViewController.swift; sourceTree = "<group>"; };
 		810A82821D7E5DA40086B40F /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityVerificationViewController.swift; sourceTree = "<group>"; };
 		815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NetworkReachabilityVerificationViewController.xib; sourceTree = "<group>"; };
+		815BCF001D7E77D80022F806 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		815BCF021D7E77E70022F806 /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		815BCF041D7E78290022F806 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		815BCF061D7E78FD0022F806 /* Community.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Community.swift; sourceTree = "<group>"; };
+		815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityTests.swift; sourceTree = "<group>"; };
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,7 +169,7 @@
 		810A82451D7A11780086B40F /* MoochTests */ = {
 			isa = PBXGroup;
 			children = (
-				810A82461D7A11780086B40F /* MoochTests.swift */,
+				815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */,
 				810A82481D7A11780086B40F /* Info.plist */,
 			);
 			path = MoochTests;
@@ -169,7 +178,6 @@
 		810A82501D7A11780086B40F /* MoochUITests */ = {
 			isa = PBXGroup;
 			children = (
-				810A82511D7A11780086B40F /* MoochUITests.swift */,
 				810A82531D7A11780086B40F /* Info.plist */,
 			);
 			path = MoochUITests;
@@ -198,6 +206,8 @@
 		810A82761D7D23910086B40F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				815BCF061D7E78FD0022F806 /* Community.swift */,
+				815BCF041D7E78290022F806 /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -212,6 +222,8 @@
 		810A82781D7D23BF0086B40F /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				815BCF021D7E77E70022F806 /* Errors.swift */,
+				815BCF001D7E77D80022F806 /* Helpers.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -506,10 +518,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				810A82341D7A11780086B40F /* ViewController.swift in Sources */,
+				815BCF011D7E77D80022F806 /* Helpers.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
+				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
 				815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */,
+				815BCF051D7E78290022F806 /* User.swift in Sources */,
 				810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */,
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
+				815BCF031D7E77E70022F806 /* Errors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,7 +533,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				810A82471D7A11780086B40F /* MoochTests.swift in Sources */,
+				815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */,
+				815BCF081D7E7F070022F806 /* Community.swift in Sources */,
+				815BCF091D7E7F0B0022F806 /* User.swift in Sources */,
+				815BCF0B1D7E7F5C0022F806 /* CommunityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,7 +544,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				810A82521D7A11780086B40F /* MoochUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
