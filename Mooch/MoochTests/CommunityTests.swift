@@ -35,7 +35,7 @@ class CommunityTests: XCTestCase {
         var jsonErrorThrown = false
         
         do {
-            let community = try Community(json: communityJSON)
+            let _ = try Community(json: communityJSON)
             XCTFail()
         } catch InitializationError.InsufficientJSONInformationForInitialization {
             jsonErrorThrown = true
