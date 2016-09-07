@@ -6,8 +6,6 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import Foundation
-
 import SwiftyJSON
 import XCTest
 @testable import Mooch

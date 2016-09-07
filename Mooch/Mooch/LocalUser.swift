@@ -10,7 +10,7 @@ import SwiftyJSON
 
 struct LocalUser {
     
-    let user: User
+    var user: User
     let hashedPassword: String
     let salt: String
     
