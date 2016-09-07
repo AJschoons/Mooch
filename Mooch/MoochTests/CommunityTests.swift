@@ -12,8 +12,17 @@ import XCTest
 
 class CommunityTests: XCTestCase {
     
+    func testDesignatedInit() {
+        let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
+        
+        //Test that all the variables are correctly initialized
+        XCTAssert(community.id == 7)
+        XCTAssert(community.address == "123 LaSalle")
+        XCTAssert(community.name == "123 Big Apartments")
+    }
+    
     //Test that a Community is constructed without failing when given JSON with all the data it needs
-    func testInitSuccess() {
+    func testConvenienceInitSuccess() {
         let communityJSON: JSON = ["id" : 1234, "address" : "1234 address lane", "name" : "highrise apartments"]
         
         do {
@@ -29,7 +38,7 @@ class CommunityTests: XCTestCase {
     }
     
     //Test that a Community throws the expected error when it doesn't have all the data it needs
-    func testInitError() {
+    func testConvenienceInitError() {
         let communityJSON: JSON = ["id" : 1234, "address" : "1234 address lane"]
         
         var jsonErrorThrown = false

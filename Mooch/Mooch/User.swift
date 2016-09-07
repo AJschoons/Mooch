@@ -6,35 +6,38 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import Foundation
 import SwiftyJSON
 
 struct User {
     
     struct ContactInformation {
-        let phone: String?
-        let address: String?
-        let email: String?
+        var address: String?
+        let email: String
+        var phone: String?
     }
     
     let id: Int
-    let name: String
-    let username: String
-    let contact: ContactInformation
-    let community: Community
+    var name: String
+    var contactInformation: ContactInformation
+    var community: Community
     
+    //Designated initializer
+    init(id: Int, name: String, contactInformation: ContactInformation, community: Community) {
+        self.id = id
+        self.name = name
+        self.contactInformation = contactInformation
+        self.community = community
+    }
+    
+    //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json["id"].int, name = json["name"].string, username = json["username"].string where json["community"].isExists() else {
+        guard let id = json["id"].int, name = json["name"].string, email = json["email"].string where json["community"].isExists() else {
             throw InitializationError.InsufficientJSONInformationForInitialization
         }
         
-        self.id = id
-        self.name = name
-        self.username = username
+        let contactInformation = ContactInformation(address: json["address"].string, email: email, phone: json["phone"].string)
+        let community = try Community(json: JSON(json["community"].object))
         
-        self.contact = ContactInformation(phone: json["phone"].string, address: json["address"].string, email: json["email"].string)
-        
-        let communityJSON = JSON(json["community"].object)
-        self.community = try Community(json: communityJSON)
+        self.init(id: id, name: name, contactInformation: contactInformation, community: community)
     }
 }
