@@ -16,7 +16,7 @@ class LocalUserTests: XCTestCase {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
         let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
         let user = User(id: 5, name: "test", contactInformation: contactInformation, community: community)
-        var localUser = LocalUser(user: user, hashedPassword: "hashed password", salt: "some salt")
+        var localUser = LocalUser(user: user, password: "password")
         
         //Test the getters and that all the variables are correctly initialized
         XCTAssert(localUser.user.id == 5)
@@ -27,8 +27,7 @@ class LocalUserTests: XCTestCase {
         XCTAssert(localUser.user.community.id == 7)
         XCTAssert(localUser.user.community.address == "123 LaSalle")
         XCTAssert(localUser.user.community.name == "123 Big Apartments")
-        XCTAssert(localUser.hashedPassword == "hashed password")
-        XCTAssert(localUser.salt == "some salt")
+        XCTAssert(localUser.password == "password")
         
         //Test setters and proper modifiability
         localUser.user.name = "the new guy"
@@ -51,7 +50,7 @@ class LocalUserTests: XCTestCase {
         let userJSON: JSON = ["id" : 4132, "name" : "Bob the User", "phone" : "123-456-6789", "address" : "apt #406", "email" : "doge@example.com", "community" : communityJSONDict]
         
         do {
-            let localUser = try LocalUser(userJSON: userJSON, hashedPassword: "hash", salt: "salt")
+            let localUser = try LocalUser(userJSON: userJSON, password: "password")
             
             //Test that all the variables are correctly initialized
             XCTAssert(localUser.user.id == 4132)
@@ -62,8 +61,7 @@ class LocalUserTests: XCTestCase {
             XCTAssert(localUser.user.community.id == 1234)
             XCTAssert(localUser.user.community.address == "1234 address lane")
             XCTAssert(localUser.user.community.name == "highrise apartments")
-            XCTAssert(localUser.hashedPassword == "hash")
-            XCTAssert(localUser.salt == "salt")
+            XCTAssert(localUser.password == "password")
         } catch {
             XCTFail()
         }
@@ -76,7 +74,7 @@ class LocalUserTests: XCTestCase {
         var jsonErrorThrown = false
         
         do {
-            let _ = try LocalUser(userJSON: userJSON, hashedPassword: "", salt: "")
+            let _ = try LocalUser(userJSON: userJSON, password: "")
             XCTFail()
         } catch InitializationError.InsufficientJSONInformationForInitialization {
             jsonErrorThrown = true

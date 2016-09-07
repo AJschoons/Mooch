@@ -11,19 +11,17 @@ import SwiftyJSON
 struct LocalUser {
     
     var user: User
-    let hashedPassword: String
-    let salt: String
+    let password: String
     
     //Designated initializer
-    init(user: User, hashedPassword: String, salt: String) {
+    init(user: User, password: String) {
         self.user = user
-        self.hashedPassword = hashedPassword
-        self.salt = salt
+        self.password = password
     }
     
     //Convenience JSON initializer
-    init(userJSON: JSON, hashedPassword: String, salt: String) throws {
+    init(userJSON: JSON, password: String) throws {
         let user = try User(json: userJSON)
-        self.init(user: user, hashedPassword: hashedPassword, salt: salt)
+        self.init(user: user, password: password)
     }
 }
