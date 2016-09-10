@@ -47,6 +47,10 @@ class MoochViewController: UIViewController {
     //Should be overridden by subclasses
     func didEstablishNetworkReachability() { }
     
+    //Updates the UI based on current state. All UI changes should be handled here
+    //Should be overridden by subclasses
+    func updateUI() { }
+    
     func presentModalInNavigationController(withRootViewController rootViewController: UIViewController) {
         let navController = UINavigationController(rootViewController: rootViewController)
         presentViewController(navController, animated: true, completion: nil)

@@ -11,6 +11,8 @@ import UIKit
 class InitialLoadingViewController: MoochModalViewController {
 
     override func setup() {
+        super.setup()
+        
         NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(onFinishedLoading), userInfo: nil, repeats: false)
     }
     
