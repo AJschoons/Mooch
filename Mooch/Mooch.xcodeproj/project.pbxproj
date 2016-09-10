@@ -15,6 +15,9 @@
 		810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 810A825F1D7D1B2A0086B40F /* ViewController.xib */; };
 		810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A827F1D7E3EDE0086B40F /* MoochViewController.swift */; };
 		810A82831D7E5DA40086B40F /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
+		8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */; };
+		8149E7AF1D84977C000F0C37 /* InitialLoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7AD1D84977C000F0C37 /* InitialLoadingViewController.xib */; };
+		8149E7B11D849B8F000F0C37 /* MoochModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7B01D849B8F000F0C37 /* MoochModalViewController.swift */; };
 		815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */; };
 		815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */; };
 		815BCF011D7E77D80022F806 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
@@ -74,6 +77,9 @@
 		810A825F1D7D1B2A0086B40F /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		810A827F1D7E3EDE0086B40F /* MoochViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochViewController.swift; sourceTree = "<group>"; };
 		810A82821D7E5DA40086B40F /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialLoadingViewController.swift; sourceTree = "<group>"; };
+		8149E7AD1D84977C000F0C37 /* InitialLoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InitialLoadingViewController.xib; sourceTree = "<group>"; };
+		8149E7B01D849B8F000F0C37 /* MoochModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochModalViewController.swift; sourceTree = "<group>"; };
 		815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityVerificationViewController.swift; sourceTree = "<group>"; };
 		815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NetworkReachabilityVerificationViewController.xib; sourceTree = "<group>"; };
 		815BCF001D7E77D80022F806 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -211,6 +217,8 @@
 				810A825F1D7D1B2A0086B40F /* ViewController.xib */,
 				815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */,
 				815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */,
+				8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */,
+				8149E7AD1D84977C000F0C37 /* InitialLoadingViewController.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -264,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				810A827F1D7E3EDE0086B40F /* MoochViewController.swift */,
+				8149E7B01D849B8F000F0C37 /* MoochModalViewController.swift */,
 			);
 			name = Superclasses;
 			sourceTree = "<group>";
@@ -394,6 +403,7 @@
 				810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */,
 				810A82391D7A11780086B40F /* Assets.xcassets in Resources */,
 				815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */,
+				8149E7AF1D84977C000F0C37 /* InitialLoadingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,6 +551,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */,
 				810A82341D7A11780086B40F /* ViewController.swift in Sources */,
 				815BCF011D7E77D80022F806 /* Helpers.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
@@ -549,6 +560,7 @@
 				818883441D83404F00F7EEE5 /* MoochAPI.swift in Sources */,
 				815BCF051D7E78290022F806 /* User.swift in Sources */,
 				810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */,
+				8149E7B11D849B8F000F0C37 /* MoochModalViewController.swift in Sources */,
 				815BCF1E1D80BC7B0022F806 /* MoochAPIRouter.swift in Sources */,
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
 				815BCF141D805B550022F806 /* ItemCategory.swift in Sources */,
@@ -700,6 +712,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Mooch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.Mooch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -713,6 +726,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Mooch/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.Mooch;
 				PRODUCT_NAME = "$(TARGET_NAME)";

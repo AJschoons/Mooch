@@ -28,6 +28,7 @@ class MoochViewController: UIViewController {
         super.viewDidLoad()
         
         setupReachabilityManager()
+        setup()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -36,6 +37,19 @@ class MoochViewController: UIViewController {
         if requiresNetworkReachability && !reachabilityManager.isReachable {
             presentNetworkReachabilityVerificationViewController()
         }
+    }
+    
+    //Performs any actions that need to be taken once the view has been loaded
+    //Should be overridden by subclasses
+    func setup() { }
+    
+    //Performs any actions that need to be taken once the network connectivity has been established
+    //Should be overridden by subclasses
+    func didEstablishNetworkReachability() { }
+    
+    func presentModalInNavigationController(withRootViewController rootViewController: UIViewController) {
+        let navController = UINavigationController(rootViewController: rootViewController)
+        presentViewController(navController, animated: true, completion: nil)
     }
     
     //Sets up the reachability manager with the reachabilityHostURL that exists at the time this function is called
@@ -77,11 +91,6 @@ class MoochViewController: UIViewController {
             self.didEstablishNetworkReachability()
         }
     }
-    
-    
-    //Performs any actions that need to be taken once the network connectivity has been established
-    //Should be overridden by subclasses
-    private func didEstablishNetworkReachability() { }
     
     //Returns true when this view controller is visible
     private func isVisible() -> Bool {

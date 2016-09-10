@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
         let mainViewController = ViewController(nibName: "ViewController", bundle: nil)
-        let navigationController = UINavigationController(rootViewController: mainViewController)
+        let initialLoadingViewController = InitialLoadingViewController()
+        let navigationController = UINavigationController()
+        navigationController.viewControllers = [mainViewController, initialLoadingViewController]
         
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
