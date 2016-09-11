@@ -10,6 +10,11 @@ import SwiftyJSON
 
 struct ListingTag {
     
+    enum JSONMapping: String {
+        case Id = "id"
+        case Name = "name"
+    }
+    
     let id: Int
     let name: String
     
@@ -21,7 +26,7 @@ struct ListingTag {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json["id"].int, name = json["name"].string else {
+        guard let id = json[JSONMapping.Id.rawValue].int, name = json[JSONMapping.Name.rawValue].string else {
             throw InitializationError.InsufficientJSONInformationForInitialization
         }
         

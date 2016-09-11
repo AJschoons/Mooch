@@ -10,6 +10,15 @@ import SwiftyJSON
 
 struct User {
     
+    enum JSONMapping: String {
+        case Id = "id"
+        case Name = "name"
+        case Address = "address"
+        case Email = "email"
+        case Phone = "phone"
+        case Community = "community"
+    }
+    
     struct ContactInformation {
         var address: String?
         let email: String
@@ -32,11 +41,11 @@ struct User {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json["id"].int, name = json["name"].string, email = json["email"].string where json["community"].isExists() else {
+        guard let id = json[JSONMapping.Id.rawValue].int, name = json[JSONMapping.Name.rawValue].string, address = json[JSONMapping.Address.rawValue].string, email = json[JSONMapping.Email.rawValue].string, phone = json[JSONMapping.Phone.rawValue].string where json[JSONMapping.Community.rawValue].isExists() else {
             throw InitializationError.InsufficientJSONInformationForInitialization
         }
         
-        let contactInformation = ContactInformation(address: json["address"].string, email: email, phone: json["phone"].string)
+        let contactInformation = ContactInformation(address: address, email: email, phone: phone)
         let community = try Community(json: JSON(json["community"].object))
         
         self.init(id: id, name: name, contactInformation: contactInformation, community: community)

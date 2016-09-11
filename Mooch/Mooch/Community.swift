@@ -10,6 +10,12 @@ import SwiftyJSON
 
 struct Community {
     
+    enum JSONMapping: String {
+        case Id = "id"
+        case Address = "address"
+        case Name = "name"
+    }
+    
     let id: Int
     let address: String
     let name: String
@@ -23,7 +29,7 @@ struct Community {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json["id"].int, address = json["address"].string, name = json["name"].string else {
+        guard let id = json[JSONMapping.Id.rawValue].int, address = json[JSONMapping.Address.rawValue].string, name = json[JSONMapping.Name.rawValue].string else {
             throw InitializationError.InsufficientJSONInformationForInitialization
         }
         
