@@ -19,6 +19,7 @@ struct User {
     let id: Int
     var name: String
     var contactInformation: ContactInformation
+    
     var community: Community
     
     //Designated initializer

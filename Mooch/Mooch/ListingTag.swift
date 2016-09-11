@@ -1,5 +1,5 @@
 //
-//  ItemCategory.swift
+//  ListingTag.swift
 //  Mooch
 //
 //  Created by adam on 9/7/16.
@@ -8,7 +8,7 @@
 
 import SwiftyJSON
 
-struct ItemCategory {
+struct ListingTag {
     
     let id: Int
     let name: String
