@@ -11,7 +11,16 @@ import UIKit
 //Base class modal view controller
 class MoochModalViewController: MoochViewController {
     
+    // MARK: Public variables
+    
+    // MARK: Private variables
+    
     private var presentingViewControllerNavigationBarWasHidden = false
+    
+    
+    // MARK: Actions
+    
+    // MARK: Public methods
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,6 +39,9 @@ class MoochModalViewController: MoochViewController {
     func prefersNavigationBarHidden() -> Bool {
         return false
     }
+    
+    
+    // MARK: Private methods
     
     private func updateNavigationBarState() {
         if let navC = navigationController {

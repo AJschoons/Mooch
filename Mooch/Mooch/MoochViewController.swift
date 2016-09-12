@@ -12,8 +12,13 @@ import UIKit
 //Base class view controller
 class MoochViewController: UIViewController {
     
+    // MARK: Public variables
+    
     //Flag for whether or this this view controller will need a network connection
     var requiresNetworkReachability = true
+    
+    
+    // MARK: Private variables
     
     //Flag for whether or not the network reachability verification view controller is being shown
     private var isShowingNetworkReachabilityVerificationViewController = false
@@ -23,6 +28,11 @@ class MoochViewController: UIViewController {
     
     //The network reachability manager used to observe network reachability changes
     private var reachabilityManager: NetworkReachabilityManager!
+    
+    
+    // MARK: Actions
+    
+    // MARK: Public methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +65,9 @@ class MoochViewController: UIViewController {
         let navController = UINavigationController(rootViewController: rootViewController)
         presentViewController(navController, animated: true, completion: nil)
     }
+    
+    
+    // MARK: Private methods
     
     //Sets up the reachability manager with the reachabilityHostURL that exists at the time this function is called
     private func setupReachabilityManager() {

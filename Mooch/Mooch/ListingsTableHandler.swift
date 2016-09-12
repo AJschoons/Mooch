@@ -10,6 +10,7 @@ import UIKit
 
 protocol ListingsTableHandlerDelegate: class {
     func getListings() -> [Listing]
+    func didSelect(listing: Listing)
 }
 
 class ListingsTableHandler: NSObject {
@@ -53,4 +54,8 @@ extension ListingsTableHandler: UITableViewDataSource {
 
 extension ListingsTableHandler: UITableViewDelegate {
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedListing = delegate!.getListings()[indexPath.row]
+        delegate!.didSelect(selectedListing)
+    }
 }

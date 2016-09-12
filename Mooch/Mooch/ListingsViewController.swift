@@ -34,7 +34,7 @@ class ListingsViewController: MoochViewController {
     // MARK: Actions
     
     func onLoginAction() {
-        
+        presentLoginViewController()
     }
     
     func onProfileAction() {
@@ -94,6 +94,21 @@ class ListingsViewController: MoochViewController {
         }
         listings = dummyListings
     }
+    
+    private func pushListingDetailsViewController(withListing listing: Listing) {
+        let vc = ListingDetailsViewController.instantiateFromStoryboard()
+        vc.listing = listing
+        
+        navigationController!.pushViewController(vc, animated: true)
+    }
+    
+    private func presentLoginViewController() {
+        let vc = LoginViewController()
+        vc.modalTransitionStyle = .CrossDissolve
+        let navC = UINavigationController(rootViewController: vc)
+        
+        presentViewController(navC, animated: true, completion: nil)
+    }
 }
 
 extension ListingsViewController: ListingsTableHandlerDelegate {
@@ -101,5 +116,9 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
     
     func getListings() -> [Listing] {
         return listings
+    }
+    
+    func didSelect(listing: Listing) {
+        pushListingDetailsViewController(withListing: listing)
     }
 }

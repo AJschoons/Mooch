@@ -10,3 +10,17 @@
 enum Strings {
     
 }
+
+//
+// How to markdown a view controller:
+//
+
+// MARK: Public variables
+
+// MARK: Private variables
+
+// MARK: Actions
+
+// MARK: Public methods
+
+// MARK: Private methods
