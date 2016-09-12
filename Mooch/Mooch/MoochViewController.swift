@@ -29,10 +29,20 @@ class MoochViewController: UIViewController {
     //The network reachability manager used to observe network reachability changes
     private var reachabilityManager: NetworkReachabilityManager!
     
+    //Used to restore previous status bar style if changed for this view controller
+    private var statusBarStyleBeforeChanging: UIStatusBarStyle?
+    
     
     // MARK: Actions
     
     // MARK: Public methods
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        captureStatusBarStyle()
+        updateStatusBarStyle()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +59,12 @@ class MoochViewController: UIViewController {
         }
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        restoreStatusBarStyle()
+    }
+    
     //Performs any actions that need to be taken once the view has been loaded
     //Should be overridden by subclasses
     func setup() { }
@@ -60,6 +76,16 @@ class MoochViewController: UIViewController {
     //Updates the UI based on current state. All UI changes should be handled here
     //Should be overridden by subclasses
     func updateUI() { }
+    
+    //Override this function to change the default preferred status bar style
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.Default
+    }
+    
+    //Override this function to change status bar animation behavior
+    func shouldAnimateStatusBarChange() -> Bool {
+        return true
+    }
     
     func presentModalInNavigationController(withRootViewController rootViewController: UIViewController) {
         let navController = UINavigationController(rootViewController: rootViewController)
@@ -112,5 +138,22 @@ class MoochViewController: UIViewController {
     //Returns true when this view controller is visible
     private func isVisible() -> Bool {
         return isViewLoaded() && view.window != nil
+    }
+    
+    private func updateStatusBarStyle() {
+        guard let _ = statusBarStyleBeforeChanging else { return }
+        UIApplication.sharedApplication().setStatusBarStyle(preferredStatusBarStyle(), animated: shouldAnimateStatusBarChange())
+    }
+    
+    private func captureStatusBarStyle() {
+        let currentStyle = UIApplication.sharedApplication().statusBarStyle
+        if currentStyle != preferredStatusBarStyle() {
+            statusBarStyleBeforeChanging = currentStyle
+        }
+    }
+    
+    private func restoreStatusBarStyle() {
+        guard let previousStyle = statusBarStyleBeforeChanging else { return }
+        UIApplication.sharedApplication().setStatusBarStyle(previousStyle, animated: false)
     }
 }

@@ -232,13 +232,13 @@
 		810A82741D7D23500086B40F /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8149E7CE1D870156000F0C37 /* CustomElements */,
+				8149E7CE1D870156000F0C37 /* Custom Elements */,
 				810A823A1D7A11780086B40F /* LaunchScreen.storyboard */,
-				8149E7B61D84B3D1000F0C37 /* InitialLoading */,
+				8149E7B61D84B3D1000F0C37 /* Initial Loading */,
 				8149E7C91D8667F1000F0C37 /* Login */,
-				8149E7C41D865D97000F0C37 /* ListingDetails */,
+				8149E7C41D865D97000F0C37 /* Listing Details */,
 				8149E7B71D84B3F3000F0C37 /* Listings */,
-				8149E7B81D84B4E9000F0C37 /* NetworkReachabilityVerification */,
+				8149E7B81D84B4E9000F0C37 /* Network Reachability Verification */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -308,13 +308,13 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		8149E7B61D84B3D1000F0C37 /* InitialLoading */ = {
+		8149E7B61D84B3D1000F0C37 /* Initial Loading */ = {
 			isa = PBXGroup;
 			children = (
 				8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */,
 				8149E7AD1D84977C000F0C37 /* InitialLoadingViewController.xib */,
 			);
-			name = InitialLoading;
+			name = "Initial Loading";
 			sourceTree = "<group>";
 		};
 		8149E7B71D84B3F3000F0C37 /* Listings */ = {
@@ -329,22 +329,22 @@
 			name = Listings;
 			sourceTree = "<group>";
 		};
-		8149E7B81D84B4E9000F0C37 /* NetworkReachabilityVerification */ = {
+		8149E7B81D84B4E9000F0C37 /* Network Reachability Verification */ = {
 			isa = PBXGroup;
 			children = (
 				815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */,
 				815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */,
 			);
-			name = NetworkReachabilityVerification;
+			name = "Network Reachability Verification";
 			sourceTree = "<group>";
 		};
-		8149E7C41D865D97000F0C37 /* ListingDetails */ = {
+		8149E7C41D865D97000F0C37 /* Listing Details */ = {
 			isa = PBXGroup;
 			children = (
 				8149E7C51D865E2D000F0C37 /* ListingDetails.storyboard */,
 				8149E7C71D865E5A000F0C37 /* ListingDetailsViewController.swift */,
 			);
-			name = ListingDetails;
+			name = "Listing Details";
 			sourceTree = "<group>";
 		};
 		8149E7C91D8667F1000F0C37 /* Login */ = {
@@ -356,12 +356,12 @@
 			name = Login;
 			sourceTree = "<group>";
 		};
-		8149E7CE1D870156000F0C37 /* CustomElements */ = {
+		8149E7CE1D870156000F0C37 /* Custom Elements */ = {
 			isa = PBXGroup;
 			children = (
 				8149E7CF1D87017D000F0C37 /* RoundedButton.swift */,
 			);
-			name = CustomElements;
+			name = "Custom Elements";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -10,6 +10,14 @@ import UIKit
 
 class InitialLoadingViewController: MoochModalViewController {
 
+    // MARK: Public variables
+    
+    // MARK: Private variables
+    
+    // MARK: Actions
+    
+    // MARK: Public methods
+    
     override func setup() {
         super.setup()
         
@@ -20,13 +28,20 @@ class InitialLoadingViewController: MoochModalViewController {
         return true
     }
     
-    override func prefersStatusBarHidden() -> Bool {
-        return true
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+    
+    override func shouldAnimateStatusBarChange() -> Bool {
+        return false
     }
     
     func onFinishedLoading() {
         performCrossFadeViewControllerPop()
     }
+    
+    
+    // MARK: Private methods
 
     private func performCrossFadeViewControllerPop() {
         guard let navC = navigationController else { return }
