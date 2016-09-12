@@ -12,7 +12,18 @@ class ListingsViewController: MoochViewController {
     
     // MARK: Public variables
     
-    @IBOutlet weak var tableHandler: ListingsTableHandler!
+    @IBOutlet var tableHandler: ListingsTableHandler! {
+        didSet {
+            tableHandler.delegate = self
+        }
+    }
+    
+    var listings = [Listing]() {
+        didSet {
+            guard let tableHandler = tableHandler else { return }
+            tableHandler.updateUI()
+        }
+    }
     
     // MARK: Private variables
     
@@ -40,6 +51,7 @@ class ListingsViewController: MoochViewController {
         super.setup()
         
         setupNavigationBar()
+        setupDummyData()
         
         updateUI()
     }
@@ -73,5 +85,21 @@ class ListingsViewController: MoochViewController {
             navigationItem.leftBarButtonItems = [profileButton]
             navigationItem.rightBarButtonItems = [addListingButton]
         }
+    }
+    
+    private func setupDummyData() {
+        var dummyListings = [Listing]()
+        for i in 1...5 {
+            dummyListings.append(Listing.createDummy(fromNumber: i))
+        }
+        listings = dummyListings
+    }
+}
+
+extension ListingsViewController: ListingsTableHandlerDelegate {
+    // MARK: ListingsTableHandlerDelegate
+    
+    func getListings() -> [Listing] {
+        return listings
     }
 }

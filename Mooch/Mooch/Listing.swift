@@ -29,6 +29,10 @@ struct Listing {
     var community: Community
     var tag: ListingTag
     
+    var priceString: String {
+        return "$" + String(format: "%.2f", price)
+    }
+    
     //Designated initializer
     init(id: Int, title: String, price: Float, isAvailable: Bool, owner: User, community: Community, tag: ListingTag) {
         self.id = id
@@ -51,5 +55,13 @@ struct Listing {
         let tag = try ListingTag(json: JSON(json[JSONMapping.Tag.rawValue].object))
         
         self.init(id: id, title: title, price: price, isAvailable: isAvailable, owner: owner, community: community, tag: tag)
+    }
+    
+    static func createDummy(fromNumber i: Int) -> Listing {
+        let price = Float(i % 100) * 1.68723
+        let owner = User.createDummy(fromNumber: i)
+        let community = Community.createDummy(fromNumber: i)
+        let tag = ListingTag.createDummy(fromNumber: i)
+        return Listing(id: i, title: "Listing \(i)", price: price, isAvailable: true, owner: owner, community: community, tag: tag)
     }
 }

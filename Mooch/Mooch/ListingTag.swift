@@ -32,4 +32,8 @@ struct ListingTag {
         
         self.init(id: id, name: name)
     }
+    
+    static func createDummy(fromNumber i: Int) -> ListingTag {
+        return ListingTag(id: i, name: "Tag\(i)")
+    }
 }

@@ -23,6 +23,8 @@
 		8149E7BB1D84C2A7000F0C37 /* ListingsTableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7BA1D84C2A7000F0C37 /* ListingsTableHandler.swift */; };
 		8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7BC1D84CC93000F0C37 /* LocalUserManager.swift */; };
 		8149E7BF1D85FC6C000F0C37 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7BE1D85FC6B000F0C37 /* Listing.swift */; };
+		8149E7C21D8609BE000F0C37 /* ListingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7C01D8609BE000F0C37 /* ListingTableViewCell.swift */; };
+		8149E7C31D8609BE000F0C37 /* ListingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7C11D8609BE000F0C37 /* ListingTableViewCell.xib */; };
 		815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */; };
 		815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */; };
 		815BCF011D7E77D80022F806 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
@@ -90,6 +92,8 @@
 		8149E7BA1D84C2A7000F0C37 /* ListingsTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingsTableHandler.swift; sourceTree = "<group>"; };
 		8149E7BC1D84CC93000F0C37 /* LocalUserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUserManager.swift; sourceTree = "<group>"; };
 		8149E7BE1D85FC6B000F0C37 /* Listing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Listing.swift; sourceTree = "<group>"; };
+		8149E7C01D8609BE000F0C37 /* ListingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTableViewCell.swift; sourceTree = "<group>"; };
+		8149E7C11D8609BE000F0C37 /* ListingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListingTableViewCell.xib; sourceTree = "<group>"; };
 		815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityVerificationViewController.swift; sourceTree = "<group>"; };
 		815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NetworkReachabilityVerificationViewController.xib; sourceTree = "<group>"; };
 		815BCF001D7E77D80022F806 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -222,7 +226,6 @@
 		810A82741D7D23500086B40F /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				8149E7B91D84B5F6000F0C37 /* Cells */,
 				8149E7B61D84B3D1000F0C37 /* Loading */,
 				810A823A1D7A11780086B40F /* LaunchScreen.storyboard */,
 				8149E7B71D84B3F3000F0C37 /* Listings */,
@@ -312,6 +315,8 @@
 			children = (
 				8149E7B21D84B396000F0C37 /* ListingsViewController.swift */,
 				8149E7BA1D84C2A7000F0C37 /* ListingsTableHandler.swift */,
+				8149E7C01D8609BE000F0C37 /* ListingTableViewCell.swift */,
+				8149E7C11D8609BE000F0C37 /* ListingTableViewCell.xib */,
 				8149E7B31D84B396000F0C37 /* ListingsViewController.xib */,
 			);
 			name = Listings;
@@ -324,13 +329,6 @@
 				815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */,
 			);
 			name = NetworkReachabilityVerification;
-			sourceTree = "<group>";
-		};
-		8149E7B91D84B5F6000F0C37 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -449,6 +447,7 @@
 				810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */,
 				8149E7B51D84B396000F0C37 /* ListingsViewController.xib in Resources */,
 				810A82601D7D1B2A0086B40F /* ViewController.xib in Resources */,
+				8149E7C31D8609BE000F0C37 /* ListingTableViewCell.xib in Resources */,
 				810A82391D7A11780086B40F /* Assets.xcassets in Resources */,
 				815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */,
 				8149E7AF1D84977C000F0C37 /* InitialLoadingViewController.xib in Resources */,
@@ -605,6 +604,7 @@
 				815BCF011D7E77D80022F806 /* Helpers.swift in Sources */,
 				8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */,
 				8149E7B41D84B396000F0C37 /* ListingsViewController.swift in Sources */,
+				8149E7C21D8609BE000F0C37 /* ListingTableViewCell.swift in Sources */,
 				8149E7BF1D85FC6C000F0C37 /* Listing.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,

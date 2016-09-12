@@ -35,4 +35,8 @@ struct Community {
         
         self.init(id: id, address: address, name: name)
     }
+    
+    static func createDummy(fromNumber i: Int) -> Community {
+        return Community(id: i, address: "\(i) Main St.", name: "\(i) Big Apartments")
+    }
 }

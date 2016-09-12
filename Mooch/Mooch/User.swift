@@ -50,4 +50,19 @@ struct User {
         
         self.init(id: id, name: name, contactInformation: contactInformation, community: community)
     }
+    
+    static func createDummy(fromNumber i: Int) -> User {
+        var phoneString = ""
+        for n in 1...8 {
+            if n == 4 {
+                phoneString += "-"
+            } else {
+                phoneString += String(arc4random() % 10)
+            }
+        }
+        
+        let contactInformation = ContactInformation(address: "Apt #\(i)", email: "\(i)@example.com", phone: phoneString)
+        let community = Community.createDummy(fromNumber: i)
+        return User(id: i, name: "User \(i)", contactInformation: contactInformation, community: community)
+    }
 }
