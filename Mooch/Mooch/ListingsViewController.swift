@@ -103,16 +103,16 @@ class ListingsViewController: MoochViewController {
     }
     
     private func presentLoginViewController() {
+        guard let navC = navigationController else { return }
+
         let vc = LoginViewController()
-        let navC = UINavigationController(rootViewController: vc)
         
         vc.modalTransitionStyle = .CrossDissolve
         
-        //These settings are needed for blurring
+        //Needed for blurring over current view
         vc.modalPresentationStyle = .OverFullScreen
-        navC.modalPresentationStyle = .OverFullScreen
         
-        presentViewController(navC, animated: true, completion: nil)
+        navC.presentViewController(vc, animated: true, completion: nil)
     }
 }
 
