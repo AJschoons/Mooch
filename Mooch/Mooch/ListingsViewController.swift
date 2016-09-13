@@ -106,7 +106,7 @@ class ListingsViewController: MoochViewController {
         guard let navC = navigationController else { return }
 
         let vc = LoginViewController()
-        
+        vc.delegate = self
         vc.modalTransitionStyle = .CrossDissolve
         
         //Needed for blurring over current view
@@ -125,5 +125,13 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
     
     func didSelect(listing: Listing) {
         pushListingDetailsViewController(withListing: listing)
+    }
+}
+
+extension ListingsViewController: LoginViewControllerDelegate {
+    
+    func loginViewControllerDidLogin(withUser loggedInUser: User) {
+        updateUI()
+        navigationController!.dismissViewControllerAnimated(true, completion: nil)
     }
 }

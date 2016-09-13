@@ -29,7 +29,9 @@ class LoginViewController: MoochModalViewController {
     }
     
     @IBAction func onLogin() {
-        
+        let dummyUser = User.createDummy(fromNumber: 83)
+        login(withUser: dummyUser)
+        delegate?.loginViewControllerDidLogin(withUser: dummyUser)
     }
     
     @IBAction func onCreateAccount() {
@@ -51,12 +53,26 @@ class LoginViewController: MoochModalViewController {
         let navC = UINavigationController(rootViewController: vc)
         presentViewController(navC, animated: true, completion: nil)
     }
+    
+    private func presentAccountCreatedAlert(forUser user: User) {
+        let alert = UIAlertController(title: "Account Created", message: "Welcome to Mooch, \(user.name)!", preferredStyle: .Alert)
+        let action = UIAlertAction(title: "Get Mooching", style: .Default) { _ in
+            self.delegate?.loginViewControllerDidLogin(withUser: user)
+        }
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    private func login(withUser user: User) {
+        let localUser = LocalUser(user: user, password: "test password")
+        LocalUserManager.sharedInstance.login(withLocalUser: localUser)
+    }
 }
 
 extension LoginViewController: EditProfileViewControllerDelegate {
     
     func editProfileViewControllerDidFinishEditing(withUser editedUser: User) {
-        dismissViewControllerAnimated(true, completion: nil)
-        dismissViewControllerAnimated(true, completion: nil)
+        login(withUser: editedUser)
+        presentAccountCreatedAlert(forUser: editedUser)
     }
 }

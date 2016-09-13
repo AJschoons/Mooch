@@ -101,7 +101,6 @@ class MoochViewController: UIViewController {
         reachabilityManager.listener = { [weak self] reachabilityStatus in
             guard let strongSelf = self else { return }
             
-            print("network changed to reachable:\(strongSelf.reachabilityManager.isReachable)")
             if strongSelf.reachabilityManager.isReachable {
                 strongSelf.hideNetworkReachabilityVerificationViewController()
             } else {

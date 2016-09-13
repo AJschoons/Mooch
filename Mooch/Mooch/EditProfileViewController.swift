@@ -64,7 +64,9 @@ class EditProfileViewController: MoochModalViewController {
     
     func onDoneAction() {
         let dummyUser = User.createDummy(fromNumber: 62)
-        delegate.editProfileViewControllerDidFinishEditing(withUser: dummyUser)
+        dismissViewControllerAnimated(true) {
+            self.delegate.editProfileViewControllerDidFinishEditing(withUser: dummyUser)
+        }
     }
     
     func onCancelAction() {
