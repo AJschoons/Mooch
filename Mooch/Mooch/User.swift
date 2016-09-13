@@ -16,6 +16,7 @@ struct User {
         case Address = "address"
         case Email = "email"
         case Phone = "phone"
+        case Rating = "rating"
         case Community = "community"
     }
     
@@ -28,11 +29,12 @@ struct User {
     let id: Int
     var name: String
     var contactInformation: ContactInformation
+    var rating: Float?
     
     var community: Community
     
     //Designated initializer
-    init(id: Int, name: String, contactInformation: ContactInformation, community: Community) {
+    init(id: Int, name: String, contactInformation: ContactInformation, rating: Float?, community: Community) {
         self.id = id
         self.name = name
         self.contactInformation = contactInformation
@@ -45,10 +47,12 @@ struct User {
             throw InitializationError.InsufficientJSONInformationForInitialization
         }
         
+        let rating = json[JSONMapping.Rating.rawValue].float
+        
         let contactInformation = ContactInformation(address: address, email: email, phone: phone)
         let community = try Community(json: JSON(json["community"].object))
         
-        self.init(id: id, name: name, contactInformation: contactInformation, community: community)
+        self.init(id: id, name: name, contactInformation: contactInformation, rating: rating, community: community)
     }
     
     static func createDummy(fromNumber i: Int) -> User {
@@ -61,8 +65,9 @@ struct User {
             }
         }
         
+        let rating = Float(arc4random() % 4) * 1.2164
         let contactInformation = ContactInformation(address: "Apt #\(i)", email: "\(i)@example.com", phone: phoneString)
         let community = Community.createDummy(fromNumber: i)
-        return User(id: i, name: "User \(i)", contactInformation: contactInformation, community: community)
+        return User(id: i, name: "User \(i)", contactInformation: contactInformation, rating: rating, community: community)
     }
 }
