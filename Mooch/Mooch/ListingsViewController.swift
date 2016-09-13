@@ -38,7 +38,7 @@ class ListingsViewController: MoochViewController {
     }
     
     func onProfileAction() {
-        
+        presentProfileViewController()
     }
     
     func onAddListingAction() {
@@ -113,6 +113,20 @@ class ListingsViewController: MoochViewController {
         vc.modalPresentationStyle = .OverFullScreen
         
         navC.presentViewController(vc, animated: true, completion: nil)
+    }
+    
+    private func presentProfileViewController() {
+        guard let navC = navigationController else { return }
+        
+        let vc = ProfileViewController.instantiateFromStoryboard()
+        let profileNavC = UINavigationController(rootViewController: vc)
+        vc.modalTransitionStyle = .CrossDissolve
+        
+        //Needed for blurring over current view
+        vc.modalPresentationStyle = .OverFullScreen
+        profileNavC.modalPresentationStyle = .OverFullScreen
+        
+        navC.presentViewController(profileNavC, animated: true, completion: nil)
     }
 }
 

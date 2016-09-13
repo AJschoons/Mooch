@@ -13,6 +13,8 @@
 		810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 810A823A1D7A11780086B40F /* LaunchScreen.storyboard */; };
 		810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A827F1D7E3EDE0086B40F /* MoochViewController.swift */; };
 		810A82831D7E5DA40086B40F /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
+		813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F650D1D87A18100DEECF0 /* ProfileViewController.swift */; };
+		813F65101D87A19400DEECF0 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 813F650F1D87A19400DEECF0 /* Profile.storyboard */; };
 		8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */; };
 		8149E7AF1D84977C000F0C37 /* InitialLoadingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7AD1D84977C000F0C37 /* InitialLoadingViewController.xib */; };
 		8149E7B11D849B8F000F0C37 /* MoochModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7B01D849B8F000F0C37 /* MoochModalViewController.swift */; };
@@ -87,6 +89,8 @@
 		810A82531D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		810A827F1D7E3EDE0086B40F /* MoochViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochViewController.swift; sourceTree = "<group>"; };
 		810A82821D7E5DA40086B40F /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		813F650D1D87A18100DEECF0 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		813F650F1D87A19400DEECF0 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialLoadingViewController.swift; sourceTree = "<group>"; };
 		8149E7AD1D84977C000F0C37 /* InitialLoadingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InitialLoadingViewController.xib; sourceTree = "<group>"; };
 		8149E7B01D849B8F000F0C37 /* MoochModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochModalViewController.swift; sourceTree = "<group>"; };
@@ -244,6 +248,7 @@
 				8149E7C41D865D97000F0C37 /* Listing Details */,
 				8149E7B71D84B3F3000F0C37 /* Listings */,
 				8149E7B81D84B4E9000F0C37 /* Network Reachability Verification */,
+				813F650C1D87A10A00DEECF0 /* Profile */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -311,6 +316,15 @@
 				810A82821D7E5DA40086B40F /* Strings.swift */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		813F650C1D87A10A00DEECF0 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				813F650D1D87A18100DEECF0 /* ProfileViewController.swift */,
+				813F650F1D87A19400DEECF0 /* Profile.storyboard */,
+			);
+			name = Profile;
 			sourceTree = "<group>";
 		};
 		8149E7B61D84B3D1000F0C37 /* Initial Loading */ = {
@@ -493,6 +507,7 @@
 			files = (
 				8149E7C61D865E2D000F0C37 /* ListingDetails.storyboard in Resources */,
 				810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */,
+				813F65101D87A19400DEECF0 /* Profile.storyboard in Resources */,
 				8149E7B51D84B396000F0C37 /* ListingsViewController.xib in Resources */,
 				8149E7C31D8609BE000F0C37 /* ListingTableViewCell.xib in Resources */,
 				810A82391D7A11780086B40F /* Assets.xcassets in Resources */,
@@ -653,6 +668,7 @@
 				8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */,
 				8149E7B41D84B396000F0C37 /* ListingsViewController.swift in Sources */,
 				8149E7C21D8609BE000F0C37 /* ListingTableViewCell.swift in Sources */,
+				813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */,
 				8149E7BF1D85FC6C000F0C37 /* Listing.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
