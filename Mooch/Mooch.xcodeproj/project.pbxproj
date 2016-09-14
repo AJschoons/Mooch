@@ -49,9 +49,8 @@
 		815BCF191D806F970022F806 /* LocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF151D805EAE0022F806 /* LocalUser.swift */; };
 		815BCF1A1D806F990022F806 /* ListingTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF131D805B550022F806 /* ListingTag.swift */; };
 		815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF1B1D8070B80022F806 /* LocalUserTests.swift */; };
-		815BCF1E1D80BC7B0022F806 /* MoochAPIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF1D1D80BC7B0022F806 /* MoochAPIRouter.swift */; };
-		815BCF1F1D80BC7B0022F806 /* MoochAPIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF1D1D80BC7B0022F806 /* MoochAPIRouter.swift */; };
-		818883441D83404F00F7EEE5 /* MoochAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818883431D83404F00F7EEE5 /* MoochAPI.swift */; };
+		81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
+		81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
 		DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */; };
 /* End PBXBuildFile section */
@@ -120,8 +119,7 @@
 		815BCF151D805EAE0022F806 /* LocalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUser.swift; sourceTree = "<group>"; };
 		815BCF171D806D260022F806 /* ListingTagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTagTests.swift; sourceTree = "<group>"; };
 		815BCF1B1D8070B80022F806 /* LocalUserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUserTests.swift; sourceTree = "<group>"; };
-		815BCF1D1D80BC7B0022F806 /* MoochAPIRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPIRouter.swift; sourceTree = "<group>"; };
-		818883431D83404F00F7EEE5 /* MoochAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPI.swift; sourceTree = "<group>"; };
+		81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -277,8 +275,6 @@
 		810A82771D7D23A60086B40F /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				815BCF1D1D80BC7B0022F806 /* MoochAPIRouter.swift */,
-				818883431D83404F00F7EEE5 /* MoochAPI.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -288,6 +284,7 @@
 			children = (
 				815BCF021D7E77E70022F806 /* Errors.swift */,
 				815BCF001D7E77D80022F806 /* Helpers.swift */,
+				81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -445,6 +442,7 @@
 				810A824A1D7A11780086B40F /* Frameworks */,
 				810A824B1D7A11780086B40F /* Resources */,
 				2D9E397BA88879D9FB656B75 /* [CP] Copy Pods Resources */,
+				A51B362F539C13586E064CC4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -469,9 +467,11 @@
 					810A822D1D7A11780086B40F = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = 2ZW34Q8J6R;
+						LastSwiftMigration = 0800;
 					};
 					810A82411D7A11780086B40F = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 						TestTargetID = 810A822D1D7A11780086B40F;
 					};
 					810A824C1D7A11780086B40F = {
@@ -562,7 +562,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		8DE9C4BBE7428CDE01E8A034 /* [CP] Embed Pods Frameworks */ = {
@@ -580,6 +580,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mooch/Pods-Mooch-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A51B362F539C13586E064CC4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A931E33EEFF74287C07B4A55 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -592,7 +607,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		D92297FAD5D560B7ED87BACF /* [CP] Copy Pods Resources */ = {
@@ -652,7 +667,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -674,12 +689,11 @@
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
 				8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */,
 				815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */,
-				818883441D83404F00F7EEE5 /* MoochAPI.swift in Sources */,
 				815BCF051D7E78290022F806 /* User.swift in Sources */,
 				810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */,
 				8149E7B11D849B8F000F0C37 /* MoochModalViewController.swift in Sources */,
 				8149E7C81D865E5A000F0C37 /* ListingDetailsViewController.swift in Sources */,
-				815BCF1E1D80BC7B0022F806 /* MoochAPIRouter.swift in Sources */,
+				81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
 				8149E7D01D87017D000F0C37 /* RoundedButton.swift in Sources */,
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
@@ -696,11 +710,11 @@
 				815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */,
 				815BCF181D806D260022F806 /* ListingTagTests.swift in Sources */,
 				815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */,
+				81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
 				815BCF1A1D806F990022F806 /* ListingTag.swift in Sources */,
 				815BCF081D7E7F070022F806 /* Community.swift in Sources */,
 				815BCF0E1D7E83160022F806 /* UserTests.swift in Sources */,
 				815BCF191D806F970022F806 /* LocalUser.swift in Sources */,
-				815BCF1F1D80BC7B0022F806 /* MoochAPIRouter.swift in Sources */,
 				815BCF091D7E7F0B0022F806 /* User.swift in Sources */,
 				815BCF0B1D7E7F5C0022F806 /* CommunityTests.swift in Sources */,
 			);
@@ -836,6 +850,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.Mooch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -850,6 +865,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.Mooch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -862,6 +878,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.MoochTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mooch.app/Mooch";
 			};
 			name = Debug;
@@ -875,6 +892,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.MoochTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mooch.app/Mooch";
 			};
 			name = Release;

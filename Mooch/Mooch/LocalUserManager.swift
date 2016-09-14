@@ -12,26 +12,26 @@ import Foundation
 class LocalUserManager {
     
     enum LocalUserState {
-        case Guest
-        case LoggedIn
+        case guest
+        case loggedIn
     }
     
     //The variable to access this class trhough
     static let sharedInstance = LocalUserManager()
     
     //This prevents others from using the default '()' initializer for this class
-    private init() {}
+    fileprivate init() {}
     
-    private(set) var localUser: LocalUser?
-    private(set) var state: LocalUserState = .Guest
+    fileprivate(set) var localUser: LocalUser?
+    fileprivate(set) var state: LocalUserState = .guest
     
     func login(withLocalUser localUser: LocalUser) {
         self.localUser = localUser
-        state = .LoggedIn
+        state = .loggedIn
     }
     
     func logout() {
         localUser = nil
-        state = .Guest
+        state = .guest
     }
 }

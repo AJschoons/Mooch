@@ -24,8 +24,8 @@ class NetworkReachabilityVerificationViewController: MoochViewController {
         super.viewDidLoad()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     // MARK: Private methods

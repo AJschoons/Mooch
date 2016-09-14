@@ -8,7 +8,7 @@
 
 import Alamofire
 import Foundation
-import SwiftyJSON
+
 
 class MoochAPI {
     
@@ -27,8 +27,8 @@ class MoochAPI {
         MoochAPIRouter.clearAuthorizationCredentials()
     }
     
-    static func GETUsers(completion: [User]? -> Void) {
-        perform(MoochAPIRouter.GETUsers) { json, error in
+    static func GETUsers(_ completion: @escaping ([User]?) -> Void) {
+        perform(MoochAPIRouter.getUsers) { json, error in
             guard let json = json else {
                 completion(nil)
                 return
@@ -47,7 +47,7 @@ class MoochAPI {
         }
     }
     
-    private static func perform(request: URLRequestConvertible, withCompletion completion: MoochAPICompletionBlock) {
+    fileprivate static func perform(_ request: URLRequestConvertible, withCompletion completion: MoochAPICompletionBlock) {
         Alamofire.request(request).validate().responseJSON { response in
             guard response.result.isSuccess else {
                 completion(nil, response.result.error)

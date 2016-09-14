@@ -14,16 +14,16 @@ class ProfileViewController: MoochModalViewController {
     
     // MARK: Private variables
     
-    static private let StoryboardName = "Profile"
-    static private let Identifier = "ProfileViewController"
+    static fileprivate let StoryboardName = "Profile"
+    static fileprivate let Identifier = "ProfileViewController"
     
-    private var backButton: UIBarButtonItem!
-    private var editButton: UIBarButtonItem!
+    fileprivate var backButton: UIBarButtonItem!
+    fileprivate var editButton: UIBarButtonItem!
     
     // MARK: Actions
     
     func onBackAction() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     func onEditProfileAction() {
@@ -47,15 +47,15 @@ class ProfileViewController: MoochModalViewController {
     
     static func instantiateFromStoryboard() -> ProfileViewController {
         let storyboard = UIStoryboard(name: ProfileViewController.StoryboardName, bundle: nil)
-        return storyboard.instantiateViewControllerWithIdentifier(ProfileViewController.Identifier) as! ProfileViewController
+        return storyboard.instantiateViewController(withIdentifier: ProfileViewController.Identifier) as! ProfileViewController
     }
     
     
     // MARK: Private methods
     
-    private func setupNavigationBar() {
-        backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(onBackAction))
-        editButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(onEditProfileAction))
+    fileprivate func setupNavigationBar() {
+        backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onBackAction))
+        editButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onEditProfileAction))
         
         
         title = "Profile"

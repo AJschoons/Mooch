@@ -6,7 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import SwiftyJSON
+
 
 struct Listing {
     
@@ -46,8 +46,8 @@ struct Listing {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, title = json[JSONMapping.Title.rawValue].string, price = json[JSONMapping.Price.rawValue].float, isAvailable = json[JSONMapping.IsAvailable.rawValue].bool where json[JSONMapping.Owner.rawValue].isExists() && json[JSONMapping.Community.rawValue].isExists() && json[JSONMapping.Tag.rawValue].isExists() else {
-            throw InitializationError.InsufficientJSONInformationForInitialization
+        guard let id = json[JSONMapping.Id.rawValue].int, let title = json[JSONMapping.Title.rawValue].string, let price = json[JSONMapping.Price.rawValue].float, let isAvailable = json[JSONMapping.IsAvailable.rawValue].bool , json[JSONMapping.Owner.rawValue].exists() && json[JSONMapping.Community.rawValue].exists() && json[JSONMapping.Tag.rawValue].exists() else {
+            throw InitializationError.insufficientJSONInformationForInitialization
         }
         
         let owner = try User(json: JSON(json[JSONMapping.Owner.rawValue].object))

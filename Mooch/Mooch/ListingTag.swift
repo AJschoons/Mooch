@@ -6,7 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import SwiftyJSON
+
 
 struct ListingTag {
     
@@ -26,8 +26,8 @@ struct ListingTag {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, name = json[JSONMapping.Name.rawValue].string else {
-            throw InitializationError.InsufficientJSONInformationForInitialization
+        guard let id = json[JSONMapping.Id.rawValue].int, let name = json[JSONMapping.Name.rawValue].string else {
+            throw InitializationError.insufficientJSONInformationForInitialization
         }
         
         self.init(id: id, name: name)

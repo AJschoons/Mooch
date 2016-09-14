@@ -15,21 +15,21 @@ class MoochModalViewController: MoochViewController {
     
     // MARK: Private variables
     
-    private var presentingViewControllerNavigationBarWasHidden = false
+    fileprivate var presentingViewControllerNavigationBarWasHidden = false
     
     
     // MARK: Actions
     
     // MARK: Public methods
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         capturePresentingViewControllerNavigationBarState()
         updateNavigationBarState()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         restorePresentingViewControllerNavigationBarState()
@@ -43,21 +43,21 @@ class MoochModalViewController: MoochViewController {
     
     // MARK: Private methods
     
-    private func updateNavigationBarState() {
+    fileprivate func updateNavigationBarState() {
         if let navC = navigationController {
-            navC.navigationBar.hidden = prefersNavigationBarHidden()
+            navC.navigationBar.isHidden = prefersNavigationBarHidden()
         }
     }
     
-    private func capturePresentingViewControllerNavigationBarState() {
+    fileprivate func capturePresentingViewControllerNavigationBarState() {
         if let navC = navigationController {
-            presentingViewControllerNavigationBarWasHidden = navC.navigationBarHidden
+            presentingViewControllerNavigationBarWasHidden = navC.isNavigationBarHidden
         }
     }
     
-    private func restorePresentingViewControllerNavigationBarState() {
+    fileprivate func restorePresentingViewControllerNavigationBarState() {
         if let navC = navigationController {
-            navC.navigationBar.hidden = presentingViewControllerNavigationBarWasHidden
+            navC.navigationBar.isHidden = presentingViewControllerNavigationBarWasHidden
         }
     }
 }

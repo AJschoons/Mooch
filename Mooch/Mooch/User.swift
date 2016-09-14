@@ -6,7 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import SwiftyJSON
+
 
 struct User {
     
@@ -43,8 +43,8 @@ struct User {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, name = json[JSONMapping.Name.rawValue].string, address = json[JSONMapping.Address.rawValue].string, email = json[JSONMapping.Email.rawValue].string, phone = json[JSONMapping.Phone.rawValue].string where json[JSONMapping.Community.rawValue].isExists() else {
-            throw InitializationError.InsufficientJSONInformationForInitialization
+        guard let id = json[JSONMapping.Id.rawValue].int, let name = json[JSONMapping.Name.rawValue].string, let address = json[JSONMapping.Address.rawValue].string, let email = json[JSONMapping.Email.rawValue].string, let phone = json[JSONMapping.Phone.rawValue].string , json[JSONMapping.Community.rawValue].exists() else {
+            throw InitializationError.insufficientJSONInformationForInitialization
         }
         
         let rating = json[JSONMapping.Rating.rawValue].float
@@ -56,16 +56,8 @@ struct User {
     }
     
     static func createDummy(fromNumber i: Int) -> User {
-        var phoneString = ""
-        for n in 1...8 {
-            if n == 4 {
-                phoneString += "-"
-            } else {
-                phoneString += String(arc4random() % 10)
-            }
-        }
-        
-        let rating = Float(arc4random() % 4) * 1.2164
+        let phoneString = "555-555-5555"
+        let rating: Float = 3.5 * 1.2164
         let contactInformation = ContactInformation(address: "Apt #\(i)", email: "\(i)@example.com", phone: phoneString)
         let community = Community.createDummy(fromNumber: i)
         return User(id: i, name: "User \(i)", contactInformation: contactInformation, rating: rating, community: community)

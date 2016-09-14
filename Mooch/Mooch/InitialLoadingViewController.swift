@@ -21,15 +21,15 @@ class InitialLoadingViewController: MoochModalViewController {
     override func setup() {
         super.setup()
         
-        NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(onFinishedLoading), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(onFinishedLoading), userInfo: nil, repeats: false)
     }
     
     override func prefersNavigationBarHidden() -> Bool {
         return true
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
     override func shouldAnimateStatusBarChange() -> Bool {
@@ -43,15 +43,15 @@ class InitialLoadingViewController: MoochModalViewController {
     
     // MARK: Private methods
 
-    private func performCrossFadeViewControllerPop() {
+    fileprivate func performCrossFadeViewControllerPop() {
         guard let navC = navigationController else { return }
         
         // Setup cross fade transition for popping view controller
         let transtion = CATransition()
         transtion.duration = 0.3
         transtion.type = kCATransitionFade
-        navC.view.layer.addAnimation(transtion, forKey: kCATransition)
+        navC.view.layer.add(transtion, forKey: kCATransition)
         navC.setNavigationBarHidden(false, animated: false)
-        navC.popViewControllerAnimated(false)
+        navC.popViewController(animated: false)
     }
 }

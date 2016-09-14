@@ -21,23 +21,23 @@ class MoochViewController: UIViewController {
     // MARK: Private variables
     
     //Flag for whether or not the network reachability verification view controller is being shown
-    private var isShowingNetworkReachabilityVerificationViewController = false
+    fileprivate var isShowingNetworkReachabilityVerificationViewController = false
     
     //The view controller that is shown while the network reachability is being established
-    private var networkReachabilityVerificationViewController: UIViewController?
+    fileprivate var networkReachabilityVerificationViewController: UIViewController?
     
     //The network reachability manager used to observe network reachability changes
-    private var reachabilityManager: NetworkReachabilityManager!
+    fileprivate var reachabilityManager: NetworkReachabilityManager!
     
     //Used to restore previous status bar style if changed for this view controller
-    private var statusBarStyleBeforeChanging: UIStatusBarStyle?
+    fileprivate var statusBarStyleBeforeChanging: UIStatusBarStyle?
     
     
     // MARK: Actions
     
     // MARK: Public methods
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         captureStatusBarStyle()
@@ -51,7 +51,7 @@ class MoochViewController: UIViewController {
         setup()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if requiresNetworkReachability && !reachabilityManager.isReachable {
@@ -59,7 +59,7 @@ class MoochViewController: UIViewController {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         restoreStatusBarStyle()
@@ -78,8 +78,8 @@ class MoochViewController: UIViewController {
     func updateUI() { }
     
     //Override this function to change the default preferred status bar style
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.Default
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.default
     }
     
     //Override this function to change status bar animation behavior
@@ -89,14 +89,14 @@ class MoochViewController: UIViewController {
     
     func presentModalInNavigationController(withRootViewController rootViewController: UIViewController) {
         let navController = UINavigationController(rootViewController: rootViewController)
-        presentViewController(navController, animated: true, completion: nil)
+        present(navController, animated: true, completion: nil)
     }
     
     
     // MARK: Private methods
     
     //Sets up the reachability manager with the reachabilityHostURL that exists at the time this function is called
-    private func setupReachabilityManager() {
+    fileprivate func setupReachabilityManager() {
         reachabilityManager = NetworkReachabilityManager()
         reachabilityManager.listener = { [weak self] reachabilityStatus in
             guard let strongSelf = self else { return }
@@ -111,23 +111,23 @@ class MoochViewController: UIViewController {
     }
     
     //Shows the appropriate view controller while the network connection is being established
-    private func presentNetworkReachabilityVerificationViewController() {
+    fileprivate func presentNetworkReachabilityVerificationViewController() {
         guard requiresNetworkReachability && isVisible() && isShowingNetworkReachabilityVerificationViewController == false else { return }
         
         isShowingNetworkReachabilityVerificationViewController = true
         
         let nrvvc = NetworkReachabilityVerificationViewController()
         networkReachabilityVerificationViewController = nrvvc
-        nrvvc.modalTransitionStyle = .CrossDissolve
-        nrvvc.modalPresentationStyle = .OverFullScreen
-        presentViewController(nrvvc, animated: true, completion: nil)
+        nrvvc.modalTransitionStyle = .crossDissolve
+        nrvvc.modalPresentationStyle = .overFullScreen
+        present(nrvvc, animated: true, completion: nil)
     }
     
     //Hides the appropriate view controller while the network connection is being established
-    private func hideNetworkReachabilityVerificationViewController() {
+    fileprivate func hideNetworkReachabilityVerificationViewController() {
         guard networkReachabilityVerificationViewController != nil && isShowingNetworkReachabilityVerificationViewController else { return }
         
-        networkReachabilityVerificationViewController?.dismissViewControllerAnimated(true) {
+        networkReachabilityVerificationViewController?.dismiss(animated: true) {
             self.networkReachabilityVerificationViewController = nil
             self.isShowingNetworkReachabilityVerificationViewController = false
             self.didEstablishNetworkReachability()
@@ -135,24 +135,24 @@ class MoochViewController: UIViewController {
     }
     
     //Returns true when this view controller is visible
-    private func isVisible() -> Bool {
-        return isViewLoaded() && view.window != nil
+    fileprivate func isVisible() -> Bool {
+        return isViewLoaded && view.window != nil
     }
     
-    private func updateStatusBarStyle() {
+    fileprivate func updateStatusBarStyle() {
         guard let _ = statusBarStyleBeforeChanging else { return }
-        UIApplication.sharedApplication().setStatusBarStyle(preferredStatusBarStyle(), animated: shouldAnimateStatusBarChange())
+        UIApplication.shared.setStatusBarStyle(preferredStatusBarStyle, animated: shouldAnimateStatusBarChange())
     }
     
-    private func captureStatusBarStyle() {
-        let currentStyle = UIApplication.sharedApplication().statusBarStyle
-        if currentStyle != preferredStatusBarStyle() {
+    fileprivate func captureStatusBarStyle() {
+        let currentStyle = UIApplication.shared.statusBarStyle
+        if currentStyle != preferredStatusBarStyle {
             statusBarStyleBeforeChanging = currentStyle
         }
     }
     
-    private func restoreStatusBarStyle() {
+    fileprivate func restoreStatusBarStyle() {
         guard let previousStyle = statusBarStyleBeforeChanging else { return }
-        UIApplication.sharedApplication().setStatusBarStyle(previousStyle, animated: false)
+        UIApplication.shared.setStatusBarStyle(previousStyle, animated: false)
     }
 }

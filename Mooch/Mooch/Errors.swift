@@ -8,6 +8,6 @@
 
 import Foundation
 
-enum InitializationError: ErrorType {
-    case InsufficientJSONInformationForInitialization
+enum InitializationError: Error {
+    case insufficientJSONInformationForInitialization
 }

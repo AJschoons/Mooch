@@ -27,9 +27,9 @@ class ListingsViewController: MoochViewController {
     
     // MARK: Private variables
     
-    private var loginButton: UIBarButtonItem!
-    private var profileButton: UIBarButtonItem!
-    private var addListingButton: UIBarButtonItem!
+    fileprivate var loginButton: UIBarButtonItem!
+    fileprivate var profileButton: UIBarButtonItem!
+    fileprivate var addListingButton: UIBarButtonItem!
     
     // MARK: Actions
     
@@ -64,30 +64,30 @@ class ListingsViewController: MoochViewController {
     
     // MARK: Private methods
     
-    private func setupNavigationBar() {
+    fileprivate func setupNavigationBar() {
         guard let nav = navigationController else { return }
         
-        nav.navigationBar.hidden = false
+        nav.navigationBar.isHidden = false
         
         title = "Listings"
         
-        loginButton = UIBarButtonItem(title: "Login", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(onLoginAction))
-        profileButton = UIBarButtonItem(title: "Profile", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(onProfileAction))
-        addListingButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(onAddListingAction))
+        loginButton = UIBarButtonItem(title: "Login", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLoginAction))
+        profileButton = UIBarButtonItem(title: "Profile", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onProfileAction))
+        addListingButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(onAddListingAction))
     }
     
-    private func updateNavigationBar() {
+    fileprivate func updateNavigationBar() {
         switch LocalUserManager.sharedInstance.state {
-        case .Guest:
+        case .guest:
             navigationItem.leftBarButtonItems = [loginButton]
             navigationItem.rightBarButtonItems = nil
-        case .LoggedIn:
+        case .loggedIn:
             navigationItem.leftBarButtonItems = [profileButton]
             navigationItem.rightBarButtonItems = [addListingButton]
         }
     }
     
-    private func setupDummyData() {
+    fileprivate func setupDummyData() {
         var dummyListings = [Listing]()
         for i in 1...5 {
             dummyListings.append(Listing.createDummy(fromNumber: i))
@@ -95,38 +95,38 @@ class ListingsViewController: MoochViewController {
         listings = dummyListings
     }
     
-    private func pushListingDetailsViewController(withListing listing: Listing) {
+    fileprivate func pushListingDetailsViewController(withListing listing: Listing) {
         let vc = ListingDetailsViewController.instantiateFromStoryboard()
         vc.listing = listing
         
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    private func presentLoginViewController() {
+    fileprivate func presentLoginViewController() {
         guard let navC = navigationController else { return }
 
         let vc = LoginViewController()
         vc.delegate = self
-        vc.modalTransitionStyle = .CrossDissolve
+        vc.modalTransitionStyle = .crossDissolve
         
         //Needed for blurring over current view
-        vc.modalPresentationStyle = .OverFullScreen
+        vc.modalPresentationStyle = .overFullScreen
         
-        navC.presentViewController(vc, animated: true, completion: nil)
+        navC.present(vc, animated: true, completion: nil)
     }
     
-    private func presentProfileViewController() {
+    fileprivate func presentProfileViewController() {
         guard let navC = navigationController else { return }
         
         let vc = ProfileViewController.instantiateFromStoryboard()
         let profileNavC = UINavigationController(rootViewController: vc)
-        vc.modalTransitionStyle = .CrossDissolve
+        vc.modalTransitionStyle = .crossDissolve
         
         //Needed for blurring over current view
-        vc.modalPresentationStyle = .OverFullScreen
-        profileNavC.modalPresentationStyle = .OverFullScreen
+        vc.modalPresentationStyle = .overFullScreen
+        profileNavC.modalPresentationStyle = .overFullScreen
         
-        navC.presentViewController(profileNavC, animated: true, completion: nil)
+        navC.present(profileNavC, animated: true, completion: nil)
     }
 }
 
@@ -137,7 +137,7 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
         return listings
     }
     
-    func didSelect(listing: Listing) {
+    func didSelect(_ listing: Listing) {
         pushListingDetailsViewController(withListing: listing)
     }
 }
@@ -146,6 +146,6 @@ extension ListingsViewController: LoginViewControllerDelegate {
     
     func loginViewControllerDidLogin(withUser loggedInUser: User) {
         updateUI()
-        navigationController!.dismissViewControllerAnimated(true, completion: nil)
+        navigationController!.dismiss(animated: true, completion: nil)
     }
 }

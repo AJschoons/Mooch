@@ -6,7 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import SwiftyJSON
+
 
 struct Community {
     
@@ -29,8 +29,8 @@ struct Community {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, address = json[JSONMapping.Address.rawValue].string, name = json[JSONMapping.Name.rawValue].string else {
-            throw InitializationError.InsufficientJSONInformationForInitialization
+        guard let id = json[JSONMapping.Id.rawValue].int, let address = json[JSONMapping.Address.rawValue].string, let name = json[JSONMapping.Name.rawValue].string else {
+            throw InitializationError.insufficientJSONInformationForInitialization
         }
         
         self.init(id: id, address: address, name: name)

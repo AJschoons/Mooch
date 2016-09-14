@@ -25,7 +25,7 @@ class LoginViewController: MoochModalViewController {
     // MARK: Actions
     
     @IBAction func onCancel() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     @IBAction func onLogin() {
@@ -46,24 +46,24 @@ class LoginViewController: MoochModalViewController {
     
     // MARK: Private methods
     
-    private func presentEditProfileViewController() {
+    fileprivate func presentEditProfileViewController() {
         let vc = EditProfileViewController.instantiateFromStoryboard()
         vc.configuration = EditProfileViewController.DefaultCreatingConfiguration
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
-        presentViewController(navC, animated: true, completion: nil)
+        present(navC, animated: true, completion: nil)
     }
     
-    private func presentAccountCreatedAlert(forUser user: User) {
-        let alert = UIAlertController(title: "Account Created", message: "Welcome to Mooch, \(user.name)!", preferredStyle: .Alert)
-        let action = UIAlertAction(title: "Get Mooching", style: .Default) { _ in
+    fileprivate func presentAccountCreatedAlert(forUser user: User) {
+        let alert = UIAlertController(title: "Account Created", message: "Welcome to Mooch, \(user.name)!", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Get Mooching", style: .default) { _ in
             self.delegate?.loginViewControllerDidLogin(withUser: user)
         }
         alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
-    private func login(withUser user: User) {
+    fileprivate func login(withUser user: User) {
         let localUser = LocalUser(user: user, password: "test password")
         LocalUserManager.sharedInstance.login(withLocalUser: localUser)
     }

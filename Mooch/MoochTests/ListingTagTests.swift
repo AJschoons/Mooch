@@ -6,7 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import SwiftyJSON
+
 import XCTest
 @testable import Mooch
 
@@ -44,7 +44,7 @@ class ListingTagTests: XCTestCase {
         do {
             let _ = try ListingTag(json: listingTagJSON)
             XCTFail()
-        } catch InitializationError.InsufficientJSONInformationForInitialization {
+        } catch InitializationError.insufficientJSONInformationForInitialization {
             jsonErrorThrown = true
         } catch {
             

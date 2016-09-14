@@ -6,7 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import SwiftyJSON
+
 import XCTest
 @testable import Mooch
 
@@ -46,7 +46,7 @@ class CommunityTests: XCTestCase {
         do {
             let _ = try Community(json: communityJSON)
             XCTFail()
-        } catch InitializationError.InsufficientJSONInformationForInitialization {
+        } catch InitializationError.insufficientJSONInformationForInitialization {
             jsonErrorThrown = true
         } catch {
             

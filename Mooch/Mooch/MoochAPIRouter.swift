@@ -11,36 +11,36 @@ import Alamofire
 
 //Class that maps an API route to a URLRequest
 enum MoochAPIRouter: URLRequestConvertible {
-    static private let baseURLPath = "http://mooch-test.appspot.com"
+    static fileprivate let baseURLPath = "http://mooch-test.appspot.com"
     
-    static private var userId: Int?
-    static private var password: String?
+    static fileprivate var userId: Int?
+    static fileprivate var password: String?
     
-    static private let NoParametersDictionary = [String : AnyObject]()
+    static fileprivate let NoParametersDictionary = [String : AnyObject]()
     
     //Unauthorized
-    case GETUsers
+    case getUsers
     
     //Authorized
-    case GETUser(withId: Int)
+    case getUser(withId: Int)
     
     //Returns the URL request for the route
     var URLRequest: NSMutableURLRequest {
         let result: (path: String, method: Alamofire.Method, parameters: [String: AnyObject]?, requiresAuthorization: Bool) = {
             switch self {
-            case .GETUsers:
+            case .getUsers:
                 return ("/user", .GET, nil, false)
-            case .GETUser(let userId):
+            case .getUser(let userId):
                 return ("/user/\(userId)", .GET, nil, true)
             }
         }()
         
-        let URL = NSURL(string: MoochAPIRouter.baseURLPath)!
-        let URLRequest = NSMutableURLRequest(URL: URL.URLByAppendingPathComponent(result.path))
-        URLRequest.HTTPMethod = result.method.rawValue
+        let URL = Foundation.URL(string: MoochAPIRouter.baseURLPath)!
+        let URLRequest = NSMutableURLRequest(url: URL.appendingPathComponent(result.path))
+        URLRequest.httpMethod = result.method.rawValue
         
         if result.requiresAuthorization {
-            if let userId = MoochAPIRouter.userId, userPassword = MoochAPIRouter.password {
+            if let userId = MoochAPIRouter.userId, let userPassword = MoochAPIRouter.password {
                 URLRequest.setValue(String(userId), forHTTPHeaderField: "user_id")
                 URLRequest.setValue(userPassword, forHTTPHeaderField: "user_password")
             } else {
@@ -48,7 +48,7 @@ enum MoochAPIRouter: URLRequestConvertible {
             }
         }
         
-        let encoding = Alamofire.ParameterEncoding.JSON
+        let encoding = Alamofire.ParameterEncoding.json
         return encoding.encode(URLRequest, parameters: result.parameters).0
     }
     

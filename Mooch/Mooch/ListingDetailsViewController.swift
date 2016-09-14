@@ -16,8 +16,8 @@ class ListingDetailsViewController: MoochViewController {
     
     // MARK: Private variables
     
-    static private let StoryboardName = "ListingDetails"
-    static private let Identifier = "ListingDetailsViewController"
+    static fileprivate let StoryboardName = "ListingDetails"
+    static fileprivate let Identifier = "ListingDetailsViewController"
     
     // MARK: Actions
     
@@ -37,12 +37,12 @@ class ListingDetailsViewController: MoochViewController {
     
     static func instantiateFromStoryboard() -> ListingDetailsViewController {
         let storyboard = UIStoryboard(name: ListingDetailsViewController.StoryboardName, bundle: nil)
-        return storyboard.instantiateViewControllerWithIdentifier(ListingDetailsViewController.Identifier) as! ListingDetailsViewController
+        return storyboard.instantiateViewController(withIdentifier: ListingDetailsViewController.Identifier) as! ListingDetailsViewController
     }
     
     // MARK: Private methods
     
-    private func setupNavigationBar() {
+    fileprivate func setupNavigationBar() {
         guard let nav = navigationController else { return }
         
         title = "Listing Details"

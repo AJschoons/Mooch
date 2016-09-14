@@ -1,22 +1,22 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '9.0'
 
 use_frameworks!
 
 target 'Mooch' do
-	pod 'Alamofire', '~> 3.4'
-	pod 'AlamofireImage', '~> 2.4'
+	pod 'Alamofire', '~> 4.0'
+	pod 'AlamofireImage', '~> 3.0'
 	pod 'OHHTTPStubs' # Default subspecs, including support for NSURLSession & JSON etc
 	pod 'OHHTTPStubs/Swift' # Adds the Swiftier API wrapper too
-	pod 'SwiftyJSON', '~> 2.3'
+    #pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'swift3'
 end
 
 target 'MoochTests' do
-	pod 'Alamofire', '~> 3.4'
-    pod 'AlamofireImage', '~> 2.4'
+	pod 'Alamofire', '~> 4.0'
+	pod 'AlamofireImage', '~> 3.0'
     pod 'OHHTTPStubs' # Default subspecs, including support for NSURLSession & JSON etc
     pod 'OHHTTPStubs/Swift' # Adds the Swiftier API wrapper too
-    pod 'SwiftyJSON', '~> 2.3'
+    #pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'swift3'
 end
 
 target 'MoochUITests' do

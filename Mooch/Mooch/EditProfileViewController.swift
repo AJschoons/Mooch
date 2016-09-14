@@ -27,20 +27,20 @@ class EditProfileViewController: MoochModalViewController {
         
         //The bar buttons that can be added
         enum BarButtonType {
-            case Cancel
-            case Done
+            case cancel
+            case done
         }
         
         enum Mode {
-            case Creating
-            case Editing
+            case creating
+            case editing
         }
     }
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = Configuration(mode: .Creating, title: "Create Account", leftBarButtons: [.Cancel], rightBarButtons: [.Done])
-    static let DefaultEditingConfiguration = Configuration(mode: .Creating, title: "Edit Profile", leftBarButtons: [.Cancel], rightBarButtons: [.Done])
+    static let DefaultCreatingConfiguration = Configuration(mode: .creating, title: "Create Account", leftBarButtons: [.cancel], rightBarButtons: [.done])
+    static let DefaultEditingConfiguration = Configuration(mode: .creating, title: "Edit Profile", leftBarButtons: [.cancel], rightBarButtons: [.done])
     
     weak var delegate: EditProfileViewControllerDelegate!
     
@@ -53,24 +53,24 @@ class EditProfileViewController: MoochModalViewController {
     
     // MARK: Private variables
     
-    static private let StoryboardName = "EditProfile"
-    static private let Identifier = "EditProfileViewController"
+    static fileprivate let StoryboardName = "EditProfile"
+    static fileprivate let Identifier = "EditProfileViewController"
     
-    private var doneButton: UIBarButtonItem!
-    private var cancelButton: UIBarButtonItem!
+    fileprivate var doneButton: UIBarButtonItem!
+    fileprivate var cancelButton: UIBarButtonItem!
     
     
     // MARK: Actions
     
     func onDoneAction() {
         let dummyUser = User.createDummy(fromNumber: 62)
-        dismissViewControllerAnimated(true) {
+        dismiss(animated: true) {
             self.delegate.editProfileViewControllerDidFinishEditing(withUser: dummyUser)
         }
     }
     
     func onCancelAction() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: Public methods
@@ -90,15 +90,15 @@ class EditProfileViewController: MoochModalViewController {
     
     static func instantiateFromStoryboard() -> EditProfileViewController {
         let storyboard = UIStoryboard(name: EditProfileViewController.StoryboardName, bundle: nil)
-        return storyboard.instantiateViewControllerWithIdentifier(EditProfileViewController.Identifier) as! EditProfileViewController
+        return storyboard.instantiateViewController(withIdentifier: EditProfileViewController.Identifier) as! EditProfileViewController
     }
     
     
     // MARK: Private methods
     
-    private func setupNavigationBar() {
-        doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(onDoneAction))
-        cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(onCancelAction))
+    fileprivate func setupNavigationBar() {
+        doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onDoneAction))
+        cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
         
         
         title = configuration.title
@@ -116,15 +116,15 @@ class EditProfileViewController: MoochModalViewController {
         }
     }
     
-    private func barButtons(fromTypeList typeList: [Configuration.BarButtonType]) -> [UIBarButtonItem] {
+    fileprivate func barButtons(fromTypeList typeList: [Configuration.BarButtonType]) -> [UIBarButtonItem] {
         return typeList.map({barButton(forType: $0)})
     }
     
-    private func barButton(forType type: Configuration.BarButtonType) -> UIBarButtonItem {
+    fileprivate func barButton(forType type: Configuration.BarButtonType) -> UIBarButtonItem {
         switch type {
-        case .Cancel:
+        case .cancel:
             return cancelButton
-        case .Done:
+        case .done:
             return doneButton
         }
     }

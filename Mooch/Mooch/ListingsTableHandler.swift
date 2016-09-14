@@ -10,15 +10,15 @@ import UIKit
 
 protocol ListingsTableHandlerDelegate: class {
     func getListings() -> [Listing]
-    func didSelect(listing: Listing)
+    func didSelect(_ listing: Listing)
 }
 
 class ListingsTableHandler: NSObject {
     
-    @IBOutlet weak private var tableView: UITableView! {
+    @IBOutlet weak fileprivate var tableView: UITableView! {
         didSet {
             let nib = UINib(nibName: ListingTableViewCell.Identifier, bundle: nil)
-            tableView.registerNib(nib, forCellReuseIdentifier: ListingTableViewCell.Identifier)
+            tableView.register(nib, forCellReuseIdentifier: ListingTableViewCell.Identifier)
             
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
@@ -35,14 +35,14 @@ class ListingsTableHandler: NSObject {
 
 extension ListingsTableHandler: UITableViewDataSource {
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return delegate.getListings().count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let listing = delegate.getListings()[indexPath.row]
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let listing = delegate.getListings()[(indexPath as NSIndexPath).row]
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(ListingTableViewCell.Identifier, forIndexPath: indexPath) as! ListingTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ListingTableViewCell.Identifier, for: indexPath) as! ListingTableViewCell
         cell.titleLabel.text = listing.title
         cell.tagLabel.text = listing.tag.name
         cell.priceLabel.text = listing.priceString
@@ -54,8 +54,8 @@ extension ListingsTableHandler: UITableViewDataSource {
 
 extension ListingsTableHandler: UITableViewDelegate {
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedListing = delegate!.getListings()[indexPath.row]
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedListing = delegate!.getListings()[(indexPath as NSIndexPath).row]
         delegate!.didSelect(selectedListing)
     }
 }

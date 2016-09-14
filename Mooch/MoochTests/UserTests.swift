@@ -6,7 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import SwiftyJSON
+
 import XCTest
 @testable import Mooch
 
@@ -30,7 +30,7 @@ class UserTests: XCTestCase {
     
     //Test that a User is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let communityJSONDict = ["id" : 1234, "address" : "1234 address lane", "name" : "highrise apartments"]
+        let communityJSONDict = ["id" : 1234, "address" : "1234 address lane", "name" : "highrise apartments"] as [String : Any]
         let userJSON: JSON = ["id" : 4132, "name" : "Bob the User", "phone" : "123-456-6789", "address" : "apt #406", "email" : "doge@example.com", "community" : communityJSONDict]
         
         do {
@@ -59,7 +59,7 @@ class UserTests: XCTestCase {
         do {
             let _ = try User(json: userJSON)
             XCTFail()
-        } catch InitializationError.InsufficientJSONInformationForInitialization {
+        } catch InitializationError.insufficientJSONInformationForInitialization {
             jsonErrorThrown = true
         } catch {
             
