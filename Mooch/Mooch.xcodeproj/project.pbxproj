@@ -32,6 +32,8 @@
 		8149E7D01D87017D000F0C37 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7CF1D87017D000F0C37 /* RoundedButton.swift */; };
 		8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */; };
 		8149E7D51D871A76000F0C37 /* EditProfile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7D41D871A76000F0C37 /* EditProfile.storyboard */; };
+		814DB9C41D8C9B7E006F34E9 /* EditListing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */; };
+		814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */; };
 		815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */; };
 		815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */; };
 		815BCF011D7E77D80022F806 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
@@ -109,6 +111,8 @@
 		8149E7CF1D87017D000F0C37 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		8149E7D41D871A76000F0C37 /* EditProfile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditProfile.storyboard; sourceTree = "<group>"; };
+		814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditListing.storyboard; sourceTree = "<group>"; };
+		814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingViewController.swift; sourceTree = "<group>"; };
 		815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityVerificationViewController.swift; sourceTree = "<group>"; };
 		815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NetworkReachabilityVerificationViewController.xib; sourceTree = "<group>"; };
 		815BCF001D7E77D80022F806 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -243,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				8149E7CE1D870156000F0C37 /* Custom Elements */,
+				814DB9C21D8C9B66006F34E9 /* Edit Listing */,
 				8149E7D11D87183C000F0C37 /* Edit Profile */,
 				810A823A1D7A11780086B40F /* LaunchScreen.storyboard */,
 				8149E7B61D84B3D1000F0C37 /* Initial Loading */,
@@ -393,6 +398,15 @@
 			name = "Edit Profile";
 			sourceTree = "<group>";
 		};
+		814DB9C21D8C9B66006F34E9 /* Edit Listing */ = {
+			isa = PBXGroup;
+			children = (
+				814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */,
+				814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */,
+			);
+			name = "Edit Listing";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -516,6 +530,7 @@
 				8149E7C31D8609BE000F0C37 /* ListingTableViewCell.xib in Resources */,
 				810A82391D7A11780086B40F /* Assets.xcassets in Resources */,
 				815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */,
+				814DB9C41D8C9B7E006F34E9 /* EditListing.storyboard in Resources */,
 				8149E7D51D871A76000F0C37 /* EditProfile.storyboard in Resources */,
 				8149E7AF1D84977C000F0C37 /* InitialLoadingViewController.xib in Resources */,
 				8149E7CD1D8668D6000F0C37 /* LoginViewController.xib in Resources */,
@@ -690,6 +705,7 @@
 				813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */,
 				8149E7BF1D85FC6C000F0C37 /* Listing.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
+				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
 				8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */,
 				815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */,

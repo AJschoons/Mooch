@@ -1,20 +1,20 @@
 //
-//  EditProfoleViewController.swift
+//  EditListingViewController.swift
 //  Mooch
 //
-//  Created by adam on 9/12/16.
+//  Created by adam on 9/16/16.
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
 import UIKit
 
-protocol EditProfileViewControllerDelegate: class {
+protocol EditListingViewControllerDelegate: class {
     
     //Allows the delegate to handle dismissing this view controller at the appropriate time
-    func editProfileViewControllerDidFinishEditing(withUser editedUser: User)
+    func editListingViewControllerDidFinishEditing(withListing editedListing: Listing)
 }
 
-class EditProfileViewController: MoochModalViewController {
+class EditListingViewController: MoochModalViewController {
     
     //A configuration to setup the class with
     struct Configuration {
@@ -39,22 +39,22 @@ class EditProfileViewController: MoochModalViewController {
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = Configuration(mode: .creating, title: "Create Account", leftBarButtons: [.cancel], rightBarButtons: [.done])
-    static let DefaultEditingConfiguration = Configuration(mode: .creating, title: "Edit Profile", leftBarButtons: [.cancel], rightBarButtons: [.done])
+    static let DefaultCreatingConfiguration = Configuration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done])
+    static let DefaultEditingConfiguration = Configuration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done])
     
-    weak var delegate: EditProfileViewControllerDelegate!
+    weak var delegate: EditListingViewControllerDelegate!
     
     //The configuration used to setup the class
     var configuration: Configuration!
     
-    //The user being edited
-    var user: User?
+    //The listing being edited
+    var listing: Listing?
     
     
     // MARK: Private variables
     
-    static fileprivate let StoryboardName = "EditProfile"
-    static fileprivate let Identifier = "EditProfileViewController"
+    static fileprivate let StoryboardName = "EditListing"
+    static fileprivate let Identifier = "EditListingViewController"
     
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var cancelButton: UIBarButtonItem!
@@ -63,9 +63,9 @@ class EditProfileViewController: MoochModalViewController {
     // MARK: Actions
     
     func onDoneAction() {
-        let dummyUser = User.createDummy(fromNumber: 62)
+        let dummyListing = Listing.createDummy(fromNumber: 23)
         dismiss(animated: true) {
-            self.delegate.editProfileViewControllerDidFinishEditing(withUser: dummyUser)
+            self.delegate.editListingViewControllerDidFinishEditing(withListing: dummyListing)
         }
     }
     
@@ -88,9 +88,9 @@ class EditProfileViewController: MoochModalViewController {
         
     }
     
-    static func instantiateFromStoryboard() -> EditProfileViewController {
-        let storyboard = UIStoryboard(name: EditProfileViewController.StoryboardName, bundle: nil)
-        return storyboard.instantiateViewController(withIdentifier: EditProfileViewController.Identifier) as! EditProfileViewController
+    static func instantiateFromStoryboard() -> EditListingViewController {
+        let storyboard = UIStoryboard(name: EditListingViewController.StoryboardName, bundle: nil)
+        return storyboard.instantiateViewController(withIdentifier: EditListingViewController.Identifier) as! EditListingViewController
     }
     
     

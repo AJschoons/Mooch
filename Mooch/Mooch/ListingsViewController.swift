@@ -42,7 +42,7 @@ class ListingsViewController: MoochViewController {
     }
     
     func onAddListingAction() {
-        
+        presentEditListingViewController()
     }
     
     // MARK: Public methods
@@ -128,6 +128,25 @@ class ListingsViewController: MoochViewController {
         
         navC.present(profileNavC, animated: true, completion: nil)
     }
+    
+    fileprivate func presentEditListingViewController() {
+        let vc = EditListingViewController.instantiateFromStoryboard()
+        vc.configuration = EditListingViewController.DefaultCreatingConfiguration
+        vc.delegate = self
+        let navC = UINavigationController(rootViewController: vc)
+        present(navC, animated: true, completion: nil)
+    }
+    
+    fileprivate func presentListingCreatedAlert(forListing listing: Listing) {
+        let alert = UIAlertController(title: "Listing Created", message: "Your listing with the title \"\(listing.title)\" is now visible to all users in the \"\(listing.community.name)\" community", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Keep Mooching", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    fileprivate func add(listing: Listing) {
+        listings.insert(listing, at: 0)
+    }
 }
 
 extension ListingsViewController: ListingsTableHandlerDelegate {
@@ -147,5 +166,14 @@ extension ListingsViewController: LoginViewControllerDelegate {
     func loginViewControllerDidLogin(withUser loggedInUser: User) {
         updateUI()
         navigationController!.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension ListingsViewController: EditListingViewControllerDelegate {
+    
+    func editListingViewControllerDidFinishEditing(withListing editedListing: Listing) {
+        add(listing: editedListing)
+        presentListingCreatedAlert(forListing: editedListing)
+        
     }
 }
