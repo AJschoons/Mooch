@@ -23,7 +23,7 @@ class CommunityTests: XCTestCase {
     
     //Test that a Community is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let communityJSON: JSON = ["id" : 1234, "address" : "1234 address lane", "name" : "highrise apartments"]
+        let communityJSON: JSON = [Community.JSONMapping.Id.rawValue : 1234,  Community.JSONMapping.Address.rawValue : "1234 address lane", Community.JSONMapping.Name.rawValue : "highrise apartments"]
         
         do {
             let community = try Community(json: communityJSON)

@@ -51,6 +51,8 @@
 		815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF1B1D8070B80022F806 /* LocalUserTests.swift */; };
 		81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
+		B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7BE1D85FC6B000F0C37 /* Listing.swift */; };
+		B38E8B1D1D8C7678002A9439 /* ListingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E8B1C1D8C7678002A9439 /* ListingTest.swift */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
 		DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */; };
 /* End PBXBuildFile section */
@@ -123,6 +125,7 @@
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B38E8B1C1D8C7678002A9439 /* ListingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTest.swift; sourceTree = "<group>"; };
 		DB0A3D9FB6A1E3D95ECCCD45 /* Pods-Mooch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mooch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mooch/Pods-Mooch.debug.xcconfig"; sourceTree = "<group>"; };
 		E49A73BAC724FE7A87D6C8A0 /* Pods-MoochUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -222,6 +225,7 @@
 				815BCF171D806D260022F806 /* ListingTagTests.swift */,
 				815BCF1B1D8070B80022F806 /* LocalUserTests.swift */,
 				815BCF0D1D7E83160022F806 /* UserTests.swift */,
+				B38E8B1C1D8C7678002A9439 /* ListingTest.swift */,
 				810A82481D7A11780086B40F /* Info.plist */,
 			);
 			path = MoochTests;
@@ -461,7 +465,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = cse498;
 				TargetAttributes = {
 					810A822D1D7A11780086B40F = {
@@ -709,7 +713,9 @@
 			files = (
 				815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */,
 				815BCF181D806D260022F806 /* ListingTagTests.swift in Sources */,
+				B38E8B1D1D8C7678002A9439 /* ListingTest.swift in Sources */,
 				815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */,
+				B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */,
 				81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
 				815BCF1A1D806F990022F806 /* ListingTag.swift in Sources */,
 				815BCF081D7E7F070022F806 /* Community.swift in Sources */,
@@ -768,8 +774,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -814,8 +822,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -834,6 +844,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -843,6 +854,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DB0A3D9FB6A1E3D95ECCCD45 /* Pods-Mooch.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Mooch/Info.plist;
@@ -858,6 +870,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 344DB53745D16AAC3B92C2BE /* Pods-Mooch.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = Mooch/Info.plist;
@@ -873,6 +886,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1EA14F966101333946798EDD /* Pods-MoochTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = MoochTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -887,6 +901,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7D77BF2B345F516CDE894771 /* Pods-MoochTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = MoochTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

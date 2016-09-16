@@ -15,7 +15,7 @@ class UserTests: XCTestCase {
     func testDesignatedInit() {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
         let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
-        let user = User(id: 5, name: "test", contactInformation: contactInformation, community: community)
+        let user = User(id: 5, name: "test", contactInformation: contactInformation, rating: 4.0, community: community)
         
         //Test that all the variables are correctly initialized
         XCTAssert(user.id == 5)
@@ -30,8 +30,8 @@ class UserTests: XCTestCase {
     
     //Test that a User is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let communityJSONDict = ["id" : 1234, "address" : "1234 address lane", "name" : "highrise apartments"] as [String : Any]
-        let userJSON: JSON = ["id" : 4132, "name" : "Bob the User", "phone" : "123-456-6789", "address" : "apt #406", "email" : "doge@example.com", "community" : communityJSONDict]
+        let communityJSONDict = [Community.JSONMapping.Id.rawValue : 1234, Community.JSONMapping.Address.rawValue : "1234 address lane", Community.JSONMapping.Name.rawValue : "highrise apartments"] as [String : Any]
+        let userJSON: JSON = [User.JSONMapping.Id.rawValue : 4132, User.JSONMapping.Name.rawValue : "Bob the User",  User.JSONMapping.Phone.rawValue : "123-456-6789", User.JSONMapping.Address.rawValue : "apt #406", User.JSONMapping.Email.rawValue  : "doge@example.com", User.JSONMapping.Community.rawValue : communityJSONDict]
         
         do {
             let user = try User(json: userJSON)
@@ -71,7 +71,7 @@ class UserTests: XCTestCase {
     func testGettersSetters() {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
         let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
-        var user = User(id: 5, name: "test", contactInformation: contactInformation, community: community)
+        var user = User(id: 5, name: "test", contactInformation: contactInformation,rating: 4.0, community: community)
         
         //Test getters
         XCTAssert(user.id == 5)
