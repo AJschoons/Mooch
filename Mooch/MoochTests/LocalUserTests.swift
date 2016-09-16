@@ -45,7 +45,6 @@ class LocalUserTests: XCTestCase {
     }
     
     //Test that a LocalUser is constructed without failing when given JSON with all the data it needs
-    
     func testConvenienceInitSuccess() {
         let communityJSONDict = [Community.JSONMapping.Id.rawValue : 1234, Community.JSONMapping.Address.rawValue : "1234 address lane", Community.JSONMapping.Name.rawValue : "highrise apartments"] as [String : Any]
         let userJSON: JSON = [User.JSONMapping.Id.rawValue : 4132, User.JSONMapping.Name.rawValue : "Bob the User", User.JSONMapping.Phone.rawValue : "123-456-6789", User.JSONMapping.Address.rawValue : "apt #406", User.JSONMapping.Email.rawValue : "doge@example.com", User.JSONMapping.Community.rawValue : communityJSONDict]

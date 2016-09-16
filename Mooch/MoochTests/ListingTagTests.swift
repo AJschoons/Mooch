@@ -21,7 +21,6 @@ class ListingTagTests: XCTestCase {
     }
     
     //Test that an ListingTag is constructed without failing when given JSON with all the data it needs
-
     func testConvenienceInitSuccess() {
         let listingTagJSON: JSON = [ListingTag.JSONMapping.Id.rawValue : 12, ListingTag.JSONMapping.Name.rawValue : "fruit"]
         

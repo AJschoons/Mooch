@@ -11,6 +11,7 @@ import XCTest
 @testable import Mooch
 
 class ListingTest: XCTestCase {
+    
     func testCommunityDesignatedInit() {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
         let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
@@ -69,6 +70,7 @@ class ListingTest: XCTestCase {
             XCTFail()
         }
     }
+    
     //Test that a Listing throws the expected error when it doesn't have all the data it needs
     func testConvenienceInitError() {
         let listJSONDict: JSON = ["id" : 41]

@@ -12,9 +12,6 @@ import XCTest
 
 class UserTests: XCTestCase {
     
-    //    init(id: Int, name: String, contactInformation: ContactInformation, rating: Float?, community: Community) {
-
-    
     func testDesignatedInit() {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
         let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
@@ -32,7 +29,6 @@ class UserTests: XCTestCase {
     }
     
     //Test that a User is constructed without failing when given JSON with all the data it needs
-    
     func testConvenienceInitSuccess() {
         let communityJSONDict = [Community.JSONMapping.Id.rawValue : 1234, Community.JSONMapping.Address.rawValue : "1234 address lane", Community.JSONMapping.Name.rawValue : "highrise apartments"] as [String : Any]
         let userJSON: JSON = [User.JSONMapping.Id.rawValue : 4132, User.JSONMapping.Name.rawValue : "Bob the User",  User.JSONMapping.Phone.rawValue : "123-456-6789", User.JSONMapping.Address.rawValue : "apt #406", User.JSONMapping.Email.rawValue  : "doge@example.com", User.JSONMapping.Community.rawValue : communityJSONDict]
