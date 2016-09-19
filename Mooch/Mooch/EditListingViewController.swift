@@ -16,6 +16,14 @@ protocol EditListingViewControllerDelegate: class {
 
 class EditListingViewController: MoochModalViewController {
     
+    @IBOutlet weak fileprivate var tableView: UITableView! {
+        didSet {
+            //Must set these to get cells to use autolayout and self-size themselves in the table
+            tableView.rowHeight = UITableViewAutomaticDimension
+            tableView.estimatedRowHeight = 44
+        }
+    }
+    
     //A configuration to setup the class with
     struct Configuration {
         
@@ -127,4 +135,50 @@ class EditListingViewController: MoochModalViewController {
             return doneButton
         }
     }
+}
+
+extension EditListingViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 6
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var identifier = ""
+        switch  indexPath.row {
+        case 0:
+            identifier = "PhotoCell"
+        case 5:
+            identifier = "QuantityCell"
+        default:
+            identifier = "TextfieldCell"
+        }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        if let textfieldCell = cell as? EditListingTextfieldCell {
+            
+            var placeholder = ""
+            switch indexPath.row {
+            case 1:
+                placeholder = "Title"
+            case 2:
+                placeholder = "Description"
+            case 3:
+                placeholder = "Category"
+            case 4:
+                placeholder = "Price"
+            default:
+                break
+            }
+            
+            textfieldCell.textfield.placeholder = placeholder
+        }
+        
+        
+        return cell
+    }
+}
+
+extension EditListingViewController: UITableViewDelegate {
+    
 }

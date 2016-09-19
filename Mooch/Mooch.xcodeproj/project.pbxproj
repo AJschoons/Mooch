@@ -34,6 +34,7 @@
 		8149E7D51D871A76000F0C37 /* EditProfile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7D41D871A76000F0C37 /* EditProfile.storyboard */; };
 		814DB9C41D8C9B7E006F34E9 /* EditListing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */; };
 		814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */; };
+		814DB9C81D8F668E006F34E9 /* EditListingTextfieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9C71D8F668E006F34E9 /* EditListingTextfieldCell.swift */; };
 		815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */; };
 		815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */; };
 		815BCF011D7E77D80022F806 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
@@ -113,6 +114,7 @@
 		8149E7D41D871A76000F0C37 /* EditProfile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditProfile.storyboard; sourceTree = "<group>"; };
 		814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditListing.storyboard; sourceTree = "<group>"; };
 		814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingViewController.swift; sourceTree = "<group>"; };
+		814DB9C71D8F668E006F34E9 /* EditListingTextfieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextfieldCell.swift; sourceTree = "<group>"; };
 		815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityVerificationViewController.swift; sourceTree = "<group>"; };
 		815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NetworkReachabilityVerificationViewController.xib; sourceTree = "<group>"; };
 		815BCF001D7E77D80022F806 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 			isa = PBXGroup;
 			children = (
 				814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */,
+				814DB9C71D8F668E006F34E9 /* EditListingTextfieldCell.swift */,
 				814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */,
 			);
 			name = "Edit Listing";
@@ -698,6 +701,7 @@
 			files = (
 				8149E7BB1D84C2A7000F0C37 /* ListingsTableHandler.swift in Sources */,
 				8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */,
+				814DB9C81D8F668E006F34E9 /* EditListingTextfieldCell.swift in Sources */,
 				815BCF011D7E77D80022F806 /* Helpers.swift in Sources */,
 				8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */,
 				8149E7B41D84B396000F0C37 /* ListingsViewController.swift in Sources */,
