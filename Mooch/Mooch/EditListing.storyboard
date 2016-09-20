@@ -18,10 +18,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="363" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mQ9-1C-1Fh">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="363" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mQ9-1C-1Fh">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PhotoCell" rowHeight="366" id="2Qp-7l-Qir">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingPhotoCell" rowHeight="366" id="2Qp-7l-Qir" customClass="EditListingPhotoCell" customModule="Mooch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="366"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Qp-7l-Qir" id="Bdw-HP-0sQ">
@@ -48,7 +48,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextfieldCell" rowHeight="44" id="XWl-fY-Gj2" customClass="EditListingTextfieldCell" customModule="Mooch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingTextfieldCell" rowHeight="44" id="XWl-fY-Gj2" customClass="EditListingTextfieldCell" customModule="Mooch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="394" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XWl-fY-Gj2" id="s3x-hw-rqm">
@@ -72,14 +72,18 @@
                                             <outlet property="textfield" destination="uau-QR-q4H" id="fl2-d4-tz2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="QuantityCell" rowHeight="44" id="B0U-Qi-wn4">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingQuantityCell" rowHeight="44" id="B0U-Qi-wn4" customClass="EditListingQuantityCell" customModule="Mooch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="438" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B0U-Qi-wn4" id="OmY-1C-WZx">
                                             <frame key="frameInset" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="kBH-jA-qj9"/>
+                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="kBH-jA-qj9">
+                                                    <connections>
+                                                        <action selector="onStepperValueDidChange" destination="B0U-Qi-wn4" eventType="valueChanged" id="XrD-Pz-fsY"/>
+                                                    </connections>
+                                                </stepper>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quantity:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wls-nB-8Iq">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="xF9-ll-QBY"/>
@@ -104,11 +108,16 @@
                                                 <constraint firstAttribute="trailing" secondItem="kBH-jA-qj9" secondAttribute="trailing" constant="15" id="pPC-5s-1nl"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="quantityCountLabel" destination="1Gz-95-3GG" id="QJr-NL-uQT"/>
+                                            <outlet property="quantityLabel" destination="wls-nB-8Iq" id="LH2-wE-e1i"/>
+                                            <outlet property="stepper" destination="kBH-jA-qj9" id="z8a-yA-6Nk"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
-                                    <outlet property="dataSource" destination="W20-ec-YxH" id="204-ga-bHe"/>
-                                    <outlet property="delegate" destination="W20-ec-YxH" id="wh0-En-dBa"/>
+                                    <outlet property="dataSource" destination="EXr-8s-3Fv" id="dI2-js-KHn"/>
+                                    <outlet property="delegate" destination="EXr-8s-3Fv" id="r9D-5V-Yrd"/>
                                 </connections>
                             </tableView>
                         </subviews>
@@ -121,10 +130,15 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="tableView" destination="mQ9-1C-1Fh" id="Vup-xJ-kMs"/>
+                        <outlet property="tableHandler" destination="EXr-8s-3Fv" id="agK-L1-MMq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KXn-id-viq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="EXr-8s-3Fv" customClass="EditListingTableHandler" customModule="Mooch" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="mQ9-1C-1Fh" id="YCc-pV-I8H"/>
+                    </connections>
+                </customObject>
             </objects>
             <point key="canvasLocation" x="188" y="65.217391304347828"/>
         </scene>

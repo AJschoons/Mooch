@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol EditListingField {
+    var fieldType: EditListingViewController.Configuration.FieldType! { get set }
+}
+
 protocol EditListingViewControllerDelegate: class {
     
     //Allows the delegate to handle dismissing this view controller at the appropriate time
@@ -16,22 +20,16 @@ protocol EditListingViewControllerDelegate: class {
 
 class EditListingViewController: MoochModalViewController {
     
-    @IBOutlet weak fileprivate var tableView: UITableView! {
-        didSet {
-            //Must set these to get cells to use autolayout and self-size themselves in the table
-            tableView.rowHeight = UITableViewAutomaticDimension
-            tableView.estimatedRowHeight = 44
-        }
-    }
-    
     //A configuration to setup the class with
     struct Configuration {
-        
         var mode: Mode
         
         var title: String
         var leftBarButtons: [BarButtonType]?
         var rightBarButtons: [BarButtonType]?
+        
+        //The fields that should be shown
+        var fields: [FieldType]
         
         //The bar buttons that can be added
         enum BarButtonType {
@@ -43,12 +41,27 @@ class EditListingViewController: MoochModalViewController {
             case creating
             case editing
         }
+        
+        enum FieldType {
+            case photo
+            case title
+            case description
+            case category
+            case price
+            case quantity
+        }
     }
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = Configuration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done])
-    static let DefaultEditingConfiguration = Configuration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done])
+    static let DefaultCreatingConfiguration = Configuration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .category, .price, .quantity])
+    static let DefaultEditingConfiguration = Configuration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .category, .price, .quantity])
+    
+    @IBOutlet var tableHandler: EditListingTableHandler! {
+        didSet {
+            tableHandler.delegate = self
+        }
+    }
     
     weak var delegate: EditListingViewControllerDelegate!
     
@@ -137,48 +150,9 @@ class EditListingViewController: MoochModalViewController {
     }
 }
 
-extension EditListingViewController: UITableViewDataSource {
+extension EditListingViewController: EditListingTableHandlerDelegate {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+    func getConfiguration() -> EditListingViewController.Configuration {
+        return configuration
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var identifier = ""
-        switch  indexPath.row {
-        case 0:
-            identifier = "PhotoCell"
-        case 5:
-            identifier = "QuantityCell"
-        default:
-            identifier = "TextfieldCell"
-        }
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        if let textfieldCell = cell as? EditListingTextfieldCell {
-            
-            var placeholder = ""
-            switch indexPath.row {
-            case 1:
-                placeholder = "Title"
-            case 2:
-                placeholder = "Description"
-            case 3:
-                placeholder = "Category"
-            case 4:
-                placeholder = "Price"
-            default:
-                break
-            }
-            
-            textfieldCell.textfield.placeholder = placeholder
-        }
-        
-        
-        return cell
-    }
-}
-
-extension EditListingViewController: UITableViewDelegate {
-    
 }

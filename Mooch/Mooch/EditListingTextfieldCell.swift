@@ -8,7 +8,12 @@
 
 import UIKit
 
-class EditListingTextfieldCell: UITableViewCell {
+class EditListingTextfieldCell: UITableViewCell, EditListingField {
 
+    static let Identifier = "EditListingTextfieldCell"
+    static let EstimatedHeight: CGFloat = 44
+    
     @IBOutlet weak var textfield: UITextField!
+    
+    var fieldType: EditListingViewController.Configuration.FieldType!
 }
