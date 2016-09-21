@@ -14,15 +14,13 @@ protocol EditListingTableHandlerDelegate: class {
 
 class EditListingTableHandler: NSObject {
     
-    var configuration: EditListingViewController.Configuration! {
-        didSet {
-            let fields = configuration.fields
-            let reversedIndex = fields.reversed().map{isTextField(forFieldType: $0)}.index(of: true)
-            if reversedIndex != nil {
-                indexOfLastTextfieldCell = fields.count - reversedIndex! - 1
-            }
-        }
-    }
+    // MARK: Public variables
+    
+    //Used to know which textfield cell should have a "done" return keyboard type instead of a "next"
+    var indexOfLastTextfieldCell: Int?
+    
+    
+    // MARK: Private variables
     
     //The spacing between cells is 14, so half that is 7
     //Used for knowing how much to offset due to keyboard so it doesn't go right under the cell
@@ -34,11 +32,8 @@ class EditListingTableHandler: NSObject {
     //Used to restore the tableView insets after the keyboard disappears
     private var originalContentInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     
-    private var indexOfLastTextfieldCell: Int?
-    
     @IBOutlet weak fileprivate var tableView: UITableView! {
         didSet {
-            
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
             tableView.estimatedRowHeight = EditListingTextfieldCell.EstimatedHeight
@@ -46,6 +41,11 @@ class EditListingTableHandler: NSObject {
     }
     
     weak var delegate: EditListingTableHandlerDelegate!
+    
+    
+    // MARK: Actions
+    
+    // MARK: Public methods
     
     //Based on https://gist.github.com/TimMedcalf/9505416
     func onKeyboardDidShow(withRect keyboardRect: CGRect, andAnimationDuration animationDuration: Double) {
@@ -67,6 +67,18 @@ class EditListingTableHandler: NSObject {
             self.tableView.scrollIndicatorInsets = self.originalContentInsets
         }
     }
+    
+    //Returns true if a field type maps to a EditListingTextFieldCell
+    func isTextField(forFieldType fieldType: EditListingViewController.Configuration.FieldType) -> Bool {
+        switch fieldType {
+        case .photo, .quantity:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    // MARK: Private methods
     
     //Returns the field type that a row is displaying
     fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> EditListingViewController.Configuration.FieldType {
@@ -135,16 +147,6 @@ class EditListingTableHandler: NSObject {
             return .numbersAndPunctuation
         default:
             return .default
-        }
-    }
-    
-    //Returns true if a field type maps to a EditListingTextFieldCell
-    fileprivate func isTextField(forFieldType fieldType: EditListingViewController.Configuration.FieldType) -> Bool {
-        switch fieldType {
-        case .photo, .quantity:
-            return false
-        default:
-            return true
         }
     }
     
