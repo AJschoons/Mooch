@@ -32,6 +32,14 @@
 		8149E7D01D87017D000F0C37 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7CF1D87017D000F0C37 /* RoundedButton.swift */; };
 		8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */; };
 		8149E7D51D871A76000F0C37 /* EditProfile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7D41D871A76000F0C37 /* EditProfile.storyboard */; };
+		814DB9C41D8C9B7E006F34E9 /* EditListing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */; };
+		814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */; };
+		814DB9C81D8F668E006F34E9 /* EditListingTextfieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9C71D8F668E006F34E9 /* EditListingTextfieldCell.swift */; };
+		814DB9CC1D905463006F34E9 /* EditListingTableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9CB1D905463006F34E9 /* EditListingTableHandler.swift */; };
+		814DB9CE1D91DE1A006F34E9 /* EditListingQuantityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9CD1D91DE1A006F34E9 /* EditListingQuantityCell.swift */; };
+		814DB9D01D91DE90006F34E9 /* EditListingPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */; };
+		814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9D11D91EB6C006F34E9 /* Protocols.swift */; };
+		814DB9D51D92479B006F34E9 /* NavigableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9D41D92479B006F34E9 /* NavigableTextField.swift */; };
 		815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */; };
 		815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */; };
 		815BCF011D7E77D80022F806 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
@@ -109,6 +117,14 @@
 		8149E7CF1D87017D000F0C37 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		8149E7D41D871A76000F0C37 /* EditProfile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditProfile.storyboard; sourceTree = "<group>"; };
+		814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditListing.storyboard; sourceTree = "<group>"; };
+		814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingViewController.swift; sourceTree = "<group>"; };
+		814DB9C71D8F668E006F34E9 /* EditListingTextfieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextfieldCell.swift; sourceTree = "<group>"; };
+		814DB9CB1D905463006F34E9 /* EditListingTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTableHandler.swift; sourceTree = "<group>"; };
+		814DB9CD1D91DE1A006F34E9 /* EditListingQuantityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingQuantityCell.swift; sourceTree = "<group>"; };
+		814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingPhotoCell.swift; sourceTree = "<group>"; };
+		814DB9D11D91EB6C006F34E9 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		814DB9D41D92479B006F34E9 /* NavigableTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigableTextField.swift; sourceTree = "<group>"; };
 		815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityVerificationViewController.swift; sourceTree = "<group>"; };
 		815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NetworkReachabilityVerificationViewController.xib; sourceTree = "<group>"; };
 		815BCF001D7E77D80022F806 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -243,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				8149E7CE1D870156000F0C37 /* Custom Elements */,
+				814DB9C21D8C9B66006F34E9 /* Edit Listing */,
 				8149E7D11D87183C000F0C37 /* Edit Profile */,
 				810A823A1D7A11780086B40F /* LaunchScreen.storyboard */,
 				8149E7B61D84B3D1000F0C37 /* Initial Loading */,
@@ -288,6 +305,7 @@
 			children = (
 				815BCF021D7E77E70022F806 /* Errors.swift */,
 				815BCF001D7E77D80022F806 /* Helpers.swift */,
+				814DB9D11D91EB6C006F34E9 /* Protocols.swift */,
 				81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */,
 			);
 			name = Utility;
@@ -380,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				8149E7CF1D87017D000F0C37 /* RoundedButton.swift */,
+				814DB9D41D92479B006F34E9 /* NavigableTextField.swift */,
 			);
 			name = "Custom Elements";
 			sourceTree = "<group>";
@@ -391,6 +410,19 @@
 				8149E7D41D871A76000F0C37 /* EditProfile.storyboard */,
 			);
 			name = "Edit Profile";
+			sourceTree = "<group>";
+		};
+		814DB9C21D8C9B66006F34E9 /* Edit Listing */ = {
+			isa = PBXGroup;
+			children = (
+				814DB9C31D8C9B7E006F34E9 /* EditListing.storyboard */,
+				814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */,
+				814DB9CD1D91DE1A006F34E9 /* EditListingQuantityCell.swift */,
+				814DB9CB1D905463006F34E9 /* EditListingTableHandler.swift */,
+				814DB9C71D8F668E006F34E9 /* EditListingTextfieldCell.swift */,
+				814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */,
+			);
+			name = "Edit Listing";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -516,6 +548,7 @@
 				8149E7C31D8609BE000F0C37 /* ListingTableViewCell.xib in Resources */,
 				810A82391D7A11780086B40F /* Assets.xcassets in Resources */,
 				815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */,
+				814DB9C41D8C9B7E006F34E9 /* EditListing.storyboard in Resources */,
 				8149E7D51D871A76000F0C37 /* EditProfile.storyboard in Resources */,
 				8149E7AF1D84977C000F0C37 /* InitialLoadingViewController.xib in Resources */,
 				8149E7CD1D8668D6000F0C37 /* LoginViewController.xib in Resources */,
@@ -683,23 +716,30 @@
 			files = (
 				8149E7BB1D84C2A7000F0C37 /* ListingsTableHandler.swift in Sources */,
 				8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */,
+				814DB9C81D8F668E006F34E9 /* EditListingTextfieldCell.swift in Sources */,
+				814DB9D01D91DE90006F34E9 /* EditListingPhotoCell.swift in Sources */,
 				815BCF011D7E77D80022F806 /* Helpers.swift in Sources */,
 				8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */,
 				8149E7B41D84B396000F0C37 /* ListingsViewController.swift in Sources */,
 				8149E7C21D8609BE000F0C37 /* ListingTableViewCell.swift in Sources */,
 				813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */,
 				8149E7BF1D85FC6C000F0C37 /* Listing.swift in Sources */,
+				814DB9CE1D91DE1A006F34E9 /* EditListingQuantityCell.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
+				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
 				8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */,
+				814DB9D51D92479B006F34E9 /* NavigableTextField.swift in Sources */,
 				815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */,
 				815BCF051D7E78290022F806 /* User.swift in Sources */,
 				810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */,
+				814DB9CC1D905463006F34E9 /* EditListingTableHandler.swift in Sources */,
 				8149E7B11D849B8F000F0C37 /* MoochModalViewController.swift in Sources */,
 				8149E7C81D865E5A000F0C37 /* ListingDetailsViewController.swift in Sources */,
 				81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
 				8149E7D01D87017D000F0C37 /* RoundedButton.swift in Sources */,
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
+				814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */,
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
 				815BCF141D805B550022F806 /* ListingTag.swift in Sources */,
 				815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */,

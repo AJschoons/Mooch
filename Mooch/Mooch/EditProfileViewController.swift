@@ -100,7 +100,6 @@ class EditProfileViewController: MoochModalViewController {
         doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onDoneAction))
         cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
         
-        
         title = configuration.title
         
         if let leftButtons = configuration.leftBarButtons {

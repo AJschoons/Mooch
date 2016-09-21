@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Edit Listing View Controller-->
+        <scene sceneID="v3Y-wl-96T">
+            <objects>
+                <viewController storyboardIdentifier="EditListingViewController" id="W20-ec-YxH" customClass="EditListingViewController" customModule="Mooch" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PMX-ls-RNd"/>
+                        <viewControllerLayoutGuide type="bottom" id="Bkd-pt-msT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9uV-xA-yfK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="363" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mQ9-1C-1Fh">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingPhotoCell" rowHeight="366" id="2Qp-7l-Qir" customClass="EditListingPhotoCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="366"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Qp-7l-Qir" id="Bdw-HP-0sQ">
+                                            <frame key="frameInset" width="375" height="366"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="apples" translatesAutoresizingMaskIntoConstraints="NO" id="85V-b9-S3R">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="85V-b9-S3R" secondAttribute="height" multiplier="1:1" id="jLi-SB-Hau"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="85V-b9-S3R" firstAttribute="top" secondItem="Bdw-HP-0sQ" secondAttribute="top" constant="14" id="4A7-IW-TfD"/>
+                                                <constraint firstItem="85V-b9-S3R" firstAttribute="leading" secondItem="Bdw-HP-0sQ" secondAttribute="leading" constant="15" id="6OF-Pt-vAl"/>
+                                                <constraint firstAttribute="bottom" secondItem="85V-b9-S3R" secondAttribute="bottom" constant="7" id="jHT-5e-nIO"/>
+                                                <constraint firstAttribute="trailing" secondItem="85V-b9-S3R" secondAttribute="trailing" constant="15" id="pEo-RD-IlO"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingTextfieldCell" rowHeight="44" id="XWl-fY-Gj2" customClass="EditListingTextfieldCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="394" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XWl-fY-Gj2" id="s3x-hw-rqm">
+                                            <frame key="frameInset" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uau-QR-q4H" customClass="NavigableTextField" customModule="Mooch" customModuleProvider="target">
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="uau-QR-q4H" secondAttribute="trailing" constant="15" id="3kT-2h-hWB"/>
+                                                <constraint firstAttribute="bottom" secondItem="uau-QR-q4H" secondAttribute="bottom" constant="7" id="3rR-ft-HhA"/>
+                                                <constraint firstItem="uau-QR-q4H" firstAttribute="top" secondItem="s3x-hw-rqm" secondAttribute="top" constant="7" id="b3y-bi-skO"/>
+                                                <constraint firstItem="uau-QR-q4H" firstAttribute="leading" secondItem="s3x-hw-rqm" secondAttribute="leading" constant="15" id="uhG-J3-RJR"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="textfield" destination="uau-QR-q4H" id="fl2-d4-tz2"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingQuantityCell" rowHeight="44" id="B0U-Qi-wn4" customClass="EditListingQuantityCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="438" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B0U-Qi-wn4" id="OmY-1C-WZx">
+                                            <frame key="frameInset" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="kBH-jA-qj9">
+                                                    <connections>
+                                                        <action selector="onStepperValueDidChange" destination="B0U-Qi-wn4" eventType="valueChanged" id="XrD-Pz-fsY"/>
+                                                    </connections>
+                                                </stepper>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quantity:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wls-nB-8Iq">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="xF9-ll-QBY"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Gz-95-3GG">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="wls-nB-8Iq" firstAttribute="leading" secondItem="OmY-1C-WZx" secondAttribute="leading" constant="15" id="4Df-eC-dd9"/>
+                                                <constraint firstItem="1Gz-95-3GG" firstAttribute="leading" secondItem="wls-nB-8Iq" secondAttribute="trailing" constant="5" id="JaY-nV-8BU"/>
+                                                <constraint firstItem="1Gz-95-3GG" firstAttribute="height" secondItem="wls-nB-8Iq" secondAttribute="height" id="Nnu-ec-cWG"/>
+                                                <constraint firstItem="kBH-jA-qj9" firstAttribute="centerY" secondItem="OmY-1C-WZx" secondAttribute="centerY" id="QCN-pO-loJ"/>
+                                                <constraint firstItem="wls-nB-8Iq" firstAttribute="centerY" secondItem="OmY-1C-WZx" secondAttribute="centerY" id="RSg-98-3Hb"/>
+                                                <constraint firstItem="1Gz-95-3GG" firstAttribute="top" secondItem="wls-nB-8Iq" secondAttribute="top" id="gWT-80-JWL"/>
+                                                <constraint firstAttribute="trailing" secondItem="kBH-jA-qj9" secondAttribute="trailing" constant="15" id="pPC-5s-1nl"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="quantityCountLabel" destination="1Gz-95-3GG" id="QJr-NL-uQT"/>
+                                            <outlet property="quantityLabel" destination="wls-nB-8Iq" id="LH2-wE-e1i"/>
+                                            <outlet property="stepper" destination="kBH-jA-qj9" id="z8a-yA-6Nk"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="EXr-8s-3Fv" id="dI2-js-KHn"/>
+                                    <outlet property="delegate" destination="EXr-8s-3Fv" id="r9D-5V-Yrd"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mQ9-1C-1Fh" firstAttribute="leading" secondItem="9uV-xA-yfK" secondAttribute="leading" id="4EO-rL-Cz0"/>
+                            <constraint firstAttribute="trailing" secondItem="mQ9-1C-1Fh" secondAttribute="trailing" id="Nfk-cA-RpH"/>
+                            <constraint firstItem="Bkd-pt-msT" firstAttribute="top" secondItem="mQ9-1C-1Fh" secondAttribute="bottom" id="UHk-Dn-bAs"/>
+                            <constraint firstItem="mQ9-1C-1Fh" firstAttribute="top" secondItem="9uV-xA-yfK" secondAttribute="top" id="kXh-Jl-NdK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableHandler" destination="EXr-8s-3Fv" id="agK-L1-MMq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KXn-id-viq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="EXr-8s-3Fv" customClass="EditListingTableHandler" customModule="Mooch" customModuleProvider="target">
+                    <connections>
+                        <outlet property="tableView" destination="mQ9-1C-1Fh" id="YCc-pV-I8H"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="188" y="65.217391304347828"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="apples" width="310" height="310"/>
+    </resources>
+</document>
