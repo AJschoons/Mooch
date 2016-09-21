@@ -98,7 +98,8 @@ class ListingsViewController: MoochViewController {
     fileprivate func pushListingDetailsViewController(withListing listing: Listing) {
         let vc = ListingDetailsViewController.instantiateFromStoryboard()
         vc.listing = listing
-        
+        vc.configuration = ListingDetailsViewController.DefaultViewingOtherUsersListingConfiguration
+
         navigationController!.pushViewController(vc, animated: true)
     }
     
