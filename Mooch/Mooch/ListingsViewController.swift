@@ -109,9 +109,6 @@ class ListingsViewController: MoochViewController {
         vc.delegate = self
         vc.modalTransitionStyle = .crossDissolve
         
-        //Needed for blurring over current view
-        vc.modalPresentationStyle = .overFullScreen
-        
         navC.present(vc, animated: true, completion: nil)
     }
     
@@ -123,8 +120,8 @@ class ListingsViewController: MoochViewController {
         vc.modalTransitionStyle = .crossDissolve
         
         //Needed for blurring over current view
-        vc.modalPresentationStyle = .overFullScreen
-        profileNavC.modalPresentationStyle = .overFullScreen
+//        vc.modalPresentationStyle = .overFullScreen
+//        profileNavC.modalPresentationStyle = .overFullScreen
         
         navC.present(profileNavC, animated: true, completion: nil)
     }

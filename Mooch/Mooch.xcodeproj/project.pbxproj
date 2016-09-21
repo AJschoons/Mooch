@@ -39,6 +39,7 @@
 		814DB9CE1D91DE1A006F34E9 /* EditListingQuantityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9CD1D91DE1A006F34E9 /* EditListingQuantityCell.swift */; };
 		814DB9D01D91DE90006F34E9 /* EditListingPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */; };
 		814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9D11D91EB6C006F34E9 /* Protocols.swift */; };
+		814DB9D51D92479B006F34E9 /* NavigableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9D41D92479B006F34E9 /* NavigableTextField.swift */; };
 		815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */; };
 		815BCEFF1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */; };
 		815BCF011D7E77D80022F806 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
@@ -123,6 +124,7 @@
 		814DB9CD1D91DE1A006F34E9 /* EditListingQuantityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingQuantityCell.swift; sourceTree = "<group>"; };
 		814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingPhotoCell.swift; sourceTree = "<group>"; };
 		814DB9D11D91EB6C006F34E9 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		814DB9D41D92479B006F34E9 /* NavigableTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigableTextField.swift; sourceTree = "<group>"; };
 		815BCEFC1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityVerificationViewController.swift; sourceTree = "<group>"; };
 		815BCEFD1D7E73860022F806 /* NetworkReachabilityVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NetworkReachabilityVerificationViewController.xib; sourceTree = "<group>"; };
 		815BCF001D7E77D80022F806 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				8149E7CF1D87017D000F0C37 /* RoundedButton.swift */,
+				814DB9D41D92479B006F34E9 /* NavigableTextField.swift */,
 			);
 			name = "Custom Elements";
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
 				8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */,
+				814DB9D51D92479B006F34E9 /* NavigableTextField.swift in Sources */,
 				815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */,
 				815BCF051D7E78290022F806 /* User.swift in Sources */,
 				810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */,

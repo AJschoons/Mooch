@@ -66,7 +66,11 @@ class EditListingViewController: MoochModalViewController {
     weak var delegate: EditListingViewControllerDelegate!
     
     //The configuration used to setup the class
-    var configuration: Configuration!
+    var configuration: Configuration! {
+        didSet {
+            tableHandler.configuration = configuration
+        }
+    }
     
     //The listing being edited
     var listing: Listing?

@@ -13,7 +13,7 @@ class EditListingTextfieldCell: UITableViewCell, EditListingField {
     static let Identifier = "EditListingTextfieldCell"
     static let EstimatedHeight: CGFloat = 44
     
-    @IBOutlet weak var textfield: UITextField!
+    @IBOutlet weak var textfield: NavigableTextField!
     
     var fieldType: EditListingViewController.Configuration.FieldType!
 }
