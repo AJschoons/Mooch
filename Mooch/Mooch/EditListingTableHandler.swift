@@ -14,6 +14,8 @@ protocol EditListingTableHandlerDelegate: class {
 
 class EditListingTableHandler: NSObject {
     
+    private let HalfTheSpacingBetweenCells: CGFloat = 7.0
+    
     @IBOutlet weak fileprivate var tableView: UITableView! {
         didSet {
             
@@ -24,6 +26,27 @@ class EditListingTableHandler: NSObject {
     }
     
     weak var delegate: EditListingTableHandlerDelegate!
+    
+    //Based on https://gist.github.com/TimMedcalf/9505416
+    func onKeyboardDidShow(withRect keyboardRect: CGRect, andAnimationDuration animationDuration: Double) {
+        let convertedKeyboardRect = tableView.convert(keyboardRect, from: nil)
+        let intersectRect = convertedKeyboardRect.intersection(tableView.bounds)
+        guard !intersectRect.isNull else { return }
+        
+        UIView.animate(withDuration: animationDuration) {
+            let inset = UIEdgeInsetsMake(0, 0, intersectRect.height + HalfTheSpacingBetweenCells, 0)
+            self.tableView.contentInset = inset
+            self.tableView.scrollIndicatorInsets = inset
+        }
+    }
+    
+    //Based on https://gist.github.com/TimMedcalf/9505416
+    func onKeyboardWillHide(withAnimationDuration animationDuration: Double) {
+        UIView.animate(withDuration: animationDuration) {
+            self.tableView.contentInset = UIEdgeInsets.zero
+            self.tableView.scrollIndicatorInsets = UIEdgeInsets.zero
+        }
+    }
     
     //Returns the field type that a row is displaying
     fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> EditListingViewController.Configuration.FieldType {

@@ -84,6 +84,7 @@ class EditListingViewController: MoochModalViewController {
     // MARK: Actions
     
     func onDoneAction() {
+        resignFirstResponder()
         let dummyListing = Listing.createDummy(fromNumber: 23)
         dismiss(animated: true) {
             self.delegate.editListingViewControllerDidFinishEditing(withListing: dummyListing)
@@ -91,6 +92,7 @@ class EditListingViewController: MoochModalViewController {
     }
     
     func onCancelAction() {
+        resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }
     
@@ -99,14 +101,37 @@ class EditListingViewController: MoochModalViewController {
     override func setup() {
         super.setup()
         
+        registerForKeyboardNotifacations()
         setupNavigationBar()
         
         updateUI()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        view.endEditing(true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        unregisterForKeyboardNotifacations()
     }
     
     override func updateUI() {
         super.updateUI()
         
+    }
+    
+    func onKeyboardDidShow(withNotification notification: Notification) {
+        guard let keyboardRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let animationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else { return }
+        tableHandler.onKeyboardDidShow(withRect: keyboardRect, andAnimationDuration: animationDuration)
+    }
+    
+    func onKeyboardWillHide(withNotification notification: Notification) {
+        guard let animationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else { return }
+        tableHandler.onKeyboardWillHide(withAnimationDuration: animationDuration)
     }
     
     static func instantiateFromStoryboard() -> EditListingViewController {
@@ -147,6 +172,15 @@ class EditListingViewController: MoochModalViewController {
         case .done:
             return doneButton
         }
+    }
+    
+    fileprivate func registerForKeyboardNotifacations() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDidShow(withNotification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillHide(withNotification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    fileprivate func unregisterForKeyboardNotifacations() {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
