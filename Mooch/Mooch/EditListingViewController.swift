@@ -22,6 +22,10 @@ class EditListingViewController: MoochModalViewController {
     
     //A configuration to setup the class with
     struct Configuration {
+        
+        //A mapping from a FieldType to a Bool that returns true if it conforms
+        typealias FieldTypeConformanceMapping = (FieldType) -> Bool
+        
         var mode: Mode
         
         var title: String
@@ -50,6 +54,12 @@ class EditListingViewController: MoochModalViewController {
             case price
             case quantity
         }
+        
+        func indexOfLastFieldType(conformingToMapping mapping: FieldTypeConformanceMapping) -> Int? {
+            let mappedFieldTypes = fields.reversed().map{mapping($0)}
+            guard let reversedIndex = mappedFieldTypes.index(of: true) else { return nil }
+            return (fields.count - 1) - reversedIndex
+        }
     }
     
     // MARK: Public variables
@@ -68,7 +78,7 @@ class EditListingViewController: MoochModalViewController {
     //The configuration used to setup the class
     var configuration: Configuration! {
         didSet {
-            tableHandler.configuration = configuration
+            tableHandler.indexOfLastTextfieldCell = configuration.indexOfLastFieldType(conformingToMapping: tableHandler.isTextField)
         }
     }
     

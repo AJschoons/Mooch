@@ -12,7 +12,7 @@ enum Strings {
 }
 
 //
-// How to markdown a view controller:
+// How to markdown a complex object:
 //
 
 // MARK: Public variables
