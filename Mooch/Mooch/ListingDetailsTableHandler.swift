@@ -10,6 +10,7 @@ import UIKit
 
 protocol ListingDetailsTableHandlerDelegate: class {
     func getConfiguration() -> ListingDetailsViewController.Configuration
+    func getListing() -> Listing
 }
 
 class ListingDetailsTableHandler: NSObject {
@@ -77,6 +78,24 @@ class ListingDetailsTableHandler: NSObject {
         return delegate.getConfiguration().fields.count
     }
     
+    fileprivate func configure(listingCell: ListingDetailsListingCell) {
+        let listing = delegate.getListing()
+        
+        listingCell.titleLabel.text = listing.title
+        listingCell.descriptionLabel.text = "This is a temporary listing description until I stop being lazy and modify the Listing models to reflect that they now have descriptions AND quantities"
+        listingCell.categoryLabel.text = listing.tag.name
+        listingCell.priceLabel.text = "Price: \(listing.priceString)"
+        listingCell.quantityLabel.text = "Quantity: 1"
+    }
+    
+    fileprivate func configure(actionCell: ListingDetailsActionCell, forFieldType fieldType: FieldType) {
+        actionCell.fieldType = fieldType
+        actionCell.delegate = self
+        
+        let title = actionString(forFieldType: fieldType)
+        actionCell.actionButton.setTitle(title, for: .normal)
+    }
+    
     //Returns a string for a button's text corresponding to the field type
     fileprivate func actionString(forFieldType fieldType: FieldType) -> String {
         switch fieldType {
@@ -108,8 +127,11 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
         let identifier = cellIdentifer(forCellType: cellTypeForRow)
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
+        if let listingCell = cell as? ListingDetailsListingCell {
+            configure(listingCell: listingCell)
+        }
         if let actionCell = cell as? ListingDetailsActionCell {
-            actionCell.textLabel?.text = actionString(forFieldType: fieldTypeForRow)
+            configure(actionCell: actionCell, forFieldType: fieldTypeForRow)
         }
         
         return cell
@@ -118,4 +140,11 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
 
 extension ListingDetailsTableHandler: UITableViewDelegate {
     
+}
+
+extension ListingDetailsTableHandler: ListingDetailsActionCellDelegate {
+    
+    func onActionButton(forFieldType fieldType: ListingDetailsViewController.Configuration.FieldType) {
+        print("receiver button action for field type: \(fieldType)")
+    }
 }

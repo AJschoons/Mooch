@@ -96,4 +96,8 @@ extension ListingDetailsViewController: ListingDetailsTableHandlerDelegate {
     func getConfiguration() -> ListingDetailsViewController.Configuration {
         return configuration
     }
+    
+    func getListing() -> Listing {
+        return listing
+    }
 }
