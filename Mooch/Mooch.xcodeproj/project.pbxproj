@@ -13,6 +13,8 @@
 		810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 810A823A1D7A11780086B40F /* LaunchScreen.storyboard */; };
 		810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A827F1D7E3EDE0086B40F /* MoochViewController.swift */; };
 		810A82831D7E5DA40086B40F /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
+		8110259E1D94C45A00C3931C /* MoochAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259C1D94C45A00C3931C /* MoochAPI.swift */; };
+		8110259F1D94C45A00C3931C /* MoochAPIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */; };
 		813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F650D1D87A18100DEECF0 /* ProfileViewController.swift */; };
 		813F65101D87A19400DEECF0 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 813F650F1D87A19400DEECF0 /* Profile.storyboard */; };
 		8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */; };
@@ -102,6 +104,8 @@
 		810A82531D7A11780086B40F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		810A827F1D7E3EDE0086B40F /* MoochViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochViewController.swift; sourceTree = "<group>"; };
 		810A82821D7E5DA40086B40F /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		8110259C1D94C45A00C3931C /* MoochAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPI.swift; sourceTree = "<group>"; };
+		8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPIRouter.swift; sourceTree = "<group>"; };
 		813F650D1D87A18100DEECF0 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		813F650F1D87A19400DEECF0 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialLoadingViewController.swift; sourceTree = "<group>"; };
@@ -304,6 +308,8 @@
 		810A82771D7D23A60086B40F /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				8110259C1D94C45A00C3931C /* MoochAPI.swift */,
+				8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -731,6 +737,7 @@
 				814DB9D71D933B89006F34E9 /* ListingDetailsTableHandler.swift in Sources */,
 				8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */,
 				814DB9C81D8F668E006F34E9 /* EditListingTextfieldCell.swift in Sources */,
+				8110259E1D94C45A00C3931C /* MoochAPI.swift in Sources */,
 				814DB9D01D91DE90006F34E9 /* EditListingPhotoCell.swift in Sources */,
 				815BCF011D7E77D80022F806 /* Helpers.swift in Sources */,
 				8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */,
@@ -745,6 +752,7 @@
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
 				8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */,
 				814DB9D51D92479B006F34E9 /* NavigableTextField.swift in Sources */,
+				8110259F1D94C45A00C3931C /* MoochAPIRouter.swift in Sources */,
 				815BCEFE1D7E73860022F806 /* NetworkReachabilityVerificationViewController.swift in Sources */,
 				815BCF051D7E78290022F806 /* User.swift in Sources */,
 				810A82801D7E3EDE0086B40F /* MoochViewController.swift in Sources */,
