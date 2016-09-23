@@ -12,42 +12,39 @@ import Foundation
 
 class MoochAPI {
     
-    typealias MoochAPICompletionBlock = (JSON?, NSError?) -> ()
+    typealias CompletionClosure = (JSON?, Error?) -> ()
     
     static let NoResponseValueForJSONErrorCode = 7836
     static let CouldNotConvertToSwiftyJSONErrorCode = 8263
     
-    //Allows authorized requests to be performed
-    static func setAuthorizationCredentials(withUserId userId: Int, andPassword password: String) {
-        MoochAPIRouter.setAuthorizationCredentials(withUserId: userId, andPassword: password)
-    }
+//    //Allows authorized requests to be performed
+//    static func setAuthorizationCredentials(withUserId userId: Int, andPassword password: String) {
+//        MoochAPIRouter.setAuthorizationCredentials(withUserId: userId, andPassword: password)
+//    }
+//    
+//    //Clears the authorization credentials for when a user logs out
+//    static func clearAuthorizationCredentials() {
+//        MoochAPIRouter.clearAuthorizationCredentials()
+//    }
     
-    //Clears the authorization credentials for when a user logs out
-    static func clearAuthorizationCredentials() {
-        MoochAPIRouter.clearAuthorizationCredentials()
-    }
-    
-    static func GETUsers(_ completion: @escaping ([User]?) -> Void) {
-        perform(MoochAPIRouter.getUsers) { json, error in
+    static func GETUser(withId id: Int, completion: @escaping (User?, Error?) -> Void) {
+        perform(MoochAPIRouter.getUser(withId: id)) { json, error in
             guard let json = json else {
-                completion(nil)
+                completion(nil, error)
                 return
             }
             
-            let usersArray = json.arrayValue
-            var users = [User]()
-            for userJSON in usersArray {
-                do {
-                    users.append(try User(json: userJSON))
-                } catch {
-                    print("couldn't create user with JSON: \(userJSON)")
-                }
+            do {
+                let user = try User(json: json)
+                completion(user, nil)
+            } catch {
+                print("couldn't create user with JSON: \(json)")
+                completion(nil, InitializationError.insufficientJSONInformationForInitialization)
             }
-            completion(users)
         }
     }
     
-    fileprivate static func perform(_ request: URLRequestConvertible, withCompletion completion: MoochAPICompletionBlock) {
+    fileprivate static func perform(_ request: URLRequestConvertible, withCompletion completion: @escaping CompletionClosure) {
         Alamofire.request(request).validate().responseJSON { response in
             guard response.result.isSuccess else {
                 completion(nil, response.result.error)

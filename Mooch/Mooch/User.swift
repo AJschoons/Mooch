@@ -43,12 +43,14 @@ struct User {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, let name = json[JSONMapping.Name.rawValue].string, let address = json[JSONMapping.Address.rawValue].string, let email = json[JSONMapping.Email.rawValue].string, let phone = json[JSONMapping.Phone.rawValue].string , json[JSONMapping.Community.rawValue].exists() else {
+        guard let id = json[JSONMapping.Id.rawValue].int, let name = json[JSONMapping.Name.rawValue].string, let email = json[JSONMapping.Email.rawValue].string, json[JSONMapping.Community.rawValue].exists() else {
             throw InitializationError.insufficientJSONInformationForInitialization
         }
         
         let rating = json[JSONMapping.Rating.rawValue].float
         
+        let address = json[JSONMapping.Address.rawValue].string
+        let phone = json[JSONMapping.Phone.rawValue].string
         let contactInformation = ContactInformation(address: address, email: email, phone: phone)
         let community = try Community(json: JSON(json["community"].object))
         
