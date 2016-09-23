@@ -11,8 +11,8 @@
 struct ListingTag {
     
     enum JSONMapping: String {
-        case Id = "id"
-        case Name = "name"
+        case id = "id"
+        case name = "name"
     }
     
     let id: Int
@@ -26,7 +26,7 @@ struct ListingTag {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, let name = json[JSONMapping.Name.rawValue].string else {
+        guard let id = json[JSONMapping.id.rawValue].int, let name = json[JSONMapping.name.rawValue].string else {
             throw InitializationError.insufficientJSONInformationForInitialization
         }
         

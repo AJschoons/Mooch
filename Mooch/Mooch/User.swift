@@ -11,13 +11,13 @@
 struct User {
     
     enum JSONMapping: String {
-        case Id = "id"
-        case Name = "name"
-        case Address = "address"
-        case Email = "email"
-        case Phone = "phone"
-        case Rating = "rating"
-        case Community = "community"
+        case id = "id"
+        case name = "name"
+        case address = "address"
+        case email = "email"
+        case phone = "phone"
+        case rating = "rating"
+        case community = "community"
     }
     
     struct ContactInformation {
@@ -43,14 +43,14 @@ struct User {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, let name = json[JSONMapping.Name.rawValue].string, let email = json[JSONMapping.Email.rawValue].string, json[JSONMapping.Community.rawValue].exists() else {
+        guard let id = json[JSONMapping.id.rawValue].int, let name = json[JSONMapping.name.rawValue].string, let email = json[JSONMapping.email.rawValue].string, json[JSONMapping.community.rawValue].exists() else {
             throw InitializationError.insufficientJSONInformationForInitialization
         }
         
-        let rating = json[JSONMapping.Rating.rawValue].float
+        let rating = json[JSONMapping.rating.rawValue].float
         
-        let address = json[JSONMapping.Address.rawValue].string
-        let phone = json[JSONMapping.Phone.rawValue].string
+        let address = json[JSONMapping.address.rawValue].string
+        let phone = json[JSONMapping.phone.rawValue].string
         let contactInformation = ContactInformation(address: address, email: email, phone: phone)
         let community = try Community(json: JSON(json["community"].object))
         

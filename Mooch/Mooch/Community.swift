@@ -11,10 +11,10 @@
 struct Community {
     
     enum JSONMapping: String {
-        case Id = "id"
-        case Address = "address"
-        case Name = "name"
-        case PictureURL = "picture"
+        case id = "id"
+        case address = "address"
+        case name = "name"
+        case pictureURL = "picture"
     }
     
     let id: Int
@@ -32,7 +32,7 @@ struct Community {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, let address = json[JSONMapping.Address.rawValue].string, let name = json[JSONMapping.Name.rawValue].string, let pictureURL = json[JSONMapping.PictureURL.rawValue].string else {
+        guard let id = json[JSONMapping.id.rawValue].int, let address = json[JSONMapping.address.rawValue].string, let name = json[JSONMapping.name.rawValue].string, let pictureURL = json[JSONMapping.pictureURL.rawValue].string else {
             throw InitializationError.insufficientJSONInformationForInitialization
         }
         
