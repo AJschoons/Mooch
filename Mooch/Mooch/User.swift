@@ -16,7 +16,8 @@ struct User {
         case address = "address"
         case email = "email"
         case phone = "phone"
-        case rating = "rating"
+        case currentRating = "current_rating"
+        case ratingCount = "rating_count"
         case community = "community"
     }
     
@@ -29,12 +30,13 @@ struct User {
     let id: Int
     var name: String
     var contactInformation: ContactInformation
-    var rating: Float?
+    var currentRating: Float?
+    var ratingCount: Int?
     
     var community: Community
     
     //Designated initializer
-    init(id: Int, name: String, contactInformation: ContactInformation, rating: Float?, community: Community) {
+    init(id: Int, name: String, contactInformation: ContactInformation, currentRating: Float?, ratingCount: Int?, community: Community) {
         self.id = id
         self.name = name
         self.contactInformation = contactInformation
@@ -47,21 +49,23 @@ struct User {
             throw InitializationError.insufficientJSONInformationForInitialization
         }
         
-        let rating = json[JSONMapping.rating.rawValue].float
+        let currentRating = json[JSONMapping.currentRating.rawValue].float
+        let ratingCount = json[JSONMapping.ratingCount.rawValue].int
         
         let address = json[JSONMapping.address.rawValue].string
         let phone = json[JSONMapping.phone.rawValue].string
         let contactInformation = ContactInformation(address: address, email: email, phone: phone)
         let community = try Community(json: JSON(json["community"].object))
         
-        self.init(id: id, name: name, contactInformation: contactInformation, rating: rating, community: community)
+        self.init(id: id, name: name, contactInformation: contactInformation, currentRating: currentRating, ratingCount: ratingCount, community: community)
     }
     
     static func createDummy(fromNumber i: Int) -> User {
         let phoneString = "555-555-5555"
-        let rating: Float = 3.5 * 1.2164
+        let currentRating: Float = 3.5 * 1.2164
+        let ratingCount = 23
         let contactInformation = ContactInformation(address: "Apt #\(i)", email: "\(i)@example.com", phone: phoneString)
         let community = Community.createDummy(fromNumber: i)
-        return User(id: i, name: "User \(i)", contactInformation: contactInformation, rating: rating, community: community)
+        return User(id: i, name: "User \(i)", contactInformation: contactInformation, currentRating: currentRating, ratingCount: ratingCount, community: community)
     }
 }
