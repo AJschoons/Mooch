@@ -11,3 +11,8 @@ import Foundation
 enum InitializationError: Error {
     case insufficientJSONInformationForInitialization
 }
+
+enum MoochAPIError: Error {
+    case noResponseValueForJSONMapping      //MoochAPI response did not have a value to convert to JSON
+    case swiftyJSONConversionFailed         //MoochAPI response could not be converted to SwiftyJSON
+}

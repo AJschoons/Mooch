@@ -14,9 +14,6 @@ class MoochAPI {
     
     typealias CompletionClosure = (JSON?, Error?) -> ()
     
-    static let NoResponseValueForJSONErrorCode = 7836
-    static let CouldNotConvertToSwiftyJSONErrorCode = 8263
-    
 //    //Allows authorized requests to be performed
 //    static func setAuthorizationCredentials(withUserId userId: Int, andPassword password: String) {
 //        MoochAPIRouter.setAuthorizationCredentials(withUserId: userId, andPassword: password)
@@ -44,6 +41,23 @@ class MoochAPI {
         }
     }
     
+    static func GETListings(completion: @escaping ([Listing]?, Error?) -> Void) {
+        perform(MoochAPIRouter.getListings) { json, error in
+            guard let listingsJSON = json?.array else {
+                completion(nil, error)
+                return
+            }
+            
+            do {
+                let listings = try listingsJSON.map({try Listing(json: $0)})
+                completion(listings, nil)
+            } catch {
+                print("couldn't create listings with JSON: \(json)")
+                completion(nil, InitializationError.insufficientJSONInformationForInitialization)
+            }
+        }
+    }
+    
     fileprivate static func perform(_ request: URLRequestConvertible, withCompletion completion: @escaping CompletionClosure) {
         Alamofire.request(request).validate().responseJSON { response in
             guard response.result.isSuccess else {
@@ -52,13 +66,13 @@ class MoochAPI {
             }
             
             guard let responseResultValue = response.result.value else {
-                completion(nil, NSError(domain: "MoochAPI response did not have a value to convert to JSON", code: MoochAPI.NoResponseValueForJSONErrorCode, userInfo: nil))
+                completion(nil, MoochAPIError.noResponseValueForJSONMapping)
                 return
             }
             
             let responseJSON = JSON(responseResultValue)
             guard responseJSON.error == nil else {
-                completion(nil, NSError(domain: "MoochAPI response could not be converted to SwiftyJSON", code: MoochAPI.CouldNotConvertToSwiftyJSONErrorCode, userInfo: nil))
+                completion(nil, MoochAPIError.swiftyJSONConversionFailed)
                 return
             }
             

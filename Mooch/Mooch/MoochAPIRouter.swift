@@ -18,18 +18,15 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     static fileprivate let NoParametersDictionary = [String : AnyObject]()
     
-    //Unauthorized
-    case getUsers
-    
-    //Authorized
+    case getListings
     case getUser(withId: Int)
     
     //Returns the URL request for the route
     func asURLRequest() throws -> URLRequest {
         let result: (path: String, method: Alamofire.HTTPMethod, parameters: [String: AnyObject]?, requiresAuthorization: Bool) = {
             switch self {
-            case .getUsers:
-                return ("/users", .get, nil, false)
+            case .getListings:
+                return ("/listings", .get, nil, false)
             case .getUser(let userId):
                 return ("/users/\(userId)", .get, nil, false)
             }
