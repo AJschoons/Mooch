@@ -119,7 +119,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="categoryLabel" destination="sLj-be-hvL" id="Om6-m3-eOT"/>
-                                            <outlet property="descriptionLabel" destination="3tn-9A-jgm" id="shJ-3Z-5f8"/>
+                                            <outlet property="descriptionLabel" destination="3tn-9A-jgm" id="LQP-Do-KV0"/>
                                             <outlet property="photoImageView" destination="0lW-fP-Hym" id="39i-Ce-zxd"/>
                                             <outlet property="priceLabel" destination="oSj-dl-GzT" id="17y-XY-QhE"/>
                                             <outlet property="quantityLabel" destination="gy6-ex-n8h" id="Rqj-93-xqL"/>
