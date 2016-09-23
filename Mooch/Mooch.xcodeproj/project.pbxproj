@@ -15,6 +15,9 @@
 		810A82831D7E5DA40086B40F /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
 		8110259E1D94C45A00C3931C /* MoochAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259C1D94C45A00C3931C /* MoochAPI.swift */; };
 		8110259F1D94C45A00C3931C /* MoochAPIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */; };
+		811025A11D94D73B00C3931C /* MoochAPIRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811025A01D94D73B00C3931C /* MoochAPIRouterTests.swift */; };
+		811025A21D94D76500C3931C /* MoochAPIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */; };
+		811025A31D94D76800C3931C /* MoochAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259C1D94C45A00C3931C /* MoochAPI.swift */; };
 		813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F650D1D87A18100DEECF0 /* ProfileViewController.swift */; };
 		813F65101D87A19400DEECF0 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 813F650F1D87A19400DEECF0 /* Profile.storyboard */; };
 		8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */; };
@@ -106,6 +109,7 @@
 		810A82821D7E5DA40086B40F /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		8110259C1D94C45A00C3931C /* MoochAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPI.swift; sourceTree = "<group>"; };
 		8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPIRouter.swift; sourceTree = "<group>"; };
+		811025A01D94D73B00C3931C /* MoochAPIRouterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPIRouterTests.swift; sourceTree = "<group>"; };
 		813F650D1D87A18100DEECF0 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		813F650F1D87A19400DEECF0 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialLoadingViewController.swift; sourceTree = "<group>"; };
@@ -251,9 +255,10 @@
 			children = (
 				815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */,
 				815BCF171D806D260022F806 /* ListingTagTests.swift */,
-				815BCF1B1D8070B80022F806 /* LocalUserTests.swift */,
-				815BCF0D1D7E83160022F806 /* UserTests.swift */,
 				B38E8B1C1D8C7678002A9439 /* ListingTest.swift */,
+				815BCF1B1D8070B80022F806 /* LocalUserTests.swift */,
+				811025A01D94D73B00C3931C /* MoochAPIRouterTests.swift */,
+				815BCF0D1D7E83160022F806 /* UserTests.swift */,
 				810A82481D7A11780086B40F /* Info.plist */,
 			);
 			path = MoochTests;
@@ -777,6 +782,7 @@
 			files = (
 				815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */,
 				815BCF181D806D260022F806 /* ListingTagTests.swift in Sources */,
+				811025A11D94D73B00C3931C /* MoochAPIRouterTests.swift in Sources */,
 				B38E8B1D1D8C7678002A9439 /* ListingTest.swift in Sources */,
 				815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */,
 				B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */,
@@ -784,8 +790,10 @@
 				815BCF1A1D806F990022F806 /* ListingTag.swift in Sources */,
 				815BCF081D7E7F070022F806 /* Community.swift in Sources */,
 				815BCF0E1D7E83160022F806 /* UserTests.swift in Sources */,
+				811025A31D94D76800C3931C /* MoochAPI.swift in Sources */,
 				815BCF191D806F970022F806 /* LocalUser.swift in Sources */,
 				815BCF091D7E7F0B0022F806 /* User.swift in Sources */,
+				811025A21D94D76500C3931C /* MoochAPIRouter.swift in Sources */,
 				815BCF0B1D7E7F5C0022F806 /* CommunityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

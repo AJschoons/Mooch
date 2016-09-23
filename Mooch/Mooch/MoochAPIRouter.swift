@@ -11,7 +11,7 @@ import Alamofire
 
 //Class that maps an API route to a URLRequest
 enum MoochAPIRouter: URLRequestConvertible {
-    static fileprivate let baseURLString = "https://mooch-rails-api.appspot.com/api/v1"
+    static let baseURLString = "https://mooch-rails-api.appspot.com/api/v1"
     
 //    static fileprivate var userId: Int?
 //    static fileprivate var password: String?
