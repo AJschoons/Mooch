@@ -83,7 +83,7 @@ class ListingDetailsTableHandler: NSObject {
         
         listingCell.titleLabel.text = listing.title
         listingCell.descriptionLabel.text = listing.description
-        listingCell.categoryLabel.text = listing.tags.count > 0 ? listing.tags[0] : "No Tags"
+        listingCell.categoryLabel.text = listing.tags.count > 0 ? listing.tags[0].name : "No Tags"
         listingCell.priceLabel.text = "Price: \(listing.priceString)"
         listingCell.quantityLabel.text = "Quantity: 1"
     }

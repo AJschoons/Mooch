@@ -136,7 +136,7 @@ class ListingsViewController: MoochViewController {
     }
     
     fileprivate func presentListingCreatedAlert(forListing listing: Listing) {
-        let alert = UIAlertController(title: "Listing Created", message: "Your listing with the title \"\(listing.title)\" is now visible to all users in the \"\(listing.community.name)\" community", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Listing Created", message: "Your listing with the title \"\(listing.title)\" is now visible to all users in the \"\(listing.community!.name)\" community", preferredStyle: .alert)
         let action = UIAlertAction(title: "Keep Mooching", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)

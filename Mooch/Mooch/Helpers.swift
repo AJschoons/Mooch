@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+private let apiDateFormatter: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    return dateFormatter
+}()
+
+func date(fromAPITimespamp apiTimestamp: String) -> Date {
+    return apiDateFormatter.date(from: apiTimestamp)!
+}
