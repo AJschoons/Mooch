@@ -13,7 +13,7 @@ struct Listing {
     enum JSONMapping: String {
         case id = "id"
         case title = "title"
-        case description = "description"
+        case description = "detail"
         case price = "price"
         case isFree = "free"
         case isAvailable = "available"

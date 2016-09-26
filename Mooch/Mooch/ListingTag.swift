@@ -6,8 +6,6 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-
-
 struct ListingTag {
     
     enum JSONMapping: String {
