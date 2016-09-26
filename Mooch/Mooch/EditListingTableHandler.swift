@@ -103,7 +103,7 @@ class EditListingTableHandler: NSObject {
         
         cell.textfield.placeholder = placeholderText(forTextFieldFieldType: fieldType)
         cell.textfield.keyboardType = keyboardType(forTextFieldFieldType: fieldType)
-        cell.textfield.delegate = self
+        cell.textfield.fieldType = fieldType
         
         //Make the last cell have done key instead of next
         var returnKeyType: UIReturnKeyType!
@@ -126,18 +126,7 @@ class EditListingTableHandler: NSObject {
     
     //Returns the placeholder text for fieldTypes that are used in the EditListingTextField cells
     fileprivate func placeholderText(forTextFieldFieldType textfieldFieldType: EditListingViewController.Configuration.FieldType) -> String {
-        switch textfieldFieldType {
-        case .title:
-            return "Title"
-        case .description:
-            return "Description"
-        case .category:
-            return "Tags"
-        case .price:
-            return "Price"
-        default:
-            return ""
-        }
+        return delegate.getConfiguration().textDescription(forFieldType: textfieldFieldType)
     }
     
     //Returns the placeholder text for fieldTypes that are used in the EditListingTextField cells
@@ -181,20 +170,4 @@ extension EditListingTableHandler: UITableViewDataSource {
 
 extension EditListingTableHandler: UITableViewDelegate {
     
-}
-
-extension EditListingTableHandler: UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let navigableTextField = textField as? NavigableTextField {
-            //Bring the keyboard to the next textfield if it exists, else hide it
-            if let nextTextField = navigableTextField.nextNavigableTextField {
-                nextTextField.becomeFirstResponder()
-            } else {
-                navigableTextField.resignFirstResponder()
-            }
-        }
-        
-        return true
-    }
 }

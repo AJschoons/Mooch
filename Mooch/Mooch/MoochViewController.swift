@@ -92,6 +92,13 @@ class MoochViewController: UIViewController {
         present(navController, animated: true, completion: nil)
     }
     
+    func presentSingleActionAlert(title: String, message: String, actionTitle: String, handler: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: actionTitle, style: .default, handler: handler)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     // MARK: Private methods
     

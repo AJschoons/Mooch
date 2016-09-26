@@ -55,10 +55,13 @@
                                             <frame key="frameInset" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uau-QR-q4H" customClass="NavigableTextField" customModule="Mooch" customModuleProvider="target">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uau-QR-q4H" customClass="EditListingTextfield" customModule="Mooch" customModuleProvider="target">
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="vue-bV-IPN" id="cbd-Gp-b5m"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -131,6 +134,7 @@
                     </view>
                     <connections>
                         <outlet property="tableHandler" destination="EXr-8s-3Fv" id="agK-L1-MMq"/>
+                        <outlet property="textfieldHandler" destination="vue-bV-IPN" id="qKc-2V-3IE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KXn-id-viq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -139,6 +143,7 @@
                         <outlet property="tableView" destination="mQ9-1C-1Fh" id="YCc-pV-I8H"/>
                     </connections>
                 </customObject>
+                <customObject id="vue-bV-IPN" customClass="EditListingTextfieldHandler" customModule="Mooch" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="188" y="65.217391304347828"/>
         </scene>

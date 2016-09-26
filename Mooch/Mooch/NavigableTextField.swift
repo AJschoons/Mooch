@@ -11,6 +11,5 @@ import UIKit
 //Textfield that can be used to jump to the next field when pressing return on the keyboard
 class NavigableTextField: UITextField {
 
-    var row: Int!
     weak var nextNavigableTextField: NavigableTextField?
 }
