@@ -44,7 +44,7 @@ extension ListingsTableHandler: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: ListingTableViewCell.Identifier, for: indexPath) as! ListingTableViewCell
         cell.titleLabel.text = listing.title
-        cell.tagLabel.text = listing.tag.name
+        cell.tagLabel.text = listing.tags.count > 0 ? listing.tags[0].name : "No Tags"
         cell.priceLabel.text = listing.priceString
         cell.userLabel.text = "by \(listing.owner.name)"
         

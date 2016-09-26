@@ -34,9 +34,9 @@ class MoochAPI {
             do {
                 let user = try User(json: json)
                 completion(user, nil)
-            } catch {
+            } catch let error {
                 print("couldn't create user with JSON: \(json)")
-                completion(nil, InitializationError.insufficientJSONInformationForInitialization)
+                completion(nil, error)
             }
         }
     }
@@ -51,9 +51,9 @@ class MoochAPI {
             do {
                 let listings = try listingsJSON.map({try Listing(json: $0)})
                 completion(listings, nil)
-            } catch {
+            } catch let error {
                 print("couldn't create listings with JSON: \(json)")
-                completion(nil, InitializationError.insufficientJSONInformationForInitialization)
+                completion(nil, error)
             }
         }
     }

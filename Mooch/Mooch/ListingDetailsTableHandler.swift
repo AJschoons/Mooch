@@ -82,8 +82,8 @@ class ListingDetailsTableHandler: NSObject {
         let listing = delegate.getListing()
         
         listingCell.titleLabel.text = listing.title
-        listingCell.descriptionLabel.text = "This is a temporary listing description until I stop being lazy and modify the Listing models to reflect that they now have descriptions AND quantities"
-        listingCell.categoryLabel.text = listing.tag.name
+        listingCell.descriptionLabel.text = listing.description
+        listingCell.categoryLabel.text = listing.tags.count > 0 ? listing.tags[0].name : "No Tags"
         listingCell.priceLabel.text = "Price: \(listing.priceString)"
         listingCell.quantityLabel.text = "Quantity: 1"
     }

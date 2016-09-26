@@ -6,62 +6,90 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-
+import Foundation
 
 struct Listing {
     
     enum JSONMapping: String {
-        case Id = "id"
-        case Title = "title"
-        case Price = "price"
-        case IsAvailable = "is_available"
-        case Owner = "owner"
-        case Community = "community"
-        case Tag = "tag"
+        case id = "id"
+        case title = "title"
+        case description = "detail"
+        case price = "price"
+        case isFree = "free"
+        case isAvailable = "available"
+        case createdAt = "created_at"
+        case modifiedAt = "modified_at"
+        case owner = "user"
+        case tags = "tags"
+        case community = "community"
     }
     
     let id: Int
     var title: String
+    var description: String
     var price: Float
+    var isFree: Bool
     var isAvailable: Bool
-    
+    var createdAt: Date
+    var modifiedAt: Date
     let owner: User
-    var community: Community
-    var tag: ListingTag
+    var tags: [ListingTag]
+    
+    //Optional variables
+    var community: Community?
     
     var priceString: String {
         return "$" + String(format: "%.2f", price)
     }
     
     //Designated initializer
-    init(id: Int, title: String, price: Float, isAvailable: Bool, owner: User, community: Community, tag: ListingTag) {
+    init(id: Int, title: String, description: String, price: Float, isFree: Bool, isAvailable: Bool, createdAt: Date, modifiedAt: Date, owner: User, tags: [ListingTag], community: Community?) {
         self.id = id
         self.title = title
+        self.description = description
         self.price = price
-        self.owner = owner
-        self.community = community
-        self.tag = tag
+        self.isFree = isFree
         self.isAvailable = isAvailable
+        self.createdAt = createdAt
+        self.modifiedAt = modifiedAt
+        self.owner = owner
+        self.tags = tags
+        
+        self.community = community
     }
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.Id.rawValue].int, let title = json[JSONMapping.Title.rawValue].string, let price = json[JSONMapping.Price.rawValue].float, let isAvailable = json[JSONMapping.IsAvailable.rawValue].bool , json[JSONMapping.Owner.rawValue].exists() && json[JSONMapping.Community.rawValue].exists() && json[JSONMapping.Tag.rawValue].exists() else {
+        guard let id = json[JSONMapping.id.rawValue].int, let title = json[JSONMapping.title.rawValue].string, let description = json[JSONMapping.description.rawValue].string, let price = json[JSONMapping.price.rawValue].float, let isFree = json[JSONMapping.isFree.rawValue].bool, let isAvailable = json[JSONMapping.isAvailable.rawValue].bool, let createdAtString = json[JSONMapping.createdAt.rawValue].string, let modifiedAtString = json[JSONMapping.createdAt.rawValue].string, json[JSONMapping.owner.rawValue].exists() else {
             throw InitializationError.insufficientJSONInformationForInitialization
         }
         
-        let owner = try User(json: JSON(json[JSONMapping.Owner.rawValue].object))
-        let community = try Community(json: JSON(json[JSONMapping.Community.rawValue].object))
-        let tag = try ListingTag(json: JSON(json[JSONMapping.Tag.rawValue].object))
+        let createdAt = date(fromAPITimespamp: createdAtString)
+        let modifiedAt = date(fromAPITimespamp: modifiedAtString)
         
-        self.init(id: id, title: title, price: price, isAvailable: isAvailable, owner: owner, community: community, tag: tag)
+        let owner = try User(json: JSON(json[JSONMapping.owner.rawValue].object))
+        
+        var tags = [ListingTag]()
+        if json[JSONMapping.tags.rawValue].exists() {
+            let tagsArray = json[JSONMapping.tags.rawValue].arrayValue
+            tags = try tagsArray.map({try ListingTag(json: $0)})
+        }
+        
+        var community: Community?
+        if json[JSONMapping.community.rawValue].exists() {
+            community = try Community(json: JSON(json[JSONMapping.community.rawValue].object))
+        }
+        
+        self.init(id: id, title: title, description: description, price: price, isFree: isFree, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, tags: tags, community: community)
     }
     
     static func createDummy(fromNumber i: Int) -> Listing {
+        let description = "This is some text that describes what the listing is but that will hopefully be more useful than this decription specifically"
         let price = Float(i % 100) * 1.68723
         let owner = User.createDummy(fromNumber: i)
+        let tags = [ListingTag(id: i*312, name: "DummyTag1", count: 12), ListingTag(id: i*312+1, name: "DummyTag2", count: 11)]
         let community = Community.createDummy(fromNumber: i)
-        let tag = ListingTag.createDummy(fromNumber: i)
-        return Listing(id: i, title: "Listing \(i)", price: price, isAvailable: true, owner: owner, community: community, tag: tag)
+        
+        return Listing(id: i, title: "Listing \(i)", description: description, price: price, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: owner, tags: tags, community: community)
     }
 }
