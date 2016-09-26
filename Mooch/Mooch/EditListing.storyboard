@@ -134,7 +134,7 @@
                     </view>
                     <connections>
                         <outlet property="tableHandler" destination="EXr-8s-3Fv" id="agK-L1-MMq"/>
-                        <outlet property="textfieldHandler" destination="vue-bV-IPN" id="qKc-2V-3IE"/>
+                        <outlet property="textHandler" destination="vue-bV-IPN" id="hxI-df-tbS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KXn-id-viq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -143,7 +143,7 @@
                         <outlet property="tableView" destination="mQ9-1C-1Fh" id="YCc-pV-I8H"/>
                     </connections>
                 </customObject>
-                <customObject id="vue-bV-IPN" customClass="EditListingTextfieldHandler" customModule="Mooch" customModuleProvider="target"/>
+                <customObject id="vue-bV-IPN" customClass="EditListingTextHandler" customModule="Mooch" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="188" y="65.217391304347828"/>
         </scene>

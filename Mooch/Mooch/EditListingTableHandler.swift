@@ -8,8 +8,8 @@
 
 import UIKit
 
-protocol EditListingTableHandlerDelegate: class {
-    func getConfiguration() -> EditListingViewController.Configuration
+protocol EditListingTableHandlerDelegate: class, EditListingQuantityCellDelegate {
+    func getConfiguration() -> EditListingConfiguration
 }
 
 class EditListingTableHandler: NSObject {
@@ -69,7 +69,7 @@ class EditListingTableHandler: NSObject {
     }
     
     //Returns true if a field type maps to a EditListingTextFieldCell
-    func isTextField(forFieldType fieldType: EditListingViewController.Configuration.FieldType) -> Bool {
+    func isTextField(forFieldType fieldType: EditListingConfiguration.FieldType) -> Bool {
         switch fieldType {
         case .photo, .quantity:
             return false
@@ -81,12 +81,12 @@ class EditListingTableHandler: NSObject {
     // MARK: Private methods
     
     //Returns the field type that a row is displaying
-    fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> EditListingViewController.Configuration.FieldType {
+    fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> EditListingConfiguration.FieldType {
         return delegate!.getConfiguration().fields[indexPath.row]
     }
     
     //Returns the identifier string for
-    fileprivate func cellIdentifer(forFieldType fieldType: EditListingViewController.Configuration.FieldType) -> String {
+    fileprivate func cellIdentifer(forFieldType fieldType: EditListingConfiguration.FieldType) -> String {
         
         switch fieldType {
         case .photo:
@@ -98,8 +98,14 @@ class EditListingTableHandler: NSObject {
         }
     }
     
+    //Configures an EditListingQuantityCell
+    fileprivate func configure(editListingQuantityCell cell: EditListingQuantityCell) {
+        cell.delegate = delegate
+    }
+
+    
     //Configures an EditListingTextfieldCell based on the field type
-    fileprivate func configure(editListingTextfieldCell cell: EditListingTextfieldCell, withFieldType fieldType: EditListingViewController.Configuration.FieldType, andIndexPath indexPath: IndexPath) {
+    fileprivate func configure(editListingTextfieldCell cell: EditListingTextfieldCell, withFieldType fieldType: EditListingConfiguration.FieldType, andIndexPath indexPath: IndexPath) {
         
         cell.textfield.placeholder = placeholderText(forTextFieldFieldType: fieldType)
         cell.textfield.keyboardType = keyboardType(forTextFieldFieldType: fieldType)
@@ -125,12 +131,12 @@ class EditListingTableHandler: NSObject {
     }
     
     //Returns the placeholder text for fieldTypes that are used in the EditListingTextField cells
-    fileprivate func placeholderText(forTextFieldFieldType textfieldFieldType: EditListingViewController.Configuration.FieldType) -> String {
+    fileprivate func placeholderText(forTextFieldFieldType textfieldFieldType: EditListingConfiguration.FieldType) -> String {
         return delegate.getConfiguration().textDescription(forFieldType: textfieldFieldType)
     }
     
     //Returns the placeholder text for fieldTypes that are used in the EditListingTextField cells
-    fileprivate func keyboardType(forTextFieldFieldType textfieldFieldType: EditListingViewController.Configuration.FieldType) -> UIKeyboardType {
+    fileprivate func keyboardType(forTextFieldFieldType textfieldFieldType: EditListingConfiguration.FieldType) -> UIKeyboardType {
         switch textfieldFieldType {
         case .price:
             return .numbersAndPunctuation
@@ -162,6 +168,8 @@ extension EditListingTableHandler: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         if let textfieldCell = cell as? EditListingTextfieldCell {
             configure(editListingTextfieldCell: textfieldCell, withFieldType: fieldTypeForRow, andIndexPath: indexPath)
+        } else if let quantityCell = cell as? EditListingQuantityCell {
+            configure(editListingQuantityCell: quantityCell)
         }
         
         return cell

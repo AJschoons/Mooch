@@ -15,5 +15,5 @@ class EditListingTextfieldCell: UITableViewCell, EditListingField {
     
     @IBOutlet weak var textfield: EditListingTextfield!
     
-    var fieldType: EditListingViewController.Configuration.FieldType!
+    var fieldType: EditListingConfiguration.FieldType!
 }

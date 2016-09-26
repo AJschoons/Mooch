@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
-protocol EditListingTextfieldHandlerDelegate: class {
-    func updated(text: String, forFieldType: EditListingViewController.Configuration.FieldType)
+protocol EditListingTextHandlerDelegate: class {
+    func updated(text: String, forFieldType: EditListingConfiguration.FieldType)
 }
 
-class EditListingTextfieldHandler: NSObject {
+class EditListingTextHandler: NSObject {
     
     // MARK: Public variables
     
-    weak var delegate: EditListingTextfieldHandlerDelegate!
+    weak var delegate: EditListingTextHandlerDelegate!
     
     
     // MARK: Private variables
@@ -105,7 +105,7 @@ class EditListingTextfieldHandler: NSObject {
     }
 }
 
-extension EditListingTextfieldHandler: UITextFieldDelegate {
+extension EditListingTextHandler: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let editListingTextfield = textField as? EditListingTextfield, let fieldType = (textField as! EditListingTextfield).fieldType else { return false }

@@ -9,106 +9,34 @@
 import UIKit
 
 protocol EditListingField {
-    var fieldType: EditListingViewController.Configuration.FieldType! { get set }
+    var fieldType: EditListingConfiguration.FieldType! { get set }
 }
 
 protocol EditListingViewControllerDelegate: class {
     
     //Allows the delegate to handle dismissing this view controller at the appropriate time
-    func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditListingViewController.EditedListingInformation)
+    func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation)
 }
 
 class EditListingViewController: MoochModalViewController {
     
-    //A configuration to setup the class with
-    struct Configuration {
-        
-        //A mapping from a FieldType to a Bool that returns true if it conforms
-        typealias FieldTypeConformanceMapping = (FieldType) -> Bool
-        
-        var mode: Mode
-        
-        var title: String
-        var leftBarButtons: [BarButtonType]?
-        var rightBarButtons: [BarButtonType]?
-        
-        //The fields that should be shown
-        var fields: [FieldType]
-        
-        //The bar buttons that can be added
-        enum BarButtonType {
-            case cancel
-            case done
-        }
-        
-        enum Mode {
-            case creating
-            case editing
-        }
-        
-        enum FieldType {
-            case photo
-            case title
-            case description
-            case tag
-            case price
-            case quantity
-        }
-        
-        func indexOfLastFieldType(conformingToMapping mapping: FieldTypeConformanceMapping) -> Int? {
-            let mappedFieldTypes = fields.reversed().map{mapping($0)}
-            guard let reversedIndex = mappedFieldTypes.index(of: true) else { return nil }
-            return (fields.count - 1) - reversedIndex
-        }
-        
-        func textDescription(forFieldType fieldType: FieldType) -> String {
-            switch fieldType {
-            case .photo:
-                return "Photo"
-            case .title:
-                return "Title"
-            case .description:
-                return "Description"
-            case .tag:
-                return "Tag"
-            case .price:
-                return "Price"
-            case .quantity:
-                return "Quantity"
-            }
-        }
-    }
-    
-    //Struct to track the edited listing information
-    struct EditedListingInformation {
-        var title: String?
-        var description: String?
-        var tag: ListingTag?
-        var price: Float?
-        var quantity: Int?
-    }
-    
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = Configuration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .tag, .price, .quantity])
-    static let DefaultEditingConfiguration = Configuration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .tag, .price, .quantity])
+    static let DefaultCreatingConfiguration = EditListingConfiguration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .tag, .price, .quantity])
+    static let DefaultEditingConfiguration = EditListingConfiguration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .tag, .price, .quantity])
     
     @IBOutlet var tableHandler: EditListingTableHandler! {
-        didSet {
-            tableHandler.delegate = self
-        }
+        didSet { tableHandler.delegate = self }
     }
     
-    @IBOutlet var textfieldHandler: EditListingTextfieldHandler! {
-        didSet {
-            textfieldHandler.delegate = self
-        }
+    @IBOutlet var textHandler: EditListingTextHandler! {
+        didSet { textHandler.delegate = self }
     }
     
     weak var delegate: EditListingViewControllerDelegate!
     
     //The configuration used to setup the class
-    var configuration: Configuration! {
+    var configuration: EditListingConfiguration! {
         didSet {
             tableHandler.indexOfLastTextfieldCell = configuration.indexOfLastFieldType(conformingToMapping: tableHandler.isTextField)
         }
@@ -215,11 +143,11 @@ class EditListingViewController: MoochModalViewController {
         }
     }
     
-    fileprivate func barButtons(fromTypeList typeList: [Configuration.BarButtonType]) -> [UIBarButtonItem] {
+    fileprivate func barButtons(fromTypeList typeList: [EditListingConfiguration.BarButtonType]) -> [UIBarButtonItem] {
         return typeList.map({barButton(forType: $0)})
     }
     
-    fileprivate func barButton(forType type: Configuration.BarButtonType) -> UIBarButtonItem {
+    fileprivate func barButton(forType type: EditListingConfiguration.BarButtonType) -> UIBarButtonItem {
         switch type {
         case .cancel:
             return cancelButton
@@ -256,42 +184,25 @@ class EditListingViewController: MoochModalViewController {
     
     
     private func isValidListingCreation() -> Bool {
-        let eli = editedListingInformation
-        return eli.title != nil && eli.description != nil && eli.tag != nil && eli.price != nil && eli.quantity != nil
+        return editedListingInformation.isAllInformationFilled
     }
     
     private func presentInvalidListingCreationAlert() {
-        var invalidField: Configuration.FieldType?
-        
-        let eli = editedListingInformation
-        if eli.title == nil {
-            invalidField = .title
-        } else if eli.description == nil {
-            invalidField = .description
-        } else if eli.tag == nil {
-            invalidField = .tag
-        } else if eli.price == nil {
-            invalidField = .price
-        } else if eli.quantity == nil {
-            invalidField = .quantity
-        }
-        
-        guard let fieldToNotifyAbout = invalidField else { return }
+        guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledFieldType() else { return }
         presentSingleActionAlert(title: "Problem creating listing", message: "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field", actionTitle: "Aye aye captain!")
     }
 }
 
 extension EditListingViewController: EditListingTableHandlerDelegate {
     
-    func getConfiguration() -> EditListingViewController.Configuration {
+    func getConfiguration() -> EditListingConfiguration {
         return configuration
     }
 }
 
-
-extension EditListingViewController: EditListingTextfieldHandlerDelegate {
+extension EditListingViewController: EditListingTextHandlerDelegate {
     
-    func updated(text: String, forFieldType fieldType: EditListingViewController.Configuration.FieldType) {
+    func updated(text: String, forFieldType fieldType: EditListingConfiguration.FieldType) {
         switch fieldType {
         case .title:
             editedListingInformation.title = text
@@ -304,5 +215,12 @@ extension EditListingViewController: EditListingTextfieldHandlerDelegate {
         default:
             return
         }
+    }
+}
+
+extension EditListingViewController: EditListingQuantityCellDelegate {
+    
+    func quantityDidChange(toValue value: Int) {
+        editedListingInformation.quantity = value
     }
 }

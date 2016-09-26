@@ -10,5 +10,5 @@ import UIKit
 
 class EditListingTextfield: NavigableTextField {
 
-    var fieldType: EditListingViewController.Configuration.FieldType!
+    var fieldType: EditListingConfiguration.FieldType!
 }
