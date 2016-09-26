@@ -70,6 +70,7 @@
 		81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81F0EA4A1D9896A000C7AD09 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
+		81F0EA4F1D98AC9400C7AD09 /* GETListings.json in Resources */ = {isa = PBXBuildFile; fileRef = 81F0EA4E1D98AC9400C7AD09 /* GETListings.json */; };
 		B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7BE1D85FC6B000F0C37 /* Listing.swift */; };
 		B38E8B1D1D8C7678002A9439 /* ListingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E8B1C1D8C7678002A9439 /* ListingTest.swift */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
@@ -157,6 +158,7 @@
 		815BCF171D806D260022F806 /* ListingTagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTagTests.swift; sourceTree = "<group>"; };
 		815BCF1B1D8070B80022F806 /* LocalUserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUserTests.swift; sourceTree = "<group>"; };
 		81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		81F0EA4E1D98AC9400C7AD09 /* GETListings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETListings.json; sourceTree = "<group>"; };
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -256,6 +258,7 @@
 		810A82451D7A11780086B40F /* MoochTests */ = {
 			isa = PBXGroup;
 			children = (
+				81F0EA4B1D98AB7800C7AD09 /* json_response */,
 				815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */,
 				815BCF171D806D260022F806 /* ListingTagTests.swift */,
 				B38E8B1C1D8C7678002A9439 /* ListingTest.swift */,
@@ -452,6 +455,14 @@
 			name = "Edit Listing";
 			sourceTree = "<group>";
 		};
+		81F0EA4B1D98AB7800C7AD09 /* json_response */ = {
+			isa = PBXGroup;
+			children = (
+				81F0EA4E1D98AC9400C7AD09 /* GETListings.json */,
+			);
+			name = json_response;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -586,6 +597,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81F0EA4F1D98AC9400C7AD09 /* GETListings.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
