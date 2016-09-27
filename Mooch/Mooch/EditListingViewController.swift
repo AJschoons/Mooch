@@ -198,6 +198,10 @@ extension EditListingViewController: EditListingTableHandlerDelegate {
     func getConfiguration() -> EditListingConfiguration {
         return configuration
     }
+    
+    func getTextHandler() -> EditListingTextHandler {
+        return textHandler
+    }
 }
 
 extension EditListingViewController: EditListingTextHandlerDelegate {
@@ -215,6 +219,10 @@ extension EditListingViewController: EditListingTextHandlerDelegate {
         default:
             return
         }
+    }
+    
+    func onTextViewDidChangeSize(withHeightDifference heightDifferrence: CGFloat) {
+        tableHandler.onTextDidChangeSize(withHeightDifference: heightDifferrence)
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  EditListingTextfield.swift
+//  EditListingTextView.swift
 //  Mooch
 //
 //  Created by adam on 9/25/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditListingTextfield: NavigableTextField {
+class EditListingTextView: NavigableTextView {
 
     var fieldType: EditListingConfiguration.FieldType!
 }

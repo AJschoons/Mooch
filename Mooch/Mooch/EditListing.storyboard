@@ -48,35 +48,52 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingTextfieldCell" rowHeight="44" id="XWl-fY-Gj2" customClass="EditListingTextfieldCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="394" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingTextCell" rowHeight="66" id="XWl-fY-Gj2" customClass="EditListingTextCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="394" width="375" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XWl-fY-Gj2" id="s3x-hw-rqm">
-                                            <frame key="frameInset" width="375" height="44"/>
+                                            <frame key="frameInset" width="375" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uau-QR-q4H" customClass="EditListingTextfield" customModule="Mooch" customModuleProvider="target">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name of Field" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Wl-Vz-cbz">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="17" id="GVt-wv-T1J"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                     <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                    <connections>
-                                                        <outlet property="delegate" destination="vue-bV-IPN" id="cbd-Gp-b5m"/>
-                                                    </connections>
-                                                </textField>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Tf-XC-iJF">
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Xvf-Bm-zLt" customClass="EditListingTextView" customModule="Mooch" customModuleProvider="target">
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="uau-QR-q4H" secondAttribute="trailing" constant="15" id="3kT-2h-hWB"/>
-                                                <constraint firstAttribute="bottom" secondItem="uau-QR-q4H" secondAttribute="bottom" constant="7" id="3rR-ft-HhA"/>
-                                                <constraint firstItem="uau-QR-q4H" firstAttribute="top" secondItem="s3x-hw-rqm" secondAttribute="top" constant="7" id="b3y-bi-skO"/>
-                                                <constraint firstItem="uau-QR-q4H" firstAttribute="leading" secondItem="s3x-hw-rqm" secondAttribute="leading" constant="15" id="uhG-J3-RJR"/>
+                                                <constraint firstAttribute="bottom" secondItem="Xvf-Bm-zLt" secondAttribute="bottom" constant="7" id="69P-bk-5TV"/>
+                                                <constraint firstAttribute="trailing" secondItem="4Wl-Vz-cbz" secondAttribute="trailing" constant="15" id="7xY-rs-qBy"/>
+                                                <constraint firstItem="4Tf-XC-iJF" firstAttribute="bottom" secondItem="Xvf-Bm-zLt" secondAttribute="bottom" constant="1" id="8DZ-rN-nuM"/>
+                                                <constraint firstItem="4Wl-Vz-cbz" firstAttribute="leading" secondItem="s3x-hw-rqm" secondAttribute="leading" constant="15" id="Dft-aD-o4w"/>
+                                                <constraint firstItem="4Wl-Vz-cbz" firstAttribute="top" secondItem="s3x-hw-rqm" secondAttribute="top" constant="7" id="HZh-iy-FUi"/>
+                                                <constraint firstItem="4Tf-XC-iJF" firstAttribute="trailing" secondItem="Xvf-Bm-zLt" secondAttribute="trailing" constant="1" id="IAU-4u-Ca5"/>
+                                                <constraint firstItem="Xvf-Bm-zLt" firstAttribute="leading" secondItem="s3x-hw-rqm" secondAttribute="leading" constant="15" id="M7c-5k-sNr"/>
+                                                <constraint firstItem="4Tf-XC-iJF" firstAttribute="top" secondItem="Xvf-Bm-zLt" secondAttribute="top" constant="-1" id="Nv5-BS-qfl"/>
+                                                <constraint firstItem="4Tf-XC-iJF" firstAttribute="leading" secondItem="Xvf-Bm-zLt" secondAttribute="leading" constant="-1" id="P0l-KB-WxX"/>
+                                                <constraint firstItem="Xvf-Bm-zLt" firstAttribute="top" secondItem="s3x-hw-rqm" secondAttribute="top" constant="29" id="Wod-fQ-kJG"/>
+                                                <constraint firstAttribute="trailing" secondItem="Xvf-Bm-zLt" secondAttribute="trailing" constant="15" id="awj-ty-Rvm"/>
+                                                <constraint firstItem="Xvf-Bm-zLt" firstAttribute="top" secondItem="4Wl-Vz-cbz" secondAttribute="bottom" constant="5" id="qrN-wB-r4l"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="textfield" destination="uau-QR-q4H" id="fl2-d4-tz2"/>
+                                            <outlet property="fieldLabel" destination="4Wl-Vz-cbz" id="6Dx-Ti-Hlu"/>
+                                            <outlet property="textView" destination="Xvf-Bm-zLt" id="sB4-q6-LWE"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingQuantityCell" rowHeight="44" id="B0U-Qi-wn4" customClass="EditListingQuantityCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="438" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="460" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B0U-Qi-wn4" id="OmY-1C-WZx">
                                             <frame key="frameInset" width="375" height="44"/>
@@ -134,7 +151,7 @@
                     </view>
                     <connections>
                         <outlet property="tableHandler" destination="EXr-8s-3Fv" id="agK-L1-MMq"/>
-                        <outlet property="textHandler" destination="vue-bV-IPN" id="hxI-df-tbS"/>
+                        <outlet property="textHandler" destination="vue-bV-IPN" id="8el-NF-WXm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KXn-id-viq" userLabel="First Responder" sceneMemberID="firstResponder"/>
