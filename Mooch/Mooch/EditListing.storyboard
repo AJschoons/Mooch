@@ -63,25 +63,29 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Tf-XC-iJF">
-                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                </view>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Xvf-Bm-zLt" customClass="EditListingTextView" customModule="Mooch" customModuleProvider="target">
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                            <real key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </textView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Xvf-Bm-zLt" secondAttribute="bottom" constant="7" id="69P-bk-5TV"/>
                                                 <constraint firstAttribute="trailing" secondItem="4Wl-Vz-cbz" secondAttribute="trailing" constant="15" id="7xY-rs-qBy"/>
-                                                <constraint firstItem="4Tf-XC-iJF" firstAttribute="bottom" secondItem="Xvf-Bm-zLt" secondAttribute="bottom" constant="1" id="8DZ-rN-nuM"/>
                                                 <constraint firstItem="4Wl-Vz-cbz" firstAttribute="leading" secondItem="s3x-hw-rqm" secondAttribute="leading" constant="15" id="Dft-aD-o4w"/>
                                                 <constraint firstItem="4Wl-Vz-cbz" firstAttribute="top" secondItem="s3x-hw-rqm" secondAttribute="top" constant="7" id="HZh-iy-FUi"/>
-                                                <constraint firstItem="4Tf-XC-iJF" firstAttribute="trailing" secondItem="Xvf-Bm-zLt" secondAttribute="trailing" constant="1" id="IAU-4u-Ca5"/>
                                                 <constraint firstItem="Xvf-Bm-zLt" firstAttribute="leading" secondItem="s3x-hw-rqm" secondAttribute="leading" constant="15" id="M7c-5k-sNr"/>
-                                                <constraint firstItem="4Tf-XC-iJF" firstAttribute="top" secondItem="Xvf-Bm-zLt" secondAttribute="top" constant="-1" id="Nv5-BS-qfl"/>
-                                                <constraint firstItem="4Tf-XC-iJF" firstAttribute="leading" secondItem="Xvf-Bm-zLt" secondAttribute="leading" constant="-1" id="P0l-KB-WxX"/>
                                                 <constraint firstItem="Xvf-Bm-zLt" firstAttribute="top" secondItem="s3x-hw-rqm" secondAttribute="top" constant="29" id="Wod-fQ-kJG"/>
                                                 <constraint firstAttribute="trailing" secondItem="Xvf-Bm-zLt" secondAttribute="trailing" constant="15" id="awj-ty-Rvm"/>
                                                 <constraint firstItem="Xvf-Bm-zLt" firstAttribute="top" secondItem="4Wl-Vz-cbz" secondAttribute="bottom" constant="5" id="qrN-wB-r4l"/>
