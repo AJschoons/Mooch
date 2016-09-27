@@ -15,5 +15,5 @@ class EditListingPhotoCell: UITableViewCell, EditListingField {
     
     @IBOutlet weak var photo: UIImageView!
     
-    var fieldType: EditListingViewController.Configuration.FieldType!
+    var fieldType: EditListingConfiguration.FieldType!
 }

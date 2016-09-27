@@ -8,8 +8,9 @@
 
 import UIKit
 
-protocol EditListingTableHandlerDelegate: class {
-    func getConfiguration() -> EditListingViewController.Configuration
+protocol EditListingTableHandlerDelegate: class, EditListingQuantityCellDelegate {
+    func getConfiguration() -> EditListingConfiguration
+    func getTextHandler() -> EditListingTextHandler
 }
 
 class EditListingTableHandler: NSObject {
@@ -26,17 +27,20 @@ class EditListingTableHandler: NSObject {
     //Used for knowing how much to offset due to keyboard so it doesn't go right under the cell
     private let HalfTheSpacingBetweenCells: CGFloat = 7.0
     
-    //Used to track the setup of the navigable text fields between configurations
-    fileprivate var lastNavigableTextFieldConfigured: NavigableTextField?
+    //Used to track the setup of the navigable text views between configurations
+    fileprivate var lastNavigableTextViewConfigured: NavigableTextView?
     
     //Used to restore the tableView insets after the keyboard disappears
     private var originalContentInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+    
+    //Used to get the exact height for each cell so that the table view isn't jerky with beginUpdates and endUpdates
+    fileprivate var heightForIndexPaths = [IndexPath : CGFloat]()
     
     @IBOutlet weak fileprivate var tableView: UITableView! {
         didSet {
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
-            tableView.estimatedRowHeight = EditListingTextfieldCell.EstimatedHeight
+            //tableView.estimatedRowHeight = 1000
         }
     }
     
@@ -46,6 +50,18 @@ class EditListingTableHandler: NSObject {
     // MARK: Actions
     
     // MARK: Public methods
+    
+    //Resizes and repositions the table view based on the height difference
+    func onTextDidChangeSize(withHeightDifference heightDifferrence: CGFloat) {
+        //Automatically resizes the table view due to text changes
+        tableView.beginUpdates()
+        tableView.endUpdates()
+        
+        //Animate to account for the change in height
+        var newOffset = self.tableView.contentOffset
+        newOffset.y += heightDifferrence
+        tableView.setContentOffset(newOffset, animated: true)
+    }
     
     //Based on https://gist.github.com/TimMedcalf/9505416
     func onKeyboardDidShow(withRect keyboardRect: CGRect, andAnimationDuration animationDuration: Double) {
@@ -69,7 +85,7 @@ class EditListingTableHandler: NSObject {
     }
     
     //Returns true if a field type maps to a EditListingTextFieldCell
-    func isTextField(forFieldType fieldType: EditListingViewController.Configuration.FieldType) -> Bool {
+    func isTextField(forFieldType fieldType: EditListingConfiguration.FieldType) -> Bool {
         switch fieldType {
         case .photo, .quantity:
             return false
@@ -81,12 +97,12 @@ class EditListingTableHandler: NSObject {
     // MARK: Private methods
     
     //Returns the field type that a row is displaying
-    fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> EditListingViewController.Configuration.FieldType {
+    fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> EditListingConfiguration.FieldType {
         return delegate!.getConfiguration().fields[indexPath.row]
     }
     
     //Returns the identifier string for
-    fileprivate func cellIdentifer(forFieldType fieldType: EditListingViewController.Configuration.FieldType) -> String {
+    fileprivate func cellIdentifer(forFieldType fieldType: EditListingConfiguration.FieldType) -> String {
         
         switch fieldType {
         case .photo:
@@ -94,16 +110,22 @@ class EditListingTableHandler: NSObject {
         case .quantity:
             return EditListingQuantityCell.Identifier
         default:
-            return EditListingTextfieldCell.Identifier
+            return EditListingTextCell.Identifier
         }
     }
     
-    //Configures an EditListingTextfieldCell based on the field type
-    fileprivate func configure(editListingTextfieldCell cell: EditListingTextfieldCell, withFieldType fieldType: EditListingViewController.Configuration.FieldType, andIndexPath indexPath: IndexPath) {
+    //Configures an EditListingQuantityCell
+    fileprivate func configure(editListingQuantityCell cell: EditListingQuantityCell) {
+        cell.delegate = delegate
+    }
+
+    //Configures an EditListingTextCell based on the field type
+    fileprivate func configure(editListingTextCell cell: EditListingTextCell, withFieldType fieldType: EditListingConfiguration.FieldType, andIndexPath indexPath: IndexPath) {
         
-        cell.textfield.placeholder = placeholderText(forTextFieldFieldType: fieldType)
-        cell.textfield.keyboardType = keyboardType(forTextFieldFieldType: fieldType)
-        cell.textfield.delegate = self
+        cell.fieldLabel.text = fieldLabel(forTextFieldType: fieldType)
+        cell.textView.keyboardType = keyboardType(forTextFieldFieldType: fieldType)
+        cell.textView.fieldType = fieldType
+        cell.textView.delegate = self
         
         //Make the last cell have done key instead of next
         var returnKeyType: UIReturnKeyType!
@@ -112,36 +134,25 @@ class EditListingTableHandler: NSObject {
         } else {
             returnKeyType = .next
         }
-        cell.textfield.returnKeyType = returnKeyType
+        cell.textView.returnKeyType = returnKeyType
         
-        //Setup the order of textfields to navigate
-        if let previousTextfield = lastNavigableTextFieldConfigured {
-            previousTextfield.nextNavigableTextField = cell.textfield
+        //Setup the order of textviews to navigate
+        if let previousTextView = lastNavigableTextViewConfigured {
+            previousTextView.nextNavigableTextView = cell.textView
         } else {
-            cell.textfield.nextNavigableTextField = nil
+            cell.textView.nextNavigableTextView = nil
         }
         
-        lastNavigableTextFieldConfigured = cell.textfield
+        lastNavigableTextViewConfigured = cell.textView
+    }
+    
+    //Returns the field label text for fieldTypes that are used in the EditListingText cells
+    fileprivate func fieldLabel(forTextFieldType textFieldType: EditListingConfiguration.FieldType) -> String {
+        return delegate.getConfiguration().textDescription(forFieldType: textFieldType)
     }
     
     //Returns the placeholder text for fieldTypes that are used in the EditListingTextField cells
-    fileprivate func placeholderText(forTextFieldFieldType textfieldFieldType: EditListingViewController.Configuration.FieldType) -> String {
-        switch textfieldFieldType {
-        case .title:
-            return "Title"
-        case .description:
-            return "Description"
-        case .category:
-            return "Tags"
-        case .price:
-            return "Price"
-        default:
-            return ""
-        }
-    }
-    
-    //Returns the placeholder text for fieldTypes that are used in the EditListingTextField cells
-    fileprivate func keyboardType(forTextFieldFieldType textfieldFieldType: EditListingViewController.Configuration.FieldType) -> UIKeyboardType {
+    fileprivate func keyboardType(forTextFieldFieldType textfieldFieldType: EditListingConfiguration.FieldType) -> UIKeyboardType {
         switch textfieldFieldType {
         case .price:
             return .numbersAndPunctuation
@@ -164,15 +175,17 @@ extension EditListingTableHandler: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //Clear out any previously saved textfields when setting up the first row
         if indexPath.row == 0 {
-            lastNavigableTextFieldConfigured = nil
+            lastNavigableTextViewConfigured = nil
         }
         
         let fieldTypeForRow = fieldType(forIndexPath: indexPath)
         let identifier = cellIdentifer(forFieldType: fieldTypeForRow)
         
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        if let textfieldCell = cell as? EditListingTextfieldCell {
-            configure(editListingTextfieldCell: textfieldCell, withFieldType: fieldTypeForRow, andIndexPath: indexPath)
+        if let textCell = cell as? EditListingTextCell {
+            configure(editListingTextCell: textCell, withFieldType: fieldTypeForRow, andIndexPath: indexPath)
+        } else if let quantityCell = cell as? EditListingQuantityCell {
+            configure(editListingQuantityCell: quantityCell)
         }
         
         return cell
@@ -181,20 +194,28 @@ extension EditListingTableHandler: UITableViewDataSource {
 
 extension EditListingTableHandler: UITableViewDelegate {
     
+    //Used to get the exact height for each cell so that the table view isn't jerky with beginUpdates and endUpdates
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        heightForIndexPaths[indexPath] = cell.frame.size.height
+    }
+    
+    //Used to get the exact height for each cell so that the table view isn't jerky with beginUpdates and endUpdates
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if let height = heightForIndexPaths[indexPath] {
+            return height
+        } else {
+            return UITableViewAutomaticDimension
+        }
+    }
 }
 
-extension EditListingTableHandler: UITextFieldDelegate {
+extension EditListingTableHandler: UITextViewDelegate {
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let navigableTextField = textField as? NavigableTextField {
-            //Bring the keyboard to the next textfield if it exists, else hide it
-            if let nextTextField = navigableTextField.nextNavigableTextField {
-                nextTextField.becomeFirstResponder()
-            } else {
-                navigableTextField.resignFirstResponder()
-            }
-        }
-        
-        return true
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return delegate.getTextHandler().textView(textView, shouldChangeCharactersIn: range, replacementString: text)
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        return delegate.getTextHandler().textViewDidChange(textView)
     }
 }

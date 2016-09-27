@@ -145,6 +145,10 @@ class ListingsViewController: MoochViewController {
     fileprivate func add(listing: Listing) {
         listings.insert(listing, at: 0)
     }
+    
+    fileprivate func createListing(fromEditedListingInformation eli: EditedListingInformation) -> Listing {
+        return Listing(id: -1, title: eli.title!, description: eli.description!, price: eli.price!, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, tags: [eli.tag!], community: LocalUserManager.sharedInstance.localUser!.user.community)
+    }
 }
 
 extension ListingsViewController: ListingsTableHandlerDelegate {
@@ -169,9 +173,9 @@ extension ListingsViewController: LoginViewControllerDelegate {
 
 extension ListingsViewController: EditListingViewControllerDelegate {
     
-    func editListingViewControllerDidFinishEditing(withListing editedListing: Listing) {
-        add(listing: editedListing)
-        presentListingCreatedAlert(forListing: editedListing)
-        
+    func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation) {
+        let newListing = createListing(fromEditedListingInformation: editedListingInformation)
+        add(listing: newListing)
+        presentListingCreatedAlert(forListing: newListing)
     }
 }
