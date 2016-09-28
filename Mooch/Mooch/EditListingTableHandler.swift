@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol EditListingTableHandlerDelegate: class, EditListingQuantityCellDelegate {
+protocol EditListingTableHandlerDelegate: class, EditListingQuantityCellDelegate, PhotoAddingViewDelegate {
     func getConfiguration() -> EditListingConfiguration
     func getTextHandler() -> EditListingTextHandler
 }
@@ -114,6 +114,11 @@ class EditListingTableHandler: NSObject {
         }
     }
     
+    //Configures an EditListingPhotoCell
+    fileprivate func configure(editListingPhotoCell cell: EditListingPhotoCell) {
+        cell.photoAddingView.delegate = delegate
+    }
+    
     //Configures an EditListingQuantityCell
     fileprivate func configure(editListingQuantityCell cell: EditListingQuantityCell) {
         cell.delegate = delegate
@@ -186,6 +191,8 @@ extension EditListingTableHandler: UITableViewDataSource {
             configure(editListingTextCell: textCell, withFieldType: fieldTypeForRow, andIndexPath: indexPath)
         } else if let quantityCell = cell as? EditListingQuantityCell {
             configure(editListingQuantityCell: quantityCell)
+        } else if let photoCell = cell as? EditListingPhotoCell {
+            configure(editListingPhotoCell: photoCell)
         }
         
         return cell

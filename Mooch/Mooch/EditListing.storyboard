@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,35 +22,33 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="363" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mQ9-1C-1Fh">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingPhotoCell" rowHeight="366" id="2Qp-7l-Qir" customClass="EditListingPhotoCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="366"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingPhotoCell" rowHeight="209" id="2Qp-7l-Qir" customClass="EditListingPhotoCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="209"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Qp-7l-Qir" id="Bdw-HP-0sQ">
-                                            <frame key="frameInset" width="375" height="366"/>
+                                            <frame key="frameInset" width="375" height="209"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="apples" translatesAutoresizingMaskIntoConstraints="NO" id="85V-b9-S3R">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mzx-wM-YWT" customClass="PhotoAddingView" customModule="Mooch" customModuleProvider="target">
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="85V-b9-S3R" secondAttribute="height" multiplier="1:1" id="jLi-SB-Hau"/>
+                                                        <constraint firstAttribute="width" secondItem="Mzx-wM-YWT" secondAttribute="height" multiplier="1:1" id="cKh-Yt-dYN"/>
                                                     </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </imageView>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="85V-b9-S3R" firstAttribute="top" secondItem="Bdw-HP-0sQ" secondAttribute="top" constant="14" id="4A7-IW-TfD"/>
-                                                <constraint firstItem="85V-b9-S3R" firstAttribute="leading" secondItem="Bdw-HP-0sQ" secondAttribute="leading" constant="15" id="6OF-Pt-vAl"/>
-                                                <constraint firstAttribute="bottom" secondItem="85V-b9-S3R" secondAttribute="bottom" constant="7" id="jHT-5e-nIO"/>
-                                                <constraint firstAttribute="trailing" secondItem="85V-b9-S3R" secondAttribute="trailing" constant="15" id="pEo-RD-IlO"/>
+                                                <constraint firstItem="Mzx-wM-YWT" firstAttribute="width" secondItem="Bdw-HP-0sQ" secondAttribute="width" multiplier="0.5" id="0Gq-7U-lbX"/>
+                                                <constraint firstItem="Mzx-wM-YWT" firstAttribute="top" secondItem="Bdw-HP-0sQ" secondAttribute="top" constant="14" id="0T9-YZ-7oR"/>
+                                                <constraint firstItem="Mzx-wM-YWT" firstAttribute="centerX" secondItem="Bdw-HP-0sQ" secondAttribute="centerX" id="9F5-1e-XyV"/>
+                                                <constraint firstAttribute="bottom" secondItem="Mzx-wM-YWT" secondAttribute="bottom" constant="7" id="bkr-zY-QFT"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="photoAddingView" destination="Mzx-wM-YWT" id="o9p-5A-Nsj"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingTextCell" rowHeight="66" id="XWl-fY-Gj2" customClass="EditListingTextCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="394" width="375" height="66"/>
+                                        <rect key="frame" x="0.0" y="237" width="375" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XWl-fY-Gj2" id="s3x-hw-rqm">
                                             <frame key="frameInset" width="375" height="66"/>
@@ -97,7 +96,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingQuantityCell" rowHeight="44" id="B0U-Qi-wn4" customClass="EditListingQuantityCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="460" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="303" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B0U-Qi-wn4" id="OmY-1C-WZx">
                                             <frame key="frameInset" width="375" height="44"/>
@@ -169,7 +168,4 @@
             <point key="canvasLocation" x="188" y="65.217391304347828"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="apples" width="310" height="310"/>
-    </resources>
 </document>

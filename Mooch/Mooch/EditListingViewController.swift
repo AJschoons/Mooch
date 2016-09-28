@@ -232,3 +232,14 @@ extension EditListingViewController: EditListingQuantityCellDelegate {
         editedListingInformation.quantity = value
     }
 }
+
+extension EditListingViewController: PhotoAddingViewDelegate {
+    
+    func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
+        photoAddingView.photo = UIImage(named: "apples")
+    }
+    
+    func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
+        print("deleted photo =O")
+    }
+}

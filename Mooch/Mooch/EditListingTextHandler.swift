@@ -79,7 +79,7 @@ class EditListingTextHandler: NSObject {
             return false
         }
         
-        return updatedText.characters.count <= MaxTitleFieldCharacters
+        return updatedText.characters.count <= MaxTagFieldCharacters
     }
     
     //Only allows changes if it fits into the ###.## decimal format (3 numbers leading the decimal point and two following)
