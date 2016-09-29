@@ -45,4 +45,34 @@ class MoochAPIRouterTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testGetListingRoute() {
+        //why we dont need listingId? like userId? ???
+        do {
+            let urlRequest = try MoochAPIRouter.getListings.asURLRequest()
+            
+            //Does the correct URL get created?
+            print(urlRequest ,"   <----")
+            XCTAssert(urlRequest.url!.absoluteString == "\(MoochAPIRouter.baseURLString)/listings")
+            
+            //Does the correct URL method get used?
+            XCTAssert(urlRequest.httpMethod == GETHttpMethodString)
+            
+            //Are the correct parameters getting put into the HTTP body?
+            //Note: these parameters will be JSON encoded in Mooch if there are any
+            //(in this case there shouldn't be any)
+            XCTAssert(urlRequest.httpBody == nil)
+            
+            //Are the correct key-value pairs being put into the HTTP headers?
+            //(in this case there are no headers)
+            XCTAssert(urlRequest.allHTTPHeaderFields!.count == 0)
+        } catch {
+            XCTFail()
+        }
+    }
+    
+    
+    
+    
+    
 }

@@ -13,16 +13,17 @@ import XCTest
 class ListingTagTests: XCTestCase {
     
     func testDesignatedInit() {
-        let listingTag = ListingTag(id: 12, name: "fruit")
+        let listingTag = ListingTag(id: 12, name: "fruit",count: 2)
         
         //Test that all the variables are correctly initialized
         XCTAssert(listingTag.id == 12)
         XCTAssert(listingTag.name == "fruit")
+        XCTAssert(listingTag.count == 2)
     }
     
     //Test that an ListingTag is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let listingTagJSON: JSON = [ListingTag.JSONMapping.Id.rawValue : 12, ListingTag.JSONMapping.Name.rawValue : "fruit"]
+        let listingTagJSON: JSON = [ListingTag.JSONMapping.id.rawValue : 12, ListingTag.JSONMapping.name.rawValue : "fruit", ListingTag.JSONMapping.count.rawValue:2]
         
         do {
             let listingTag = try ListingTag(json: listingTagJSON)
@@ -30,6 +31,7 @@ class ListingTagTests: XCTestCase {
             //Test that all the variables are correctly initialized
             XCTAssert(listingTag.id == 12)
             XCTAssert(listingTag.name == "fruit")
+            XCTAssert(listingTag.count == 2)
         } catch {
             XCTFail()
         }

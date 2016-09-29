@@ -13,17 +13,18 @@ import XCTest
 class CommunityTests: XCTestCase {
     
     func testDesignatedInit() {
-        let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
+        let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments", pictureURL:"I am a sample pic")
         
         //Test that all the variables are correctly initialized
         XCTAssert(community.id == 7)
         XCTAssert(community.address == "123 LaSalle")
         XCTAssert(community.name == "123 Big Apartments")
+        XCTAssert(community.pictureURL == "I am a sample pic")
     }
     
     //Test that a Community is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let communityJSON: JSON = [Community.JSONMapping.Id.rawValue : 1234,  Community.JSONMapping.Address.rawValue : "1234 address lane", Community.JSONMapping.Name.rawValue : "highrise apartments"]
+        let communityJSON: JSON = [Community.JSONMapping.id.rawValue : 1234,  Community.JSONMapping.address.rawValue : "1234 address lane", Community.JSONMapping.name.rawValue : "highrise apartments", Community.JSONMapping.pictureURL.rawValue :"I am a sample pic"]
         
         do {
             let community = try Community(json: communityJSON)
@@ -32,6 +33,7 @@ class CommunityTests: XCTestCase {
             XCTAssert(community.id == 1234)
             XCTAssert(community.address == "1234 address lane")
             XCTAssert(community.name == "highrise apartments")
+            XCTAssert(community.pictureURL == "I am a sample pic")
         } catch {
             XCTFail()
         }
@@ -39,7 +41,7 @@ class CommunityTests: XCTestCase {
     
     //Test that a Community throws the expected error when it doesn't have all the data it needs
     func testConvenienceInitError() {
-        let communityJSON: JSON = ["id" : 1234, "address" : "1234 address lane"]
+        let communityJSON: JSON = ["id" : 1234, "address" : "1234 address lane","name":"jiang","pictureURL":"sample Pic"]
         
         var jsonErrorThrown = false
         
