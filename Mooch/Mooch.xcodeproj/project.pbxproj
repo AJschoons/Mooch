@@ -290,7 +290,6 @@
 		810A82451D7A11780086B40F /* MoochTests */ = {
 			isa = PBXGroup;
 			children = (
-				81F0EA4B1D98AB7800C7AD09 /* json_response */,
 				815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */,
 				815BCF171D806D260022F806 /* ListingTagTests.swift */,
 				B38E8B1C1D8C7678002A9439 /* ListingTest.swift */,
@@ -299,6 +298,7 @@
 				811025A41D94DFAB00C3931C /* MoochAPITests.swift */,
 				815BCF0D1D7E83160022F806 /* UserTests.swift */,
 				810A82481D7A11780086B40F /* Info.plist */,
+				81F0EA4E1D98AC9400C7AD09 /* GETListings.json */,
 			);
 			path = MoochTests;
 			sourceTree = "<group>";

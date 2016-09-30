@@ -13,6 +13,9 @@ import OHHTTPStubs
 
 class MoochAPITests: XCTestCase {
     
+    let host = "mooch-rails-api.appspot.com"
+    let startOfPath = "/api/v1"
+    
     override func setUp() {
         super.setUp()
     }
@@ -52,9 +55,9 @@ class MoochAPITests: XCTestCase {
     
     func testGETListings_success() {
         
-        let _ = stub(isHost(MoochAPIRouter.baseURLString + "/") && isPath("listings")) { request in
+        let _ = stub(isHost(host) && isPath("\(startOfPath)/listings")) { request in
             return OHHTTPStubsResponse(
-                fileAtPath: OHPathForFile("json_response/GETListings.json", type(of: self))!,
+                fileAtPath: OHPathForFile("GETListings.json", type(of: self))!,
                 statusCode: 200,
                 headers: [
                     "ContentType": "application/json"
@@ -81,7 +84,7 @@ class MoochAPITests: XCTestCase {
             }
             
             //Are the listings information correct?
-            XCTAssert(listings.count == 8)
+            XCTAssert(listings.count == 6)
             
             
             
