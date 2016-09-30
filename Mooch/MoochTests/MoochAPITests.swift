@@ -52,7 +52,7 @@ class MoochAPITests: XCTestCase {
     
     func testGETListings_success() {
         
-        let _ = stub(isHost(MoochAPIRouter.baseURLString) && isPath("/listings")) { request in
+        let _ = stub(isHost(MoochAPIRouter.baseURLString + "/") && isPath("listings")) { request in
             return OHHTTPStubsResponse(
                 fileAtPath: OHPathForFile("json_response/GETListings.json", type(of: self))!,
                 statusCode: 200,
@@ -81,46 +81,12 @@ class MoochAPITests: XCTestCase {
             }
             
             //Are the listings information correct?
-            XCTAssert(listings.count == 2)
+            XCTAssert(listings.count == 8)
             
             
             
         }
     }
     
-//    func testGETUser_success() {
-//        let userId = 2
-//        let _ = stub(isHost(MoochAPIRouter.baseURLString) && isPath("/users/\(userId)")) { request in
-//            return OHHTTPStubsResponse(
-//                fileAtPath: OHPathForFile("json_response/GETUser.json", type(of: self))!,
-//                statusCode: 200,//GETUser.json not exist yet
-//                headers: [
-//                    "ContentType": "application/json"
-//                ]
-//            )
-//        }
-//        
-//        let asynchronousTestExpectation = expectation(description: "the completion closure returns the correct user with no error")
-//        var returnedUser: User
-//        var returnedError: Error?
-//        
-//        MoochAPI.GETUser(withId: userId){ user, error in
-//            returnedUser = user!
-//            returnedError = error
-//            asynchronousTestExpectation.fulfill()
-//        }
-//        
-//        waitForExpectations(timeout: 5) { error in
-//            //Are the user returned with no error?
-//            XCTAssert(returnedError == nil)
-//            guard let user = returnedUser else {
-//                XCTFail()
-//                return
-//            }
-//            
-//            //Are the user information correct?
-//            XCTAssert(user.count == 2)
-//            
-//        }
-//    }
+
 }
