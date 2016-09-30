@@ -2,6 +2,7 @@ PODS:
   - Alamofire (4.0.0)
   - AlamofireImage (3.0.0):
     - Alamofire (~> 4.0)
+  - ALCameraViewController (1.2.5)
   - OHHTTPStubs (5.2.0):
     - OHHTTPStubs/Default (= 5.2.0)
   - OHHTTPStubs/Core (5.2.0)
@@ -21,14 +22,16 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - AlamofireImage (~> 3.0)
+  - ALCameraViewController
   - OHHTTPStubs
   - OHHTTPStubs/Swift
 
 SPEC CHECKSUMS:
   Alamofire: fef59f00388f267e52d9b432aa5d93dc97190f14
   AlamofireImage: 6594aa1139a67dcd36cde6da79ea4e5b318e60fb
+  ALCameraViewController: 3ce731eed0b58f2791ce7404f9d039d10f2235c3
   OHHTTPStubs: 29ae105797c3410112d10b217c8b7a55aab616b2
 
-PODFILE CHECKSUM: ca0280f9c119bb55eb2bd4dc8354fc168dfa2ea2
+PODFILE CHECKSUM: 1566db352b8d0c60215a937a96be4eb449ee4cb5
 
 COCOAPODS: 1.1.0.rc.2

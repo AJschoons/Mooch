@@ -6,6 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
+import ALCameraViewController
 import UIKit
 
 protocol EditListingField {
@@ -54,23 +55,24 @@ class EditListingViewController: MoochModalViewController {
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var cancelButton: UIBarButtonItem!
     
-    fileprivate var editedListingInformation = EditedListingInformation(title: nil, description: nil, tag: nil, price: nil, quantity: nil)
+    fileprivate var editedListingInformation = EditedListingInformation(photo: nil, title: nil, description: nil, tag: nil, price: nil, quantity: nil)
+    
+    //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
+    fileprivate var isDismissingSelf = false
     
     
     // MARK: Actions
     
     func onDoneAction() {
         if isDoneValidated() {
-            resignFirstResponder()
-            dismiss(animated: true) {
+            dismissSelf() {
                 self.delegate.editListingViewControllerDidFinishEditing(withListingInformation: self.editedListingInformation)
             }
         }
     }
     
     func onCancelAction() {
-        resignFirstResponder()
-        dismiss(animated: true, completion: nil)
+        dismissSelf(completion: nil)
     }
     
     // MARK: Public methods
@@ -92,13 +94,17 @@ class EditListingViewController: MoochModalViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        view.endEditing(true)
+        if isDismissingSelf {
+            view.endEditing(true)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        unregisterForKeyboardNotifacations()
+        if isDismissingSelf {
+            unregisterForKeyboardNotifacations()
+        }
     }
     
     override func updateUI() {
@@ -191,6 +197,25 @@ class EditListingViewController: MoochModalViewController {
         guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledFieldType() else { return }
         presentSingleActionAlert(title: "Problem creating listing", message: "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field", actionTitle: "Aye aye captain!")
     }
+    
+    fileprivate func presentCameraViewController(forPhotoAddingView photoAddingView: PhotoAddingView) {
+        let croppingEnabled = false
+        UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.slide)
+        let cameraViewController = CameraViewController(croppingEnabled: croppingEnabled) { [weak self] image, asset in
+            photoAddingView.photo = image
+            self?.editedListingInformation.photo = image
+            self?.dismiss(animated: true) {
+                UIApplication.shared.setStatusBarHidden(false, with: UIStatusBarAnimation.slide)
+            }
+        }
+        
+        present(cameraViewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func dismissSelf(completion: (() -> Void)?) {
+        isDismissingSelf = true
+        dismiss(animated: true, completion: completion)
+    }
 }
 
 extension EditListingViewController: EditListingTableHandlerDelegate {
@@ -230,5 +255,17 @@ extension EditListingViewController: EditListingQuantityCellDelegate {
     
     func quantityDidChange(toValue value: Int) {
         editedListingInformation.quantity = value
+    }
+}
+
+extension EditListingViewController: PhotoAddingViewDelegate {
+    
+    func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
+        presentCameraViewController(forPhotoAddingView: photoAddingView)
+        //photoAddingView.photo = UIImage(named: "apples")
+    }
+    
+    func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
+        editedListingInformation.photo = nil
     }
 }

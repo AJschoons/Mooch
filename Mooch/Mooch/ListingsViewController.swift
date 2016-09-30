@@ -27,6 +27,9 @@ class ListingsViewController: MoochViewController {
     
     // MARK: Private variables
     
+    static fileprivate let StoryboardName = "Listings"
+    static fileprivate let Identifier = "ListingsViewController"
+    
     fileprivate var loginButton: UIBarButtonItem!
     fileprivate var profileButton: UIBarButtonItem!
     fileprivate var addListingButton: UIBarButtonItem!
@@ -46,6 +49,11 @@ class ListingsViewController: MoochViewController {
     }
     
     // MARK: Public methods
+    
+    static func instantiateFromStoryboard() -> ListingsViewController {
+        let storyboard = UIStoryboard(name: ListingsViewController.StoryboardName, bundle: nil)
+        return storyboard.instantiateViewController(withIdentifier: ListingsViewController.Identifier) as! ListingsViewController
+    }
     
     override func setup() {
         super.setup()
@@ -147,7 +155,7 @@ class ListingsViewController: MoochViewController {
     }
     
     fileprivate func createListing(fromEditedListingInformation eli: EditedListingInformation) -> Listing {
-        return Listing(id: -1, title: eli.title!, description: eli.description!, price: eli.price!, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, tags: [eli.tag!], community: LocalUserManager.sharedInstance.localUser!.user.community)
+        return Listing(id: -1, photo: eli.photo!, title: eli.title!, description: eli.description, price: eli.price!, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, tags: [eli.tag!], community: LocalUserManager.sharedInstance.localUser!.user.community)
     }
 }
 

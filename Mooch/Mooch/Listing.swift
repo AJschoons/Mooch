@@ -6,7 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Listing {
     
@@ -25,8 +25,9 @@ struct Listing {
     }
     
     let id: Int
+    var photo: UIImage?
     var title: String
-    var description: String
+    var description: String?
     var price: Float
     var isFree: Bool
     var isAvailable: Bool
@@ -43,8 +44,9 @@ struct Listing {
     }
     
     //Designated initializer
-    init(id: Int, title: String, description: String, price: Float, isFree: Bool, isAvailable: Bool, createdAt: Date, modifiedAt: Date, owner: User, tags: [ListingTag], community: Community?) {
+    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, isAvailable: Bool, createdAt: Date, modifiedAt: Date, owner: User, tags: [ListingTag], community: Community?) {
         self.id = id
+        self.photo = photo
         self.title = title
         self.description = description
         self.price = price
@@ -60,9 +62,11 @@ struct Listing {
     
     //Convenience JSON initializer
     init(json: JSON) throws {
-        guard let id = json[JSONMapping.id.rawValue].int, let title = json[JSONMapping.title.rawValue].string, let description = json[JSONMapping.description.rawValue].string, let price = json[JSONMapping.price.rawValue].float, let isFree = json[JSONMapping.isFree.rawValue].bool, let isAvailable = json[JSONMapping.isAvailable.rawValue].bool, let createdAtString = json[JSONMapping.createdAt.rawValue].string, let modifiedAtString = json[JSONMapping.createdAt.rawValue].string, json[JSONMapping.owner.rawValue].exists() else {
+        guard let id = json[JSONMapping.id.rawValue].int, let title = json[JSONMapping.title.rawValue].string, let price = json[JSONMapping.price.rawValue].float, let isFree = json[JSONMapping.isFree.rawValue].bool, let isAvailable = json[JSONMapping.isAvailable.rawValue].bool, let createdAtString = json[JSONMapping.createdAt.rawValue].string, let modifiedAtString = json[JSONMapping.createdAt.rawValue].string, json[JSONMapping.owner.rawValue].exists() else {
             throw InitializationError.insufficientJSONInformationForInitialization
         }
+        
+        let description = json[JSONMapping.description.rawValue].string
         
         let createdAt = date(fromAPITimespamp: createdAtString)
         let modifiedAt = date(fromAPITimespamp: modifiedAtString)
@@ -80,16 +84,17 @@ struct Listing {
             community = try Community(json: JSON(json[JSONMapping.community.rawValue].object))
         }
         
-        self.init(id: id, title: title, description: description, price: price, isFree: isFree, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, tags: tags, community: community)
+        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, tags: tags, community: community)
     }
     
     static func createDummy(fromNumber i: Int) -> Listing {
+        let photo = UIImage(named: "apples")
         let description = "This is some text that describes what the listing is but that will hopefully be more useful than this decription specifically"
         let price = Float(i % 100) * 1.68723
         let owner = User.createDummy(fromNumber: i)
         let tags = [ListingTag(id: i*312, name: "DummyTag1", count: 12), ListingTag(id: i*312+1, name: "DummyTag2", count: 11)]
         let community = Community.createDummy(fromNumber: i)
         
-        return Listing(id: i, title: "Listing \(i)", description: description, price: price, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: owner, tags: tags, community: community)
+        return Listing(id: i, photo: photo, title: "Listing \(i)", description: description, price: price, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: owner, tags: tags, community: community)
     }
 }

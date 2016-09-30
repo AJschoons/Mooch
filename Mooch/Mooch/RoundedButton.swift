@@ -21,4 +21,16 @@ class RoundedButton: UIButton {
             layer.masksToBounds = newValue > 0
         }
     }
+    
+    @IBInspectable var borderWidth: CGFloat = 0 {
+        didSet {
+            layer.borderWidth = borderWidth
+        }
+    }
+    
+    @IBInspectable var borderColor: UIColor? {
+        didSet {
+            layer.borderColor = borderColor?.cgColor
+        }
+    }
 }
