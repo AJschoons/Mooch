@@ -147,7 +147,7 @@ class ListingsViewController: MoochViewController {
     }
     
     fileprivate func createListing(fromEditedListingInformation eli: EditedListingInformation) -> Listing {
-        return Listing(id: -1, title: eli.title!, description: eli.description!, price: eli.price!, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, tags: [eli.tag!], community: LocalUserManager.sharedInstance.localUser!.user.community)
+        return Listing(id: -1, photo: eli.photo!, title: eli.title!, description: eli.description, price: eli.price!, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, tags: [eli.tag!], community: LocalUserManager.sharedInstance.localUser!.user.community)
     }
 }
 
