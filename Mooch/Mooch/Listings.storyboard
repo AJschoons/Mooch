@@ -27,7 +27,7 @@
                                             <frame key="frameInset" width="375" height="56"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GZQ-ch-fqS" customClass="RoundedImageView" customModule="Mooch" customModuleProvider="target">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GZQ-ch-fqS" customClass="RoundedImageView" customModule="Mooch" customModuleProvider="target">
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="jps-Jx-Dan"/>
                                                         <constraint firstAttribute="height" constant="40" id="mf1-oQ-8ZY"/>

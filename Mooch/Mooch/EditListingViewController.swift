@@ -6,7 +6,6 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import ALCameraViewController
 import UIKit
 
 protocol EditListingField {
@@ -59,6 +58,9 @@ class EditListingViewController: MoochModalViewController {
     
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
     fileprivate var isDismissingSelf = false
+    
+    //Tracks which photo adding view the camera is taking a picture for
+    fileprivate var currentPhotoAddingView: PhotoAddingView?
     
     
     // MARK: Actions
@@ -199,16 +201,9 @@ class EditListingViewController: MoochModalViewController {
     }
     
     fileprivate func presentCameraViewController(forPhotoAddingView photoAddingView: PhotoAddingView) {
-        let croppingEnabled = false
-        UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.slide)
-        let cameraViewController = CameraViewController(croppingEnabled: croppingEnabled) { [weak self] image, asset in
-            photoAddingView.photo = image
-            self?.editedListingInformation.photo = image
-            self?.dismiss(animated: true) {
-                UIApplication.shared.setStatusBarHidden(false, with: UIStatusBarAnimation.slide)
-            }
-        }
-        
+        currentPhotoAddingView = photoAddingView
+        let cameraViewController = CameraViewController()
+        cameraViewController.delegate = self
         present(cameraViewController, animated: true, completion: nil)
     }
     
@@ -262,10 +257,36 @@ extension EditListingViewController: PhotoAddingViewDelegate {
     
     func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
         presentCameraViewController(forPhotoAddingView: photoAddingView)
-        //photoAddingView.photo = UIImage(named: "apples")
     }
     
     func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
         editedListingInformation.photo = nil
     }
+}
+
+extension EditListingViewController: UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        guard let photo = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            currentPhotoAddingView = nil
+            return
+        }
+        
+        currentPhotoAddingView?.photo = photo
+        currentPhotoAddingView = nil
+        
+        editedListingInformation.photo = photo
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        currentPhotoAddingView = nil
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+//Required by UIImagePickerController delegate property
+extension EditListingViewController: UINavigationControllerDelegate {
+    
 }
