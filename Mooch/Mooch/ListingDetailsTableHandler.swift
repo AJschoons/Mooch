@@ -81,6 +81,7 @@ class ListingDetailsTableHandler: NSObject {
     fileprivate func configure(listingCell: ListingDetailsListingCell) {
         let listing = delegate.getListing()
         
+        listingCell.photoImageView.image = listing.photo
         listingCell.titleLabel.text = listing.title
         listingCell.descriptionLabel.text = listing.description
         listingCell.categoryLabel.text = listing.tags.count > 0 ? listing.tags[0].name : "No Tags"

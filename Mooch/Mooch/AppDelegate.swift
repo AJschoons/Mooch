@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let mainViewController = ListingsViewController()
+        let mainViewController = ListingsViewController.instantiateFromStoryboard()
         let initialLoadingViewController = InitialLoadingViewController()
         let navigationController = UINavigationController()
         navigationController.viewControllers = [mainViewController, initialLoadingViewController]
