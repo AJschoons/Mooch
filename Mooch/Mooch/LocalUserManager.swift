@@ -16,7 +16,7 @@ class LocalUserManager {
         case loggedIn
     }
     
-    //The variable to access this class trhough
+    //The variable to access this class through
     static let sharedInstance = LocalUserManager()
     
     //This prevents others from using the default '()' initializer for this class
