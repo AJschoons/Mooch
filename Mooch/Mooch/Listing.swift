@@ -16,6 +16,7 @@ struct Listing {
         case title
         case price
         case isFree
+        case quantity
         case categoryId
         case isAvailable
         case createdAt
@@ -31,6 +32,7 @@ struct Listing {
         case description = "detail"
         case price = "price"
         case isFree = "free"
+        case quantity = "quantity"
         case categoryId = "category_id"
         case isAvailable = "available"
         case createdAt = "created_at"
@@ -48,6 +50,7 @@ struct Listing {
     var description: String?
     var price: Float
     var isFree: Bool
+    var quantity: Int
     var categoryId: Int
     var isAvailable: Bool
     var createdAt: Date
@@ -62,13 +65,14 @@ struct Listing {
     }
     
     //Designated initializer
-    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int) {
+    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int) {
         self.id = id
         self.photo = photo
         self.title = title
         self.description = description
         self.price = price
         self.isFree = isFree
+        self.quantity = quantity
         self.categoryId = categoryId
         self.isAvailable = isAvailable
         self.createdAt = createdAt
@@ -90,6 +94,7 @@ struct Listing {
         guard let title = json[JSONMapping.title.rawValue].string else { throw JSONInitializationError.title }
         guard let price = json[JSONMapping.price.rawValue].float else { throw JSONInitializationError.price }
         guard let isFree = json[JSONMapping.isFree.rawValue].bool else { throw JSONInitializationError.isFree }
+        guard let quantity = json[JSONMapping.categoryId.rawValue].int else { throw JSONInitializationError.quantity }
         guard let categoryId = json[JSONMapping.categoryId.rawValue].int else { throw JSONInitializationError.categoryId }
         guard let isAvailable = json[JSONMapping.isAvailable.rawValue].bool else { throw JSONInitializationError.isAvailable }
         guard let createdAtString = json[JSONMapping.createdAt.rawValue].string else { throw JSONInitializationError.createdAt }
@@ -118,7 +123,7 @@ struct Listing {
         //Intialization
         //
 
-        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, categoryId: categoryId, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL, communityId: communityId)
+        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL, communityId: communityId)
     }
     
     static func createDummy(fromNumber i: Int) -> Listing {
@@ -127,6 +132,6 @@ struct Listing {
         let price = Float(i % 100) * 1.68723
         let owner = User.createDummy(fromNumber: i)
         
-        return Listing(id: i, photo: photo, title: "Listing \(i)", description: description, price: price, isFree: false, categoryId: i, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: owner, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100", communityId: i)
+        return Listing(id: i, photo: photo, title: "Listing \(i)", description: description, price: price, isFree: false, quantity: i, categoryId: i, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: owner, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100", communityId: i)
     }
 }
