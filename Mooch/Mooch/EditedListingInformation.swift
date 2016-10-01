@@ -14,12 +14,12 @@ struct EditedListingInformation {
     var photo: UIImage?
     var title: String?
     var description: String?
-    var tag: ListingTag?
+    var categoryId: Int?
     var price: Float?
     var quantity: Int?
     
     var isAllInformationFilled: Bool {
-        if photo == nil || title == nil || tag == nil || price == nil || quantity == nil {
+        if photo == nil || title == nil || categoryId == nil || price == nil || quantity == nil {
             return false
         }
         
@@ -35,7 +35,7 @@ struct EditedListingInformation {
             unfilledFieldType = .title
         } else if description == nil {
             unfilledFieldType = .description
-        } else if tag == nil {
+        } else if categoryId == nil {
             unfilledFieldType = .tag
         } else if price == nil {
             unfilledFieldType = .price

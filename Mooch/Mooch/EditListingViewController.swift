@@ -54,7 +54,7 @@ class EditListingViewController: MoochModalViewController {
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var cancelButton: UIBarButtonItem!
     
-    fileprivate var editedListingInformation = EditedListingInformation(photo: nil, title: nil, description: nil, tag: nil, price: nil, quantity: nil)
+    fileprivate var editedListingInformation = EditedListingInformation(photo: nil, title: nil, description: nil, categoryId: nil, price: nil, quantity: nil)
     
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
     fileprivate var isDismissingSelf = false
@@ -232,8 +232,6 @@ extension EditListingViewController: EditListingTextHandlerDelegate {
             editedListingInformation.title = text
         case .description:
             editedListingInformation.description = text
-        case .tag:
-            editedListingInformation.tag = ListingTag(id: 0, name: text, count: 1)
         case .price:
             editedListingInformation.price = Float(text)
         default:

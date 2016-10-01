@@ -14,11 +14,7 @@ class ListingCategoryManager {
     //The variable to access this class through
     static let sharedInstance = ListingCategoryManager()
     
-    private(set) var listingCategories = [ListingCategory]() {
-        didSet {
-            generateIdToObjectMapping(forListingCategories: listingCategories)
-        }
-    }
+    private(set) var listingCategories = [ListingCategory]()
     
     //Dictionary of a ListingCategory's id to the ListingCategory for quick ListingCategory lookup
     private var idToObjectMapping = [Int : ListingCategory]()
@@ -30,11 +26,12 @@ class ListingCategoryManager {
             let dummyListingCategory = ListingCategory.createDummy(fromNumber: i)
             dummyListingCategories.append(dummyListingCategory)
         }
-        listingCategories = dummyListingCategories
+        update(withListingCategories: dummyListingCategories)
     }
     
     func update(withListingCategories listingCategories: [ListingCategory]) {
         self.listingCategories = listingCategories
+        generateIdToObjectMapping(forListingCategories: listingCategories)
     }
     
     func getListingCategory(withId listingCategoryId: Int) -> ListingCategory? {
