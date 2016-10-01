@@ -59,11 +59,11 @@
 		815BCF0B1D7E7F5C0022F806 /* CommunityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */; };
 		815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF021D7E77E70022F806 /* Errors.swift */; };
 		815BCF0E1D7E83160022F806 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF0D1D7E83160022F806 /* UserTests.swift */; };
-		815BCF141D805B550022F806 /* ListingTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF131D805B550022F806 /* ListingTag.swift */; };
+		815BCF141D805B550022F806 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF131D805B550022F806 /* ListingCategory.swift */; };
 		815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF151D805EAE0022F806 /* LocalUser.swift */; };
 		815BCF181D806D260022F806 /* ListingTagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF171D806D260022F806 /* ListingTagTests.swift */; };
 		815BCF191D806F970022F806 /* LocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF151D805EAE0022F806 /* LocalUser.swift */; };
-		815BCF1A1D806F990022F806 /* ListingTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF131D805B550022F806 /* ListingTag.swift */; };
+		815BCF1A1D806F990022F806 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF131D805B550022F806 /* ListingCategory.swift */; };
 		815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF1B1D8070B80022F806 /* LocalUserTests.swift */; };
 		81A09FDA1D9B34DB0021D3FA /* PhotoAddingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */; };
 		81A09FDC1D9B350B0021D3FA /* PhotoAddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */; };
@@ -158,7 +158,7 @@
 		815BCF061D7E78FD0022F806 /* Community.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Community.swift; sourceTree = "<group>"; };
 		815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityTests.swift; sourceTree = "<group>"; };
 		815BCF0D1D7E83160022F806 /* UserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
-		815BCF131D805B550022F806 /* ListingTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTag.swift; sourceTree = "<group>"; };
+		815BCF131D805B550022F806 /* ListingCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategory.swift; sourceTree = "<group>"; };
 		815BCF151D805EAE0022F806 /* LocalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUser.swift; sourceTree = "<group>"; };
 		815BCF171D806D260022F806 /* ListingTagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTagTests.swift; sourceTree = "<group>"; };
 		815BCF1B1D8070B80022F806 /* LocalUserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUserTests.swift; sourceTree = "<group>"; };
@@ -324,7 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				815BCF061D7E78FD0022F806 /* Community.swift */,
-				815BCF131D805B550022F806 /* ListingTag.swift */,
+				815BCF131D805B550022F806 /* ListingCategory.swift */,
 				8149E7BE1D85FC6B000F0C37 /* Listing.swift */,
 				815BCF151D805EAE0022F806 /* LocalUser.swift */,
 				815BCF041D7E78290022F806 /* User.swift */,
@@ -822,7 +822,7 @@
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
 				814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */,
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
-				815BCF141D805B550022F806 /* ListingTag.swift in Sources */,
+				815BCF141D805B550022F806 /* ListingCategory.swift in Sources */,
 				815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */,
 				815BCF031D7E77E70022F806 /* Errors.swift in Sources */,
 			);
@@ -840,7 +840,7 @@
 				815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */,
 				B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */,
 				81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
-				815BCF1A1D806F990022F806 /* ListingTag.swift in Sources */,
+				815BCF1A1D806F990022F806 /* ListingCategory.swift in Sources */,
 				815BCF081D7E7F070022F806 /* Community.swift in Sources */,
 				815BCF0E1D7E83160022F806 /* UserTests.swift in Sources */,
 				811025A31D94D76800C3931C /* MoochAPI.swift in Sources */,

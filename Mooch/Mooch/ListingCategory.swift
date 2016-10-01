@@ -8,6 +8,7 @@
 
 struct ListingCategory {
     
+    //The required data for JSON initialization
     enum JSONInitializationError: Error {
         case id
         case name
