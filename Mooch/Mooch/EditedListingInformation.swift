@@ -33,14 +33,12 @@ struct EditedListingInformation {
             unfilledFieldType = .photo
         } else if title == nil {
             unfilledFieldType = .title
-        } else if description == nil {
-            unfilledFieldType = .description
-        } else if categoryId == nil {
-            unfilledFieldType = .tag
         } else if price == nil {
             unfilledFieldType = .price
         } else if quantity == nil {
             unfilledFieldType = .quantity
+        } else if categoryId == nil {
+            unfilledFieldType = .category
         }
         
         return unfilledFieldType

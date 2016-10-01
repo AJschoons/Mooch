@@ -45,10 +45,10 @@ extension ListingsTableHandler: UITableViewDataSource {
         cell.priceLabel.text = listing.priceString
         
         var categoryLabelText: String
-        if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.id) {
+        if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.categoryId) {
             categoryLabelText = listingCategory.name
         } else {
-            categoryLabelText = "Bad Category Id"
+            categoryLabelText = Strings.InvalidCategoryId.rawValue
         }
         cell.categoryLabel.text = categoryLabelText
         

@@ -22,8 +22,8 @@ class EditListingViewController: MoochModalViewController {
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = EditListingConfiguration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .tag, .price, .quantity])
-    static let DefaultEditingConfiguration = EditListingConfiguration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .tag, .price, .quantity])
+    static let DefaultCreatingConfiguration = EditListingConfiguration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
+    static let DefaultEditingConfiguration = EditListingConfiguration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
     
     @IBOutlet var tableHandler: EditListingTableHandler! {
         didSet { tableHandler.delegate = self }
@@ -207,6 +207,15 @@ class EditListingViewController: MoochModalViewController {
         present(cameraViewController, animated: true, completion: nil)
     }
     
+    fileprivate func pushListingCategoryPickerViewController(withSelectedListingCategory selectedListingCategory: ListingCategory?) {
+        guard let navC = navigationController else { return }
+        
+        let listingCategoryPickerViewController = ListingCategoryPickerViewController.instantiateFromStoryboard()
+        listingCategoryPickerViewController.delegate = self
+        listingCategoryPickerViewController.selectedListingCategory = selectedListingCategory
+        navC.pushViewController(listingCategoryPickerViewController, animated: true)
+    }
+    
     fileprivate func dismissSelf(completion: (() -> Void)?) {
         isDismissingSelf = true
         dismiss(animated: true, completion: completion)
@@ -221,6 +230,19 @@ extension EditListingViewController: EditListingTableHandlerDelegate {
     
     func getTextHandler() -> EditListingTextHandler {
         return textHandler
+    }
+    
+    func getEditedListingInformation() -> EditedListingInformation {
+        return editedListingInformation
+    }
+    
+    func didSelectCategoryCell() {
+        var currentlySelectedCategory: ListingCategory?
+        if let currentlySelectedCategoryId = editedListingInformation.categoryId {
+            currentlySelectedCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: currentlySelectedCategoryId)
+        }
+        
+        pushListingCategoryPickerViewController(withSelectedListingCategory: currentlySelectedCategory)
     }
 }
 
@@ -287,4 +309,15 @@ extension EditListingViewController: UIImagePickerControllerDelegate {
 //Required by UIImagePickerController delegate property
 extension EditListingViewController: UINavigationControllerDelegate {
     
+}
+
+extension EditListingViewController: ListingCategoryPickerViewControllerDelegate {
+    
+    func didPick(listingCategory: ListingCategory) {
+        editedListingInformation.categoryId = listingCategory.id
+        tableHandler.reloadData()
+        
+        guard let navC = navigationController else { return }
+        navC.popViewController(animated: true)
+    }
 }

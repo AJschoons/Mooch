@@ -57,8 +57,6 @@ class EditListingTextHandler: NSObject {
             allowChanges = shouldAllowChangesForDescriptionField(withUpdatedText: updatedText)
         case .price:
             allowChanges = shouldAllowChangesForPriceField(withUpdatedText: updatedText)
-        case .tag:
-            allowChanges = shouldAllowChangesForTagField(withUpdatedText: updatedText)
         default:
             allowChanges = false
         }
@@ -74,13 +72,6 @@ class EditListingTextHandler: NSObject {
         return updatedText.characters.count <= MaxDescriptionFieldCharacters
     }
     
-    fileprivate func shouldAllowChangesForTagField(withUpdatedText updatedText: String) -> Bool {
-        if updatedText.contains(" ") {
-            return false
-        }
-        
-        return updatedText.characters.count <= MaxTagFieldCharacters
-    }
     
     //Only allows changes if it fits into the ###.## decimal format (3 numbers leading the decimal point and two following)
     fileprivate func shouldAllowChangesForPriceField(withUpdatedText updatedText: String) -> Bool {

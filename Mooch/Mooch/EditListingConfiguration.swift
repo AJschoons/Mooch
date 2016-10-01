@@ -36,9 +36,9 @@ struct EditListingConfiguration {
         case photo
         case title
         case description
-        case tag
         case price
         case quantity
+        case category
     }
     
     func indexOfLastFieldType(conformingToMapping mapping: FieldTypeConformanceMapping) -> Int? {
@@ -55,12 +55,12 @@ struct EditListingConfiguration {
             return "Title"
         case .description:
             return "Description"
-        case .tag:
-            return "Tag"
         case .price:
             return "Price"
         case .quantity:
             return "Quantity"
+        case .category:
+            return "Category"
         }
     }
 }

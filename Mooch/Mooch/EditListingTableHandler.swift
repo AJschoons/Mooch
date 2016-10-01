@@ -11,6 +11,8 @@ import UIKit
 protocol EditListingTableHandlerDelegate: class, EditListingQuantityCellDelegate, PhotoAddingViewDelegate {
     func getConfiguration() -> EditListingConfiguration
     func getTextHandler() -> EditListingTextHandler
+    func getEditedListingInformation() -> EditedListingInformation
+    func didSelectCategoryCell()
 }
 
 class EditListingTableHandler: NSObject {
@@ -51,6 +53,10 @@ class EditListingTableHandler: NSObject {
     
     // MARK: Public methods
     
+    func reloadData() {
+        tableView.reloadData()
+    }
+    
     //Resizes and repositions the table view based on the height difference
     func onTextDidChangeSize(withHeightDifference heightDifferrence: CGFloat) {
         //Automatically resizes the table view due to text changes
@@ -87,10 +93,10 @@ class EditListingTableHandler: NSObject {
     //Returns true if a field type maps to a EditListingTextFieldCell
     func isTextField(forFieldType fieldType: EditListingConfiguration.FieldType) -> Bool {
         switch fieldType {
-        case .photo, .quantity:
-            return false
-        default:
+        case .title, .description, .price:
             return true
+        default:
+            return false
         }
     }
     
@@ -101,7 +107,7 @@ class EditListingTableHandler: NSObject {
         return delegate!.getConfiguration().fields[indexPath.row]
     }
     
-    //Returns the identifier string for
+    //Returns the identifier string for the field type
     fileprivate func cellIdentifer(forFieldType fieldType: EditListingConfiguration.FieldType) -> String {
         
         switch fieldType {
@@ -109,6 +115,8 @@ class EditListingTableHandler: NSObject {
             return EditListingPhotoCell.Identifier
         case .quantity:
             return EditListingQuantityCell.Identifier
+        case .category:
+            return EditListingCategoryCell.Identifier
         default:
             return EditListingTextCell.Identifier
         }
@@ -122,6 +130,19 @@ class EditListingTableHandler: NSObject {
     //Configures an EditListingQuantityCell
     fileprivate func configure(editListingQuantityCell cell: EditListingQuantityCell) {
         cell.delegate = delegate
+    }
+    
+    //Configures an EditListingCategoryCell
+    fileprivate func configure(editListingCategoryCell cell: EditListingCategoryCell) {
+        var categoryNameText = "Unselected"
+        if let selectedCategoryId = delegate.getEditedListingInformation().categoryId {
+            if let selectedCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: selectedCategoryId) {
+                categoryNameText = selectedCategory.name
+            } else {
+                categoryNameText = Strings.InvalidCategoryId.rawValue
+            }
+        }
+        cell.categoryNameLabel.text = categoryNameText
     }
 
     //Configures an EditListingTextCell based on the field type
@@ -193,6 +214,8 @@ extension EditListingTableHandler: UITableViewDataSource {
             configure(editListingQuantityCell: quantityCell)
         } else if let photoCell = cell as? EditListingPhotoCell {
             configure(editListingPhotoCell: photoCell)
+        } else if let categoryCell = cell as? EditListingCategoryCell {
+            configure(editListingCategoryCell: categoryCell)
         }
         
         return cell
@@ -213,6 +236,11 @@ extension EditListingTableHandler: UITableViewDelegate {
         } else {
             return UITableViewAutomaticDimension
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard fieldType(forIndexPath: indexPath) == .category else { return }
+        delegate.didSelectCategoryCell()
     }
 }
 
