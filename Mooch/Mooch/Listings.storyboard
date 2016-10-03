@@ -51,17 +51,12 @@
                                                 </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="14F-5D-fhB">
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Listing Tag" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1AR-kF-vbJ">
-                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsw-0x-fnO">
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BlD-fQ-jLJ">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Listing Category" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1AR-kF-vbJ">
                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -83,16 +78,15 @@
                                                 <constraint firstItem="4fL-NN-J4T" firstAttribute="top" secondItem="GZQ-ch-fqS" secondAttribute="top" id="nA7-gT-9Uo"/>
                                                 <constraint firstAttribute="trailing" secondItem="14F-5D-fhB" secondAttribute="trailing" constant="8" id="pjE-7a-lH5"/>
                                                 <constraint firstItem="GZQ-ch-fqS" firstAttribute="leading" secondItem="5KQ-6p-Ywf" secondAttribute="leading" constant="8" id="rT8-mV-2mw"/>
-                                                <constraint firstAttribute="trailing" secondItem="4fL-NN-J4T" secondAttribute="trailing" constant="28" id="s09-bs-EFo"/>
+                                                <constraint firstAttribute="trailing" secondItem="4fL-NN-J4T" secondAttribute="trailing" constant="8" id="s09-bs-EFo"/>
                                                 <constraint firstAttribute="trailing" secondItem="Ig8-Hb-j28" secondAttribute="trailing" id="xYJ-0f-7HF"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="categoryLabel" destination="1AR-kF-vbJ" id="QY2-ae-PzN"/>
                                             <outlet property="photo" destination="GZQ-ch-fqS" id="XT5-L2-v2Z"/>
                                             <outlet property="priceLabel" destination="dsw-0x-fnO" id="zjB-GZ-0Dc"/>
-                                            <outlet property="tagLabel" destination="1AR-kF-vbJ" id="fve-lR-C2B"/>
                                             <outlet property="titleLabel" destination="4fL-NN-J4T" id="52L-Db-0lh"/>
-                                            <outlet property="userLabel" destination="BlD-fQ-jLJ" id="i4a-eC-8Hm"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

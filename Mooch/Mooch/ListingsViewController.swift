@@ -144,7 +144,7 @@ class ListingsViewController: MoochViewController {
     }
     
     fileprivate func presentListingCreatedAlert(forListing listing: Listing) {
-        let alert = UIAlertController(title: "Listing Created", message: "Your listing with the title \"\(listing.title)\" is now visible to all users in the \"\(listing.community!.name)\" community", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Listing Created", message: "Your listing with the title \"\(listing.title)\" is now visible to all users in your community!", preferredStyle: .alert)
         let action = UIAlertAction(title: "Keep Mooching", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
@@ -155,7 +155,7 @@ class ListingsViewController: MoochViewController {
     }
     
     fileprivate func createListing(fromEditedListingInformation eli: EditedListingInformation) -> Listing {
-        return Listing(id: -1, photo: eli.photo!, title: eli.title!, description: eli.description, price: eli.price!, isFree: false, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, tags: [eli.tag!], community: LocalUserManager.sharedInstance.localUser!.user.community)
+        return Listing(id: -1, photo: eli.photo!, title: eli.title!, description: eli.description, price: eli.price!, isFree: false, quantity: eli.quantity!, categoryId: eli.categoryId!, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, pictureURL: "", thumbnailPictureURL: "", communityId: 1)
     }
 }
 

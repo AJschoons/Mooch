@@ -84,9 +84,16 @@ class ListingDetailsTableHandler: NSObject {
         listingCell.photoImageView.image = listing.photo
         listingCell.titleLabel.text = listing.title
         listingCell.descriptionLabel.text = listing.description
-        listingCell.categoryLabel.text = listing.tags.count > 0 ? listing.tags[0].name : "No Tags"
         listingCell.priceLabel.text = "Price: \(listing.priceString)"
-        listingCell.quantityLabel.text = "Quantity: 1"
+        listingCell.quantityLabel.text = "Quantity: \(listing.quantity)"
+        
+        var categoryLabelText: String
+        if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.categoryId) {
+            categoryLabelText = listingCategory.name
+        } else {
+            categoryLabelText = Strings.InvalidCategoryId.rawValue
+        }
+        listingCell.categoryLabel.text = categoryLabelText
     }
     
     fileprivate func configure(actionCell: ListingDetailsActionCell, forFieldType fieldType: FieldType) {

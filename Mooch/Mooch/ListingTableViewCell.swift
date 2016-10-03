@@ -15,7 +15,6 @@ class ListingTableViewCell: UITableViewCell {
     
     @IBOutlet weak var photo: RoundedImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var tagLabel: UILabel!
+    @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var userLabel: UILabel!
 }

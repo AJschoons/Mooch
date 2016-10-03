@@ -19,17 +19,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="363" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mQ9-1C-1Fh">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="363" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mQ9-1C-1Fh">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingPhotoCell" rowHeight="209" id="2Qp-7l-Qir" customClass="EditListingPhotoCell" customModule="Mooch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditListingPhotoCell" rowHeight="209" id="2Qp-7l-Qir" customClass="EditListingPhotoCell" customModule="Mooch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="209"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Qp-7l-Qir" id="Bdw-HP-0sQ">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="2Qp-7l-Qir" id="Bdw-HP-0sQ">
                                             <frame key="frameInset" width="375" height="209"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mzx-wM-YWT" customClass="PhotoAddingView" customModule="Mooch" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mzx-wM-YWT" customClass="PhotoAddingView" customModule="Mooch" customModuleProvider="target">
+                                                    <frame key="frameInset" width="1000" height="1000"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="Mzx-wM-YWT" secondAttribute="height" multiplier="1:1" id="cKh-Yt-dYN"/>
@@ -47,7 +48,7 @@
                                             <outlet property="photoAddingView" destination="Mzx-wM-YWT" id="o9p-5A-Nsj"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingTextCell" rowHeight="66" id="XWl-fY-Gj2" customClass="EditListingTextCell" customModule="Mooch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditListingTextCell" rowHeight="66" id="XWl-fY-Gj2" customClass="EditListingTextCell" customModule="Mooch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="237" width="375" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XWl-fY-Gj2" id="s3x-hw-rqm">
@@ -95,7 +96,7 @@
                                             <outlet property="textView" destination="Xvf-Bm-zLt" id="sB4-q6-LWE"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingQuantityCell" rowHeight="44" id="B0U-Qi-wn4" customClass="EditListingQuantityCell" customModule="Mooch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditListingQuantityCell" rowHeight="44" id="B0U-Qi-wn4" customClass="EditListingQuantityCell" customModule="Mooch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="303" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B0U-Qi-wn4" id="OmY-1C-WZx">
@@ -135,6 +136,40 @@
                                             <outlet property="quantityCountLabel" destination="1Gz-95-3GG" id="QJr-NL-uQT"/>
                                             <outlet property="quantityLabel" destination="wls-nB-8Iq" id="LH2-wE-e1i"/>
                                             <outlet property="stepper" destination="kBH-jA-qj9" id="z8a-yA-6Nk"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="EditListingCategoryCell" rowHeight="44" id="Bh5-Ax-Kkt" customClass="EditListingCategoryCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="347" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bh5-Ax-Kkt" id="ulJ-FP-tQf">
+                                            <frame key="frameInset" width="342" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1qR-Lt-yN5">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="sXg-0N-lRK"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sDW-ZE-GHQ">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="sDW-ZE-GHQ" firstAttribute="height" secondItem="1qR-Lt-yN5" secondAttribute="height" id="D7C-Vi-5v2"/>
+                                                <constraint firstItem="sDW-ZE-GHQ" firstAttribute="top" secondItem="1qR-Lt-yN5" secondAttribute="top" id="FkO-ag-6iv"/>
+                                                <constraint firstItem="sDW-ZE-GHQ" firstAttribute="leading" secondItem="1qR-Lt-yN5" secondAttribute="trailing" constant="5" id="MoP-VM-hvg"/>
+                                                <constraint firstItem="1qR-Lt-yN5" firstAttribute="leading" secondItem="ulJ-FP-tQf" secondAttribute="leading" constant="15" id="aEl-uJ-6aX"/>
+                                                <constraint firstItem="1qR-Lt-yN5" firstAttribute="centerY" secondItem="ulJ-FP-tQf" secondAttribute="centerY" id="rGA-wR-P17"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="categoryLabel" destination="1qR-Lt-yN5" id="FMz-aC-Xgi"/>
+                                            <outlet property="categoryNameLabel" destination="sDW-ZE-GHQ" id="WmF-Kb-o2W"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

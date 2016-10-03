@@ -7,8 +7,8 @@
 //
 
 //Enumeration for string literals used in the app
-enum Strings {
-    
+enum Strings: String {
+    case InvalidCategoryId = "Bad Category Id"
 }
 
 //
