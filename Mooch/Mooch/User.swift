@@ -27,9 +27,6 @@ struct User {
         case currentRating = "current_rating"
         case ratingCount = "rating_count"
         case communityId = "community_id"
-        case password = "password"
-        case passwordDigest = "password_digest"
-        case authenticationToken = "authentication_token"
         case pictureURL = "profile_pic"
         case thumbnailPictureURL = "profile_pic_small"
     }
@@ -40,12 +37,6 @@ struct User {
         var phone: String?
     }
     
-    struct LoginInformation {
-        var password: String?
-        var passwordDigest: String?
-        var authenticationToken: String?
-    }
-    
     let id: Int
     var name: String
     var contactInformation: ContactInformation
@@ -54,12 +45,11 @@ struct User {
     let communityId: Int
     
     //Optional
-    var loginInformation: LoginInformation?
     var pictureURL: String?
     var thumbnailPictureURL: String?
     
     //Designated initializer
-    init(id: Int, name: String, contactInformation: ContactInformation, currentRating: Float, ratingCount: Int, communityId: Int, loginInformation: LoginInformation?, pictureURL: String?, thumbnailPictureURL: String?) {
+    init(id: Int, name: String, contactInformation: ContactInformation, currentRating: Float, ratingCount: Int, communityId: Int, pictureURL: String?, thumbnailPictureURL: String?) {
         self.id = id
         self.name = name
         self.contactInformation = contactInformation
@@ -67,7 +57,6 @@ struct User {
         self.ratingCount = ratingCount
         self.communityId = communityId
         
-        self.loginInformation = loginInformation
         self.pictureURL = pictureURL
         self.thumbnailPictureURL = thumbnailPictureURL
     }
@@ -99,22 +88,12 @@ struct User {
         let phone = json[JSONMapping.phone.rawValue].string
         let contactInformation = ContactInformation(address: address, email: email, phone: phone)
         
-        //Setup login information
-        var loginInformation: LoginInformation?
-        let isLoginInformation = json[JSONMapping.password.rawValue].exists() || json[JSONMapping.passwordDigest.rawValue].exists() || json[JSONMapping.authenticationToken.rawValue].exists()
-        if isLoginInformation {
-            let password = json[JSONMapping.password.rawValue].string
-            let passwordDigest = json[JSONMapping.passwordDigest.rawValue].string
-            let authenticationToken = json[JSONMapping.authenticationToken.rawValue].string
-            loginInformation = LoginInformation(password: password, passwordDigest: passwordDigest, authenticationToken: authenticationToken)
-        }
-        
         
         //
         //Initializtion
         //
         
-        self.init(id: id, name: name, contactInformation: contactInformation, currentRating: currentRating, ratingCount: ratingCount, communityId: communityId, loginInformation: loginInformation, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL)
+        self.init(id: id, name: name, contactInformation: contactInformation, currentRating: currentRating, ratingCount: ratingCount, communityId: communityId, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL)
     }
     
     static func createDummy(fromNumber i: Int) -> User {
@@ -122,6 +101,6 @@ struct User {
         let currentRating: Float = 3.5 * 1.2164
         let ratingCount = 23
         let contactInformation = ContactInformation(address: "Apt #\(i)", email: "\(i)@example.com", phone: phoneString)
-        return User(id: i, name: "User \(i)", contactInformation: contactInformation, currentRating: currentRating, ratingCount: ratingCount, communityId: i, loginInformation: nil, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100")
+        return User(id: i, name: "User \(i)", contactInformation: contactInformation, currentRating: currentRating, ratingCount: ratingCount, communityId: i, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100")
     }
 }

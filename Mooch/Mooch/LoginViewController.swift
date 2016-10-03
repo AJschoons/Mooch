@@ -64,7 +64,7 @@ class LoginViewController: MoochModalViewController {
     }
     
     fileprivate func login(withUser user: User) {
-        let localUser = LocalUser(user: user, password: "test password")
+        let localUser = LocalUser(user: user, authenticationToken: "fake token")
         LocalUserManager.sharedInstance.login(withLocalUser: localUser)
     }
 }
