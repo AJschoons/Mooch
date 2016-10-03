@@ -114,9 +114,8 @@ class ListingsViewController: MoochViewController {
     fileprivate func presentLoginViewController() {
         guard let navC = navigationController else { return }
 
-        let vc = LoginViewController()
+        let vc = LoginViewController.instantiateFromStoryboard()
         vc.delegate = self
-        vc.modalTransitionStyle = .crossDissolve
         
         navC.present(vc, animated: true, completion: nil)
     }
@@ -126,11 +125,6 @@ class ListingsViewController: MoochViewController {
         
         let vc = ProfileViewController.instantiateFromStoryboard()
         let profileNavC = UINavigationController(rootViewController: vc)
-        vc.modalTransitionStyle = .crossDissolve
-        
-        //Needed for blurring over current view
-//        vc.modalPresentationStyle = .overFullScreen
-//        profileNavC.modalPresentationStyle = .overFullScreen
         
         navC.present(profileNavC, animated: true, completion: nil)
     }

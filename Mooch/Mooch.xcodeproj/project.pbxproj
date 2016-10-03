@@ -32,7 +32,6 @@
 		8149E7C61D865E2D000F0C37 /* ListingDetails.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7C51D865E2D000F0C37 /* ListingDetails.storyboard */; };
 		8149E7C81D865E5A000F0C37 /* ListingDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7C71D865E5A000F0C37 /* ListingDetailsViewController.swift */; };
 		8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7CA1D8668D6000F0C37 /* LoginViewController.swift */; };
-		8149E7CD1D8668D6000F0C37 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7CB1D8668D6000F0C37 /* LoginViewController.xib */; };
 		8149E7D01D87017D000F0C37 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7CF1D87017D000F0C37 /* RoundedButton.swift */; };
 		8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */; };
 		8149E7D51D871A76000F0C37 /* EditProfile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8149E7D41D871A76000F0C37 /* EditProfile.storyboard */; };
@@ -70,6 +69,7 @@
 		816623AC1DA06202009AE72B /* ListingCategoryPicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 816623AB1DA06202009AE72B /* ListingCategoryPicker.storyboard */; };
 		816623AE1DA06263009AE72B /* ListingCategoryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816623AD1DA06263009AE72B /* ListingCategoryPickerViewController.swift */; };
 		816623B41DA06311009AE72B /* ListingCategoryPickerTableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816623B31DA06311009AE72B /* ListingCategoryPickerTableHandler.swift */; };
+		817CA0901DA2BB4E00489374 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 817CA08F1DA2BB4E00489374 /* Login.storyboard */; };
 		81A09FDA1D9B34DB0021D3FA /* PhotoAddingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */; };
 		81A09FDC1D9B350B0021D3FA /* PhotoAddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */; };
 		81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */; };
@@ -139,7 +139,6 @@
 		8149E7C51D865E2D000F0C37 /* ListingDetails.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ListingDetails.storyboard; sourceTree = "<group>"; };
 		8149E7C71D865E5A000F0C37 /* ListingDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetailsViewController.swift; sourceTree = "<group>"; };
 		8149E7CA1D8668D6000F0C37 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		8149E7CB1D8668D6000F0C37 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		8149E7CF1D87017D000F0C37 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		8149E7D41D871A76000F0C37 /* EditProfile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditProfile.storyboard; sourceTree = "<group>"; };
@@ -172,6 +171,7 @@
 		816623AB1DA06202009AE72B /* ListingCategoryPicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ListingCategoryPicker.storyboard; sourceTree = "<group>"; };
 		816623AD1DA06263009AE72B /* ListingCategoryPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryPickerViewController.swift; sourceTree = "<group>"; };
 		816623B31DA06311009AE72B /* ListingCategoryPickerTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryPickerTableHandler.swift; sourceTree = "<group>"; };
+		817CA08F1DA2BB4E00489374 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoAddingView.xib; sourceTree = "<group>"; };
 		81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAddingView.swift; sourceTree = "<group>"; };
 		81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
@@ -445,7 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				8149E7CA1D8668D6000F0C37 /* LoginViewController.swift */,
-				8149E7CB1D8668D6000F0C37 /* LoginViewController.xib */,
+				817CA08F1DA2BB4E00489374 /* Login.storyboard */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -650,7 +650,7 @@
 				814DB9C41D8C9B7E006F34E9 /* EditListing.storyboard in Resources */,
 				8149E7D51D871A76000F0C37 /* EditProfile.storyboard in Resources */,
 				8149E7AF1D84977C000F0C37 /* InitialLoadingViewController.xib in Resources */,
-				8149E7CD1D8668D6000F0C37 /* LoginViewController.xib in Resources */,
+				817CA0901DA2BB4E00489374 /* Login.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

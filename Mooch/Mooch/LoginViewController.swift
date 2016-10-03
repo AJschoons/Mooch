@@ -22,6 +22,9 @@ class LoginViewController: MoochModalViewController {
     
     // MARK: Private variables
     
+    static fileprivate let StoryboardName = "Login"
+    static fileprivate let Identifier = "LoginViewController"
+    
     // MARK: Actions
     
     @IBAction func onCancel() {
@@ -39,6 +42,11 @@ class LoginViewController: MoochModalViewController {
     }
     
     // MARK: Public methods
+    
+    static func instantiateFromStoryboard() -> LoginViewController {
+        let storyboard = UIStoryboard(name: LoginViewController.StoryboardName, bundle: nil)
+        return storyboard.instantiateViewController(withIdentifier: LoginViewController.Identifier) as! LoginViewController
+    }
     
     override func prefersNavigationBarHidden() -> Bool {
         return true
