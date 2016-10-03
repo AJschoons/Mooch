@@ -70,6 +70,8 @@
 		816623AE1DA06263009AE72B /* ListingCategoryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816623AD1DA06263009AE72B /* ListingCategoryPickerViewController.swift */; };
 		816623B41DA06311009AE72B /* ListingCategoryPickerTableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816623B31DA06311009AE72B /* ListingCategoryPickerTableHandler.swift */; };
 		817CA0901DA2BB4E00489374 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 817CA08F1DA2BB4E00489374 /* Login.storyboard */; };
+		817CA0921DA2BFD500489374 /* LoginTextHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0911DA2BFD500489374 /* LoginTextHandler.swift */; };
+		817CA0941DA2C10D00489374 /* LoginTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0931DA2C10D00489374 /* LoginTextView.swift */; };
 		81A09FDA1D9B34DB0021D3FA /* PhotoAddingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */; };
 		81A09FDC1D9B350B0021D3FA /* PhotoAddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */; };
 		81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */; };
@@ -172,6 +174,8 @@
 		816623AD1DA06263009AE72B /* ListingCategoryPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryPickerViewController.swift; sourceTree = "<group>"; };
 		816623B31DA06311009AE72B /* ListingCategoryPickerTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryPickerTableHandler.swift; sourceTree = "<group>"; };
 		817CA08F1DA2BB4E00489374 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		817CA0911DA2BFD500489374 /* LoginTextHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextHandler.swift; sourceTree = "<group>"; };
+		817CA0931DA2C10D00489374 /* LoginTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextView.swift; sourceTree = "<group>"; };
 		81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoAddingView.xib; sourceTree = "<group>"; };
 		81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAddingView.swift; sourceTree = "<group>"; };
 		81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
@@ -446,6 +450,7 @@
 			children = (
 				8149E7CA1D8668D6000F0C37 /* LoginViewController.swift */,
 				817CA08F1DA2BB4E00489374 /* Login.storyboard */,
+				817CA0911DA2BFD500489374 /* LoginTextHandler.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -454,6 +459,7 @@
 			isa = PBXGroup;
 			children = (
 				81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */,
+				817CA0931DA2C10D00489374 /* LoginTextView.swift */,
 				81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */,
 				81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */,
 				8149E7CF1D87017D000F0C37 /* RoundedButton.swift */,
@@ -835,6 +841,7 @@
 				8149E7BF1D85FC6C000F0C37 /* Listing.swift in Sources */,
 				81F0EA541D98D01D00C7AD09 /* EditListingTextHandler.swift in Sources */,
 				814DB9CE1D91DE1A006F34E9 /* EditListingQuantityCell.swift in Sources */,
+				817CA0941DA2C10D00489374 /* LoginTextView.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
 				81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */,
 				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
@@ -859,6 +866,7 @@
 				814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */,
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
 				815BCF141D805B550022F806 /* ListingCategory.swift in Sources */,
+				817CA0921DA2BFD500489374 /* LoginTextHandler.swift in Sources */,
 				815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */,
 				815BCF031D7E77E70022F806 /* Errors.swift in Sources */,
 			);

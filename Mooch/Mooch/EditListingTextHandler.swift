@@ -39,7 +39,7 @@ class EditListingTextHandler: NSObject {
     
     // MARK: Private methods
     
-    fileprivate func onReturnKey(forTextView textView: EditListingTextView) {
+    fileprivate func onReturnKey(forTextView textView: NavigableTextView) {
         //Bring the keyboard to the next textview if it exists, else hide it
         if let nextTextField = textView.nextNavigableTextView {
             nextTextField.becomeFirstResponder()

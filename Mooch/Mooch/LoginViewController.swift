@@ -9,13 +9,37 @@
 import UIKit
 
 protocol LoginViewControllerDelegate: class {
-    
     func loginViewControllerDidLogin(withUser loggedInUser: User)
 }
 
+//View controller that handles logging in
 class LoginViewController: MoochModalViewController {
     
+    //The types of fields needed for logging in
+    enum FieldType {
+        case email
+        case password
+    }
+    
+    //Tracks the state of the login data. Fields must be nil if empty or invalid
+    struct LoginData {
+        var email: String?
+        var password: String?
+        
+        var isFilledAndValid: Bool { return email != nil && password != nil && isEmailValid }
+        
+        var isEmailValid: Bool { return false }
+    }
+    
     // MARK: Public variables
+    
+    @IBOutlet weak var emailTextView: LoginTextView!
+    @IBOutlet weak var passwordTextView: LoginTextView!
+    @IBOutlet var textHandler: LoginTextHandler! {
+        didSet {
+            textHandler.delegate = self
+        }
+    }
     
     weak var delegate: LoginViewControllerDelegate?
     
@@ -24,6 +48,8 @@ class LoginViewController: MoochModalViewController {
     
     static fileprivate let StoryboardName = "Login"
     static fileprivate let Identifier = "LoginViewController"
+    
+    fileprivate var loginData = LoginData(email: nil, password: nil)
     
     // MARK: Actions
     
@@ -52,6 +78,25 @@ class LoginViewController: MoochModalViewController {
         return true
     }
     
+    override func setup() {
+        super.setup()
+        
+        setupTextViews()
+        
+        updateUI()
+    }
+    
+    override func updateUI() {
+        super.updateUI()
+        
+//        let emailTextViewState: LoginTextView.State = loginData.email == nil ? .empty : .notEmpty
+//        emailTextView.updateUI(forState: emailTextViewState)
+//
+//        let passwordTextViewState: LoginTextView.State = loginData.email == nil ? .empty : .notEmpty
+//        passwordTextView.updateUI(forState: passwordTextViewState)
+        
+    }
+    
     // MARK: Private methods
     
     fileprivate func presentEditProfileViewController() {
@@ -75,6 +120,16 @@ class LoginViewController: MoochModalViewController {
         let localUser = LocalUser(user: user, authenticationToken: "fake token")
         LocalUserManager.sharedInstance.login(withLocalUser: localUser)
     }
+    
+    private func setupTextViews() {
+        emailTextView.delegate = textHandler
+        passwordTextView.delegate = textHandler
+        
+        emailTextView.nextNavigableTextView = passwordTextView
+        
+        emailTextView.fieldType = .email
+        passwordTextView.fieldType = .password
+    }
 }
 
 extension LoginViewController: EditProfileViewControllerDelegate {
@@ -82,5 +137,19 @@ extension LoginViewController: EditProfileViewControllerDelegate {
     func editProfileViewControllerDidFinishEditing(withUser editedUser: User) {
         login(withUser: editedUser)
         presentAccountCreatedAlert(forUser: editedUser)
+    }
+}
+
+extension LoginViewController: LoginTextHandlerDelegate {
+    
+    func updated(text: String, forFieldType fieldType: LoginViewController.FieldType) {
+        let isEmpty = text == ""
+        
+        switch fieldType {
+        case .email:
+            loginData.email = isEmpty ? nil : text
+        case .password:
+            loginData.password = isEmpty ? nil : text
+        }
     }
 }
