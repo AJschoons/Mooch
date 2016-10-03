@@ -9,6 +9,7 @@ target 'Mooch' do
 	pod 'OHHTTPStubs' # Default subspecs, including support for NSURLSession & JSON etc
 	pod 'OHHTTPStubs/Swift' # Adds the Swiftier API wrapper too
     #pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'swift3'
+    #pod 'ALCameraViewController' don't need anymore; here for reference just in case
 end
 
 target 'MoochTests' do

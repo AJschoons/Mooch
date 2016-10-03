@@ -9,74 +9,34 @@
 import UIKit
 
 protocol EditListingField {
-    var fieldType: EditListingViewController.Configuration.FieldType! { get set }
+    var fieldType: EditListingConfiguration.FieldType! { get set }
 }
 
 protocol EditListingViewControllerDelegate: class {
     
     //Allows the delegate to handle dismissing this view controller at the appropriate time
-    func editListingViewControllerDidFinishEditing(withListing editedListing: Listing)
+    func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation)
 }
 
 class EditListingViewController: MoochModalViewController {
     
-    //A configuration to setup the class with
-    struct Configuration {
-        
-        //A mapping from a FieldType to a Bool that returns true if it conforms
-        typealias FieldTypeConformanceMapping = (FieldType) -> Bool
-        
-        var mode: Mode
-        
-        var title: String
-        var leftBarButtons: [BarButtonType]?
-        var rightBarButtons: [BarButtonType]?
-        
-        //The fields that should be shown
-        var fields: [FieldType]
-        
-        //The bar buttons that can be added
-        enum BarButtonType {
-            case cancel
-            case done
-        }
-        
-        enum Mode {
-            case creating
-            case editing
-        }
-        
-        enum FieldType {
-            case photo
-            case title
-            case description
-            case category
-            case price
-            case quantity
-        }
-        
-        func indexOfLastFieldType(conformingToMapping mapping: FieldTypeConformanceMapping) -> Int? {
-            let mappedFieldTypes = fields.reversed().map{mapping($0)}
-            guard let reversedIndex = mappedFieldTypes.index(of: true) else { return nil }
-            return (fields.count - 1) - reversedIndex
-        }
-    }
-    
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = Configuration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .category, .price, .quantity])
-    static let DefaultEditingConfiguration = Configuration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .category, .price, .quantity])
+    static let DefaultCreatingConfiguration = EditListingConfiguration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
+    static let DefaultEditingConfiguration = EditListingConfiguration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
     
     @IBOutlet var tableHandler: EditListingTableHandler! {
-        didSet {
-            tableHandler.delegate = self
-        }
+        didSet { tableHandler.delegate = self }
+    }
+    
+    @IBOutlet var textHandler: EditListingTextHandler! {
+        didSet { textHandler.delegate = self }
     }
     
     weak var delegate: EditListingViewControllerDelegate!
     
     //The configuration used to setup the class
-    var configuration: Configuration! {
+    var configuration: EditListingConfiguration! {
         didSet {
             tableHandler.indexOfLastTextfieldCell = configuration.indexOfLastFieldType(conformingToMapping: tableHandler.isTextField)
         }
@@ -94,20 +54,27 @@ class EditListingViewController: MoochModalViewController {
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var cancelButton: UIBarButtonItem!
     
+    fileprivate var editedListingInformation = EditedListingInformation(photo: nil, title: nil, description: nil, categoryId: nil, price: nil, quantity: nil)
+    
+    //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
+    fileprivate var isDismissingSelf = false
+    
+    //Tracks which photo adding view the camera is taking a picture for
+    fileprivate var currentPhotoAddingView: PhotoAddingView?
+    
     
     // MARK: Actions
     
     func onDoneAction() {
-        resignFirstResponder()
-        let dummyListing = Listing.createDummy(fromNumber: 23)
-        dismiss(animated: true) {
-            self.delegate.editListingViewControllerDidFinishEditing(withListing: dummyListing)
+        if isDoneValidated() {
+            dismissSelf() {
+                self.delegate.editListingViewControllerDidFinishEditing(withListingInformation: self.editedListingInformation)
+            }
         }
     }
     
     func onCancelAction() {
-        resignFirstResponder()
-        dismiss(animated: true, completion: nil)
+        dismissSelf(completion: nil)
     }
     
     // MARK: Public methods
@@ -118,19 +85,28 @@ class EditListingViewController: MoochModalViewController {
         registerForKeyboardNotifacations()
         setupNavigationBar()
         
+        if configuration.mode == .creating {
+            //Default the quantity to 1 for validation just in case the user doesn't change the quantity when creating a new listing
+            editedListingInformation.quantity = 1
+        }
+        
         updateUI()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        view.endEditing(true)
+        if isDismissingSelf {
+            view.endEditing(true)
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        unregisterForKeyboardNotifacations()
+        if isDismissingSelf {
+            unregisterForKeyboardNotifacations()
+        }
     }
     
     override func updateUI() {
@@ -175,11 +151,11 @@ class EditListingViewController: MoochModalViewController {
         }
     }
     
-    fileprivate func barButtons(fromTypeList typeList: [Configuration.BarButtonType]) -> [UIBarButtonItem] {
+    fileprivate func barButtons(fromTypeList typeList: [EditListingConfiguration.BarButtonType]) -> [UIBarButtonItem] {
         return typeList.map({barButton(forType: $0)})
     }
     
-    fileprivate func barButton(forType type: Configuration.BarButtonType) -> UIBarButtonItem {
+    fileprivate func barButton(forType type: EditListingConfiguration.BarButtonType) -> UIBarButtonItem {
         switch type {
         case .cancel:
             return cancelButton
@@ -196,11 +172,152 @@ class EditListingViewController: MoochModalViewController {
     fileprivate func unregisterForKeyboardNotifacations() {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    //Returns true if the Done action is validated, else handles notifying the user
+    private func isDoneValidated() -> Bool {
+        //Editing not yet supported
+        if configuration.mode == .editing {
+            return false
+        } else if configuration.mode == .creating {
+            if isValidListingCreation() {
+                return true
+            } else {
+                presentInvalidListingCreationAlert()
+                return false
+            }
+        }
+        
+        return false
+    }
+    
+    
+    private func isValidListingCreation() -> Bool {
+        return editedListingInformation.isAllInformationFilled
+    }
+    
+    private func presentInvalidListingCreationAlert() {
+        guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledFieldType() else { return }
+        presentSingleActionAlert(title: "Problem creating listing", message: "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field", actionTitle: "Aye aye captain!")
+    }
+    
+    fileprivate func presentCameraViewController(forPhotoAddingView photoAddingView: PhotoAddingView) {
+        currentPhotoAddingView = photoAddingView
+        let cameraViewController = CameraViewController()
+        cameraViewController.delegate = self
+        present(cameraViewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func pushListingCategoryPickerViewController(withSelectedListingCategory selectedListingCategory: ListingCategory?) {
+        guard let navC = navigationController else { return }
+        
+        let listingCategoryPickerViewController = ListingCategoryPickerViewController.instantiateFromStoryboard()
+        listingCategoryPickerViewController.delegate = self
+        listingCategoryPickerViewController.selectedListingCategory = selectedListingCategory
+        navC.pushViewController(listingCategoryPickerViewController, animated: true)
+    }
+    
+    fileprivate func dismissSelf(completion: (() -> Void)?) {
+        isDismissingSelf = true
+        dismiss(animated: true, completion: completion)
+    }
 }
 
 extension EditListingViewController: EditListingTableHandlerDelegate {
     
-    func getConfiguration() -> EditListingViewController.Configuration {
+    func getConfiguration() -> EditListingConfiguration {
         return configuration
+    }
+    
+    func getTextHandler() -> EditListingTextHandler {
+        return textHandler
+    }
+    
+    func getEditedListingInformation() -> EditedListingInformation {
+        return editedListingInformation
+    }
+    
+    func didSelectCategoryCell() {
+        var currentlySelectedCategory: ListingCategory?
+        if let currentlySelectedCategoryId = editedListingInformation.categoryId {
+            currentlySelectedCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: currentlySelectedCategoryId)
+        }
+        
+        pushListingCategoryPickerViewController(withSelectedListingCategory: currentlySelectedCategory)
+    }
+}
+
+extension EditListingViewController: EditListingTextHandlerDelegate {
+    
+    func updated(text: String, forFieldType fieldType: EditListingConfiguration.FieldType) {
+        switch fieldType {
+        case .title:
+            editedListingInformation.title = text
+        case .description:
+            editedListingInformation.description = text
+        case .price:
+            editedListingInformation.price = Float(text)
+        default:
+            return
+        }
+    }
+    
+    func onTextViewDidChangeSize(withHeightDifference heightDifferrence: CGFloat) {
+        tableHandler.onTextDidChangeSize(withHeightDifference: heightDifferrence)
+    }
+}
+
+extension EditListingViewController: EditListingQuantityCellDelegate {
+    
+    func quantityDidChange(toValue value: Int) {
+        editedListingInformation.quantity = value
+    }
+}
+
+extension EditListingViewController: PhotoAddingViewDelegate {
+    
+    func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
+        presentCameraViewController(forPhotoAddingView: photoAddingView)
+    }
+    
+    func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
+        editedListingInformation.photo = nil
+    }
+}
+
+extension EditListingViewController: UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        guard let photo = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            currentPhotoAddingView = nil
+            return
+        }
+        
+        currentPhotoAddingView?.photo = photo
+        currentPhotoAddingView = nil
+        
+        editedListingInformation.photo = photo
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        currentPhotoAddingView = nil
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+//Required by UIImagePickerController delegate property
+extension EditListingViewController: UINavigationControllerDelegate {
+    
+}
+
+extension EditListingViewController: ListingCategoryPickerViewControllerDelegate {
+    
+    func didPick(listingCategory: ListingCategory) {
+        editedListingInformation.categoryId = listingCategory.id
+        tableHandler.reloadData()
+        
+        guard let navC = navigationController else { return }
+        navC.popViewController(animated: true)
     }
 }

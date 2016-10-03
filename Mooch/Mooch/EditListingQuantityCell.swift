@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol EditListingQuantityCellDelegate: class {
+    func quantityDidChange(toValue value: Int)
+}
+
 class EditListingQuantityCell: UITableViewCell, EditListingField {
     
     static let Identifier = "EditListingQuantityCell"
@@ -15,6 +19,8 @@ class EditListingQuantityCell: UITableViewCell, EditListingField {
     
     @IBOutlet weak var quantityLabel: UILabel!
     @IBOutlet weak var quantityCountLabel: UILabel!
+    
+    weak var delegate: EditListingQuantityCellDelegate!
     
     @IBOutlet weak var stepper: UIStepper! {
         didSet {
@@ -24,7 +30,7 @@ class EditListingQuantityCell: UITableViewCell, EditListingField {
         }
     }
     
-    var fieldType: EditListingViewController.Configuration.FieldType!
+    var fieldType: EditListingConfiguration.FieldType!
     
     //The current integer value of the stepper
     private var quantity: Int = 1 {
@@ -34,6 +40,8 @@ class EditListingQuantityCell: UITableViewCell, EditListingField {
             }
             
             quantityCountLabel.text = String(quantity)
+            
+            delegate.quantityDidChange(toValue: quantity)
         }
     }
     

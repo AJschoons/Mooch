@@ -27,6 +27,9 @@ class ListingsViewController: MoochViewController {
     
     // MARK: Private variables
     
+    static fileprivate let StoryboardName = "Listings"
+    static fileprivate let Identifier = "ListingsViewController"
+    
     fileprivate var loginButton: UIBarButtonItem!
     fileprivate var profileButton: UIBarButtonItem!
     fileprivate var addListingButton: UIBarButtonItem!
@@ -46,6 +49,11 @@ class ListingsViewController: MoochViewController {
     }
     
     // MARK: Public methods
+    
+    static func instantiateFromStoryboard() -> ListingsViewController {
+        let storyboard = UIStoryboard(name: ListingsViewController.StoryboardName, bundle: nil)
+        return storyboard.instantiateViewController(withIdentifier: ListingsViewController.Identifier) as! ListingsViewController
+    }
     
     override func setup() {
         super.setup()
@@ -136,7 +144,7 @@ class ListingsViewController: MoochViewController {
     }
     
     fileprivate func presentListingCreatedAlert(forListing listing: Listing) {
-        let alert = UIAlertController(title: "Listing Created", message: "Your listing with the title \"\(listing.title)\" is now visible to all users in the \"\(listing.community!.name)\" community", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Listing Created", message: "Your listing with the title \"\(listing.title)\" is now visible to all users in your community!", preferredStyle: .alert)
         let action = UIAlertAction(title: "Keep Mooching", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
@@ -144,6 +152,10 @@ class ListingsViewController: MoochViewController {
     
     fileprivate func add(listing: Listing) {
         listings.insert(listing, at: 0)
+    }
+    
+    fileprivate func createListing(fromEditedListingInformation eli: EditedListingInformation) -> Listing {
+        return Listing(id: -1, photo: eli.photo!, title: eli.title!, description: eli.description, price: eli.price!, isFree: false, quantity: eli.quantity!, categoryId: eli.categoryId!, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, pictureURL: "", thumbnailPictureURL: "", communityId: 1)
     }
 }
 
@@ -169,9 +181,9 @@ extension ListingsViewController: LoginViewControllerDelegate {
 
 extension ListingsViewController: EditListingViewControllerDelegate {
     
-    func editListingViewControllerDidFinishEditing(withListing editedListing: Listing) {
-        add(listing: editedListing)
-        presentListingCreatedAlert(forListing: editedListing)
-        
+    func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation) {
+        let newListing = createListing(fromEditedListingInformation: editedListingInformation)
+        add(listing: newListing)
+        presentListingCreatedAlert(forListing: newListing)
     }
 }

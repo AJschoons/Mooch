@@ -17,9 +17,6 @@ class ListingsTableHandler: NSObject {
     
     @IBOutlet weak fileprivate var tableView: UITableView! {
         didSet {
-            let nib = UINib(nibName: ListingTableViewCell.Identifier, bundle: nil)
-            tableView.register(nib, forCellReuseIdentifier: ListingTableViewCell.Identifier)
-            
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
             tableView.estimatedRowHeight = ListingTableViewCell.EstimatedHeight
@@ -43,10 +40,17 @@ extension ListingsTableHandler: UITableViewDataSource {
         let listing = delegate.getListings()[(indexPath as NSIndexPath).row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: ListingTableViewCell.Identifier, for: indexPath) as! ListingTableViewCell
+        cell.photo.image = listing.photo
         cell.titleLabel.text = listing.title
-        cell.tagLabel.text = listing.tags.count > 0 ? listing.tags[0].name : "No Tags"
         cell.priceLabel.text = listing.priceString
-        cell.userLabel.text = "by \(listing.owner.name)"
+        
+        var categoryLabelText: String
+        if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.categoryId) {
+            categoryLabelText = listingCategory.name
+        } else {
+            categoryLabelText = Strings.InvalidCategoryId.rawValue
+        }
+        cell.categoryLabel.text = categoryLabelText
         
         return cell
     }

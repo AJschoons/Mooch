@@ -9,6 +9,28 @@
 import Alamofire
 import UIKit
 
+//The base navigation controllers shouldn't rotate
+extension UINavigationController {
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    override open var shouldAutorotate: Bool {
+        return false
+    }
+}
+
+//The base tab bar controllers shouldn't rotate
+extension UITabBarController {
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    override open var shouldAutorotate: Bool {
+        return false
+    }
+}
+
 //Base class view controller
 class MoochViewController: UIViewController {
     
@@ -16,6 +38,14 @@ class MoochViewController: UIViewController {
     
     //Flag for whether or this this view controller will need a network connection
     var requiresNetworkReachability = true
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
+    }
     
     
     // MARK: Private variables
@@ -87,9 +117,11 @@ class MoochViewController: UIViewController {
         return true
     }
     
-    func presentModalInNavigationController(withRootViewController rootViewController: UIViewController) {
-        let navController = UINavigationController(rootViewController: rootViewController)
-        present(navController, animated: true, completion: nil)
+    func presentSingleActionAlert(title: String, message: String, actionTitle: String, handler: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: actionTitle, style: .default, handler: handler)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
     

@@ -13,7 +13,7 @@ class EditListingPhotoCell: UITableViewCell, EditListingField {
     static let Identifier = "EditListingPhotoCell"
     static let EstimatedHeight: CGFloat = 366
     
-    @IBOutlet weak var photo: UIImageView!
+    @IBOutlet weak var photoAddingView: PhotoAddingView!
     
-    var fieldType: EditListingViewController.Configuration.FieldType!
+    var fieldType: EditListingConfiguration.FieldType!
 }

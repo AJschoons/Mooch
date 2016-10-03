@@ -1,17 +1,17 @@
 //
-//  RoundedButton.swift
+//  RoundedImageView.swift
 //  Mooch
 //
-//  Created by adam on 9/12/16.
+//  Created by adam on 9/27/16.
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
 import UIKit
 
-//A button that supports editing how rounded the corners are and rendering the changes in interface builder
+//An image view that supports editing how rounded the corners are and rendering the changes in interface builder
 @IBDesignable
-class RoundedButton: UIButton {
-    
+class RoundedImageView: UIImageView {
+
     @IBInspectable var cornerRadius: CGFloat {
         get {
             return layer.cornerRadius
