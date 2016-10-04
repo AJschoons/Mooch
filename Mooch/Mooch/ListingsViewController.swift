@@ -169,7 +169,6 @@ extension ListingsViewController: LoginViewControllerDelegate {
     
     func loginViewControllerDidLogin(withUser loggedInUser: User) {
         updateUI()
-        navigationController!.dismiss(animated: true, completion: nil)
     }
 }
 

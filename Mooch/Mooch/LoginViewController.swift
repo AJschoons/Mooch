@@ -60,6 +60,8 @@ class LoginViewController: MoochModalViewController {
     static fileprivate let StoryboardName = "Login"
     static fileprivate let Identifier = "LoginViewController"
     
+    private let KeyboardSpacingBelowLoginButton: CGFloat = 10
+    
     fileprivate var loginData = LoginData(email: nil, password: nil)
     
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
@@ -94,27 +96,11 @@ class LoginViewController: MoochModalViewController {
     
     func onKeyboardDidShow(withNotification notification: Notification) {
         guard let keyboardRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-        
-        //
-        //If needed, scrolls the screen so that 10 pixels below the Login Button are visible
-        //
-        
-        let loginButtonFrameInViewCoordinates = view.convert(loginButton.frame, from: loginButton.superview)
-        
-        //10 pixes below the button
-        let pointToBeVisibleY = loginButtonFrameInViewCoordinates.origin.y + loginButtonFrameInViewCoordinates.height + 10
-        let topOfKeyboardY = view.frame.height - keyboardRect.height
-        let heightOfVisiblePointHidden = pointToBeVisibleY - topOfKeyboardY
-        
-        if heightOfVisiblePointHidden > 1 {
-            let offset = CGPoint(x: 0, y: heightOfVisiblePointHidden)
-            scrollView.setContentOffset(offset, animated: true)
-        }
+        scrollIfNeeded(forKeyboardRect: keyboardRect)
     }
     
     func onKeyboardWillHide(withNotification notification: Notification) {
-        let offset = CGPoint.zero
-        scrollView.setContentOffset(offset, animated: true)
+        resetScroll()
     }
     
     override func setup() {
@@ -173,6 +159,7 @@ class LoginViewController: MoochModalViewController {
         let alert = UIAlertController(title: "Account Created", message: "Welcome to Mooch, \(user.name)!", preferredStyle: .alert)
         let action = UIAlertAction(title: "Get Mooching", style: .default) { _ in
             self.delegate?.loginViewControllerDidLogin(withUser: user)
+            self.dismissSelf(completion: nil)
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
@@ -200,6 +187,28 @@ class LoginViewController: MoochModalViewController {
     
     fileprivate func unregisterForKeyboardNotifacations() {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    //If needed, scrolls the screen so that KeyboardSpacingBelowLoginButton pixels are visible below the Login Button
+    private func scrollIfNeeded(forKeyboardRect keyboardRect: CGRect) {
+        let loginButtonFrameInViewCoordinates = view.convert(loginButton.frame, from: loginButton.superview)
+        
+        // Y coordinate of the point KeyboardSpacingBelowLoginButton pixels below the button
+        let pointToBeVisibleY = loginButtonFrameInViewCoordinates.origin.y + loginButtonFrameInViewCoordinates.height + KeyboardSpacingBelowLoginButton
+        
+        let topOfKeyboardY = view.frame.height - keyboardRect.height
+        let heightOfVisiblePointHidden = pointToBeVisibleY - topOfKeyboardY
+        
+        if heightOfVisiblePointHidden > 1 {
+            let offset = CGPoint(x: 0, y: heightOfVisiblePointHidden)
+            scrollView.setContentOffset(offset, animated: true)
+        }
+    }
+    
+    //Resets the scroll view after the keyboard is dismissed
+    private func resetScroll() {
+        let offset = CGPoint.zero
+        scrollView.setContentOffset(offset, animated: true)
     }
     
     fileprivate func dismissSelf(completion: (() -> Void)?) {
