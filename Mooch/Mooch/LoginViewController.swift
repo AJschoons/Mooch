@@ -41,6 +41,7 @@ class LoginViewController: MoochModalViewController {
     
     // MARK: Public variables
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var emailTextField: LoginTextField!
     @IBOutlet weak var passwordTextField: LoginTextField!
     @IBOutlet weak var loginButton: RoundedButton!
@@ -91,10 +92,36 @@ class LoginViewController: MoochModalViewController {
         return true
     }
     
+    func onKeyboardDidShow(withNotification notification: Notification) {
+        guard let keyboardRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        //
+        //If needed, scrolls the screen so that 10 pixels below the Login Button are visible
+        //
+        
+        let loginButtonFrameInViewCoordinates = view.convert(loginButton.frame, from: loginButton.superview)
+        
+        //10 pixes below the button
+        let pointToBeVisibleY = loginButtonFrameInViewCoordinates.origin.y + loginButtonFrameInViewCoordinates.height + 10
+        let topOfKeyboardY = view.frame.height - keyboardRect.height
+        let heightOfVisiblePointHidden = pointToBeVisibleY - topOfKeyboardY
+        
+        if heightOfVisiblePointHidden > 1 {
+            let offset = CGPoint(x: 0, y: heightOfVisiblePointHidden)
+            scrollView.setContentOffset(offset, animated: true)
+        }
+    }
+    
+    func onKeyboardWillHide(withNotification notification: Notification) {
+        let offset = CGPoint.zero
+        scrollView.setContentOffset(offset, animated: true)
+    }
+    
     override func setup() {
         super.setup()
         
         setupTextFields()
+        registerForKeyboardNotifacations()
         
         updateUI()
     }
@@ -121,6 +148,14 @@ class LoginViewController: MoochModalViewController {
         
         if isDismissingSelf {
             view.endEditing(true)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        if isDismissingSelf {
+            unregisterForKeyboardNotifacations()
         }
     }
     
@@ -156,6 +191,15 @@ class LoginViewController: MoochModalViewController {
         
         emailTextField.fieldType = .email
         passwordTextField.fieldType = .password
+    }
+    
+    fileprivate func registerForKeyboardNotifacations() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDidShow(withNotification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillHide(withNotification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    fileprivate func unregisterForKeyboardNotifacations() {
+        NotificationCenter.default.removeObserver(self)
     }
     
     fileprivate func dismissSelf(completion: (() -> Void)?) {
