@@ -61,10 +61,13 @@ class LoginViewController: MoochModalViewController {
     
     fileprivate var loginData = LoginData(email: nil, password: nil)
     
+    //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
+    fileprivate var isDismissingSelf = false
+    
     // MARK: Actions
     
     @IBAction func onCancel() {
-        dismiss(animated: true, completion: nil)
+        dismissSelf(completion: nil)
     }
     
     @IBAction func onLogin() {
@@ -113,6 +116,14 @@ class LoginViewController: MoochModalViewController {
         loginButton.isUserInteractionEnabled = loginButtonUserInteractionEnabled
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isDismissingSelf {
+            view.endEditing(true)
+        }
+    }
+    
     // MARK: Private methods
     
     fileprivate func presentEditProfileViewController() {
@@ -145,6 +156,11 @@ class LoginViewController: MoochModalViewController {
         
         emailTextField.fieldType = .email
         passwordTextField.fieldType = .password
+    }
+    
+    fileprivate func dismissSelf(completion: (() -> Void)?) {
+        isDismissingSelf = true
+        dismiss(animated: true, completion: completion)
     }
 }
 
