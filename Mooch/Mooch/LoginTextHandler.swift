@@ -18,6 +18,7 @@ class LoginTextHandler: NSObject {
     
     weak var delegate: LoginTextHandlerDelegate!
     
+    var test = false
     
     // MARK: Private variables
     
@@ -27,12 +28,12 @@ class LoginTextHandler: NSObject {
     
     // MARK: Private methods
     
-    fileprivate func onReturnKey(forTextView textView: NavigableTextView) {
-        //Bring the keyboard to the next textview if it exists, else hide it
-        if let nextTextField = textView.nextNavigableTextView {
-            nextTextField.becomeFirstResponder()
+    fileprivate func onReturnKey(forTextField textField: LoginTextField) {
+        //Bring the keyboard to the next responder if it exists, else hide it
+        if let next = textField.nextNavigableResponder {
+            next.becomeFirstResponder()
         } else {
-            textView.resignFirstResponder()
+            textField.resignFirstResponder()
         }
     }
     
@@ -49,63 +50,56 @@ class LoginTextHandler: NSObject {
     }
     
     fileprivate func shouldAllowChangesForEmailField(withUpdatedText updatedText: String) -> Bool {
-        return true
+        return !updatedText.contains(" ") && updatedText.characters.count <= UserLoginInformationValidator.MaxPasswordLength
     }
     
     fileprivate func shouldAllowChangesForPasswordField(withUpdatedText updatedText: String) -> Bool {
-        return true
+        return !updatedText.contains(" ")
     }
     
-    fileprivate func updateStateForAllowedChanges(forLoginTextView loginTextView: LoginTextView, withUpdatedText updatedText: String) {
-        if !isEmpty(updatedText) {
-            loginTextView.updateUI(forState: .notEmpty)
-        }
+    fileprivate func updateStateAfterSelected(forLoginTextField loginTextField: LoginTextField) {
+        loginTextField.setPlaceholder(hidden: true)
     }
     
-    fileprivate func updateStateAfterSelected(forLoginTextView loginTextView: LoginTextView) {
-        if loginTextView.state == .empty {
-            loginTextView.updateUI(forState: .emptySelected)
-        }
-    }
-    
-    fileprivate func updateStateAfterUnselected(forLoginTextView loginTextView: LoginTextView) {
-        if isEmpty(loginTextView.text) {
-            loginTextView.updateUI(forState: .empty)
+    fileprivate func updateStateAfterUnselected(forLoginTextField loginTextField: LoginTextField) {
+        if isEmpty(loginTextField.text) {
+            loginTextField.setPlaceholder(hidden: false)
         }
     }
 }
 
-extension LoginTextHandler: UITextViewDelegate {
+extension LoginTextHandler: UITextFieldDelegate {
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        guard let loginTextView = textView as? LoginTextView, let fieldType = (textView as! LoginTextView).fieldType else { return false }
+    //func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let loginTextField = textField as? LoginTextField, let fieldType = (textField as! LoginTextField).fieldType else { return false }
         
-        //Handle the return key
-        guard text != "\n" else {
-            onReturnKey(forTextView: loginTextView)
-            return false
-        }
-        
-        let textViewText = loginTextView.text ?? ""
+        let textViewText = loginTextField.text ?? ""
         guard let NSStringTextfieldText = textViewText as NSString? else { return false }
-        let updatedTextViewText = NSStringTextfieldText.replacingCharacters(in: range, with: text)
-        let allowChanges = shouldAllowChanges(forFieldType: fieldType, withUpdatedText: updatedTextViewText)
+        let updatedTextFieldText = NSStringTextfieldText.replacingCharacters(in: range, with: string)
+        let allowChanges = shouldAllowChanges(forFieldType: fieldType, withUpdatedText: updatedTextFieldText)
         
         if allowChanges {
-            delegate.updated(text: updatedTextViewText, forFieldType: fieldType)
-            updateStateForAllowedChanges(forLoginTextView: loginTextView, withUpdatedText: updatedTextViewText)
+            delegate.updated(text: updatedTextFieldText, forFieldType: fieldType)
         }
         
         return allowChanges
     }
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        guard let loginTextView = textView as? LoginTextView else { return }
-        updateStateAfterSelected(forLoginTextView: loginTextView)
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        guard let loginTextField = textField as? LoginTextField else { return true }
+        onReturnKey(forTextField: loginTextField)
+        return true
     }
     
-    func textViewDidEndEditing(_ textView: UITextView) {
-        guard let loginTextView = textView as? LoginTextView else { return }
-        updateStateAfterUnselected(forLoginTextView: loginTextView)
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        guard let loginTextField = textField as? LoginTextField else { return true }
+        updateStateAfterSelected(forLoginTextField: loginTextField)
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let loginTextField = textField as? LoginTextField else { return }
+        updateStateAfterUnselected(forLoginTextField: loginTextField)
     }
 }

@@ -8,61 +8,31 @@
 
 import UIKit
 
-@IBDesignable
-class LoginTextView: NavigableTextView {
+class LoginTextField: UITextField, NavigableResponder {
     
-    enum State {
-        case empty              //Text view is empty and unselected
-        case emptySelected      //Text view is empty but selected
-        case notEmpty           //Text view has text
-    }
+    weak var nextNavigableResponder: UIResponder?
     
     var fieldType: LoginViewController.FieldType! {
         didSet {
-            updateUI(forState: .empty)
+            setPlaceholder(hidden: false)
         }
     }
     
-    private(set) var state: State = .empty
-    
-    @IBInspectable var cornerRadius: CGFloat = 0 {
-        didSet {
-            layer.cornerRadius = cornerRadius
-            layer.masksToBounds = cornerRadius > 0
-        }
-    }
-    
-    @IBInspectable var borderWidth: CGFloat = 0 {
-        didSet {
-            layer.borderWidth = borderWidth
-        }
-    }
-    
-    @IBInspectable var borderColor: UIColor? {
-        didSet {
-            layer.borderColor = borderColor?.cgColor
-        }
-    }
-    
-    func updateUI(forState newState: State) {
-        state = newState
-        
-        switch newState {
-        case .empty:
-            textColor = UIColor.lightGray
+    func setPlaceholder(hidden: Bool) {
+        if hidden {
+            attributedPlaceholder = nil
+        } else {
             if let fieldType = fieldType {
-                text = placeholderText(forFieldType: fieldType)
+                let centeredParagraphStyle = NSMutableParagraphStyle()
+                centeredParagraphStyle.alignment = .center
+                let placeholderText = self.placeholderText(forFieldType: fieldType)
+                attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [NSParagraphStyleAttributeName: centeredParagraphStyle])
             }
-        case .emptySelected:
-            textColor = UIColor.black
-            text = ""
-        case .notEmpty:
-            textColor = UIColor.black
         }
     }
     
-    public override init(frame: CGRect, textContainer: NSTextContainer?) {
-        super.init(frame: frame, textContainer: textContainer)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setup()
     }
     
@@ -73,8 +43,7 @@ class LoginTextView: NavigableTextView {
     }
 
     private func setup() {
-        textAlignment = .center
-        updateUI(forState: state)
+        setPlaceholder(hidden: false)
     }
     
     private func placeholderText(forFieldType fieldType: LoginViewController.FieldType) -> String {

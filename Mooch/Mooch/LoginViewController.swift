@@ -26,15 +26,25 @@ class LoginViewController: MoochModalViewController {
         var email: String?
         var password: String?
         
-        var isFilledAndValid: Bool { return email != nil && password != nil && isEmailValid }
+        var isFilledAndValid: Bool { return email != nil && password != nil && isEmailValid && isPasswordValid }
         
-        var isEmailValid: Bool { return false }
+        var isEmailValid: Bool {
+            guard let email = email else { return false }
+            return UserLoginInformationValidator.isValid(email: email)
+        }
+        
+        var isPasswordValid: Bool {
+            guard let password = password else { return false }
+            return UserLoginInformationValidator.isValid(password: password)
+        }
     }
     
     // MARK: Public variables
     
-    @IBOutlet weak var emailTextView: LoginTextView!
-    @IBOutlet weak var passwordTextView: LoginTextView!
+    @IBOutlet weak var emailTextField: LoginTextField!
+    @IBOutlet weak var passwordTextField: LoginTextField!
+    @IBOutlet weak var loginButton: RoundedButton!
+
     @IBOutlet var textHandler: LoginTextHandler! {
         didSet {
             textHandler.delegate = self
@@ -81,7 +91,7 @@ class LoginViewController: MoochModalViewController {
     override func setup() {
         super.setup()
         
-        setupTextViews()
+        setupTextFields()
         
         updateUI()
     }
@@ -89,12 +99,18 @@ class LoginViewController: MoochModalViewController {
     override func updateUI() {
         super.updateUI()
         
-//        let emailTextViewState: LoginTextView.State = loginData.email == nil ? .empty : .notEmpty
-//        emailTextView.updateUI(forState: emailTextViewState)
-//
-//        let passwordTextViewState: LoginTextView.State = loginData.email == nil ? .empty : .notEmpty
-//        passwordTextView.updateUI(forState: passwordTextViewState)
+        var loginButtonColor: UIColor
+        var loginButtonUserInteractionEnabled: Bool
+        if loginData.isFilledAndValid {
+            loginButtonColor = UIColor(red: 0.00, green: 0.76, blue: 0.00, alpha: 1.0)
+            loginButtonUserInteractionEnabled = true
+        } else {
+            loginButtonColor = UIColor.darkGray
+            loginButtonUserInteractionEnabled = false
+        }
         
+        loginButton.backgroundColor = loginButtonColor
+        loginButton.isUserInteractionEnabled = loginButtonUserInteractionEnabled
     }
     
     // MARK: Private methods
@@ -121,14 +137,14 @@ class LoginViewController: MoochModalViewController {
         LocalUserManager.sharedInstance.login(withLocalUser: localUser)
     }
     
-    private func setupTextViews() {
-        emailTextView.delegate = textHandler
-        passwordTextView.delegate = textHandler
+    private func setupTextFields() {
+        emailTextField.delegate = textHandler
+        passwordTextField.delegate = textHandler
         
-        emailTextView.nextNavigableTextView = passwordTextView
+        emailTextField.nextNavigableResponder = passwordTextField
         
-        emailTextView.fieldType = .email
-        passwordTextView.fieldType = .password
+        emailTextField.fieldType = .email
+        passwordTextField.fieldType = .password
     }
 }
 
@@ -151,5 +167,7 @@ extension LoginViewController: LoginTextHandlerDelegate {
         case .password:
             loginData.password = isEmpty ? nil : text
         }
+        
+        updateUI()
     }
 }

@@ -30,7 +30,7 @@ class EditListingTableHandler: NSObject {
     private let HalfTheSpacingBetweenCells: CGFloat = 7.0
     
     //Used to track the setup of the navigable text views between configurations
-    fileprivate var lastNavigableTextViewConfigured: NavigableTextView?
+    fileprivate var lastTextViewConfigured: EditListingTextView?
     
     //Used to restore the tableView insets after the keyboard disappears
     private var originalContentInsets = UIEdgeInsetsMake(64, 0, 0, 0)
@@ -163,13 +163,13 @@ class EditListingTableHandler: NSObject {
         cell.textView.returnKeyType = returnKeyType
         
         //Setup the order of textviews to navigate
-        if let previousTextView = lastNavigableTextViewConfigured {
-            previousTextView.nextNavigableTextView = cell.textView
+        if let previousTextView = lastTextViewConfigured {
+            previousTextView.nextNavigableResponder = cell.textView
         } else {
-            cell.textView.nextNavigableTextView = nil
+            cell.textView.nextNavigableResponder = nil
         }
         
-        lastNavigableTextViewConfigured = cell.textView
+        lastTextViewConfigured = cell.textView
     }
     
     //Returns the field label text for fieldTypes that are used in the EditListingText cells
@@ -201,7 +201,7 @@ extension EditListingTableHandler: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //Clear out any previously saved textfields when setting up the first row
         if indexPath.row == 0 {
-            lastNavigableTextViewConfigured = nil
+            lastTextViewConfigured = nil
         }
         
         let fieldTypeForRow = fieldType(forIndexPath: indexPath)
