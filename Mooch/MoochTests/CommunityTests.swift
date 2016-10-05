@@ -41,14 +41,14 @@ class CommunityTests: XCTestCase {
     
     //Test that a Community throws the expected error when it doesn't have all the data it needs
     func testConvenienceInitError() {
-        let communityJSON: JSON = ["id" : 1234, "address" : "1234 address lane","name":"jiang","pictureURL":"sample Pic"]
+        let communityJSON: JSON = ["id" : 1234,"name":"jiang","pictureURL":"sample Pic"]
         
         var jsonErrorThrown = false
         
         do {
             let _ = try Community(json: communityJSON)
             XCTFail()
-        } catch InitializationError.insufficientJSONInformationForInitialization {
+        } catch Community.JSONInitializationError.address {
             jsonErrorThrown = true
         } catch {
             
