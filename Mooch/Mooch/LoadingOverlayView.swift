@@ -41,6 +41,7 @@ class LoadingOverlayView: UIView {
     }
     
     //Allows touches to pass through the overlay. Returning false allows the touch to pass through
+    //http://stackoverflow.com/questions/3046813/how-can-i-click-a-button-behind-a-transparent-uiview
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         guard isUserInteractionEnabled else { return true }
         

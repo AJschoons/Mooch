@@ -21,6 +21,12 @@ class LoginViewController: MoochModalViewController {
         case password
     }
     
+    enum State {
+        case loginFieldsUnfilledOrInvalid
+        case loginFieldsFilledAndValid
+        case loggingIn
+    }
+    
     //Tracks the state of the login data. Fields must be nil if empty or invalid
     struct LoginData {
         var email: String?
@@ -44,7 +50,9 @@ class LoginViewController: MoochModalViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var emailTextField: LoginTextField!
     @IBOutlet weak var passwordTextField: LoginTextField!
+    @IBOutlet weak var exitButton: UIButton!
     @IBOutlet weak var loginButton: RoundedButton!
+    @IBOutlet weak var createAccountButton: RoundedButton!
 
     @IBOutlet var textHandler: LoginTextHandler! {
         didSet {
@@ -64,6 +72,13 @@ class LoginViewController: MoochModalViewController {
     
     fileprivate var loginData = LoginData(email: nil, password: nil)
     
+    //The current state of the view controller. Setting it will update the UI accordingly
+    fileprivate var state: State = .loginFieldsUnfilledOrInvalid {
+        didSet {
+            updateUI()
+        }
+    }
+    
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
     fileprivate var isDismissingSelf = false
     
@@ -74,9 +89,14 @@ class LoginViewController: MoochModalViewController {
     }
     
     @IBAction func onLogin() {
+        guard loginData.isFilledAndValid else { return }
         let dummyUser = User.createDummy(fromNumber: 83)
-        login(withUser: dummyUser)
-        delegate?.loginViewControllerDidLogin(withUser: dummyUser)
+        
+        state = .loggingIn
+        showLoadingOverlayView(informationText: "Logging In", overEntireWindow: false, withUserInteractionEnabled: false)
+        
+//        login(withUser: dummyUser)
+//        delegate?.loginViewControllerDidLogin(withUser: dummyUser)
     }
     
     @IBAction func onCreateAccount() {
@@ -112,21 +132,38 @@ class LoginViewController: MoochModalViewController {
         updateUI()
     }
     
+    //Shouldn't be called directly other than when view is first setup; gets called when the state variable changes
     override func updateUI() {
         super.updateUI()
         
         var loginButtonColor: UIColor
         var loginButtonUserInteractionEnabled: Bool
-        if loginData.isFilledAndValid {
-            loginButtonColor = UIColor(red: 0.00, green: 0.76, blue: 0.00, alpha: 1.0)
-            loginButtonUserInteractionEnabled = true
-        } else {
+        var createAccountButtonUserInteractionEnabled: Bool
+        var textFieldUserInteractionEnabled: Bool
+        
+        switch state {
+        case .loginFieldsUnfilledOrInvalid:
             loginButtonColor = UIColor.darkGray
             loginButtonUserInteractionEnabled = false
+            createAccountButtonUserInteractionEnabled = true
+            textFieldUserInteractionEnabled = true
+        case .loginFieldsFilledAndValid:
+            loginButtonColor = UIColor(red: 0.00, green: 0.76, blue: 0.00, alpha: 1.0)
+            loginButtonUserInteractionEnabled = true
+            createAccountButtonUserInteractionEnabled = true
+            textFieldUserInteractionEnabled = true
+        case .loggingIn:
+            loginButtonColor = UIColor.darkGray
+            loginButtonUserInteractionEnabled = false
+            createAccountButtonUserInteractionEnabled = false
+            textFieldUserInteractionEnabled = false
         }
         
         loginButton.backgroundColor = loginButtonColor
         loginButton.isUserInteractionEnabled = loginButtonUserInteractionEnabled
+        createAccountButton.isUserInteractionEnabled = createAccountButtonUserInteractionEnabled
+        emailTextField.isUserInteractionEnabled = textFieldUserInteractionEnabled
+        passwordTextField.isUserInteractionEnabled = textFieldUserInteractionEnabled
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -237,6 +274,10 @@ extension LoginViewController: LoginTextHandlerDelegate {
             loginData.password = isEmpty ? nil : text
         }
         
-        updateUI()
+        if loginData.isFilledAndValid {
+            state = .loginFieldsFilledAndValid
+        } else {
+            state = .loginFieldsUnfilledOrInvalid
+        }
     }
 }

@@ -53,6 +53,8 @@ class MoochViewController: UIViewController {
     
     // MARK: Private variables
     
+    private let LoadingOverlayAnimationDuration = 0.3
+    
     //Flag for whether or not the network reachability verification view controller is being shown
     fileprivate var isShowingNetworkReachabilityVerificationViewController = false
     
@@ -139,7 +141,7 @@ class MoochViewController: UIViewController {
             view.addSubview(loadingOverlayView)
         }
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: LoadingOverlayAnimationDuration) {
             loadingOverlayView.alpha = 1
         }
     }
@@ -150,7 +152,7 @@ class MoochViewController: UIViewController {
         loadingOverlayView.removeFromSuperview()
         self.loadingOverlayViewBeingShown = nil
         
-        UIView.animate(withDuration: 0.3, animations: { loadingOverlayView.alpha = 0 }, completion: { _ in
+        UIView.animate(withDuration: LoadingOverlayAnimationDuration, animations: { loadingOverlayView.alpha = 0 }, completion: { _ in
             loadingOverlayView.removeFromSuperview()
             self.loadingOverlayViewBeingShown = nil
         })

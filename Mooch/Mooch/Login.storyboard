@@ -149,7 +149,9 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="createAccountButton" destination="vAA-g9-DkA" id="DEB-Oc-CQ3"/>
                         <outlet property="emailTextField" destination="fA3-Vt-3XF" id="wuO-fa-aHp"/>
+                        <outlet property="exitButton" destination="37M-6f-dTF" id="4jW-Nq-fJq"/>
                         <outlet property="loginButton" destination="nUf-tu-Tp8" id="jIR-zR-XgF"/>
                         <outlet property="passwordTextField" destination="Ju5-tA-BqP" id="2eE-0m-apo"/>
                         <outlet property="scrollView" destination="2lh-Sc-iWa" id="7Wb-it-dae"/>
