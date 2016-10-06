@@ -8,9 +8,16 @@
 
 import UIKit
 
+protocol ProfileViewControllerDelegate: class {
+    func didLogOut()
+}
+
 class ProfileViewController: MoochModalViewController {
     
     // MARK: Public variables
+    
+    weak var delegate: ProfileViewControllerDelegate!
+    
     
     // MARK: Private variables
     
@@ -23,6 +30,12 @@ class ProfileViewController: MoochModalViewController {
     // MARK: Actions
     
     func onBackAction() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func onLogOutAction() {
+        LocalUserManager.sharedInstance.logout()
+        delegate.didLogOut()
         dismiss(animated: true, completion: nil)
     }
     

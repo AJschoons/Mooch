@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoadingOverlayView" customModule="Mooch" customModuleProvider="target">
+            <connections>
+                <outlet property="alertView" destination="MZ2-QM-V8E" id="Ed2-sb-lwI"/>
+                <outlet property="informationLabel" destination="QS0-nZ-7Jz" id="FTL-uw-Eae"/>
+                <outlet property="view" destination="iN0-l3-epB" id="pQc-UO-yMw"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.25" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sYw-HK-OKK" userLabel="Overlay">
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="MZ2-QM-V8E" userLabel="Alert">
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NI0-y9-DNy" userLabel="Content">
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QS0-nZ-7Jz">
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="weB-On-sXL">
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="20" id="TWG-3B-q7m"/>
+                                        <constraint firstAttribute="width" constant="20" id="i3Q-84-42i"/>
+                                    </constraints>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="168" id="EIm-gx-agF"/>
+                                <constraint firstItem="weB-On-sXL" firstAttribute="centerX" secondItem="NI0-y9-DNy" secondAttribute="centerX" id="H9H-W3-50h"/>
+                                <constraint firstAttribute="bottom" secondItem="weB-On-sXL" secondAttribute="bottom" id="N9w-lZ-5xU"/>
+                                <constraint firstAttribute="trailing" secondItem="QS0-nZ-7Jz" secondAttribute="trailing" id="R3z-uY-Qaw"/>
+                                <constraint firstItem="weB-On-sXL" firstAttribute="top" secondItem="QS0-nZ-7Jz" secondAttribute="bottom" constant="10" id="UHx-FR-sat"/>
+                                <constraint firstItem="QS0-nZ-7Jz" firstAttribute="top" secondItem="NI0-y9-DNy" secondAttribute="top" id="mEo-EI-G7i"/>
+                                <constraint firstItem="QS0-nZ-7Jz" firstAttribute="leading" secondItem="NI0-y9-DNy" secondAttribute="leading" id="xw2-0h-9yd"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="NI0-y9-DNy" secondAttribute="bottom" constant="20" id="MK6-Lo-E1B"/>
+                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="270" id="Waf-28-Gaw"/>
+                        <constraint firstAttribute="trailing" secondItem="NI0-y9-DNy" secondAttribute="trailing" constant="16" id="j8n-RX-H6d"/>
+                        <constraint firstItem="NI0-y9-DNy" firstAttribute="top" secondItem="MZ2-QM-V8E" secondAttribute="top" constant="20" id="nLr-cI-Fu8"/>
+                        <constraint firstItem="NI0-y9-DNy" firstAttribute="leading" secondItem="MZ2-QM-V8E" secondAttribute="leading" constant="16" id="wxL-ic-had"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="sYw-HK-OKK" secondAttribute="trailing" id="8VQ-hC-M6T"/>
+                <constraint firstItem="MZ2-QM-V8E" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="CpB-hc-kiU"/>
+                <constraint firstItem="sYw-HK-OKK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="J7e-vI-Mef"/>
+                <constraint firstItem="MZ2-QM-V8E" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Mag-Qg-8Mv"/>
+                <constraint firstAttribute="bottom" secondItem="sYw-HK-OKK" secondAttribute="bottom" id="dD3-vH-ERf"/>
+                <constraint firstItem="sYw-HK-OKK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="zdp-qx-xL6"/>
+            </constraints>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                    <integer key="value" value="10"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="24.5" y="52.5"/>
+        </view>
+    </objects>
+</document>

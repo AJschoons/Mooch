@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="UIU-pq-dA1">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="i1e-xO-b7W" customClass="LoginViewController" customModule="Mooch" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3sN-PZ-6O8"/>
+                        <viewControllerLayoutGuide type="bottom" id="ir8-0F-abY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="y8B-Dl-h81">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2lh-Sc-iWa">
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="M5c-HV-H6j">
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M64-eq-eao" userLabel="top">
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37M-6f-dTF">
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="30" id="iEt-71-fUg"/>
+                                                            <constraint firstAttribute="width" constant="30" id="nXq-dW-zkz"/>
+                                                        </constraints>
+                                                        <state key="normal" image="cancel">
+                                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="onCancel" destination="i1e-xO-b7W" eventType="touchUpInside" id="P09-eA-iHi"/>
+                                                        </connections>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mooch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r67-2t-Qw1">
+                                                        <fontDescription key="fontDescription" type="system" pointSize="69"/>
+                                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="r67-2t-Qw1" firstAttribute="top" secondItem="M64-eq-eao" secondAttribute="top" id="ILt-Tj-jG8"/>
+                                                    <constraint firstItem="37M-6f-dTF" firstAttribute="leading" secondItem="M64-eq-eao" secondAttribute="leading" constant="8" id="PMl-eq-3Qq"/>
+                                                    <constraint firstAttribute="trailing" secondItem="r67-2t-Qw1" secondAttribute="trailing" id="nNp-8e-8Vx"/>
+                                                    <constraint firstAttribute="bottom" secondItem="r67-2t-Qw1" secondAttribute="bottom" id="tg0-2y-fxP"/>
+                                                    <constraint firstItem="r67-2t-Qw1" firstAttribute="leading" secondItem="M64-eq-eao" secondAttribute="leading" id="weR-As-DLn"/>
+                                                    <constraint firstItem="37M-6f-dTF" firstAttribute="top" secondItem="M64-eq-eao" secondAttribute="top" id="zhj-If-LWD"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I97-KW-kal" userLabel="middle">
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="qyf-Ft-AHN">
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please enter your login information" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N7T-bi-uRo">
+                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fA3-Vt-3XF" customClass="LoginTextField" customModule="Mooch" customModuleProvider="target">
+                                                                <nil key="textColor"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next"/>
+                                                            </textField>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ju5-tA-BqP" customClass="LoginTextField" customModule="Mooch" customModuleProvider="target">
+                                                                <nil key="textColor"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES"/>
+                                                            </textField>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nUf-tu-Tp8" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
+                                                                <color key="backgroundColor" red="0.0" green="0.75513842279999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                                <state key="normal" title="Login">
+                                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                        <real key="value" value="5"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="onLogin" destination="i1e-xO-b7W" eventType="touchUpInside" id="WQe-0l-Tgl"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="300" id="Iq3-pI-Veg"/>
+                                                        </constraints>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="qyf-Ft-AHN" firstAttribute="centerY" secondItem="I97-KW-kal" secondAttribute="centerY" id="5mv-Fi-1c9"/>
+                                                    <constraint firstItem="qyf-Ft-AHN" firstAttribute="centerX" secondItem="I97-KW-kal" secondAttribute="centerX" id="LpW-0n-yik"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NQq-r2-pKl" userLabel="bottom">
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vAA-g9-DkA" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
+                                                        <color key="backgroundColor" red="0.25753285790000002" green="0.47872098709999999" blue="0.81861717000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="30" id="Tg5-Ho-c2X"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                                        <state key="normal" title="Create Account">
+                                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="onCreateAccount" destination="i1e-xO-b7W" eventType="touchUpInside" id="rKb-aN-dOf"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="vAA-g9-DkA" secondAttribute="bottom" constant="15" id="ZyV-Ry-LEX"/>
+                                                    <constraint firstItem="vAA-g9-DkA" firstAttribute="centerX" secondItem="NQq-r2-pKl" secondAttribute="centerX" id="viX-ZN-h4l"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="vAA-g9-DkA" firstAttribute="width" secondItem="qyf-Ft-AHN" secondAttribute="width" id="rNE-r3-90s"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="M5c-HV-H6j" secondAttribute="bottom" id="Ctw-Xu-3w9"/>
+                                    <constraint firstItem="M5c-HV-H6j" firstAttribute="top" secondItem="2lh-Sc-iWa" secondAttribute="top" id="Dga-RP-Xfy"/>
+                                    <constraint firstAttribute="trailing" secondItem="M5c-HV-H6j" secondAttribute="trailing" id="xLU-1b-sBE"/>
+                                    <constraint firstItem="M5c-HV-H6j" firstAttribute="leading" secondItem="2lh-Sc-iWa" secondAttribute="leading" id="yYY-kI-6Ip"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2lh-Sc-iWa" firstAttribute="leading" secondItem="y8B-Dl-h81" secondAttribute="leading" id="71x-CH-YXR"/>
+                            <constraint firstAttribute="trailing" secondItem="2lh-Sc-iWa" secondAttribute="trailing" id="JF1-W9-hEB"/>
+                            <constraint firstItem="2lh-Sc-iWa" firstAttribute="top" secondItem="y8B-Dl-h81" secondAttribute="top" constant="20" id="PBi-oU-mHC"/>
+                            <constraint firstItem="M5c-HV-H6j" firstAttribute="width" secondItem="y8B-Dl-h81" secondAttribute="width" id="Uce-Nz-7dw"/>
+                            <constraint firstItem="M5c-HV-H6j" firstAttribute="height" secondItem="y8B-Dl-h81" secondAttribute="height" constant="-20" id="hPN-oY-Uum"/>
+                            <constraint firstItem="ir8-0F-abY" firstAttribute="top" secondItem="2lh-Sc-iWa" secondAttribute="bottom" id="wa4-H9-xE8"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="createAccountButton" destination="vAA-g9-DkA" id="DEB-Oc-CQ3"/>
+                        <outlet property="emailTextField" destination="fA3-Vt-3XF" id="wuO-fa-aHp"/>
+                        <outlet property="exitButton" destination="37M-6f-dTF" id="4jW-Nq-fJq"/>
+                        <outlet property="loginButton" destination="nUf-tu-Tp8" id="jIR-zR-XgF"/>
+                        <outlet property="passwordTextField" destination="Ju5-tA-BqP" id="2eE-0m-apo"/>
+                        <outlet property="scrollView" destination="2lh-Sc-iWa" id="7Wb-it-dae"/>
+                        <outlet property="textHandler" destination="K3b-Vc-sx3" id="UiS-3E-10j"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mdB-je-lr7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="K3b-Vc-sx3" customClass="LoginTextHandler" customModule="Mooch" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="448.80000000000001" y="-226.23688155922042"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="cancel" width="28" height="28"/>
+    </resources>
+</document>

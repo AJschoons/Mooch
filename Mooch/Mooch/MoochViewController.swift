@@ -47,8 +47,13 @@ class MoochViewController: UIViewController {
         return false
     }
     
+    //Allows subclasses to know if the overlay is being shown
+    var isShowingLoadingOverlay = false
+    
     
     // MARK: Private variables
+    
+    private let LoadingOverlayAnimationDuration = 0.1
     
     //Flag for whether or not the network reachability verification view controller is being shown
     fileprivate var isShowingNetworkReachabilityVerificationViewController = false
@@ -61,6 +66,8 @@ class MoochViewController: UIViewController {
     
     //Used to restore previous status bar style if changed for this view controller
     fileprivate var statusBarStyleBeforeChanging: UIStatusBarStyle?
+    
+    private var loadingOverlayViewBeingShown: LoadingOverlayView?
     
     
     // MARK: Actions
@@ -115,6 +122,48 @@ class MoochViewController: UIViewController {
     //Override this function to change status bar animation behavior
     func shouldAnimateStatusBarChange() -> Bool {
         return true
+    }
+    
+    func showLoadingOverlayView(informationText: String?, overEntireWindow: Bool, withUserInteractionEnabled isUserInteractionEnabled: Bool) {
+        guard !isShowingLoadingOverlay else { print("can't show two loadingOverlayViews!"); return }
+        
+        isShowingLoadingOverlay = true
+        
+        let loadingOverlayView = LoadingOverlayView(frame: view.frame)
+        loadingOverlayViewBeingShown = loadingOverlayView
+        loadingOverlayView.alpha = 0
+        
+        loadingOverlayView.setup(withInformationText: informationText, isUserInteractionEnabled: isUserInteractionEnabled)
+        
+        if overEntireWindow {
+            UIApplication.shared.keyWindow?.addSubview(loadingOverlayView)
+        } else {
+            view.addSubview(loadingOverlayView)
+        }
+        
+        UIView.animate(withDuration: LoadingOverlayAnimationDuration) {
+            loadingOverlayView.alpha = 1
+        }
+    }
+    
+    func hideLoadingOverlayView(animated: Bool, completion: (()->())? = nil) {
+        guard let loadingOverlayView = loadingOverlayViewBeingShown, isShowingLoadingOverlay else { return }
+        
+        if animated {
+            UIView.animate(withDuration: LoadingOverlayAnimationDuration, animations: { loadingOverlayView.alpha = 0 }, completion: { _ in
+                self.hideOverlayView()
+                completion?()
+            })
+        } else {
+            hideOverlayView()
+        }
+    }
+    
+    private func hideOverlayView() {
+        guard let loadingOverlayView = loadingOverlayViewBeingShown else { return }
+        loadingOverlayView.removeFromSuperview()
+        isShowingLoadingOverlay = false
+        loadingOverlayViewBeingShown = nil
     }
     
     func presentSingleActionAlert(title: String, message: String, actionTitle: String, handler: ((UIAlertAction) -> Void)? = nil) {

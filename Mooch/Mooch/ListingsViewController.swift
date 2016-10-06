@@ -114,9 +114,8 @@ class ListingsViewController: MoochViewController {
     fileprivate func presentLoginViewController() {
         guard let navC = navigationController else { return }
 
-        let vc = LoginViewController()
+        let vc = LoginViewController.instantiateFromStoryboard()
         vc.delegate = self
-        vc.modalTransitionStyle = .crossDissolve
         
         navC.present(vc, animated: true, completion: nil)
     }
@@ -125,12 +124,8 @@ class ListingsViewController: MoochViewController {
         guard let navC = navigationController else { return }
         
         let vc = ProfileViewController.instantiateFromStoryboard()
+        vc.delegate = self
         let profileNavC = UINavigationController(rootViewController: vc)
-        vc.modalTransitionStyle = .crossDissolve
-        
-        //Needed for blurring over current view
-//        vc.modalPresentationStyle = .overFullScreen
-//        profileNavC.modalPresentationStyle = .overFullScreen
         
         navC.present(profileNavC, animated: true, completion: nil)
     }
@@ -173,9 +168,8 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
 
 extension ListingsViewController: LoginViewControllerDelegate {
     
-    func loginViewControllerDidLogin(withUser loggedInUser: User) {
+    func loginViewControllerDidLogin(localUser: LocalUser) {
         updateUI()
-        navigationController!.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -185,5 +179,12 @@ extension ListingsViewController: EditListingViewControllerDelegate {
         let newListing = createListing(fromEditedListingInformation: editedListingInformation)
         add(listing: newListing)
         presentListingCreatedAlert(forListing: newListing)
+    }
+}
+
+extension ListingsViewController: ProfileViewControllerDelegate {
+    
+    func didLogOut() {
+        updateUI()
     }
 }

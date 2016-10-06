@@ -14,15 +14,15 @@ class MoochAPI {
     
     typealias CompletionClosure = (JSON?, Error?) -> ()
     
-//    //Allows authorized requests to be performed
-//    static func setAuthorizationCredentials(withUserId userId: Int, andPassword password: String) {
-//        MoochAPIRouter.setAuthorizationCredentials(withUserId: userId, andPassword: password)
-//    }
-//    
-//    //Clears the authorization credentials for when a user logs out
-//    static func clearAuthorizationCredentials() {
-//        MoochAPIRouter.clearAuthorizationCredentials()
-//    }
+    //Allows authorized requests to be performed
+    static func setAuthorizationCredentials(email: String, authorizationToken: String) {
+        MoochAPIRouter.setAuthorizationCredentials(email: email, authorizationToken: authorizationToken)
+    }
+    
+    //Clears the authorization credentials for when a user logs out
+    static func clearAuthorizationCredentials() {
+        MoochAPIRouter.clearAuthorizationCredentials()
+    }
     
     static func GETUser(withId id: Int, completion: @escaping (User?, Error?) -> Void) {
         perform(MoochAPIRouter.getUser(withId: id)) { json, error in
@@ -41,8 +41,8 @@ class MoochAPI {
         }
     }
     
-    static func GETListings(completion: @escaping ([Listing]?, Error?) -> Void) {
-        perform(MoochAPIRouter.getListings) { json, error in
+    static func GETListings(communityId: Int, completion: @escaping ([Listing]?, Error?) -> Void) {
+        perform(MoochAPIRouter.getListings(forCommunityWithId: communityId)) { json, error in
             guard let listingsJSON = json?.array else {
                 completion(nil, error)
                 return
@@ -58,6 +58,24 @@ class MoochAPI {
         }
     }
     
+    static func POSTLogin(email: String, password: String, completion: @escaping (LocalUser?, Error?) -> Void) {
+        perform(MoochAPIRouter.postLogin(withEmail: email, andPassword: password)) { json, error in
+            guard let localUserJSON = json else {
+                completion(nil, error)
+                return
+            }
+            
+            do {
+                let localUser = try LocalUser(json: localUserJSON)
+                completion(localUser, nil)
+            } catch let error {
+                print("couldn't create local user with JSON: \(json)")
+                completion(nil, error)
+            }
+        }
+    }
+
+    //This method does all the same redundant work that would be shared between calls
     fileprivate static func perform(_ request: URLRequestConvertible, withCompletion completion: @escaping CompletionClosure) {
         Alamofire.request(request).validate().responseJSON { response in
             guard response.result.isSuccess else {
