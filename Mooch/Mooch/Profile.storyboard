@@ -16,7 +16,32 @@
                     <view key="view" contentMode="scaleToFill" id="Gdr-ZB-L85">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X8x-fX-bYc" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="FzT-dL-5CU"/>
+                                    <constraint firstAttribute="height" constant="30" id="Lyb-FV-H6l"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <state key="normal" title="Log Out">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onLogOutAction" destination="MM3-X4-Kft" eventType="touchUpInside" id="WLd-ov-lL3"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FL0-kN-TOJ" firstAttribute="top" secondItem="X8x-fX-bYc" secondAttribute="bottom" constant="15" id="FHb-Nr-VP3"/>
+                            <constraint firstItem="X8x-fX-bYc" firstAttribute="centerX" secondItem="Gdr-ZB-L85" secondAttribute="centerX" id="GTa-6f-EmI"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jnK-ns-upa" userLabel="First Responder" sceneMemberID="firstResponder"/>

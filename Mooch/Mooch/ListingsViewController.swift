@@ -124,6 +124,7 @@ class ListingsViewController: MoochViewController {
         guard let navC = navigationController else { return }
         
         let vc = ProfileViewController.instantiateFromStoryboard()
+        vc.delegate = self
         let profileNavC = UINavigationController(rootViewController: vc)
         
         navC.present(profileNavC, animated: true, completion: nil)
@@ -178,5 +179,12 @@ extension ListingsViewController: EditListingViewControllerDelegate {
         let newListing = createListing(fromEditedListingInformation: editedListingInformation)
         add(listing: newListing)
         presentListingCreatedAlert(forListing: newListing)
+    }
+}
+
+extension ListingsViewController: ProfileViewControllerDelegate {
+    
+    func didLogOut() {
+        updateUI()
     }
 }
