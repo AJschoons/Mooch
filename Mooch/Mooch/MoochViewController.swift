@@ -47,6 +47,9 @@ class MoochViewController: UIViewController {
         return false
     }
     
+    //Allows subclasses to know if the overlay is being shown
+    var isShowingLoadingOverlay = false
+    
     
     // MARK: Private variables
     
@@ -61,6 +64,8 @@ class MoochViewController: UIViewController {
     
     //Used to restore previous status bar style if changed for this view controller
     fileprivate var statusBarStyleBeforeChanging: UIStatusBarStyle?
+    
+    private var loadingOverlayViewBeingShown: LoadingOverlayView?
     
     
     // MARK: Actions
@@ -115,6 +120,40 @@ class MoochViewController: UIViewController {
     //Override this function to change status bar animation behavior
     func shouldAnimateStatusBarChange() -> Bool {
         return true
+    }
+    
+    func showLoadingOverlayView(informationText: String?, overEntireWindow: Bool, withUserInteractionEnabled isUserInteractionEnabled: Bool) {
+        guard !isShowingLoadingOverlay else { print("can't show two loadingOverlayViews!"); return }
+        
+        isShowingLoadingOverlay = true
+        
+        let loadingOverlayView = LoadingOverlayView(frame: view.frame)
+        loadingOverlayViewBeingShown = loadingOverlayView
+        loadingOverlayView.alpha = 0
+        
+        loadingOverlayView.setup(withInformationText: informationText, isUserInteractionEnabled: isUserInteractionEnabled)
+        
+        if overEntireWindow {
+            UIApplication.shared.keyWindow?.addSubview(loadingOverlayView)
+        } else {
+            view.addSubview(loadingOverlayView)
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            loadingOverlayView.alpha = 1
+        }
+    }
+    
+    func hideLoadingOverlayView() {
+        guard let loadingOverlayView = loadingOverlayViewBeingShown, isShowingLoadingOverlay else { return }
+        
+        loadingOverlayView.removeFromSuperview()
+        self.loadingOverlayViewBeingShown = nil
+        
+        UIView.animate(withDuration: 0.3, animations: { loadingOverlayView.alpha = 0 }, completion: { _ in
+            loadingOverlayView.removeFromSuperview()
+            self.loadingOverlayViewBeingShown = nil
+        })
     }
     
     func presentSingleActionAlert(title: String, message: String, actionTitle: String, handler: ((UIAlertAction) -> Void)? = nil) {
