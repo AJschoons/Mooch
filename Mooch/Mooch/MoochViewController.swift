@@ -53,7 +53,7 @@ class MoochViewController: UIViewController {
     
     // MARK: Private variables
     
-    private let LoadingOverlayAnimationDuration = 0.3
+    private let LoadingOverlayAnimationDuration = 0.1
     
     //Flag for whether or not the network reachability verification view controller is being shown
     fileprivate var isShowingNetworkReachabilityVerificationViewController = false
@@ -146,16 +146,24 @@ class MoochViewController: UIViewController {
         }
     }
     
-    func hideLoadingOverlayView() {
+    func hideLoadingOverlayView(animated: Bool, completion: (()->())? = nil) {
         guard let loadingOverlayView = loadingOverlayViewBeingShown, isShowingLoadingOverlay else { return }
         
+        if animated {
+            UIView.animate(withDuration: LoadingOverlayAnimationDuration, animations: { loadingOverlayView.alpha = 0 }, completion: { _ in
+                self.hideOverlayView()
+                completion?()
+            })
+        } else {
+            hideOverlayView()
+        }
+    }
+    
+    private func hideOverlayView() {
+        guard let loadingOverlayView = loadingOverlayViewBeingShown else { return }
         loadingOverlayView.removeFromSuperview()
-        self.loadingOverlayViewBeingShown = nil
-        
-        UIView.animate(withDuration: LoadingOverlayAnimationDuration, animations: { loadingOverlayView.alpha = 0 }, completion: { _ in
-            loadingOverlayView.removeFromSuperview()
-            self.loadingOverlayViewBeingShown = nil
-        })
+        isShowingLoadingOverlay = false
+        loadingOverlayViewBeingShown = nil
     }
     
     func presentSingleActionAlert(title: String, message: String, actionTitle: String, handler: ((UIAlertAction) -> Void)? = nil) {

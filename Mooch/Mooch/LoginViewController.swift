@@ -9,7 +9,7 @@
 import UIKit
 
 protocol LoginViewControllerDelegate: class {
-    func loginViewControllerDidLogin(withUser loggedInUser: User)
+    func loginViewControllerDidLogin(localUser: LocalUser)
 }
 
 //View controller that handles logging in
@@ -89,14 +89,8 @@ class LoginViewController: MoochModalViewController {
     }
     
     @IBAction func onLogin() {
-        guard loginData.isFilledAndValid else { return }
-        let dummyUser = User.createDummy(fromNumber: 83)
-        
-        state = .loggingIn
-        showLoadingOverlayView(informationText: "Logging In", overEntireWindow: false, withUserInteractionEnabled: false)
-        
-//        login(withUser: dummyUser)
-//        delegate?.loginViewControllerDidLogin(withUser: dummyUser)
+        guard let email = loginData.email, let password = loginData.password, loginData.isFilledAndValid else { return }
+        login(email: email, password: password)
     }
     
     @IBAction func onCreateAccount() {
@@ -192,19 +186,38 @@ class LoginViewController: MoochModalViewController {
         present(navC, animated: true, completion: nil)
     }
     
-    fileprivate func presentAccountCreatedAlert(forUser user: User) {
-        let alert = UIAlertController(title: "Account Created", message: "Welcome to Mooch, \(user.name)!", preferredStyle: .alert)
+    fileprivate func presentAccountCreatedAlert(forLocalUser localUser: LocalUser) {
+        let alert = UIAlertController(title: "Account Created", message: "Welcome to Mooch, \(localUser.user.name)!", preferredStyle: .alert)
         let action = UIAlertAction(title: "Get Mooching", style: .default) { _ in
-            self.delegate?.loginViewControllerDidLogin(withUser: user)
-            self.dismissSelf(completion: nil)
+            self.dismissSelfAndNotifyDelegateOfLogin(for: localUser)
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
     
-    fileprivate func login(withUser user: User) {
-        let localUser = LocalUser(user: user, authenticationToken: "fake token")
-        LocalUserManager.sharedInstance.login(withLocalUser: localUser)
+    //Makes an API call to login. Shows a loading overlay while waiting. On success logs that user in locally, else shows an alert on failure
+    fileprivate func login(email: String, password: String) {
+        state = .loggingIn
+        showLoadingOverlayView(informationText: "Logging In", overEntireWindow: false, withUserInteractionEnabled: false)
+        
+        MoochAPI.POSTLogin(email: email, password: password) { [weak self] localUser, error in
+            guard let strongSelf = self else { return }
+            
+            if let localUser = localUser {
+                LocalUserManager.sharedInstance.login(localUser: localUser)
+                strongSelf.dismissSelfAndNotifyDelegateOfLogin(for: localUser)
+            } else {
+                strongSelf.state = .loginFieldsFilledAndValid
+                strongSelf.presentSingleActionAlert(title: "Problem Loggin In", message: "Please check the email and password, then try again", actionTitle: "Okay")
+                strongSelf.hideLoadingOverlayView(animated: true)
+            }
+        }
+    }
+    
+    //Use this method after login or account creation to dismiss this view controller and notify the delegate
+    fileprivate func dismissSelfAndNotifyDelegateOfLogin(for localUser: LocalUser) {
+        delegate?.loginViewControllerDidLogin(localUser: localUser)
+        dismissSelf(completion: nil)
     }
     
     private func setupTextFields() {
@@ -257,8 +270,9 @@ class LoginViewController: MoochModalViewController {
 extension LoginViewController: EditProfileViewControllerDelegate {
     
     func editProfileViewControllerDidFinishEditing(withUser editedUser: User) {
-        login(withUser: editedUser)
-        presentAccountCreatedAlert(forUser: editedUser)
+        let localUser = LocalUser(user: editedUser, authenticationToken: "fake token")
+        LocalUserManager.sharedInstance.login(localUser: localUser)
+        presentAccountCreatedAlert(forLocalUser: localUser)
     }
 }
 

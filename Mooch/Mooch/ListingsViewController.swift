@@ -167,7 +167,7 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
 
 extension ListingsViewController: LoginViewControllerDelegate {
     
-    func loginViewControllerDidLogin(withUser loggedInUser: User) {
+    func loginViewControllerDidLogin(localUser: LocalUser) {
         updateUI()
     }
 }

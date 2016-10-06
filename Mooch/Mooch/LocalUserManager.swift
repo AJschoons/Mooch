@@ -25,13 +25,15 @@ class LocalUserManager {
     fileprivate(set) var localUser: LocalUser?
     fileprivate(set) var state: LocalUserState = .guest
     
-    func login(withLocalUser localUser: LocalUser) {
+    func login(localUser: LocalUser) {
         self.localUser = localUser
         state = .loggedIn
+        MoochAPI.setAuthorizationCredentials(email: localUser.user.contactInformation.email, authorizationToken: localUser.authenticationToken)
     }
     
     func logout() {
         localUser = nil
         state = .guest
+        MoochAPI.clearAuthorizationCredentials()
     }
 }

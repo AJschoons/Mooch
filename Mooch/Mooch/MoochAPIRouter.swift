@@ -9,26 +9,38 @@
 import Foundation
 import Alamofire
 
-//Class that maps an API route to a URLRequest
+//Class that maps an API route to a URLRequest. Should only be used through MoochAPI or in tests
 enum MoochAPIRouter: URLRequestConvertible {
     static let baseURLString = "https://mooch-rails-api.appspot.com/api/v1"
     
-//    static fileprivate var userId: Int?
-//    static fileprivate var password: String?
+    static fileprivate var email: String?
+    static fileprivate var authorizationToken: String?
     
     static fileprivate let NoParametersDictionary = [String : AnyObject]()
     
-    case getListings
+    static private let AuthorizationHeaderKey = "Authorization"
+    
+    case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
+    case postLogin(withEmail: String, andPassword: String)
+    
+    //The keys to pass in as parameters mapped to strings
+    enum JSONMapping: String {
+        case email = "email"
+        case password = "password"
+    }
     
     //Returns the URL request for the route
     func asURLRequest() throws -> URLRequest {
-        let result: (path: String, method: Alamofire.HTTPMethod, parameters: [String: AnyObject]?, requiresAuthorization: Bool) = {
+        let result: (path: String, method: Alamofire.HTTPMethod, parameters: [String: Any]?, requiresAuthorization: Bool) = {
             switch self {
-            case .getListings:
-                return ("/listings", .get, nil, false)
+            case .getListings(let communityId):
+                return ("/communities/\(communityId)/listings", .get, nil, false)
             case .getUser(let userId):
                 return ("/users/\(userId)", .get, nil, false)
+            case .postLogin(let email, let password):
+                let parameters = [JSONMapping.email.rawValue : email, JSONMapping.password.rawValue : password]
+                return ("/sessions", .post, parameters, false)
             }
         }()
         
@@ -36,27 +48,31 @@ enum MoochAPIRouter: URLRequestConvertible {
         var urlRequest = URLRequest(url: url.appendingPathComponent(result.path))
         urlRequest.httpMethod = result.method.rawValue
         
-//        if result.requiresAuthorization {
-//            if let userId = MoochAPIRouter.userId, let userPassword = MoochAPIRouter.password {
-//                urlRequest.setValue(String(userId), forHTTPHeaderField: "user_id")
-//                urlRequest.setValue(userPassword, forHTTPHeaderField: "user_password")
-//            } else {
-//                print("ERROR: API route that requires authorization has not been given the authorization credentials")
-//            }
-//        }
+        if result.requiresAuthorization {
+            if let email = MoochAPIRouter.email, let authorizationToken = MoochAPIRouter.authorizationToken {
+                let authorizationHeaderValue = self.authorizationHeaderValue(email: email, authorizationToken: authorizationToken)
+                urlRequest.setValue(authorizationHeaderValue, forHTTPHeaderField: MoochAPIRouter.AuthorizationHeaderKey)
+            } else {
+                print("ERROR: API route that requires authorization has not been given the authorization credentials")
+            }
+        }
         
         return try JSONEncoding.default.encode(urlRequest, with: result.parameters)
     }
     
-//    //Allows the router to perform authorized requests
-//    static func setAuthorizationCredentials(withUserId userId: Int, andPassword password: String) {
-//        self.userId = userId
-//        self.password = password
-//    }
-//    
-//    //Clears the authorization credentials for when a user logs out
-//    static func clearAuthorizationCredentials() {
-//        self.userId = nil
-//        self.password = nil
-//    }
+    //Allows the router to perform authorized requests
+    static func setAuthorizationCredentials(email: String, authorizationToken: String) {
+        self.email = email
+        self.authorizationToken = authorizationToken
+    }
+    
+    //Clears the authorization credentials for when a user logs out
+    static func clearAuthorizationCredentials() {
+        email = nil
+        authorizationToken = nil
+    }
+    
+    fileprivate func authorizationHeaderValue(email: String, authorizationToken: String) -> String {
+        return "Token token=\"\(authorizationToken)\", email=\"\(email)\""
+    }
 }
