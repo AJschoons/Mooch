@@ -19,6 +19,8 @@
 		811025A21D94D76500C3931C /* MoochAPIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */; };
 		811025A31D94D76800C3931C /* MoochAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259C1D94C45A00C3931C /* MoochAPI.swift */; };
 		811025A51D94DFAB00C3931C /* MoochAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811025A41D94DFAB00C3931C /* MoochAPITests.swift */; };
+		812661F91DA7361500ECD64E /* GETCategories.json in Sources */ = {isa = PBXBuildFile; fileRef = 812661F81DA7361500ECD64E /* GETCategories.json */; };
+		812661FB1DA736C700ECD64E /* POSTLogin.json in Sources */ = {isa = PBXBuildFile; fileRef = 812661FA1DA736C700ECD64E /* POSTLogin.json */; };
 		813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F650D1D87A18100DEECF0 /* ProfileViewController.swift */; };
 		813F65101D87A19400DEECF0 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 813F650F1D87A19400DEECF0 /* Profile.storyboard */; };
 		8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */; };
@@ -130,6 +132,8 @@
 		8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPIRouter.swift; sourceTree = "<group>"; };
 		811025A01D94D73B00C3931C /* MoochAPIRouterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPIRouterTests.swift; sourceTree = "<group>"; };
 		811025A41D94DFAB00C3931C /* MoochAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPITests.swift; sourceTree = "<group>"; };
+		812661F81DA7361500ECD64E /* GETCategories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETCategories.json; sourceTree = "<group>"; };
+		812661FA1DA736C700ECD64E /* POSTLogin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = POSTLogin.json; sourceTree = "<group>"; };
 		813F650D1D87A18100DEECF0 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		813F650F1D87A19400DEECF0 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialLoadingViewController.swift; sourceTree = "<group>"; };
@@ -298,7 +302,9 @@
 				811025A41D94DFAB00C3931C /* MoochAPITests.swift */,
 				815BCF0D1D7E83160022F806 /* UserTests.swift */,
 				810A82481D7A11780086B40F /* Info.plist */,
+				812661F81DA7361500ECD64E /* GETCategories.json */,
 				81F0EA4E1D98AC9400C7AD09 /* GETListings.json */,
+				812661FA1DA736C700ECD64E /* POSTLogin.json */,
 			);
 			path = MoochTests;
 			sourceTree = "<group>";
@@ -878,6 +884,7 @@
 			files = (
 				B373681A1DA3368500014B25 /* ListingCategory.swift in Sources */,
 				B37368191DA335DA00014B25 /* ListingCategoryTests.swift in Sources */,
+				812661F91DA7361500ECD64E /* GETCategories.json in Sources */,
 				815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */,
 				811025A51D94DFAB00C3931C /* MoochAPITests.swift in Sources */,
 				811025A11D94D73B00C3931C /* MoochAPIRouterTests.swift in Sources */,
@@ -892,6 +899,7 @@
 				81F0EA4A1D9896A000C7AD09 /* Helpers.swift in Sources */,
 				815BCF091D7E7F0B0022F806 /* User.swift in Sources */,
 				811025A21D94D76500C3931C /* MoochAPIRouter.swift in Sources */,
+				812661FB1DA736C700ECD64E /* POSTLogin.json in Sources */,
 				815BCF0B1D7E7F5C0022F806 /* CommunityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
