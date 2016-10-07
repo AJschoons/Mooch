@@ -604,7 +604,7 @@
 				TargetAttributes = {
 					810A822D1D7A11780086B40F = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 9ZQ9622GC6;
+						DevelopmentTeam = 2ZW34Q8J6R;
 						LastSwiftMigration = 0800;
 					};
 					810A82411D7A11780086B40F = {
@@ -866,7 +866,6 @@
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
 				814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */,
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
-				815BCF141D805B550022F806 /* ListingCategory.swift in Sources */,
 				817CA0921DA2BFD500489374 /* LoginTextHandler.swift in Sources */,
 				815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */,
 				815BCF031D7E77E70022F806 /* Errors.swift in Sources */,
@@ -1028,7 +1027,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 9ZQ9622GC6;
+				DEVELOPMENT_TEAM = 2ZW34Q8J6R;
 				INFOPLIST_FILE = Mooch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1045,7 +1044,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 9ZQ9622GC6;
+				DEVELOPMENT_TEAM = 2ZW34Q8J6R;
 				INFOPLIST_FILE = Mooch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
