@@ -10,6 +10,11 @@ import UIKit
 
 class ListingsViewController: MoochViewController {
     
+    enum State {
+        case loading
+        case loaded
+    }
+    
     // MARK: Public variables
     
     @IBOutlet var tableHandler: ListingsTableHandler! {
@@ -34,17 +39,22 @@ class ListingsViewController: MoochViewController {
     fileprivate var profileButton: UIBarButtonItem!
     fileprivate var addListingButton: UIBarButtonItem!
     
+    fileprivate var state: State = .loading
+    
     // MARK: Actions
     
     func onLoginAction() {
+        guard state != .loading else { return }
         presentLoginViewController()
     }
     
     func onProfileAction() {
+        guard state != .loading else { return }
         presentProfileViewController()
     }
     
     func onAddListingAction() {
+        guard state != .loading else { return }
         presentEditListingViewController()
     }
     
@@ -58,8 +68,9 @@ class ListingsViewController: MoochViewController {
     override func setup() {
         super.setup()
         
+        loadListings()
+        
         setupNavigationBar()
-        setupDummyData()
         
         updateUI()
     }
@@ -95,12 +106,33 @@ class ListingsViewController: MoochViewController {
         }
     }
     
-    fileprivate func setupDummyData() {
-        var dummyListings = [Listing]()
-        for i in 1...5 {
-            dummyListings.append(Listing.createDummy(fromNumber: i))
+    fileprivate func loadListings() {
+        guard let userCommunityId = LocalUserManager.sharedInstance.userCommunityId else { return }
+        
+        //This allows the view controller to disable buttons/actions while loading
+        state = .loading
+        
+        showLoadingOverlayView(informationText: "Loading Listings", overEntireWindow: false, withUserInteractionEnabled: false)
+        
+        MoochAPI.GETListings(communityId: userCommunityId) { listings, error in
+            guard let newListings = listings else {
+                self.hideLoadingOverlayView(animated: true)
+                self.presentSingleActionAlert(title: "Problem Loading Listings", message: "Please try pulling to refresh to reload the listings", actionTitle: "Okay")
+                self.state = .loaded
+                return
+            }
+            
+            //Filter to only show listings this user hasn't posted
+            var listingsNotPostedByThisUser = newListings
+            if let localUser = LocalUserManager.sharedInstance.localUser {
+                listingsNotPostedByThisUser = listingsNotPostedByThisUser.filter({$0.owner.id != localUser.user.id})
+            }
+            
+            //Setting this causes the table to reload
+            self.listings = listingsNotPostedByThisUser
+            self.hideLoadingOverlayView(animated: true)
+            self.state = .loaded
         }
-        listings = dummyListings
     }
     
     fileprivate func pushListingDetailsViewController(withListing listing: Listing) {
@@ -170,6 +202,7 @@ extension ListingsViewController: LoginViewControllerDelegate {
     
     func loginViewControllerDidLogin(localUser: LocalUser) {
         updateUI()
+        loadListings()
     }
 }
 
@@ -186,5 +219,6 @@ extension ListingsViewController: ProfileViewControllerDelegate {
     
     func didLogOut() {
         updateUI()
+        loadListings()
     }
 }

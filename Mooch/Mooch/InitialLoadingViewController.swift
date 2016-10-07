@@ -47,6 +47,9 @@ class InitialLoadingViewController: MoochModalViewController {
     // MARK: Private methods
 
     private func getDataInitiallyNeededFromAPI() {
+        //TODO: actually login a user instead of hardcoding a guest to community with id 1
+        LocalUserManager.sharedInstance.updateGuest(communityId: 1)
+        
         MoochAPI.GETListingCategories() { listingCategories, error in
             if let listingCategories = listingCategories {
                 ListingCategoryManager.sharedInstance.update(withListingCategories: listingCategories)
