@@ -53,6 +53,7 @@ extension ListingsTableHandler: UITableViewDataSource {
         cell.categoryLabel.text = categoryLabelText
         
         cell.tag = indexPath.row
+        cell.photo.image = ImageManager.PlaceholderImage
         ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
             //Make sure the cell hasn't been reused by the time the image is downloaded
             guard cell.tag == indexPath.row else { return }
