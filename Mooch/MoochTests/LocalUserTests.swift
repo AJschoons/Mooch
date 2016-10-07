@@ -14,9 +14,10 @@ class LocalUserTests: XCTestCase {
     
     func testDesignatedInitAndGetterSetters() {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
-        let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
-        let user = User(id: 5, name: "test", contactInformation: contactInformation, rating : 4.0,community: community)
-        var localUser = LocalUser(user: user, password: "password")
+        
+        let user = User(id: 5, name: "test", contactInformation: contactInformation, currentRating: 4.5, ratingCount: 5, communityId: 4, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        
+        var localUser = LocalUser(user: user, authenticationToken: "CorrectPassword")
         
         //Test the getters and that all the variables are correctly initialized
         XCTAssert(localUser.user.id == 5)
@@ -24,64 +25,37 @@ class LocalUserTests: XCTestCase {
         XCTAssert(localUser.user.contactInformation.phone == "123-456-7890")
         XCTAssert(localUser.user.contactInformation.address == "#406")
         XCTAssert(localUser.user.contactInformation.email == "test@wow.com")
-        XCTAssert(localUser.user.community.id == 7)
-        XCTAssert(localUser.user.community.address == "123 LaSalle")
-        XCTAssert(localUser.user.community.name == "123 Big Apartments")
-        XCTAssert(localUser.password == "password")
+        XCTAssert(localUser.user.communityId == 4)
+        XCTAssert(localUser.authenticationToken == "CorrectPassword")
         
         //Test setters and proper modifiability
         localUser.user.name = "the new guy"
         localUser.user.contactInformation.address = "new apt"
         localUser.user.contactInformation.phone = nil
-        let newCommunity = Community(id: 9, address: "new place", name: "new name")
-        localUser.user.community = newCommunity
-        
+
         XCTAssert(localUser.user.name == "the new guy")
         XCTAssert(localUser.user.contactInformation.phone == nil)
         XCTAssert(localUser.user.contactInformation.address == "new apt")
-        XCTAssert(localUser.user.community.id == 9)
-        XCTAssert(localUser.user.community.address == "new place")
-        XCTAssert(localUser.user.community.name == "new name")
     }
     
     //Test that a LocalUser is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let communityJSONDict = [Community.JSONMapping.Id.rawValue : 1234, Community.JSONMapping.Address.rawValue : "1234 address lane", Community.JSONMapping.Name.rawValue : "highrise apartments"] as [String : Any]
-        let userJSON: JSON = [User.JSONMapping.Id.rawValue : 4132, User.JSONMapping.Name.rawValue : "Bob the User", User.JSONMapping.Phone.rawValue : "123-456-6789", User.JSONMapping.Address.rawValue : "apt #406", User.JSONMapping.Email.rawValue : "doge@example.com", User.JSONMapping.Community.rawValue : communityJSONDict]
+
+        
+        let localUserJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.currentRating.rawValue : 4.5, User.JSONMapping.ratingCount.rawValue : 5, User.JSONMapping.communityId.rawValue : 4,LocalUser.JSONMapping.authenticationToken.rawValue : "authToken"]
         
         do {
-            let localUser = try LocalUser(userJSON: userJSON, password: "password")
+            let localUser = try LocalUser(json: localUserJSON)
+
             
             //Test that all the variables are correctly initialized
             XCTAssert(localUser.user.id == 4132)
             XCTAssert(localUser.user.name == "Bob the User")
-            XCTAssert(localUser.user.contactInformation.phone == "123-456-6789")
-            XCTAssert(localUser.user.contactInformation.address == "apt #406")
             XCTAssert(localUser.user.contactInformation.email == "doge@example.com")
-            XCTAssert(localUser.user.community.id == 1234)
-            XCTAssert(localUser.user.community.address == "1234 address lane")
-            XCTAssert(localUser.user.community.name == "highrise apartments")
-            XCTAssert(localUser.password == "password")
+            XCTAssert(localUser.user.communityId == 4)
+            XCTAssert(localUser.authenticationToken  == "authToken")
         } catch {
             XCTFail()
         }
-    }
-    
-    //Test that a LocalUser throws the expected error when it doesn't have all the data it needs
-    func testConvenienceInitError() {
-        let userJSON: JSON = ["id" : 4132]
-        
-        var jsonErrorThrown = false
-        
-        do {
-            let _ = try LocalUser(userJSON: userJSON, password: "")
-            XCTFail()
-        } catch InitializationError.insufficientJSONInformationForInitialization {
-            jsonErrorThrown = true
-        } catch {
-            
-        }
-        
-        XCTAssert(jsonErrorThrown)
     }
 }

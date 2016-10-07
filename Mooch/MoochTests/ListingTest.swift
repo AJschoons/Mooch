@@ -7,23 +7,42 @@
 //
 
 import XCTest
-
+//import UIKit
 @testable import Mooch
 
+
+extension Date
+{
+    init(dateString:String) {
+        let dateStringFormatter = DateFormatter()
+        dateStringFormatter.dateFormat = "yyyy-MM-dd"
+        dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
+        let d = dateStringFormatter.date(from: dateString)!
+        self.init(timeInterval:0, since:d)    }
+}
+
 class ListingTest: XCTestCase {
+
     
     func testCommunityDesignatedInit() {
+        let photoImage = UIImage(named: "apples")
+
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
-        let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
-        let user = User(id: 5, name: "test", contactInformation: contactInformation, rating: 4.0, community: community)
+        let user = User(id: 5, name: "test", contactInformation: contactInformation, currentRating: 4.5, ratingCount: 5, communityId:4 , pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        let createDate = Date(dateString:"2014-06-06")
+        let modifyDate = Date(dateString:"2016-07-06")
         
-        let listingTag = ListingTag(id: 4, name: "apple")
-        let listing = Listing(id: 4, title: "apple", price: 2, isAvailable: false, owner: user, community: community, tag: listingTag)
+        let listing = Listing(id: 4, photo:photoImage,title: "apple", description: "nice apple", price: 2.0, isFree: false, quantity: 2, categoryId: 3, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 4)
         
         //Test that all the variables are correctly initialized
         XCTAssert(listing.id == 4)
         XCTAssert(listing.title == "apple")
-        XCTAssert(listing.price == 2)
+        XCTAssert(listing.description == "nice apple")
+        XCTAssert(listing.price == 2.0)
+        XCTAssert(listing.isFree == false)
+        XCTAssert(listing.isAvailable == true)
+        XCTAssert(listing.thumbnailPictureURL == "thumbPic")
+
         
         XCTAssert(listing.owner.id == 5)
         XCTAssert(listing.owner.name == "test")
@@ -31,41 +50,43 @@ class ListingTest: XCTestCase {
         XCTAssert(listing.owner.contactInformation.address == "#406")
         XCTAssert(listing.owner.contactInformation.email == "test@wow.com")
         
-        XCTAssert(listing.community.id == 7)
-        XCTAssert(listing.community.address == "123 LaSalle")
-        XCTAssert(listing.community.name == "123 Big Apartments")
-        
-        XCTAssert(listing.tag.id == 4)
-        XCTAssert(listing.tag.name == "apple")
+
     }
     
     //Test that a listing is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let communityJSONDict = [Community.JSONMapping.Id.rawValue : 7, Community.JSONMapping.Address.rawValue : "123 LaSalle", Community.JSONMapping.Name.rawValue : "123 Big Apartments"] as [String : Any]
-        let userJSONDict = [User.JSONMapping.Id.rawValue : 4132, User.JSONMapping.Name.rawValue : "Bob the User", User.JSONMapping.Phone.rawValue : "123-456-6789", User.JSONMapping.Address.rawValue : "apt #406", User.JSONMapping.Email.rawValue : "doge@example.com", User.JSONMapping.Community.rawValue : communityJSONDict] as [String : Any]
-        let listingTagJSON = [ListingTag.JSONMapping.Id.rawValue : 4, ListingTag.JSONMapping.Name.rawValue : "apple"] as [String : Any]
+        let userJSONDict = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.currentRating.rawValue : 4.5, User.JSONMapping.ratingCount.rawValue : 5, User.JSONMapping.communityId.rawValue : 4] as [String : Any]
+
+        let listingJSON: JSON = [
+                                 Listing.JSONMapping.id.rawValue : 4532,
+                                 Listing.JSONMapping.title.rawValue : "apple",
+                                 Listing.JSONMapping.price.rawValue : 2,
+                                 Listing.JSONMapping.isFree.rawValue: true,
+                                 Listing.JSONMapping.quantity.rawValue: 2,
+                                 Listing.JSONMapping.categoryId.rawValue : 4,
+                                 Listing.JSONMapping.isAvailable.rawValue : true,
+                                 Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z",
+                                 Listing.JSONMapping.pictureURL.rawValue : "picture",
+                                 Listing.JSONMapping.thumbnailPictureURL.rawValue : "thumbPic",
+                                 Listing.JSONMapping.communityId.rawValue : 5,
+                                 Listing.JSONMapping.owner.rawValue : userJSONDict
+                                ]
         
-        let listingJSON: JSON = [Listing.JSONMapping.Id.rawValue : 4532, Listing.JSONMapping.Title.rawValue : "apple", Listing.JSONMapping.Price.rawValue : 2, Listing.JSONMapping.IsAvailable.rawValue : true, Listing.JSONMapping.Owner.rawValue : userJSONDict, Listing.JSONMapping.Community.rawValue : communityJSONDict, Listing.JSONMapping.Tag.rawValue : listingTagJSON]
+
+
+        
         do {
             let listing = try Listing(json: listingJSON)
-            //Test that all the variables are correctly initialized
+//            //Test that all the variables are correctly initialized
             XCTAssert(listing.id == 4532)
             XCTAssert(listing.title == "apple")
             XCTAssert(listing.price == 2)
             XCTAssert(listing.isAvailable == true)
             XCTAssert(listing.owner.id == 4132)
             XCTAssert(listing.owner.name == "Bob the User")
-            XCTAssert(listing.owner.contactInformation.phone == "123-456-6789")
-            XCTAssert(listing.owner.contactInformation.address == "apt #406")
             XCTAssert(listing.owner.contactInformation.email == "doge@example.com")
-            
-            
-            XCTAssert(listing.community.id == 7)
-            XCTAssert(listing.community.address == "123 LaSalle")
-            XCTAssert(listing.community.name == "123 Big Apartments")
-            
-            XCTAssert(listing.tag.id == 4)
-            XCTAssert(listing.tag.name == "apple")
+            XCTAssert(listing.communityId == 5)
+
         } catch {
             XCTFail()
         }
@@ -73,14 +94,14 @@ class ListingTest: XCTestCase {
     
     //Test that a Listing throws the expected error when it doesn't have all the data it needs
     func testConvenienceInitError() {
-        let listJSONDict: JSON = ["id" : 41]
+        let listJSONDiction: JSON = ["id" : 41]
         
         var jsonErrorThrown = false
         
         do {
-            let _ = try User(json: listJSONDict)
+            let _ = try Listing(json: listJSONDiction)
             XCTFail()
-        } catch InitializationError.insufficientJSONInformationForInitialization {
+        } catch Listing.JSONInitializationError.title {
             jsonErrorThrown = true
         } catch {
             
@@ -89,46 +110,42 @@ class ListingTest: XCTestCase {
     }
     
     func testGettersSetters() {
+        let photoImage = UIImage(named: "apples")
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
-        let community = Community(id: 7, address: "123 LaSalle", name: "123 Big Apartments")
-        let user = User(id: 5, name: "test", contactInformation: contactInformation,rating: 4.0, community: community)
-        let listingTag = ListingTag(id: 4, name: "apple")
-        var listing = Listing(id: 4, title: "apple", price: 2, isAvailable: true, owner: user, community: community, tag: listingTag)
+        let user = User(id: 5, name: "test", contactInformation: contactInformation, currentRating: 4.5, ratingCount: 5, communityId: 7, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+       
+        let createDate = Date(dateString:"2014-06-06")
+        let modifyDate = Date(dateString:"2016-07-06")
+        
+        var listing = Listing(id: 4, photo:photoImage,title: "apple", description: "nice apple", price: 2.0, isFree: false, quantity: 2, categoryId: 3, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 4)
+        
+        
         //Test getter
         XCTAssert(listing.id == 4)
         XCTAssert(listing.title == "apple")
         XCTAssert(listing.price == 2)
-        
+        XCTAssert(listing.thumbnailPictureURL == "thumbPic")
+
         XCTAssert(listing.owner.id == 5)
         XCTAssert(listing.owner.name == "test")
         XCTAssert(listing.owner.contactInformation.phone == "123-456-7890")
         XCTAssert(listing.owner.contactInformation.address == "#406")
         XCTAssert(listing.owner.contactInformation.email == "test@wow.com")
+
         
-        XCTAssert(listing.community.id == 7)
-        XCTAssert(listing.community.address == "123 LaSalle")
-        XCTAssert(listing.community.name == "123 Big Apartments")
-        
-        XCTAssert(listing.tag.id == 4)
-        XCTAssert(listing.tag.name == "apple")
+
         listing.title = "banana"
+        _ = User(id: 12, name: "jiang", contactInformation: contactInformation,currentRating: 4.5, ratingCount: 9, communityId : 11, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
         
-        let newListtag = ListingTag(id: 33, name: "banana")
-        let newUser = User(id: 12, name: "jiang", contactInformation: contactInformation,rating: 4.0, community: community)
-        let newList = Listing (id : 2, title : "banana", price : 3, isAvailable : true, owner : newUser, community : community, tag : newListtag)
+        let newList = Listing(id: 2, photo: photoImage, title: "banana", description: "nice apple", price: 3, isFree: false, quantity: 2, categoryId: 13, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 11)
         
         //Test setters
         XCTAssert(newList.id == 2)
         XCTAssert(newList.title == "banana")
         XCTAssert(newList.price == 3)
-        
-        XCTAssert(newList.community.id == 7)
-        XCTAssert(newList.community.address == "123 LaSalle")
-        XCTAssert(newList.community.name == "123 Big Apartments")
-        
-        XCTAssert(newList.tag.id == 33)
-        XCTAssert(newList.tag.name == "banana")
-        
+        XCTAssert(newList.pictureURL == "picture")
+        XCTAssert(newList.categoryId == 13)
+
         
     }
 }

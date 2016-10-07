@@ -57,11 +57,8 @@
 		815BCF0B1D7E7F5C0022F806 /* CommunityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */; };
 		815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF021D7E77E70022F806 /* Errors.swift */; };
 		815BCF0E1D7E83160022F806 /* UserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF0D1D7E83160022F806 /* UserTests.swift */; };
-		815BCF141D805B550022F806 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF131D805B550022F806 /* ListingCategory.swift */; };
 		815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF151D805EAE0022F806 /* LocalUser.swift */; };
-		815BCF181D806D260022F806 /* ListingTagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF171D806D260022F806 /* ListingTagTests.swift */; };
 		815BCF191D806F970022F806 /* LocalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF151D805EAE0022F806 /* LocalUser.swift */; };
-		815BCF1A1D806F990022F806 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF131D805B550022F806 /* ListingCategory.swift */; };
 		815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF1B1D8070B80022F806 /* LocalUserTests.swift */; };
 		816623A61DA048FB009AE72B /* ListingCategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816623A51DA048FB009AE72B /* ListingCategoryManager.swift */; };
 		816623A81DA058BA009AE72B /* EditListingCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816623A71DA058BA009AE72B /* EditListingCategoryCell.swift */; };
@@ -87,6 +84,9 @@
 		81F0EA541D98D01D00C7AD09 /* EditListingTextHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA531D98D01D00C7AD09 /* EditListingTextHandler.swift */; };
 		81F0EA561D9978CF00C7AD09 /* EditListingConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA551D9978CF00C7AD09 /* EditListingConfiguration.swift */; };
 		81F0EA581D997A2600C7AD09 /* EditedListingInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA571D997A2600C7AD09 /* EditedListingInformation.swift */; };
+		B37368131DA31FF100014B25 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37368121DA31FF100014B25 /* ListingCategory.swift */; };
+		B37368191DA335DA00014B25 /* ListingCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37368181DA335DA00014B25 /* ListingCategoryTests.swift */; };
+		B373681A1DA3368500014B25 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37368121DA31FF100014B25 /* ListingCategory.swift */; };
 		B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7BE1D85FC6B000F0C37 /* Listing.swift */; };
 		B38E8B1D1D8C7678002A9439 /* ListingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E8B1C1D8C7678002A9439 /* ListingTest.swift */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
@@ -165,9 +165,7 @@
 		815BCF061D7E78FD0022F806 /* Community.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Community.swift; sourceTree = "<group>"; };
 		815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityTests.swift; sourceTree = "<group>"; };
 		815BCF0D1D7E83160022F806 /* UserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTests.swift; sourceTree = "<group>"; };
-		815BCF131D805B550022F806 /* ListingCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategory.swift; sourceTree = "<group>"; };
 		815BCF151D805EAE0022F806 /* LocalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUser.swift; sourceTree = "<group>"; };
-		815BCF171D806D260022F806 /* ListingTagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTagTests.swift; sourceTree = "<group>"; };
 		815BCF1B1D8070B80022F806 /* LocalUserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUserTests.swift; sourceTree = "<group>"; };
 		816623A51DA048FB009AE72B /* ListingCategoryManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryManager.swift; sourceTree = "<group>"; };
 		816623A71DA058BA009AE72B /* EditListingCategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingCategoryCell.swift; sourceTree = "<group>"; };
@@ -194,6 +192,8 @@
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B37368121DA31FF100014B25 /* ListingCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategory.swift; sourceTree = "<group>"; };
+		B37368181DA335DA00014B25 /* ListingCategoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryTests.swift; sourceTree = "<group>"; };
 		B38E8B1C1D8C7678002A9439 /* ListingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTest.swift; sourceTree = "<group>"; };
 		DB0A3D9FB6A1E3D95ECCCD45 /* Pods-Mooch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mooch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mooch/Pods-Mooch.debug.xcconfig"; sourceTree = "<group>"; };
 		E49A73BAC724FE7A87D6C8A0 /* Pods-MoochUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -290,15 +290,15 @@
 		810A82451D7A11780086B40F /* MoochTests */ = {
 			isa = PBXGroup;
 			children = (
-				81F0EA4B1D98AB7800C7AD09 /* json_response */,
+				B37368181DA335DA00014B25 /* ListingCategoryTests.swift */,
 				815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */,
-				815BCF171D806D260022F806 /* ListingTagTests.swift */,
 				B38E8B1C1D8C7678002A9439 /* ListingTest.swift */,
 				815BCF1B1D8070B80022F806 /* LocalUserTests.swift */,
 				811025A01D94D73B00C3931C /* MoochAPIRouterTests.swift */,
 				811025A41D94DFAB00C3931C /* MoochAPITests.swift */,
 				815BCF0D1D7E83160022F806 /* UserTests.swift */,
 				810A82481D7A11780086B40F /* Info.plist */,
+				81F0EA4E1D98AC9400C7AD09 /* GETListings.json */,
 			);
 			path = MoochTests;
 			sourceTree = "<group>";
@@ -343,8 +343,8 @@
 		810A82761D7D23910086B40F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B37368121DA31FF100014B25 /* ListingCategory.swift */,
 				815BCF061D7E78FD0022F806 /* Community.swift */,
-				815BCF131D805B550022F806 /* ListingCategory.swift */,
 				8149E7BE1D85FC6B000F0C37 /* Listing.swift */,
 				815BCF151D805EAE0022F806 /* LocalUser.swift */,
 				815BCF041D7E78290022F806 /* User.swift */,
@@ -525,14 +525,6 @@
 				81A09FEA1D9F16230021D3FA /* CameraViewController.swift */,
 			);
 			name = Camera;
-			sourceTree = "<group>";
-		};
-		81F0EA4B1D98AB7800C7AD09 /* json_response */ = {
-			isa = PBXGroup;
-			children = (
-				81F0EA4E1D98AC9400C7AD09 /* GETListings.json */,
-			);
-			name = json_response;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -842,6 +834,7 @@
 				815BCF011D7E77D80022F806 /* Helpers.swift in Sources */,
 				8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */,
 				8149E7B41D84B396000F0C37 /* ListingsViewController.swift in Sources */,
+				B37368131DA31FF100014B25 /* ListingCategory.swift in Sources */,
 				8149E7C21D8609BE000F0C37 /* ListingTableViewCell.swift in Sources */,
 				817CA09A1DA4363100489374 /* LoadingOverlayView.swift in Sources */,
 				81A09FDC1D9B350B0021D3FA /* PhotoAddingView.swift in Sources */,
@@ -873,7 +866,6 @@
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
 				814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */,
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
-				815BCF141D805B550022F806 /* ListingCategory.swift in Sources */,
 				817CA0921DA2BFD500489374 /* LoginTextHandler.swift in Sources */,
 				815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */,
 				815BCF031D7E77E70022F806 /* Errors.swift in Sources */,
@@ -884,15 +876,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B373681A1DA3368500014B25 /* ListingCategory.swift in Sources */,
+				B37368191DA335DA00014B25 /* ListingCategoryTests.swift in Sources */,
 				815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */,
 				811025A51D94DFAB00C3931C /* MoochAPITests.swift in Sources */,
-				815BCF181D806D260022F806 /* ListingTagTests.swift in Sources */,
 				811025A11D94D73B00C3931C /* MoochAPIRouterTests.swift in Sources */,
 				B38E8B1D1D8C7678002A9439 /* ListingTest.swift in Sources */,
 				815BCF0C1D7E813F0022F806 /* Errors.swift in Sources */,
 				B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */,
 				81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
-				815BCF1A1D806F990022F806 /* ListingCategory.swift in Sources */,
 				815BCF081D7E7F070022F806 /* Community.swift in Sources */,
 				815BCF0E1D7E83160022F806 /* UserTests.swift in Sources */,
 				811025A31D94D76800C3931C /* MoochAPI.swift in Sources */,
@@ -1035,6 +1027,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2ZW34Q8J6R;
 				INFOPLIST_FILE = Mooch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1051,6 +1044,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 2ZW34Q8J6R;
 				INFOPLIST_FILE = Mooch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
