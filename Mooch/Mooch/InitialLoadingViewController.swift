@@ -20,8 +20,11 @@ class InitialLoadingViewController: MoochModalViewController {
     
     override func setup() {
         super.setup()
-        
-        Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(onFinishedLoading), userInfo: nil, repeats: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        getDataInitiallyNeededFromAPI()
     }
     
     override func prefersNavigationBarHidden() -> Bool {
@@ -43,6 +46,23 @@ class InitialLoadingViewController: MoochModalViewController {
     
     // MARK: Private methods
 
+    private func getDataInitiallyNeededFromAPI() {
+        MoochAPI.GETListingCategories() { listingCategories, error in
+            if let listingCategories = listingCategories {
+                ListingCategoryManager.sharedInstance.update(withListingCategories: listingCategories)
+                self.onFinishedLoading()
+            } else {
+                self.presentCouldNotDownloadInitialDataAlert()
+            }
+        }
+    }
+    
+    private func presentCouldNotDownloadInitialDataAlert() {
+        presentSingleActionAlert(title: "Problem Connecting to Mooch", message: "We were unable to download the data needed to launch", actionTitle: "Try Again") { action in
+            self.getDataInitiallyNeededFromAPI()
+        }
+    }
+    
     fileprivate func performCrossFadeViewControllerPop() {
         guard let navC = navigationController else { return }
         

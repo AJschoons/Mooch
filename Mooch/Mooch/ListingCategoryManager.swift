@@ -20,14 +20,7 @@ class ListingCategoryManager {
     private var idToObjectMapping = [Int : ListingCategory]()
     
     //This prevents others from using the default '()' initializer for this class
-    fileprivate init() {
-        var dummyListingCategories = [ListingCategory]()
-        for i in 1...30 {
-            let dummyListingCategory = ListingCategory.createDummy(fromNumber: i)
-            dummyListingCategories.append(dummyListingCategory)
-        }
-        update(withListingCategories: dummyListingCategories)
-    }
+    fileprivate init() { }
     
     func update(withListingCategories listingCategories: [ListingCategory]) {
         self.listingCategories = listingCategories
