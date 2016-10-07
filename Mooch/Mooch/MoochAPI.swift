@@ -24,18 +24,18 @@ class MoochAPI {
         MoochAPIRouter.clearAuthorizationCredentials()
     }
     
-    static func GETUser(withId id: Int, completion: @escaping (User?, Error?) -> Void) {
-        perform(MoochAPIRouter.getUser(withId: id)) { json, error in
-            guard let json = json else {
+    static func GETListingCategories(completion: @escaping ([ListingCategory]?, Error?) -> Void) {
+        perform(MoochAPIRouter.getListingCategories) { json, error in
+            guard let listingCategoriesJSON = json?.array else {
                 completion(nil, error)
                 return
             }
             
             do {
-                let user = try User(json: json)
-                completion(user, nil)
+                let listingCategories = try listingCategoriesJSON.map({try ListingCategory(json: $0)})
+                completion(listingCategories, nil)
             } catch let error {
-                print("couldn't create user with JSON: \(json)")
+                print("couldn't create listing categories with JSON: \(json)")
                 completion(nil, error)
             }
         }
@@ -53,6 +53,23 @@ class MoochAPI {
                 completion(listings, nil)
             } catch let error {
                 print("couldn't create listings with JSON: \(json)")
+                completion(nil, error)
+            }
+        }
+    }
+    
+    static func GETUser(withId id: Int, completion: @escaping (User?, Error?) -> Void) {
+        perform(MoochAPIRouter.getUser(withId: id)) { json, error in
+            guard let json = json else {
+                completion(nil, error)
+                return
+            }
+            
+            do {
+                let user = try User(json: json)
+                completion(user, nil)
+            } catch let error {
+                print("couldn't create user with JSON: \(json)")
                 completion(nil, error)
             }
         }
