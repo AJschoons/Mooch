@@ -20,26 +20,49 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     static private let AuthorizationHeaderKey = "Authorization"
     
+    case getListingCategories
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
+    
+    case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
     
     //The keys to pass in as parameters mapped to strings
-    enum JSONMapping: String {
-        case email = "email"
-        case password = "password"
+    enum JSONMapping {
+        enum PostLogin: String {
+            case email = "email"
+            case password = "password"
+        }
+        
+        enum PostListing: String {
+            case title = "title"
+            case description = "detail"
+            case price = "price"
+            case isFree = "free"
+            case categoryId = "category_id"
+        }
     }
     
     //Returns the URL request for the route
     func asURLRequest() throws -> URLRequest {
         let result: (path: String, method: Alamofire.HTTPMethod, parameters: [String: Any]?, requiresAuthorization: Bool) = {
             switch self {
+            case .getListingCategories:
+                return ("/categories", .get, nil, false)
+                
             case .getListings(let communityId):
                 return ("/communities/\(communityId)/listings", .get, nil, false)
+                
             case .getUser(let userId):
                 return ("/users/\(userId)", .get, nil, false)
+                
+            case .postListing(let userId, let title, let description, let price, let isFree, let categoryId):
+                var parameters: [String : Any] = [JSONMapping.PostListing.title.rawValue : title, JSONMapping.PostListing.price.rawValue : price, JSONMapping.PostListing.isFree.rawValue : isFree, JSONMapping.PostListing.categoryId.rawValue : categoryId]
+                if description != nil { parameters[JSONMapping.PostListing.description.rawValue] = description! }
+                return ("/users/\(userId)/listings", .post, parameters, true)
+                
             case .postLogin(let email, let password):
-                let parameters = [JSONMapping.email.rawValue : email, JSONMapping.password.rawValue : password]
+                let parameters = [JSONMapping.PostLogin.email.rawValue : email, JSONMapping.PostLogin.password.rawValue : password]
                 return ("/sessions", .post, parameters, false)
             }
         }()

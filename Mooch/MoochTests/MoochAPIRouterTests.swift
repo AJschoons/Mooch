@@ -105,8 +105,8 @@ class MoochAPIRouterTests: XCTestCase {
             XCTAssert(urlRequest.httpBody != nil)
             do {
                 let httpBodyJSON = try convertToJSON(fromHTTPBodyData: urlRequest.httpBody!)
-                XCTAssert(httpBodyJSON[MoochAPIRouter.JSONMapping.email.rawValue].stringValue == email)
-                XCTAssert(httpBodyJSON[MoochAPIRouter.JSONMapping.password.rawValue].stringValue == password)
+                XCTAssert(httpBodyJSON[MoochAPIRouter.JSONMapping.PostLogin.email.rawValue].stringValue == email)
+                XCTAssert(httpBodyJSON[MoochAPIRouter.JSONMapping.PostLogin.password.rawValue].stringValue == password)
             } catch {
                 //If there was an error then that means the HTTP body could not be converted to JSON,
                 //so the test should fail because it needs to be valid JSON

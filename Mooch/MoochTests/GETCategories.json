@@ -1,0 +1,110 @@
+[
+    {
+        "id": 1,
+        "name": "Veggies",
+        "created_at": "2016-09-29T20:42:09.000Z",
+        "updated_at": "2016-09-30T03:42:26.000Z"
+    },
+    {
+        "id": 2,
+        "name": "Fruits",
+        "created_at": "2016-09-30T03:54:39.000Z",
+        "updated_at": "2016-09-30T04:05:01.000Z"
+    },
+    {
+        "id": 4,
+        "name": "Dairy",
+        "created_at": "2016-09-30T17:36:34.000Z",
+        "updated_at": "2016-09-30T17:36:34.000Z"
+    },
+    {
+        "id": 5,
+        "name": "Sweets",
+        "created_at": "2016-09-30T21:58:35.000Z",
+        "updated_at": "2016-09-30T21:58:35.000Z"
+    },
+    {
+        "id": 7,
+        "name": "Seafood",
+        "created_at": "2016-10-02T22:30:51.000Z",
+        "updated_at": "2016-10-02T22:30:51.000Z"
+    },
+    {
+        "id": 8,
+        "name": "Frozen",
+        "created_at": "2016-10-02T22:31:04.000Z",
+        "updated_at": "2016-10-02T22:31:04.000Z"
+    },
+    {
+        "id": 9,
+        "name": "Meat & Deli",
+        "created_at": "2016-10-02T22:31:20.000Z",
+        "updated_at": "2016-10-02T22:31:20.000Z"
+    },
+    {
+        "id": 10,
+        "name": "Canned Goods",
+        "created_at": "2016-10-02T22:31:32.000Z",
+        "updated_at": "2016-10-02T22:31:32.000Z"
+    },
+    {
+        "id": 11,
+        "name": "Packaged Goods",
+        "created_at": "2016-10-02T22:31:42.000Z",
+        "updated_at": "2016-10-02T22:31:42.000Z"
+    },
+    {
+        "id": 12,
+        "name": "Spices",
+        "created_at": "2016-10-02T22:31:51.000Z",
+        "updated_at": "2016-10-02T22:31:51.000Z"
+    },
+    {
+        "id": 13,
+        "name": "Condiments & Sauce",
+        "created_at": "2016-10-02T22:32:05.000Z",
+        "updated_at": "2016-10-02T22:32:05.000Z"
+    },
+    {
+        "id": 14,
+        "name": "Drinks",
+        "created_at": "2016-10-02T22:32:33.000Z",
+        "updated_at": "2016-10-02T22:32:33.000Z"
+    },
+    {
+        "id": 15,
+        "name": "Snacks",
+        "created_at": "2016-10-02T22:32:39.000Z",
+        "updated_at": "2016-10-02T22:32:39.000Z"
+    },
+    {
+        "id": 16,
+        "name": "Baking Supplies",
+        "created_at": "2016-10-02T22:32:49.000Z",
+        "updated_at": "2016-10-02T22:32:49.000Z"
+    },
+    {
+        "id": 17,
+        "name": "Baby Items",
+        "created_at": "2016-10-02T22:32:58.000Z",
+        "updated_at": "2016-10-02T22:32:58.000Z"
+    },
+    {
+        "id": 18,
+        "name": "Cereal",
+        "created_at": "2016-10-02T22:33:08.000Z",
+        "updated_at": "2016-10-02T22:33:08.000Z"
+    },
+    {
+        "id": 20,
+        "name": "Pizza",
+        "created_at": "2016-10-02T22:38:20.000Z",
+        "updated_at": "2016-10-02T22:38:20.000Z"
+    },
+    {
+        "id": 21,
+        "name": "World Foods",
+        "created_at": "2016-10-02T22:43:08.000Z",
+        "updated_at": "2016-10-02T22:43:08.000Z"
+    }
+]
