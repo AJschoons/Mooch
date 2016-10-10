@@ -11,7 +11,7 @@ import Foundation
 
 class MoochAPI {
     
-    static let MaxImageSize = CGSize(width: 800, height: 800)
+    static let MaxImageSize = CGSize(width: 540, height: 540)
     
     typealias ExpectingResponseCompletionClosure = (JSON?, Error?) -> ()
     typealias NotExpectingResponseCompletionClosure = (Bool, JSON?, Error?) -> () //Bool: Success/Fail
@@ -97,9 +97,9 @@ class MoochAPI {
                 
                 //Add image
                 let resizedPhoto = photo.af_imageAspectScaled(toFit: MaxImageSize)
-                if let imageData = UIImagePNGRepresentation(resizedPhoto)
+                if let imageData = UIImageJPEGRepresentation(resizedPhoto, 0.5)
                 {
-                    multipartFormData.append(imageData, withName: MoochAPIRouter.ParameterMapping.PostListing.photo.rawValue, fileName: "listing_image.png", mimeType: "image/png")
+                    multipartFormData.append(imageData, withName: MoochAPIRouter.ParameterMapping.PostListing.photo.rawValue, fileName: "listing_image.jpeg", mimeType: "image/jpeg")
                 }
                 
                 //Add the non-image parameters
