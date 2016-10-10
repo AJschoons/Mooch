@@ -237,7 +237,6 @@ class EditListingViewController: MoochModalViewController {
         )
     }
     
-    
     private func isValidListingCreation() -> Bool {
         return editedListingInformation.isAllInformationFilled
     }
@@ -296,13 +295,22 @@ extension EditListingViewController: EditListingTableHandlerDelegate {
 extension EditListingViewController: EditListingTextHandlerDelegate {
     
     func updated(text: String, forFieldType fieldType: EditListingConfiguration.FieldType) {
+        let updatedText: String? = text == "" ? nil : text
+        
         switch fieldType {
         case .title:
-            editedListingInformation.title = text
+            editedListingInformation.title = updatedText
+            
         case .description:
-            editedListingInformation.description = text
+            editedListingInformation.description = updatedText
+            
         case .price:
-            editedListingInformation.price = Float(text)
+            if let updatedPrice = updatedText {
+                editedListingInformation.price = Float(updatedPrice)
+            } else {
+                editedListingInformation.price = nil
+            }
+            
         default:
             return
         }

@@ -15,9 +15,13 @@ struct EditedProfileInformation {
     var name: String?
     var email: String?
     var phone: String?
-    var address: Int?
+    var address: String?
     var password1: String?
     var password2: String?
+    
+    var isAllInformationFilledAndValid: Bool {
+        return isAllInformationFilled && isEmailValid && isPasswordValid && passwordsMatch
+    }
     
     var isAllInformationFilled: Bool {
         if photo == nil || name == nil || email == nil || phone == nil || address == nil || password1 == nil || password2 == nil {
@@ -25,6 +29,16 @@ struct EditedProfileInformation {
         }
         
         return true
+    }
+    
+    var isEmailValid: Bool {
+        guard let email = email else { return false }
+        return UserLoginInformationValidator.isValid(email: email)
+    }
+    
+    var isPasswordValid: Bool {
+        guard let password = password1 else { return false }
+        return UserLoginInformationValidator.isValid(password: password)
     }
     
     var passwordsMatch: Bool {

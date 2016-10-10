@@ -95,14 +95,16 @@ class EditProfileViewController: MoochModalViewController {
     // MARK: Actions
     
     func onDoneAction() {
-        let dummyUser = User.createDummy(fromNumber: 62)
-        dismiss(animated: true) {
-            self.delegate.editProfileViewControllerDidFinishEditing(withUser: dummyUser)
+        guard state != .uploading else { return }
+        
+        if isDoneValidated() {
+            uploadProfile()
         }
     }
     
     func onCancelAction() {
-        dismiss(animated: true, completion: nil)
+        guard state != .uploading else { return }
+        dismissSelf(completion: nil)
     }
     
     // MARK: Public methods
@@ -110,14 +112,41 @@ class EditProfileViewController: MoochModalViewController {
     override func setup() {
         super.setup()
         
+        registerForKeyboardNotifacations()
         setupNavigationBar()
         
         updateUI()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isDismissingSelf {
+            view.endEditing(true)
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        if isDismissingSelf {
+            unregisterForKeyboardNotifacations()
+        }
+    }
+    
     override func updateUI() {
         super.updateUI()
         
+    }
+    
+    func onKeyboardDidShow(withNotification notification: Notification) {
+        guard let keyboardRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let animationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else { return }
+        tableHandler.onKeyboardDidShow(withRect: keyboardRect, andAnimationDuration: animationDuration)
+    }
+    
+    func onKeyboardWillHide(withNotification notification: Notification) {
+        guard let animationDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue else { return }
+        tableHandler.onKeyboardWillHide(withAnimationDuration: animationDuration)
     }
     
     static func instantiateFromStoryboard() -> EditProfileViewController {
@@ -159,6 +188,106 @@ class EditProfileViewController: MoochModalViewController {
             return doneButton
         }
     }
+    
+    fileprivate func registerForKeyboardNotifacations() {
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDidShow(withNotification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillHide(withNotification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    fileprivate func unregisterForKeyboardNotifacations() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    //Returns true if the Done action is validated, else handles notifying the user
+    private func isDoneValidated() -> Bool {
+        //Editing not yet supported
+        if configuration.mode == .editing {
+            return false
+        } else if configuration.mode == .creating {
+            if isValidProfileCreation() {
+                return true
+            } else {
+                presentInvalidProfileCreationAlert()
+                return false
+            }
+        }
+        
+        return false
+    }
+    
+    private func uploadProfile() {
+        //Only creation is supported right now
+        guard isValidProfileCreation() else { return }
+//        guard let userId = LocalUserManager.sharedInstance.localUser?.user.id else { return }
+//        
+//        //This allows the view controller to disable buttons/actions while loading
+//        state = .uploading
+//        
+//        showLoadingOverlayView(withInformationText: "Uploading Listing", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
+//        
+//        let eli = editedListingInformation
+//        MoochAPI.POSTListing(
+//            userId: userId,
+//            photo: eli.photo!,
+//            title: eli.title!,
+//            description: eli.description,
+//            price: eli.price!,
+//            isFree: false,
+//            categoryId: eli.categoryId!,
+//            uploadProgressHandler: { [weak self] progress in
+//                guard let strongSelf = self else { return }
+//                strongSelf.loadingOverlayViewBeingShown?.update(withProgress: Float(progress.fractionCompleted))
+//            },
+//            completion: { [weak self] success, json, error in
+//                guard let strongSelf = self else { return }
+//                guard success else {
+//                    strongSelf.hideLoadingOverlayView(animated: true)
+//                    strongSelf.presentSingleActionAlert(title: "Problem Uploading Listing", message: "Please try uploading the listing again", actionTitle: "Okay")
+//                    strongSelf.state = .editing
+//                    return
+//                }
+//                
+//                strongSelf.dismissSelf() {
+//                    strongSelf.delegate.editListingViewControllerDidFinishEditing(withListingInformation: strongSelf.editedListingInformation)
+//                }
+//            }
+//        )
+    }
+    
+    private func isValidProfileCreation() -> Bool {
+        return editedProfileInformation.isAllInformationFilledAndValid
+    }
+    
+    private func presentInvalidProfileCreationAlert() {
+        let title = "Problem creating profile"
+        var message = ""
+        let actionTitle = "Aye aye captain!"
+        
+        if !editedProfileInformation.isAllInformationFilled {
+            guard let fieldToNotifyAbout = editedProfileInformation.firstUnfilledRequiredFieldType() else { return }
+            message = "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field"
+        } else if !editedProfileInformation.isEmailValid {
+            message = "Please enter a valid email address"
+        } else if !editedProfileInformation.isPasswordValid {
+            message = "Please enter a valid password. Passwords must be 6-30 characters"
+        } else if !editedProfileInformation.passwordsMatch {
+            message = "Please check that the passwords match"
+        }
+        
+        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
+    }
+    
+    fileprivate func presentCameraViewController(forPhotoAddingView photoAddingView: PhotoAddingView) {
+        currentPhotoAddingView = photoAddingView
+        let cameraViewController = CameraViewController()
+        cameraViewController.delegate = self
+        present(cameraViewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func dismissSelf(completion: (() -> Void)?) {
+        isDismissingSelf = true
+        dismiss(animated: true, completion: completion)
+    }
 }
 
 extension EditProfileViewController: EditProfileTableHandlerDelegate {
@@ -179,16 +308,30 @@ extension EditProfileViewController: EditProfileTableHandlerDelegate {
 extension EditProfileViewController: EditProfileTextHandlerDelegate {
     
     func updated(text: String, forFieldType fieldType: EditProfileConfiguration.FieldType) {
-//        switch fieldType {
-//        case .title:
-//            editedListingInformation.title = text
-//        case .description:
-//            editedListingInformation.description = text
-//        case .price:
-//            editedListingInformation.price = Float(text)
-//        default:
-//            return
-//        }
+        let updatedText: String? = text == "" ? nil : text
+        
+        switch fieldType {
+        case .name:
+            editedProfileInformation.name = updatedText
+            
+        case .email:
+            editedProfileInformation.email = updatedText
+            
+        case .phone:
+            editedProfileInformation.phone = updatedText
+            
+        case .address:
+            editedProfileInformation.address = updatedText
+            
+        case .password1:
+            editedProfileInformation.password1 = updatedText
+            
+        case .password2:
+            editedProfileInformation.password2 = updatedText
+            
+        default:
+            return
+        }
     }
 }
 
@@ -196,10 +339,37 @@ extension EditProfileViewController: EditProfileTextHandlerDelegate {
 extension EditProfileViewController: PhotoAddingViewDelegate {
     
     func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
-        //presentCameraViewController(forPhotoAddingView: photoAddingView)
+        presentCameraViewController(forPhotoAddingView: photoAddingView)
     }
     
     func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
-        //editedListingInformation.photo = nil
+        editedProfileInformation.photo = nil
     }
+}
+
+extension EditProfileViewController: UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        guard let photo = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            currentPhotoAddingView = nil
+            return
+        }
+        
+        currentPhotoAddingView?.photo = photo
+        currentPhotoAddingView = nil
+        
+        editedProfileInformation.photo = photo
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        currentPhotoAddingView = nil
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+//Required by UIImagePickerController delegate property
+extension EditProfileViewController: UINavigationControllerDelegate {
+    
 }

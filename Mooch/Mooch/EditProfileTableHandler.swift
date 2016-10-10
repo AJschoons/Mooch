@@ -113,6 +113,7 @@ class EditProfileTableHandler: NSObject {
         cell.fieldLabel.text = fieldLabel(forTextFieldType: fieldType)
         cell.textField.keyboardType = keyboardType(forTextFieldFieldType: fieldType)
         cell.textField.fieldType = fieldType
+        cell.textField.isSecureTextEntry = isSecureEntry(forTextFieldFieldType: fieldType)
         cell.textField.delegate = self
         
         //Make the last cell have done key instead of next
@@ -145,9 +146,19 @@ class EditProfileTableHandler: NSObject {
         case .email:
             return .emailAddress
         case .phone:
-            return .decimalPad
+            return .numbersAndPunctuation
         default:
             return .default
+        }
+    }
+    
+    //Returns the placeholder text for fieldTypes that are used in the EditProfileTextField cells
+    fileprivate func isSecureEntry(forTextFieldFieldType textfieldFieldType: EditProfileConfiguration.FieldType) -> Bool {
+        switch textfieldFieldType {
+        case .password1, .password2:
+            return true
+        default:
+            return false
         }
     }
     
