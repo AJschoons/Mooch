@@ -67,7 +67,7 @@ class MoochViewController: UIViewController {
     //Used to restore previous status bar style if changed for this view controller
     fileprivate var statusBarStyleBeforeChanging: UIStatusBarStyle?
     
-    private var loadingOverlayViewBeingShown: LoadingOverlayView?
+    private(set) var loadingOverlayViewBeingShown: LoadingOverlayView?
     
     
     // MARK: Actions
@@ -124,7 +124,7 @@ class MoochViewController: UIViewController {
         return true
     }
     
-    func showLoadingOverlayView(informationText: String?, overEntireWindow: Bool, withUserInteractionEnabled isUserInteractionEnabled: Bool) {
+    func showLoadingOverlayView(withInformationText informationText: String?, overEntireWindow: Bool, withUserInteractionEnabled isUserInteractionEnabled: Bool, showingProgress showProgress: Bool) {
         guard !isShowingLoadingOverlay else { print("can't show two loadingOverlayViews!"); return }
         
         isShowingLoadingOverlay = true
@@ -133,7 +133,7 @@ class MoochViewController: UIViewController {
         loadingOverlayViewBeingShown = loadingOverlayView
         loadingOverlayView.alpha = 0
         
-        loadingOverlayView.setup(withInformationText: informationText, isUserInteractionEnabled: isUserInteractionEnabled)
+        loadingOverlayView.setup(withInformationText: informationText, isUserInteractionEnabled: isUserInteractionEnabled, isProgressBased: showProgress)
         
         if overEntireWindow {
             UIApplication.shared.keyWindow?.addSubview(loadingOverlayView)

@@ -205,22 +205,35 @@ class EditListingViewController: MoochModalViewController {
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
         
-        showLoadingOverlayView(informationText: "Uploading Listing", overEntireWindow: false, withUserInteractionEnabled: false)
+        showLoadingOverlayView(withInformationText: "Uploading Listing", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
         
         let eli = editedListingInformation
-        MoochAPI.POSTListing(userId: userId, photo: eli.photo!, title: eli.title!, description: eli.description, price: eli.price!, isFree: false, categoryId: eli.categoryId!) { [weak self] success, json, error in
-            guard let strongSelf = self else { return }
-            guard success else {
-                strongSelf.hideLoadingOverlayView(animated: true)
-                strongSelf.presentSingleActionAlert(title: "Problem Uploading Listing", message: "Please try uploading the listing again", actionTitle: "Okay")
-                strongSelf.state = .editing
-                return
+        MoochAPI.POSTListing(
+            userId: userId,
+            photo: eli.photo!,
+            title: eli.title!,
+            description: eli.description,
+            price: eli.price!,
+            isFree: false,
+            categoryId: eli.categoryId!,
+            uploadProgressHandler: { [weak self] progress in
+                guard let strongSelf = self else { return }
+                strongSelf.loadingOverlayViewBeingShown?.update(withProgress: Float(progress.fractionCompleted))
+            },
+            completion: { [weak self] success, json, error in
+                guard let strongSelf = self else { return }
+                guard success else {
+                    strongSelf.hideLoadingOverlayView(animated: true)
+                    strongSelf.presentSingleActionAlert(title: "Problem Uploading Listing", message: "Please try uploading the listing again", actionTitle: "Okay")
+                    strongSelf.state = .editing
+                    return
+                }
+    
+                strongSelf.dismissSelf() {
+                    strongSelf.delegate.editListingViewControllerDidFinishEditing(withListingInformation: strongSelf.editedListingInformation)
+                }
             }
-            
-            strongSelf.dismissSelf() {
-                strongSelf.delegate.editListingViewControllerDidFinishEditing(withListingInformation: strongSelf.editedListingInformation)
-            }
-        }
+        )
     }
     
     

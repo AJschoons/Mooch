@@ -11,15 +11,24 @@ import UIKit
 class LoadingOverlayView: UIView {
 
     @IBOutlet private var view: UIView!
-    @IBOutlet weak var alertView: UIView!
+    @IBOutlet private weak var alertView: UIView!
     @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var progressView: UIProgressView!
     
-    func setup(withInformationText informationText: String?, isUserInteractionEnabled: Bool) {
+    func update(withProgress progress: Float) {
+        progressView.setProgress(progress, animated: true)
+    }
+    
+    func setup(withInformationText informationText: String?, isUserInteractionEnabled: Bool, isProgressBased: Bool) {
         if let text = informationText {
             informationLabel.text = text
         } else {
             informationLabel.text = nil
         }
+        
+        activityIndicator.isHidden = isProgressBased
+        progressView.isHidden = !isProgressBased
         
         view.isUserInteractionEnabled = isUserInteractionEnabled
     }

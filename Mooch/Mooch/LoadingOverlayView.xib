@@ -7,8 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoadingOverlayView" customModule="Mooch" customModuleProvider="target">
             <connections>
+                <outlet property="activityIndicator" destination="weB-On-sXL" id="tPl-ca-gdc"/>
                 <outlet property="alertView" destination="MZ2-QM-V8E" id="Ed2-sb-lwI"/>
                 <outlet property="informationLabel" destination="QS0-nZ-7Jz" id="FTL-uw-Eae"/>
+                <outlet property="progressView" destination="Ux6-Ds-o1n" id="qEY-So-RUX"/>
                 <outlet property="view" destination="iN0-l3-epB" id="pQc-UO-yMw"/>
             </connections>
         </placeholder>
@@ -35,15 +37,20 @@
                                         <constraint firstAttribute="width" constant="20" id="i3Q-84-42i"/>
                                     </constraints>
                                 </activityIndicatorView>
+                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Ux6-Ds-o1n"/>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="Ux6-Ds-o1n" firstAttribute="centerY" secondItem="weB-On-sXL" secondAttribute="centerY" id="3qu-2R-TSJ"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="168" id="EIm-gx-agF"/>
                                 <constraint firstItem="weB-On-sXL" firstAttribute="centerX" secondItem="NI0-y9-DNy" secondAttribute="centerX" id="H9H-W3-50h"/>
+                                <constraint firstItem="Ux6-Ds-o1n" firstAttribute="centerX" secondItem="weB-On-sXL" secondAttribute="centerX" id="JHz-b1-Pby"/>
                                 <constraint firstAttribute="bottom" secondItem="weB-On-sXL" secondAttribute="bottom" id="N9w-lZ-5xU"/>
                                 <constraint firstAttribute="trailing" secondItem="QS0-nZ-7Jz" secondAttribute="trailing" id="R3z-uY-Qaw"/>
                                 <constraint firstItem="weB-On-sXL" firstAttribute="top" secondItem="QS0-nZ-7Jz" secondAttribute="bottom" constant="10" id="UHx-FR-sat"/>
                                 <constraint firstItem="QS0-nZ-7Jz" firstAttribute="top" secondItem="NI0-y9-DNy" secondAttribute="top" id="mEo-EI-G7i"/>
+                                <constraint firstItem="Ux6-Ds-o1n" firstAttribute="leading" secondItem="NI0-y9-DNy" secondAttribute="leading" id="qys-ZU-Pbw"/>
+                                <constraint firstAttribute="trailing" secondItem="Ux6-Ds-o1n" secondAttribute="trailing" id="vRC-yQ-ynv"/>
                                 <constraint firstItem="QS0-nZ-7Jz" firstAttribute="leading" secondItem="NI0-y9-DNy" secondAttribute="leading" id="xw2-0h-9yd"/>
                             </constraints>
                         </view>

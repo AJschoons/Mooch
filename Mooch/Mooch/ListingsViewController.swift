@@ -112,7 +112,7 @@ class ListingsViewController: MoochViewController {
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
         
-        showLoadingOverlayView(informationText: "Loading Listings", overEntireWindow: false, withUserInteractionEnabled: false)
+        showLoadingOverlayView(withInformationText: "Loading Listings", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
         
         MoochAPI.GETListings(communityId: userCommunityId) { listings, error in
             guard let newListings = listings else {

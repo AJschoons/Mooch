@@ -78,7 +78,8 @@ class MoochAPI {
     }
     
     //The completion Bool will be true on success, false on failure/error
-    static func POSTListing(userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int, completion: @escaping (Bool, JSON?, Error?) -> Void) {
+    static func POSTListing(userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
+        
         let route = MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: price, isFree: isFree, categoryId: categoryId)
         let routingInformation = route.getRoutingInformation()
         
@@ -114,6 +115,7 @@ class MoochAPI {
             encodingCompletion: { encodingResult in
                 switch encodingResult {
                 case .success(let upload, _, _):
+                    upload.uploadProgress(closure: uploadProgressHandler)
                     validate(dataRequestNotExpectingResponse: upload) { success, json, error in
                         completion(success, json, error)
                     }
