@@ -171,7 +171,7 @@ class ListingsViewController: MoochViewController {
     }
     
     fileprivate func presentListingCreatedAlert(forListing listing: Listing) {
-        let alert = UIAlertController(title: "Listing Created", message: "Your listing with the title \"\(listing.title)\" is now visible to all users in your community!", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Listing Created", message: "Your listing \"\(listing.title)\" is now visible to all users in your community!", preferredStyle: .alert)
         let action = UIAlertAction(title: "Keep Mooching", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
@@ -210,7 +210,6 @@ extension ListingsViewController: EditListingViewControllerDelegate {
     
     func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation) {
         let newListing = createListing(fromEditedListingInformation: editedListingInformation)
-        add(listing: newListing)
         presentListingCreatedAlert(forListing: newListing)
     }
 }

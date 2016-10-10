@@ -54,7 +54,10 @@ class LocalUserManager {
         MoochAPI.setAuthorizationCredentials(email: localUser.user.contactInformation.email, authorizationToken: localUser.authenticationToken)
     }
     
+    //Defaults the guest community id to the community id of the user logging out
     func logout() {
+        guestCommunityId = _localUser?.user.communityId
+        
         _localUser = nil
         state = .guest
         MoochAPI.clearAuthorizationCredentials()
