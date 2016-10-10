@@ -59,6 +59,7 @@ class EditListingViewController: MoochModalViewController {
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var cancelButton: UIBarButtonItem!
     
+    //Used to track what Listing information has been edited
     fileprivate var editedListingInformation = EditedListingInformation(photo: nil, title: nil, description: nil, categoryId: nil, price: nil, quantity: nil)
     
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
@@ -242,7 +243,7 @@ class EditListingViewController: MoochModalViewController {
     }
     
     private func presentInvalidListingCreationAlert() {
-        guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledFieldType() else { return }
+        guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledRequiredFieldType() else { return }
         presentSingleActionAlert(title: "Problem creating listing", message: "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field", actionTitle: "Aye aye captain!")
     }
     

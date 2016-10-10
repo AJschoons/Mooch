@@ -26,7 +26,7 @@ struct EditedListingInformation {
         return true
     }
     
-    func firstUnfilledFieldType() -> EditListingConfiguration.FieldType? {
+    func firstUnfilledRequiredFieldType() -> EditListingConfiguration.FieldType? {
         var unfilledFieldType: EditListingConfiguration.FieldType? = nil
         
         if photo == nil {
