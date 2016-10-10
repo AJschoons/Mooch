@@ -17,18 +17,26 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (5.2.1)
   - OHHTTPStubs/Swift (5.2.1):
     - OHHTTPStubs/Core
+  - PhoneNumberKit (1.0.1):
+    - PhoneNumberKit/PhoneNumberKitCore (= 1.0.1)
+    - PhoneNumberKit/UIKit (= 1.0.1)
+  - PhoneNumberKit/PhoneNumberKitCore (1.0.1)
+  - PhoneNumberKit/UIKit (1.0.1):
+    - PhoneNumberKit/PhoneNumberKitCore
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - AlamofireImage (~> 3.0)
   - OHHTTPStubs
   - OHHTTPStubs/Swift
+  - PhoneNumberKit (~> 1.0)
 
 SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   AlamofireImage: 6594aa1139a67dcd36cde6da79ea4e5b318e60fb
   OHHTTPStubs: 3a42f25c00563b71355ac73112ba2324e9e6cef4
+  PhoneNumberKit: 0b5ea9a5454d201656db766343e9d768f8542496
 
-PODFILE CHECKSUM: a70bc63c9458a85cb4621eb6ca38add7212fc209
+PODFILE CHECKSUM: 414d8aa19ea8e42865430c3ee9873ca09c606c23
 
 COCOAPODS: 1.1.0.rc.2
