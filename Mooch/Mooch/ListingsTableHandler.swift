@@ -40,7 +40,7 @@ extension ListingsTableHandler: UITableViewDataSource {
         let listing = delegate.getListings()[(indexPath as NSIndexPath).row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: ListingTableViewCell.Identifier, for: indexPath) as! ListingTableViewCell
-        cell.photo.image = listing.photo
+        cell.photo.image = ImageManager.PlaceholderImage
         cell.titleLabel.text = listing.title
         cell.priceLabel.text = listing.priceString
         
@@ -51,6 +51,16 @@ extension ListingsTableHandler: UITableViewDataSource {
             categoryLabelText = Strings.InvalidCategoryId.rawValue
         }
         cell.categoryLabel.text = categoryLabelText
+        
+        cell.tag = indexPath.row
+        cell.photo.image = ImageManager.PlaceholderImage
+        ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
+            //Make sure the cell hasn't been reused by the time the image is downloaded
+            guard cell.tag == indexPath.row else { return }
+            
+            guard let image = image else { return }
+            cell.photo.image = image
+        }
         
         return cell
     }

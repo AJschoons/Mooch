@@ -198,7 +198,7 @@ class LoginViewController: MoochModalViewController {
     //Makes an API call to login. Shows a loading overlay while waiting. On success logs that user in locally, else shows an alert on failure
     fileprivate func login(email: String, password: String) {
         state = .loggingIn
-        showLoadingOverlayView(informationText: "Logging In", overEntireWindow: false, withUserInteractionEnabled: false)
+        showLoadingOverlayView(withInformationText: "Logging In", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
         
         MoochAPI.POSTLogin(email: email, password: password) { [weak self] localUser, error in
             guard let strongSelf = self else { return }

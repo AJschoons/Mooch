@@ -78,10 +78,9 @@ class ListingDetailsTableHandler: NSObject {
         return delegate.getConfiguration().fields.count
     }
     
-    fileprivate func configure(listingCell: ListingDetailsListingCell) {
+    fileprivate func configure(listingCell: ListingDetailsListingCell, atIndexPath indexPath: IndexPath) {
         let listing = delegate.getListing()
         
-        listingCell.photoImageView.image = listing.photo
         listingCell.titleLabel.text = listing.title
         listingCell.descriptionLabel.text = listing.description
         listingCell.priceLabel.text = "Price: \(listing.priceString)"
@@ -94,6 +93,16 @@ class ListingDetailsTableHandler: NSObject {
             categoryLabelText = Strings.InvalidCategoryId.rawValue
         }
         listingCell.categoryLabel.text = categoryLabelText
+        
+        listingCell.tag = indexPath.row
+        listingCell.photoImageView.image = ImageManager.PlaceholderImage
+        ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { image in
+            //Make sure the cell hasn't been reused by the time the image is downloaded
+            guard listingCell.tag == indexPath.row else { return }
+            
+            guard let image = image else { return }
+            listingCell.photoImageView.image = image
+        }
     }
     
     fileprivate func configure(actionCell: ListingDetailsActionCell, forFieldType fieldType: FieldType) {
@@ -136,7 +145,7 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
         if let listingCell = cell as? ListingDetailsListingCell {
-            configure(listingCell: listingCell)
+            configure(listingCell: listingCell, atIndexPath: indexPath)
         }
         if let actionCell = cell as? ListingDetailsActionCell {
             configure(actionCell: actionCell, forFieldType: fieldTypeForRow)

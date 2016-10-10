@@ -6,11 +6,13 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-import Foundation
 import Alamofire
 
 //Class that maps an API route to a URLRequest. Should only be used through MoochAPI or in tests
 enum MoochAPIRouter: URLRequestConvertible {
+    
+    typealias RoutingInformation = (path: String, method: Alamofire.HTTPMethod, parameters: [String: Any]?, requiresAuthorization: Bool)
+    
     static let baseURLString = "https://mooch-rails-api.appspot.com/api/v1"
     
     static fileprivate var email: String?
@@ -28,13 +30,14 @@ enum MoochAPIRouter: URLRequestConvertible {
     case postLogin(withEmail: String, andPassword: String)
     
     //The keys to pass in as parameters mapped to strings
-    enum JSONMapping {
+    enum ParameterMapping {
         enum PostLogin: String {
             case email = "email"
             case password = "password"
         }
         
         enum PostListing: String {
+            case photo = "image"
             case title = "title"
             case description = "detail"
             case price = "price"
@@ -45,33 +48,13 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     //Returns the URL request for the route
     func asURLRequest() throws -> URLRequest {
-        let result: (path: String, method: Alamofire.HTTPMethod, parameters: [String: Any]?, requiresAuthorization: Bool) = {
-            switch self {
-            case .getListingCategories:
-                return ("/categories", .get, nil, false)
-                
-            case .getListings(let communityId):
-                return ("/communities/\(communityId)/listings", .get, nil, false)
-                
-            case .getUser(let userId):
-                return ("/users/\(userId)", .get, nil, false)
-                
-            case .postListing(let userId, let title, let description, let price, let isFree, let categoryId):
-                var parameters: [String : Any] = [JSONMapping.PostListing.title.rawValue : title, JSONMapping.PostListing.price.rawValue : price, JSONMapping.PostListing.isFree.rawValue : isFree, JSONMapping.PostListing.categoryId.rawValue : categoryId]
-                if description != nil { parameters[JSONMapping.PostListing.description.rawValue] = description! }
-                return ("/users/\(userId)/listings", .post, parameters, true)
-                
-            case .postLogin(let email, let password):
-                let parameters = [JSONMapping.PostLogin.email.rawValue : email, JSONMapping.PostLogin.password.rawValue : password]
-                return ("/sessions", .post, parameters, false)
-            }
-        }()
+        let routingInformation = getRoutingInformation()
         
         let url = try MoochAPIRouter.baseURLString.asURL()
-        var urlRequest = URLRequest(url: url.appendingPathComponent(result.path))
-        urlRequest.httpMethod = result.method.rawValue
+        var urlRequest = URLRequest(url: url.appendingPathComponent(routingInformation.path))
+        urlRequest.httpMethod = routingInformation.method.rawValue
         
-        if result.requiresAuthorization {
+        if routingInformation.requiresAuthorization {
             if let email = MoochAPIRouter.email, let authorizationToken = MoochAPIRouter.authorizationToken {
                 let authorizationHeaderValue = self.authorizationHeaderValue(email: email, authorizationToken: authorizationToken)
                 urlRequest.setValue(authorizationHeaderValue, forHTTPHeaderField: MoochAPIRouter.AuthorizationHeaderKey)
@@ -80,9 +63,32 @@ enum MoochAPIRouter: URLRequestConvertible {
             }
         }
         
-        return try JSONEncoding.default.encode(urlRequest, with: result.parameters)
+        return try JSONEncoding.default.encode(urlRequest, with: routingInformation.parameters)
     }
     
+    //Returns the routing information needed to create a url request for each route
+    func getRoutingInformation() -> RoutingInformation {
+        switch self {
+        case .getListingCategories:
+            return ("/categories", .get, nil, false)
+            
+        case .getListings(let communityId):
+            return ("/communities/\(communityId)/listings", .get, nil, false)
+            
+        case .getUser(let userId):
+            return ("/users/\(userId)", .get, nil, false)
+            
+        case .postListing(let userId, let title, let description, let price, let isFree, let categoryId):
+            var parameters: [String : Any] = [ParameterMapping.PostListing.title.rawValue : title, ParameterMapping.PostListing.price.rawValue : price, ParameterMapping.PostListing.isFree.rawValue : isFree, ParameterMapping.PostListing.categoryId.rawValue : categoryId]
+            if description != nil { parameters[ParameterMapping.PostListing.description.rawValue] = description! }
+            return ("/users/\(userId)/listings", .post, parameters, true)
+            
+        case .postLogin(let email, let password):
+            let parameters = [ParameterMapping.PostLogin.email.rawValue : email, ParameterMapping.PostLogin.password.rawValue : password]
+            return ("/sessions", .post, parameters, false)
+        }
+    }
+
     //Allows the router to perform authorized requests
     static func setAuthorizationCredentials(email: String, authorizationToken: String) {
         self.email = email
@@ -93,6 +99,15 @@ enum MoochAPIRouter: URLRequestConvertible {
     static func clearAuthorizationCredentials() {
         email = nil
         authorizationToken = nil
+    }
+    
+    func authorizationHeaders() -> [String : String]? {
+        if let email = MoochAPIRouter.email, let authorizationToken = MoochAPIRouter.authorizationToken {
+            let authorizationHeaderValue = self.authorizationHeaderValue(email: email, authorizationToken: authorizationToken)
+            return [MoochAPIRouter.AuthorizationHeaderKey : authorizationHeaderValue]
+        } else {
+            return nil
+        }
     }
     
     fileprivate func authorizationHeaderValue(email: String, authorizationToken: String) -> String {
