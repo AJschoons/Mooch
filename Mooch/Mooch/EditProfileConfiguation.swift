@@ -12,15 +12,6 @@ struct EditProfileConfiguration {
     //A mapping from a FieldType to a Bool that returns true if it conforms
     typealias FieldTypeConformanceMapping = (FieldType) -> Bool
     
-    var mode: Mode
-    
-    var title: String
-    var leftBarButtons: [BarButtonType]?
-    var rightBarButtons: [BarButtonType]?
-    
-    //The fields that should be shown
-    var fields: [FieldType]
-    
     //The bar buttons that can be added
     enum BarButtonType {
         case cancel
@@ -40,6 +31,26 @@ struct EditProfileConfiguration {
         case address
         case password1
         case password2
+    }
+    
+    private(set) var mode: Mode
+    
+    private(set) var title: String
+    private(set) var leftBarButtons: [BarButtonType]?
+    private(set) var rightBarButtons: [BarButtonType]?
+    
+    //The fields that should be shown mapped to whether they are required or not
+    private(set) var fieldsShownToRequiredPairs: [(FieldType, Bool)]
+    
+    private(set) var fields: [FieldType]
+    
+    init(mode: Mode, title: String, leftBarButtons: [BarButtonType]?, rightBarButtons: [BarButtonType]?, fieldsShownToRequiredPairs: [(FieldType, Bool)]) {
+        self.mode = mode
+        self.title = title
+        self.leftBarButtons = leftBarButtons
+        self.rightBarButtons = rightBarButtons
+        self.fieldsShownToRequiredPairs = fieldsShownToRequiredPairs
+        self.fields = fieldsShownToRequiredPairs.map({$0.0})
     }
     
     func indexOfLastFieldType(conformingToMapping mapping: FieldTypeConformanceMapping) -> Int? {

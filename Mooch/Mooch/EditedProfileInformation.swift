@@ -11,6 +11,11 @@ import UIKit
 //Struct to track the edited profile information for the EditProfileViewController
 struct EditedProfileInformation {
     
+    typealias FieldType = EditProfileConfiguration.FieldType
+    
+    private var fieldsShownToRequiredPairs: [(FieldType, Bool)]
+    private var fieldsShownToRequiredMapping: [FieldType : Bool]
+    
     var photo: UIImage?
     var name: String?
     var email: String?
@@ -19,52 +24,116 @@ struct EditedProfileInformation {
     var password1: String?
     var password2: String?
     
-    var isAllInformationFilledAndValid: Bool {
-        return isAllInformationFilled && isEmailValid && isPasswordValid && passwordsMatch
+    init(fieldsShownToRequiredPairs: [(FieldType, Bool)]) {
+        self.fieldsShownToRequiredPairs = fieldsShownToRequiredPairs
+        
+        var fieldsShownToRequiredMapping = [FieldType : Bool]()
+        for (field, isRequired) in fieldsShownToRequiredPairs {
+            fieldsShownToRequiredMapping[field] = isRequired
+        }
+        self.fieldsShownToRequiredMapping = fieldsShownToRequiredMapping
     }
     
-    var isAllInformationFilled: Bool {
-        if photo == nil || name == nil || email == nil || phone == nil || address == nil || password1 == nil || password2 == nil {
-            return false
-        }
-        
-        return true
+    var isAllRequiredInformationFilledAndValid: Bool {
+        return isRequiredInformationFilled && isEmailValid && isPasswordValid && isPasswordMatchValid
+    }
+    
+    var isRequiredInformationFilled: Bool {
+        return firstUnfilledRequiredFieldType() == nil
     }
     
     var isEmailValid: Bool {
-        guard let email = email else { return false }
-        return UserLoginInformationValidator.isValid(email: email)
+        //Valid if the email field isn't shown
+        let showsEmail = fieldsShownToRequiredMapping[.email] != nil
+        guard showsEmail else { return true }
+        
+        let isEmailRequired = fieldsShownToRequiredMapping[.email]!
+        let isEmailPresent = variable(forFieldType: .email) != nil
+        
+        if isEmailRequired || isEmailPresent {
+            guard let email = variable(forFieldType: .email) as? String else { return false }
+            return UserLoginInformationValidator.isValid(email: email)
+        } else {
+            //If the email isn't required or present then it is valid
+            return true
+        }
     }
     
     var isPasswordValid: Bool {
-        guard let password = password1 else { return false }
-        return UserLoginInformationValidator.isValid(password: password)
+        //Valid if the password field isn't shown
+        let showsPassword = fieldsShownToRequiredMapping[.password1] != nil
+        guard showsPassword else { return true }
+        
+        let isPasswordRequired = fieldsShownToRequiredMapping[.password1]!
+        let isPasswordPresent = variable(forFieldType: .password1) != nil
+        
+        if isPasswordRequired || isPasswordPresent {
+            guard let password = variable(forFieldType: .password1) as? String else { return false }
+            return UserLoginInformationValidator.isValid(password: password)
+        } else {
+            //If the password isn't required or present then it is valid
+            return true
+        }
     }
     
-    var passwordsMatch: Bool {
-        guard let first = password1, let second = password2 else { return false}
-        return first == second
+    var isPasswordMatchValid: Bool {
+        //Valid if the password fields aren't shown
+        let showsPassword1 = fieldsShownToRequiredMapping[.password1] != nil
+        let showsPassword2 = fieldsShownToRequiredMapping[.password2] != nil
+        guard showsPassword1, showsPassword2 else { return true }
+        
+        let isPassword1Required = fieldsShownToRequiredMapping[.password1]!
+        let isPassword2Required = fieldsShownToRequiredMapping[.password2]!
+        let isPasswordMatchRequired = isPassword1Required && isPassword2Required
+        
+        if isPasswordMatchRequired {
+            //When required, both the passwords must be present and match
+            guard let password1 = variable(forFieldType: .password1) as? String, let password2 = variable(forFieldType: .password2) as? String else { return false }
+            return password1 == password2
+        } else {
+            //When not required, if the first password is present then they both must be valid
+            if let password1 = variable(forFieldType: .password1) as? String {
+                guard let password2 = variable(forFieldType: .password2) as? String else { return false }
+                return password1 == password2
+            } else {
+                return true
+            }
+        }
     }
     
-    func firstUnfilledRequiredFieldType() -> EditProfileConfiguration.FieldType? {
+    func firstUnfilledRequiredFieldType() -> FieldType? {
         var unfilledFieldType: EditProfileConfiguration.FieldType? = nil
         
-        if photo == nil {
-            unfilledFieldType = .photo
-        } else if name == nil {
-            unfilledFieldType = .name
-        } else if email == nil {
-            unfilledFieldType = .email
-        } else if phone == nil {
-            unfilledFieldType = .phone
-        } else if address == nil {
-            unfilledFieldType = .address
-        } else if password1 == nil {
-            unfilledFieldType = .password1
-        } else if password2 == nil {
-            unfilledFieldType = .password2
+        for (field, isRequired) in fieldsShownToRequiredPairs {
+            if !isRequired {
+                continue
+            }
+            
+            if variable(forFieldType: field) == nil {
+                unfilledFieldType = field
+                break
+            }
         }
         
         return unfilledFieldType
+    }
+    
+    private func variable(forFieldType fieldType: FieldType) -> Any? {
+        switch fieldType {
+        case .photo:
+            return photo
+        case .name:
+            return name
+        case .email:
+            return email
+        case .phone:
+            return phone
+        case .address:
+            return address
+        case .password1:
+            return password1
+        case .password2:
+            return password2
+        }
     }
 }

@@ -25,31 +25,10 @@ class EditProfileViewController: MoochModalViewController {
         case uploading
     }
     
-    //A configuration to setup the class with
-    struct Configuration {
-        
-        var mode: Mode
-        
-        var title: String
-        var leftBarButtons: [BarButtonType]?
-        var rightBarButtons: [BarButtonType]?
-        
-        //The bar buttons that can be added
-        enum BarButtonType {
-            case cancel
-            case done
-        }
-        
-        enum Mode {
-            case creating
-            case editing
-        }
-    }
-    
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = EditProfileConfiguration(mode: .creating, title: "Create Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .name, .email, .phone, .address, .password1, .password2])
-    static let DefaultEditingConfiguration = EditProfileConfiguration(mode: .creating, title: "Edit Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .name, .email, .phone, .address, .password1, .password2])
+    static let DefaultCreatingConfiguration = EditProfileConfiguration(mode: .creating, title: "Create Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.name, true), (.email, true), (.phone, false), (.address, false), (.password1, true), (.password2, true)])
+    static let DefaultEditingConfiguration = EditProfileConfiguration(mode: .creating, title: "Edit Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.name, false), (.email, false), (.phone, false), (.address, false), (.password1, false), (.password2, false)])
     
     @IBOutlet var tableHandler: EditProfileTableHandler! {
         didSet { tableHandler.delegate = self }
@@ -64,6 +43,7 @@ class EditProfileViewController: MoochModalViewController {
     //The configuration used to setup the class
     var configuration: EditProfileConfiguration! {
         didSet {
+            editedProfileInformation = EditedProfileInformation(fieldsShownToRequiredPairs: configuration.fieldsShownToRequiredPairs)
             tableHandler.indexOfLastTextfieldCell = configuration.indexOfLastFieldType(conformingToMapping: tableHandler.isTextField)
         }
     }
@@ -81,7 +61,7 @@ class EditProfileViewController: MoochModalViewController {
     fileprivate var cancelButton: UIBarButtonItem!
     
     //Used to track what Profile information has been edited
-    fileprivate var editedProfileInformation = EditedProfileInformation(photo: nil, name: nil, email: nil, phone: nil, address: nil, password1: nil, password2: nil)
+    fileprivate var editedProfileInformation: EditedProfileInformation!
     
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
     fileprivate var isDismissingSelf = false
@@ -255,7 +235,7 @@ class EditProfileViewController: MoochModalViewController {
     }
     
     private func isValidProfileCreation() -> Bool {
-        return editedProfileInformation.isAllInformationFilledAndValid
+        return editedProfileInformation.isAllRequiredInformationFilledAndValid
     }
     
     private func presentInvalidProfileCreationAlert() {
@@ -263,14 +243,14 @@ class EditProfileViewController: MoochModalViewController {
         var message = ""
         let actionTitle = "Aye aye captain!"
         
-        if !editedProfileInformation.isAllInformationFilled {
+        if !editedProfileInformation.isRequiredInformationFilled {
             guard let fieldToNotifyAbout = editedProfileInformation.firstUnfilledRequiredFieldType() else { return }
             message = "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field"
         } else if !editedProfileInformation.isEmailValid {
             message = "Please enter a valid email address"
         } else if !editedProfileInformation.isPasswordValid {
             message = "Please enter a valid password. Passwords must be 6-30 characters"
-        } else if !editedProfileInformation.passwordsMatch {
+        } else if !editedProfileInformation.isPasswordMatchValid {
             message = "Please check that the passwords match"
         }
         
