@@ -35,7 +35,7 @@ struct EditedProfileInformation {
     }
     
     var isAllRequiredInformationFilledAndValid: Bool {
-        return isRequiredInformationFilled && isEmailValid && isPasswordValid && isPasswordMatchValid
+        return isRequiredInformationFilled && isEmailValid && isPhoneValid && isPasswordValid && isPasswordMatchValid
     }
     
     var isRequiredInformationFilled: Bool {
@@ -55,6 +55,23 @@ struct EditedProfileInformation {
             return UserLoginInformationValidator.isValid(email: email)
         } else {
             //If the email isn't required or present then it is valid
+            return true
+        }
+    }
+    
+    var isPhoneValid: Bool {
+        //Valid if the phone field isn't shown
+        let showsPhone = fieldsShownToRequiredMapping[.phone] != nil
+        guard showsPhone else { return true }
+        
+        let isPhoneRequired = fieldsShownToRequiredMapping[.phone]!
+        let isPhonePresent = variable(forFieldType: .phone) != nil
+        
+        if isPhoneRequired || isPhonePresent {
+            guard let phone = variable(forFieldType: .phone) as? String else { return false }
+            return PhoneNumberHandler.isValid(number: phone)
+        } else {
+            //If the phone isn't required or present then it is valid
             return true
         }
     }

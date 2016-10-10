@@ -248,6 +248,8 @@ class EditProfileViewController: MoochModalViewController {
             message = "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field"
         } else if !editedProfileInformation.isEmailValid {
             message = "Please enter a valid email address"
+        } else if !editedProfileInformation.isPhoneValid {
+            message = "Please enter a valid phone number"
         } else if !editedProfileInformation.isPasswordValid {
             message = "Please enter a valid password. Passwords must be 6-30 characters"
         } else if !editedProfileInformation.isPasswordMatchValid {

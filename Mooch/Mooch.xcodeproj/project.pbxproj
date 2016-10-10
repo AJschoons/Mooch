@@ -88,6 +88,7 @@
 		81CBF0C91DAB57470066DA75 /* EditProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0C81DAB57470066DA75 /* EditProfilePhotoCell.swift */; };
 		81CBF0CB1DAB57C70066DA75 /* EditProfileTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CA1DAB57C70066DA75 /* EditProfileTextCell.swift */; };
 		81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */; };
+		81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */; };
 		81F0EA4A1D9896A000C7AD09 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
 		81F0EA4F1D98AC9400C7AD09 /* GETListings.json in Resources */ = {isa = PBXBuildFile; fileRef = 81F0EA4E1D98AC9400C7AD09 /* GETListings.json */; };
 		81F0EA521D98CD2000C7AD09 /* EditListingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */; };
@@ -204,6 +205,7 @@
 		81CBF0C81DAB57470066DA75 /* EditProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfilePhotoCell.swift; sourceTree = "<group>"; };
 		81CBF0CA1DAB57C70066DA75 /* EditProfileTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTextCell.swift; sourceTree = "<group>"; };
 		81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTextHander.swift; sourceTree = "<group>"; };
+		81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberHandler.swift; sourceTree = "<group>"; };
 		81F0EA4E1D98AC9400C7AD09 /* GETListings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETListings.json; sourceTree = "<group>"; };
 		81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextView.swift; sourceTree = "<group>"; };
 		81F0EA531D98D01D00C7AD09 /* EditListingTextHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextHandler.swift; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 			children = (
 				815BCF021D7E77E70022F806 /* Errors.swift */,
 				815BCF001D7E77D80022F806 /* Helpers.swift */,
+				81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */,
 				814DB9D11D91EB6C006F34E9 /* Protocols.swift */,
 				81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */,
 				817CA0951DA31C3B00489374 /* UserLoginInformationValidator.swift */,
@@ -862,6 +865,7 @@
 				816623B41DA06311009AE72B /* ListingCategoryPickerTableHandler.swift in Sources */,
 				816623A61DA048FB009AE72B /* ListingCategoryManager.swift in Sources */,
 				817CA0961DA31C3B00489374 /* UserLoginInformationValidator.swift in Sources */,
+				81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */,
 				81CBF0C61DAB53010066DA75 /* EditProfileTextField.swift in Sources */,
 				81CBF0C41DAB50090066DA75 /* EditProfileConfiguation.swift in Sources */,
 				81F0EA561D9978CF00C7AD09 /* EditListingConfiguration.swift in Sources */,
