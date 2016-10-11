@@ -34,6 +34,11 @@ struct EditedProfileInformation {
         self.fieldsShownToRequiredMapping = fieldsShownToRequiredMapping
     }
     
+    var digitsOnlyPhone: String? {
+        guard let phone = phone else { return nil }
+        return digitOnlyString(of: phone)
+    }
+    
     var isAllRequiredInformationFilledAndValid: Bool {
         return isRequiredInformationFilled && isEmailValid && isPhoneValid && isPasswordValid && isPasswordMatchValid
     }
@@ -68,8 +73,8 @@ struct EditedProfileInformation {
         let isPhonePresent = variable(forFieldType: .phone) != nil
         
         if isPhoneRequired || isPhonePresent {
-            guard let phone = variable(forFieldType: .phone) as? String else { return false }
-            return PhoneNumberHandler.isValid(number: phone)
+            guard let phone = digitsOnlyPhone else { return false }
+            return phone.characters.count == 10 || phone.characters.count == 11
         } else {
             //If the phone isn't required or present then it is valid
             return true
@@ -133,6 +138,19 @@ struct EditedProfileInformation {
         }
         
         return unfilledFieldType
+    }
+    
+    private func digitOnlyString(of s: String) -> String {
+        let numbersSet = CharacterSet.decimalDigits
+        
+        var digits = ""
+        for c in s.unicodeScalars {
+            if numbersSet.contains(c) {
+                digits.append(Character(c))
+            }
+        }
+        
+        return digits
     }
     
     private func variable(forFieldType fieldType: FieldType) -> Any? {

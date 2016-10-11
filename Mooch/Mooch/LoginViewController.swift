@@ -269,10 +269,11 @@ class LoginViewController: MoochModalViewController {
 
 extension LoginViewController: EditProfileViewControllerDelegate {
     
-    func editProfileViewControllerDidFinishEditing(withUser editedUser: User) {
-        let localUser = LocalUser(user: editedUser, authenticationToken: "fake token")
-        LocalUserManager.sharedInstance.login(localUser: localUser)
-        presentAccountCreatedAlert(forLocalUser: localUser)
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
+        if isNewProfile {
+            LocalUserManager.sharedInstance.login(localUser: localUser)
+            presentAccountCreatedAlert(forLocalUser: localUser)
+        }
     }
 }
 

@@ -23,7 +23,7 @@ class LocalUserManager {
     fileprivate init() {}
     
     fileprivate var _localUser: LocalUser?
-    fileprivate(set) var guestCommunityId: Int?
+    fileprivate var guestCommunityId: Int?
     fileprivate(set) var state: LocalUserState = .guest
     
     var localUser: LocalUser? {

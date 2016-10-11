@@ -14,8 +14,7 @@ protocol EditProfileField {
 
 protocol EditProfileViewControllerDelegate: class {
     
-    //Allows the delegate to handle dismissing this view controller at the appropriate time
-    func editProfileViewControllerDidFinishEditing(withUser editedUser: User)
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool)
 }
 
 class EditProfileViewController: MoochModalViewController {
@@ -27,8 +26,8 @@ class EditProfileViewController: MoochModalViewController {
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = EditProfileConfiguration(mode: .creating, title: "Create Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.name, true), (.email, true), (.phone, false), (.address, false), (.password1, true), (.password2, true)])
-    static let DefaultEditingConfiguration = EditProfileConfiguration(mode: .creating, title: "Edit Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.name, false), (.email, false), (.phone, false), (.address, false), (.password1, false), (.password2, false)])
+    static let DefaultCreatingConfiguration = EditProfileConfiguration(mode: .creating, title: "Create Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, true), (.name, true), (.email, true), (.phone, true), (.address, false), (.password1, true), (.password2, true)])
+    static let DefaultEditingConfiguration = EditProfileConfiguration(mode: .creating, title: "Edit Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, false), (.name, false), (.email, false), (.phone, false), (.address, false), (.password1, false), (.password2, false)])
     
     @IBOutlet var tableHandler: EditProfileTableHandler! {
         didSet { tableHandler.delegate = self }
@@ -49,7 +48,7 @@ class EditProfileViewController: MoochModalViewController {
     }
     
     //The user being edited
-    var user: User?
+    var localUser: LocalUser?
     
     
     // MARK: Private variables
@@ -198,40 +197,40 @@ class EditProfileViewController: MoochModalViewController {
     private func uploadProfile() {
         //Only creation is supported right now
         guard isValidProfileCreation() else { return }
-//        guard let userId = LocalUserManager.sharedInstance.localUser?.user.id else { return }
-//        
-//        //This allows the view controller to disable buttons/actions while loading
-//        state = .uploading
-//        
-//        showLoadingOverlayView(withInformationText: "Uploading Listing", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
-//        
-//        let eli = editedListingInformation
-//        MoochAPI.POSTListing(
-//            userId: userId,
-//            photo: eli.photo!,
-//            title: eli.title!,
-//            description: eli.description,
-//            price: eli.price!,
-//            isFree: false,
-//            categoryId: eli.categoryId!,
-//            uploadProgressHandler: { [weak self] progress in
-//                guard let strongSelf = self else { return }
-//                strongSelf.loadingOverlayViewBeingShown?.update(withProgress: Float(progress.fractionCompleted))
-//            },
-//            completion: { [weak self] success, json, error in
-//                guard let strongSelf = self else { return }
-//                guard success else {
-//                    strongSelf.hideLoadingOverlayView(animated: true)
-//                    strongSelf.presentSingleActionAlert(title: "Problem Uploading Listing", message: "Please try uploading the listing again", actionTitle: "Okay")
-//                    strongSelf.state = .editing
-//                    return
-//                }
-//                
-//                strongSelf.dismissSelf() {
-//                    strongSelf.delegate.editListingViewControllerDidFinishEditing(withListingInformation: strongSelf.editedListingInformation)
-//                }
-//            }
-//        )
+        guard let communityId = LocalUserManager.sharedInstance.userCommunityId, let epi = editedProfileInformation else { return }
+        guard let photo = epi.photo, let name = epi.name, let email = epi.email, let digitsOnlyPhone = epi.digitsOnlyPhone, let password = epi.password1 else { return }
+        
+        //This allows the view controller to disable buttons/actions while loading
+        state = .uploading
+        
+        showLoadingOverlayView(withInformationText: "Uploading Profile", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
+        
+        MoochAPI.POSTUser(
+            communityId: communityId,
+            photo: photo,
+            name: name,
+            email: email,
+            phone: digitsOnlyPhone,
+            password: password,
+            address: epi.address,
+            uploadProgressHandler: { [weak self] progress in
+                guard let strongSelf = self else { return }
+                strongSelf.loadingOverlayViewBeingShown?.update(withProgress: Float(progress.fractionCompleted))
+            },
+            completion: { [weak self] localUser, error in
+                guard let strongSelf = self else { return }
+                guard let localUser = localUser else {
+                    strongSelf.hideLoadingOverlayView(animated: true)
+                    strongSelf.presentSingleActionAlert(title: "Problem Uploading Profile", message: "Please try uploading the profile again", actionTitle: "Okay")
+                    strongSelf.state = .editing
+                    return
+                }
+                
+                strongSelf.dismissSelf() {
+                    strongSelf.delegate.editProfileViewControllerDidFinishEditing(localUser: localUser, isNewProfile: true)
+                }
+            }
+        )
     }
     
     private func isValidProfileCreation() -> Bool {
