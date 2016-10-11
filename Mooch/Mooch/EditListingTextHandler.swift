@@ -41,8 +41,8 @@ class EditListingTextHandler: NSObject {
     
     fileprivate func onReturnKey(forTextView textView: EditListingTextView) {
         //Bring the keyboard to the next textview if it exists, else hide it
-        if let nextTextField = textView.nextNavigableTextView {
-            nextTextField.becomeFirstResponder()
+        if let next = textView.nextNavigableResponder {
+            next.becomeFirstResponder()
         } else {
             textView.resignFirstResponder()
         }

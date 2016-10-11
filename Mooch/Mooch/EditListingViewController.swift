@@ -20,6 +20,11 @@ protocol EditListingViewControllerDelegate: class {
 
 class EditListingViewController: MoochModalViewController {
     
+    enum State {
+        case editing
+        case uploading
+    }
+    
     // MARK: Public variables
     
     static let DefaultCreatingConfiguration = EditListingConfiguration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
@@ -62,18 +67,21 @@ class EditListingViewController: MoochModalViewController {
     //Tracks which photo adding view the camera is taking a picture for
     fileprivate var currentPhotoAddingView: PhotoAddingView?
     
+    fileprivate var state: State = .editing
+    
     
     // MARK: Actions
     
     func onDoneAction() {
+        guard state != .uploading else { return }
+        
         if isDoneValidated() {
-            dismissSelf() {
-                self.delegate.editListingViewControllerDidFinishEditing(withListingInformation: self.editedListingInformation)
-            }
+            uploadNewListing()
         }
     }
     
     func onCancelAction() {
+        guard state != .uploading else { return }
         dismissSelf(completion: nil)
     }
     
@@ -188,6 +196,44 @@ class EditListingViewController: MoochModalViewController {
         }
         
         return false
+    }
+    
+    private func uploadNewListing() {
+        guard isValidListingCreation() else { return }
+        guard let userId = LocalUserManager.sharedInstance.localUser?.user.id else { return }
+        
+        //This allows the view controller to disable buttons/actions while loading
+        state = .uploading
+        
+        showLoadingOverlayView(withInformationText: "Uploading Listing", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
+        
+        let eli = editedListingInformation
+        MoochAPI.POSTListing(
+            userId: userId,
+            photo: eli.photo!,
+            title: eli.title!,
+            description: eli.description,
+            price: eli.price!,
+            isFree: false,
+            categoryId: eli.categoryId!,
+            uploadProgressHandler: { [weak self] progress in
+                guard let strongSelf = self else { return }
+                strongSelf.loadingOverlayViewBeingShown?.update(withProgress: Float(progress.fractionCompleted))
+            },
+            completion: { [weak self] success, json, error in
+                guard let strongSelf = self else { return }
+                guard success else {
+                    strongSelf.hideLoadingOverlayView(animated: true)
+                    strongSelf.presentSingleActionAlert(title: "Problem Uploading Listing", message: "Please try uploading the listing again", actionTitle: "Okay")
+                    strongSelf.state = .editing
+                    return
+                }
+    
+                strongSelf.dismissSelf() {
+                    strongSelf.delegate.editListingViewControllerDidFinishEditing(withListingInformation: strongSelf.editedListingInformation)
+                }
+            }
+        )
     }
     
     

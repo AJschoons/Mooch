@@ -38,8 +38,8 @@ struct Listing {
         case createdAt = "created_at"
         case modifiedAt = "modified_at"
         case tags = "tags"
-        case pictureURL = "profile_pic"
-        case thumbnailPictureURL = "profile_pic_small"
+        case pictureURL = "image_url"
+        case thumbnailPictureURL = "thumbnail_image_url"
         case communityId = "community_id"
         case owner = "user"
     }
@@ -99,12 +99,17 @@ struct Listing {
         guard let isAvailable = json[JSONMapping.isAvailable.rawValue].bool else { throw JSONInitializationError.isAvailable }
         guard let createdAtString = json[JSONMapping.createdAt.rawValue].string else { throw JSONInitializationError.createdAt }
         guard let pictureURL = json[JSONMapping.pictureURL.rawValue].string else { throw JSONInitializationError.pictureURL }
-        guard let thumbnailPictureURL = json[JSONMapping.thumbnailPictureURL.rawValue].string else { throw JSONInitializationError.thumbnailPictureURL }
         guard let communityId = json[JSONMapping.communityId.rawValue].int else { throw JSONInitializationError.communityId }
         guard json[JSONMapping.owner.rawValue].exists() else { throw JSONInitializationError.owner }
         
         let createdAt = date(fromAPITimespamp: createdAtString)
         let owner = try User(json: JSON(json[JSONMapping.owner.rawValue].object))
+        
+        //If the thumbnail URL isn't present then default to the pictureURL
+        var thumbnailPictureURL = pictureURL
+        if let thumbnailURL = json[JSONMapping.thumbnailPictureURL.rawValue].string {
+            thumbnailPictureURL = thumbnailURL
+        }
         
         
         //

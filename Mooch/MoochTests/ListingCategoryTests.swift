@@ -10,26 +10,26 @@
 import XCTest
 @testable import Mooch
 
-class ListingTagTests: XCTestCase {
+class ListingCategoryTests: XCTestCase {
     
     func testDesignatedInit() {
-        let listingTag = ListingTag(id: 12, name: "fruit")
+        let listingCategory = ListingCategory(id: 12, name: "fruit")
         
         //Test that all the variables are correctly initialized
-        XCTAssert(listingTag.id == 12)
-        XCTAssert(listingTag.name == "fruit")
+        XCTAssert(listingCategory.id == 12)
+        XCTAssert(listingCategory.name == "fruit")
     }
     
-    //Test that an ListingTag is constructed without failing when given JSON with all the data it needs
+    //    Test that an ListingTag is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let listingTagJSON: JSON = [ListingTag.JSONMapping.Id.rawValue : 12, ListingTag.JSONMapping.Name.rawValue : "fruit"]
+        let listingCategoryJSON: JSON = [ListingCategory.JSONMapping.id.rawValue : 12, ListingCategory.JSONMapping.name.rawValue : "fruit"]
         
         do {
-            let listingTag = try ListingTag(json: listingTagJSON)
+            let listingCategory = try ListingCategory(json: listingCategoryJSON)
             
             //Test that all the variables are correctly initialized
-            XCTAssert(listingTag.id == 12)
-            XCTAssert(listingTag.name == "fruit")
+            XCTAssert(listingCategory.id == 12)
+            XCTAssert(listingCategory.name == "fruit")
         } catch {
             XCTFail()
         }
@@ -37,14 +37,14 @@ class ListingTagTests: XCTestCase {
     
     //Test that an ListingTag throws the expected error when it doesn't have all the data it needs
     func testConvenienceInitError() {
-        let listingTagJSON: JSON = ["blahhhh" : "testsssfadsfg"]
+        let listingCategoryJSON: JSON = ["id" : 5]
         
         var jsonErrorThrown = false
         
         do {
-            let _ = try ListingTag(json: listingTagJSON)
+            let _ = try ListingCategory(json: listingCategoryJSON)
             XCTFail()
-        } catch InitializationError.insufficientJSONInformationForInitialization {
+        } catch ListingCategory.JSONInitializationError.name {
             jsonErrorThrown = true
         } catch {
             
@@ -52,4 +52,5 @@ class ListingTagTests: XCTestCase {
         
         XCTAssert(jsonErrorThrown)
     }
+
 }

@@ -28,7 +28,7 @@ struct LocalUser {
     }
     
     //Convenience JSON initializer
-    init(json: JSON, password: String) throws {
+    init(json: JSON) throws {
         guard let authenticationToken = json[JSONMapping.authenticationToken.rawValue].string else {
             throw JSONInitializationError.token
         }

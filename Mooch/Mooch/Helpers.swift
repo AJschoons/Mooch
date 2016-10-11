@@ -17,3 +17,8 @@ private let apiDateFormatter: DateFormatter = {
 func date(fromAPITimespamp apiTimestamp: String) -> Date {
     return apiDateFormatter.date(from: apiTimestamp)!
 }
+
+func isEmpty(_ string: String?) -> Bool {
+    guard let string = string else { return true }
+    return string == ""
+}

@@ -9,8 +9,10 @@
 import UIKit
 
 @IBDesignable
-class EditListingTextView: NavigableTextView {
+class EditListingTextView: UITextView, NavigableResponder {
 
+    weak var nextNavigableResponder: UIResponder?
+    
     var fieldType: EditListingConfiguration.FieldType!
     
     @IBInspectable var cornerRadius: CGFloat = 0 {
