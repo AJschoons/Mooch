@@ -61,7 +61,7 @@ class InitialLoadingViewController: MoochModalViewController {
     }
     
     private func presentCouldNotDownloadInitialDataAlert() {
-        presentSingleActionAlert(title: "Problem Connecting to Mooch", message: "We were unable to download the data needed to launch", actionTitle: "Try Again") { action in
+        presentSingleActionAlert(title: Strings.InitialLoading.couldNotDownloadInitialDataAlertTitle.rawValue, message: Strings.InitialLoading.couldNotDownloadInitialDataAlertMessage.rawValue, actionTitle: Strings.Alert.singleActionTryAgainTitle.rawValue) { action in
             self.getDataInitiallyNeededFromAPI()
         }
     }

@@ -88,10 +88,10 @@ class ListingsViewController: MoochViewController {
         
         nav.navigationBar.isHidden = false
         
-        title = "Listings"
+        title = Strings.Listings.title.rawValue
         
-        loginButton = UIBarButtonItem(title: "Login", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLoginAction))
-        profileButton = UIBarButtonItem(title: "Profile", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onProfileAction))
+        loginButton = UIBarButtonItem(title: Strings.Listings.buttonTitleLogin.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLoginAction))
+        profileButton = UIBarButtonItem(title: Strings.Listings.buttonTitleProfile.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onProfileAction))
         addListingButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(onAddListingAction))
     }
     
@@ -113,7 +113,7 @@ class ListingsViewController: MoochViewController {
         state = .loading
         
         if !isRefreshing {
-            showLoadingOverlayView(withInformationText: "Loading Listings", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
+            showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
         }
         
         MoochAPI.GETListings(communityId: userCommunityId) { listings, error in
@@ -121,7 +121,7 @@ class ListingsViewController: MoochViewController {
                 //If refreshing and the overlay isn't shown, this method does nothing
                 self.hideLoadingOverlayView(animated: true)
                 
-                self.presentSingleActionAlert(title: "Problem Loading Listings", message: "Please try pulling to refresh to reload the listings", actionTitle: "Okay")
+                self.presentSingleActionAlert(title: Strings.Listings.loadingListingsErrorAlertTitle.rawValue, message: Strings.Listings.loadingListingsErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                 self.state = .loaded
                 return
             }
@@ -179,19 +179,15 @@ class ListingsViewController: MoochViewController {
         present(navC, animated: true, completion: nil)
     }
     
-    fileprivate func presentListingCreatedAlert(forListing listing: Listing) {
-        let alert = UIAlertController(title: "Listing Created", message: "Your listing \"\(listing.title)\" is now visible to all users in your community!", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Keep Mooching", style: .default, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+    fileprivate func presentListingCreatedAlert(forListingWithTitle listingTitle: String) {
+        let title = Strings.Listings.listingCreatedAlertTitle.rawValue
+        let message = "\(Strings.Listings.listingCreatedAlertMessageFirstPart.rawValue)\(listingTitle)\(Strings.Listings.listingCreatedAlertMessageSecondPart.rawValue)"
+        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
+        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
     }
     
     fileprivate func add(listing: Listing) {
         listings.insert(listing, at: 0)
-    }
-    
-    fileprivate func createListing(fromEditedListingInformation eli: EditedListingInformation) -> Listing {
-        return Listing(id: -1, photo: eli.photo!, title: eli.title!, description: eli.description, price: eli.price!, isFree: false, quantity: eli.quantity!, categoryId: eli.categoryId!, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, pictureURL: "", thumbnailPictureURL: "", communityId: 1)
     }
 }
 
@@ -222,8 +218,7 @@ extension ListingsViewController: LoginViewControllerDelegate {
 extension ListingsViewController: EditListingViewControllerDelegate {
     
     func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation) {
-        let newListing = createListing(fromEditedListingInformation: editedListingInformation)
-        presentListingCreatedAlert(forListing: newListing)
+        presentListingCreatedAlert(forListingWithTitle: editedListingInformation.title!)
     }
 }
 

@@ -83,8 +83,8 @@ class ListingDetailsTableHandler: NSObject {
         
         listingCell.titleLabel.text = listing.title
         listingCell.descriptionLabel.text = listing.description
-        listingCell.priceLabel.text = "Price: \(listing.priceString)"
-        listingCell.quantityLabel.text = "Quantity: \(listing.quantity)"
+        listingCell.priceLabel.text = "\(Strings.ListingDetails.listingCellPriceLabelFirstPart.rawValue)\(listing.priceString)"
+        listingCell.quantityLabel.text = "\(Strings.ListingDetails.listingCellQuantityLabelFirstPart.rawValue)\(listing.quantity)"
         
         var categoryLabelText: String
         if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.categoryId) {
@@ -117,15 +117,15 @@ class ListingDetailsTableHandler: NSObject {
     fileprivate func actionString(forFieldType fieldType: FieldType) -> String {
         switch fieldType {
         case .addAnotherListing:
-            return "Add New Listing"
+            return Strings.ListingDetails.fieldTypeAddAnotherListingActionString.rawValue
         case .contactSeller:
-            return "Claim"
+            return Strings.ListingDetails.fieldTypeContactSellerActionString.rawValue
         case .deleteListing:
-            return "Delete Listing"
+            return Strings.ListingDetails.fieldTypeDeleteListingActionString.rawValue
         case .editListing:
-            return "Edit Listing"
+            return Strings.ListingDetails.fieldTypeEditListingActionString.rawValue
         case .viewSellerProfile:
-            return "View Seller Profile"
+            return Strings.ListingDetails.fieldTypeViewSellerProfileActionString.rawValue
         default:
             return ""
         }
@@ -162,6 +162,6 @@ extension ListingDetailsTableHandler: UITableViewDelegate {
 extension ListingDetailsTableHandler: ListingDetailsActionCellDelegate {
     
     func onActionButton(forFieldType fieldType: ListingDetailsViewController.Configuration.FieldType) {
-        print("receiver button action for field type: \(fieldType)")
+        print("received button action for field type: \(fieldType)")
     }
 }

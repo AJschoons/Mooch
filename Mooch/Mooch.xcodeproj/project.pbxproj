@@ -507,12 +507,12 @@
 			isa = PBXGroup;
 			children = (
 				81CBF0C71DAB57130066DA75 /* Cells */,
-				8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */,
-				8149E7D41D871A76000F0C37 /* EditProfile.storyboard */,
-				81CBF0BF1DAB4D220066DA75 /* EditProfileTableHandler.swift */,
 				81CBF0C11DAB4EF50066DA75 /* EditedProfileInformation.swift */,
+				8149E7D41D871A76000F0C37 /* EditProfile.storyboard */,
 				81CBF0C31DAB50090066DA75 /* EditProfileConfiguation.swift */,
+				81CBF0BF1DAB4D220066DA75 /* EditProfileTableHandler.swift */,
 				81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */,
+				8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */,
 			);
 			name = "Edit Profile";
 			sourceTree = "<group>";

@@ -62,19 +62,19 @@ struct EditProfileConfiguration {
     func textDescription(forFieldType fieldType: FieldType) -> String {
         switch fieldType {
         case .photo:
-            return "Photo"
+            return Strings.EditProfile.fieldTypePhotoTextDescription.rawValue
         case .name:
-            return "Name"
+            return Strings.EditProfile.fieldTypeNameTextDescription.rawValue
         case .email:
-            return "Email"
+            return Strings.EditProfile.fieldTypeEmailTextDescription.rawValue
         case .phone:
-            return "Phone"
+            return Strings.EditProfile.fieldTypePhoneTextDescription.rawValue
         case .address:
-            return "Address"
+            return Strings.EditProfile.fieldTypeAddressTextDescription.rawValue
         case .password1:
-            return "Password"
+            return Strings.EditProfile.fieldTypePassword1TextDescription.rawValue
         case .password2:
-            return "Confirm Password"
+            return Strings.EditProfile.fieldTypePassword2TextDescription.rawValue
         }
     }
 }
