@@ -44,17 +44,17 @@ class ListingsViewController: MoochViewController {
     // MARK: Actions
     
     func onLoginAction() {
-        guard state != .loading else { return }
+        guard state == .loaded else { return }
         presentLoginViewController()
     }
     
     func onProfileAction() {
-        guard state != .loading else { return }
+        guard state == .loaded else { return }
         presentProfileViewController()
     }
     
     func onAddListingAction() {
-        guard state != .loading else { return }
+        guard state == .loaded else { return }
         presentEditListingViewController()
     }
     
@@ -68,7 +68,7 @@ class ListingsViewController: MoochViewController {
     override func setup() {
         super.setup()
         
-        loadListings()
+        loadListings(isRefreshing: false)
         
         setupNavigationBar()
         
@@ -106,17 +106,21 @@ class ListingsViewController: MoochViewController {
         }
     }
     
-    fileprivate func loadListings() {
+    fileprivate func loadListings(isRefreshing: Bool) {
         guard let userCommunityId = LocalUserManager.sharedInstance.userCommunityId else { return }
         
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
         
-        showLoadingOverlayView(withInformationText: "Loading Listings", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
+        if !isRefreshing {
+            showLoadingOverlayView(withInformationText: "Loading Listings", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
+        }
         
         MoochAPI.GETListings(communityId: userCommunityId) { listings, error in
             guard let newListings = listings else {
+                //If refreshing and the overlay isn't shown, this method does nothing
                 self.hideLoadingOverlayView(animated: true)
+                
                 self.presentSingleActionAlert(title: "Problem Loading Listings", message: "Please try pulling to refresh to reload the listings", actionTitle: "Okay")
                 self.state = .loaded
                 return
@@ -128,9 +132,14 @@ class ListingsViewController: MoochViewController {
                 listingsNotPostedByThisUser = listingsNotPostedByThisUser.filter({$0.owner.id != localUser.user.id})
             }
             
+            self.tableHandler.endRefreshing()
+            
             //Setting this causes the table to reload
             self.listings = listingsNotPostedByThisUser
+            
+            //If refreshing and the overlay isn't shown, this method does nothing
             self.hideLoadingOverlayView(animated: true)
+            
             self.state = .loaded
         }
     }
@@ -196,13 +205,17 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
     func didSelect(_ listing: Listing) {
         pushListingDetailsViewController(withListing: listing)
     }
+    
+    func refresh() {
+        loadListings(isRefreshing: true)
+    }
 }
 
 extension ListingsViewController: LoginViewControllerDelegate {
     
     func loginViewControllerDidLogin(localUser: LocalUser) {
         updateUI()
-        loadListings()
+        loadListings(isRefreshing: false)
     }
 }
 
@@ -218,6 +231,6 @@ extension ListingsViewController: ProfileViewControllerDelegate {
     
     func didLogOut() {
         updateUI()
-        loadListings()
+        loadListings(isRefreshing: false)
     }
 }

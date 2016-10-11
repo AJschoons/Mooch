@@ -11,6 +11,7 @@ import UIKit
 protocol ListingsTableHandlerDelegate: class {
     func getListings() -> [Listing]
     func didSelect(_ listing: Listing)
+    func refresh()
 }
 
 class ListingsTableHandler: NSObject {
@@ -20,13 +21,28 @@ class ListingsTableHandler: NSObject {
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
             tableView.estimatedRowHeight = ListingTableViewCell.EstimatedHeight
+            
+            //http://stackoverflow.com/questions/10291537/pull-to-refresh-uitableview-without-uitableviewcontroller
+            refreshControl = UIRefreshControl()
+            refreshControl.addTarget(self, action: #selector(onRefresh), for: .valueChanged)
+            tableView.insertSubview(refreshControl, at: 0)
         }
     }
+    
+    private var refreshControl: UIRefreshControl!
     
     weak var delegate: ListingsTableHandlerDelegate!
     
     func updateUI() {
         tableView.reloadData()
+    }
+    
+    func onRefresh() {
+        delegate.refresh()
+    }
+    
+    func endRefreshing() {
+        refreshControl.endRefreshing()
     }
 }
 

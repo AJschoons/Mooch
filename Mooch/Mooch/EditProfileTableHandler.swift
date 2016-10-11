@@ -38,7 +38,7 @@ class EditProfileTableHandler: NSObject {
         didSet {
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
-            tableView.estimatedRowHeight = 1000
+            tableView.estimatedRowHeight = EditProfileTextCell.EstimatedHeight
         }
     }
     
