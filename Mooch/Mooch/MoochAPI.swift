@@ -88,7 +88,7 @@ class MoochAPI {
         
         let route = MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: price, isFree: isFree, categoryId: categoryId)
         
-        performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostListing.photo.rawValue, imageFileName: "listing_image.jpeg") { uploadRequest, error in
+        performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostListing.photo.rawValue, imageFileName: Strings.MoochAPI.listingImageFilename.rawValue) { uploadRequest, error in
             
             guard let uploadRequest = uploadRequest else {
                 completion(false, nil, error)
@@ -116,7 +116,7 @@ class MoochAPI {
         
         let route = MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address)
         
-        performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostUser.photo.rawValue, imageFileName: "user_image.jpeg") { uploadRequest, error in
+        performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostUser.photo.rawValue, imageFileName: Strings.MoochAPI.userImageFilename.rawValue) { uploadRequest, error in
             
             guard let uploadRequest = uploadRequest else {
                 completion(nil, error)

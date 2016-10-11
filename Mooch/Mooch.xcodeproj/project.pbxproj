@@ -89,6 +89,7 @@
 		81CBF0CB1DAB57C70066DA75 /* EditProfileTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CA1DAB57C70066DA75 /* EditProfileTextCell.swift */; };
 		81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */; };
 		81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */; };
+		81CBF0D01DACA3B50066DA75 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
 		81F0EA4A1D9896A000C7AD09 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
 		81F0EA4F1D98AC9400C7AD09 /* GETListings.json in Resources */ = {isa = PBXBuildFile; fileRef = 81F0EA4E1D98AC9400C7AD09 /* GETListings.json */; };
 		81F0EA521D98CD2000C7AD09 /* EditListingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */; };
@@ -928,6 +929,7 @@
 			files = (
 				B373681A1DA3368500014B25 /* ListingCategory.swift in Sources */,
 				B37368191DA335DA00014B25 /* ListingCategoryTests.swift in Sources */,
+				81CBF0D01DACA3B50066DA75 /* Strings.swift in Sources */,
 				812661F91DA7361500ECD64E /* GETCategories.json in Sources */,
 				815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */,
 				811025A51D94DFAB00C3931C /* MoochAPITests.swift in Sources */,

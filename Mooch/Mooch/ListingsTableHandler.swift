@@ -64,7 +64,7 @@ extension ListingsTableHandler: UITableViewDataSource {
         if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.categoryId) {
             categoryLabelText = listingCategory.name
         } else {
-            categoryLabelText = Strings.InvalidCategoryId.rawValue
+            categoryLabelText = Strings.SharedErrors.invalidCategory.rawValue
         }
         cell.categoryLabel.text = categoryLabelText
         

@@ -27,8 +27,8 @@ class EditListingViewController: MoochModalViewController {
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = EditListingConfiguration(mode: .creating, title: "Create Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
-    static let DefaultEditingConfiguration = EditListingConfiguration(mode: .creating, title: "Edit Listing", leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
+    static let DefaultCreatingConfiguration = EditListingConfiguration(mode: .creating, title: Strings.EditListing.defaultCreatingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
+    static let DefaultEditingConfiguration = EditListingConfiguration(mode: .creating, title: Strings.EditListing.defaultEditingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
     
     @IBOutlet var tableHandler: EditListingTableHandler! {
         didSet { tableHandler.delegate = self }
@@ -143,7 +143,7 @@ class EditListingViewController: MoochModalViewController {
     
     fileprivate func setupNavigationBar() {
         doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onDoneAction))
-        cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
+        cancelButton = UIBarButtonItem(title: Strings.EditListing.cancelButtonTitle.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
         
         title = configuration.title
         
@@ -206,7 +206,7 @@ class EditListingViewController: MoochModalViewController {
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
         
-        showLoadingOverlayView(withInformationText: "Uploading Listing", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
+        showLoadingOverlayView(withInformationText: Strings.EditListing.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
         
         let eli = editedListingInformation
         MoochAPI.POSTListing(
@@ -225,7 +225,7 @@ class EditListingViewController: MoochModalViewController {
                 guard let strongSelf = self else { return }
                 guard success else {
                     strongSelf.hideLoadingOverlayView(animated: true)
-                    strongSelf.presentSingleActionAlert(title: "Problem Uploading Listing", message: "Please try uploading the listing again", actionTitle: "Okay")
+                    strongSelf.presentSingleActionAlert(title: Strings.EditListing.uploadingNewErrorAlertTitle.rawValue, message: Strings.EditListing.uploadingNewErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                     strongSelf.state = .editing
                     return
                 }
@@ -243,7 +243,10 @@ class EditListingViewController: MoochModalViewController {
     
     private func presentInvalidListingCreationAlert() {
         guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledRequiredFieldType() else { return }
-        presentSingleActionAlert(title: "Problem creating listing", message: "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field", actionTitle: "Aye aye captain!")
+        let title = Strings.EditListing.invalidCreationErrorAlertTitle.rawValue
+        let message = "\(Strings.EditListing.invalidCreationErrorAlertMessageFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditListing.invalidCreationErrorAlertMessageSecondPart.rawValue)"
+        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
+        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
     }
     
     fileprivate func presentCameraViewController(forPhotoAddingView photoAddingView: PhotoAddingView) {

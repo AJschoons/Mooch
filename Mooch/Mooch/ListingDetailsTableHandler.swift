@@ -90,7 +90,7 @@ class ListingDetailsTableHandler: NSObject {
         if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.categoryId) {
             categoryLabelText = listingCategory.name
         } else {
-            categoryLabelText = Strings.InvalidCategoryId.rawValue
+            categoryLabelText = Strings.SharedErrors.invalidCategory.rawValue
         }
         listingCell.categoryLabel.text = categoryLabelText
         

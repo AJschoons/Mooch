@@ -13,7 +13,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     typealias RoutingInformation = (path: String, method: Alamofire.HTTPMethod, parameters: [String: Any]?, requiresAuthorization: Bool)
     
-    static let baseURLString = "https://mooch-rails-api.appspot.com/api/v1"
+    static let baseURLString = Strings.MoochAPIRouter.baseURL.rawValue
     
     static fileprivate var email: String?
     static fileprivate var authorizationToken: String?

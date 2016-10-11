@@ -26,8 +26,8 @@ class EditProfileViewController: MoochModalViewController {
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = EditProfileConfiguration(mode: .creating, title: "Create Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, true), (.name, true), (.email, true), (.phone, true), (.address, false), (.password1, true), (.password2, true)])
-    static let DefaultEditingConfiguration = EditProfileConfiguration(mode: .creating, title: "Edit Profile", leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, false), (.name, false), (.email, false), (.phone, false), (.address, false), (.password1, false), (.password2, false)])
+    static let DefaultCreatingConfiguration = EditProfileConfiguration(mode: .creating, title: Strings.EditProfile.defaultCreatingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, true), (.name, true), (.email, true), (.phone, true), (.address, false), (.password1, true), (.password2, true)])
+    static let DefaultEditingConfiguration = EditProfileConfiguration(mode: .creating, title: Strings.EditProfile.defaultEditingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, false), (.name, false), (.email, false), (.phone, false), (.address, false), (.password1, false), (.password2, false)])
     
     @IBOutlet var tableHandler: EditProfileTableHandler! {
         didSet { tableHandler.delegate = self }
@@ -138,7 +138,7 @@ class EditProfileViewController: MoochModalViewController {
     
     fileprivate func setupNavigationBar() {
         doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onDoneAction))
-        cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
+        cancelButton = UIBarButtonItem(title: Strings.EditProfile.cancelButtonTitle.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
         
         title = configuration.title
         
@@ -203,7 +203,7 @@ class EditProfileViewController: MoochModalViewController {
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
         
-        showLoadingOverlayView(withInformationText: "Uploading Profile", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
+        showLoadingOverlayView(withInformationText: Strings.EditProfile.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
         
         MoochAPI.POSTUser(
             communityId: communityId,
@@ -221,7 +221,7 @@ class EditProfileViewController: MoochModalViewController {
                 guard let strongSelf = self else { return }
                 guard let localUser = localUser else {
                     strongSelf.hideLoadingOverlayView(animated: true)
-                    strongSelf.presentSingleActionAlert(title: "Problem Uploading Profile", message: "Please try uploading the profile again", actionTitle: "Okay")
+                    strongSelf.presentSingleActionAlert(title: Strings.EditProfile.uploadingNewErrorAlertTitle.rawValue, message: Strings.EditProfile.uploadingNewErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                     strongSelf.state = .editing
                     return
                 }
@@ -238,21 +238,21 @@ class EditProfileViewController: MoochModalViewController {
     }
     
     private func presentInvalidProfileCreationAlert() {
-        let title = "Problem creating profile"
+        let title = Strings.EditProfile.invalidCreationErrorAlertTitle.rawValue
         var message = ""
-        let actionTitle = "Aye aye captain!"
+        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
         
         if !editedProfileInformation.isRequiredInformationFilled {
             guard let fieldToNotifyAbout = editedProfileInformation.firstUnfilledRequiredFieldType() else { return }
-            message = "Please complete filling out the information for the \(configuration.textDescription(forFieldType: fieldToNotifyAbout)) field"
+            message = "\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoSecondPart.rawValue))"
         } else if !editedProfileInformation.isEmailValid {
-            message = "Please enter a valid email address"
+            message = Strings.EditProfile.invalidCreationErrorAlertMessageEmail.rawValue
         } else if !editedProfileInformation.isPhoneValid {
-            message = "Please enter a valid phone number"
+            message = Strings.EditProfile.invalidCreationErrorAlertMessagePhone.rawValue
         } else if !editedProfileInformation.isPasswordValid {
-            message = "Please enter a valid password. Passwords must be 6-30 characters"
+            message = Strings.EditProfile.invalidCreationErrorAlertMessagePassword.rawValue
         } else if !editedProfileInformation.isPasswordMatchValid {
-            message = "Please check that the passwords match"
+            message = Strings.EditProfile.invalidCreationErrorAlertMessagePasswordMatch.rawValue
         }
         
         presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
