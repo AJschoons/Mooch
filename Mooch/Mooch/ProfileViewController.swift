@@ -67,11 +67,10 @@ class ProfileViewController: MoochModalViewController {
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
-        backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onBackAction))
-        editButton = UIBarButtonItem(title: "Edit", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onEditProfileAction))
+        backButton = UIBarButtonItem(title: Strings.Profile.buttonTitleBack.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onBackAction))
+        editButton = UIBarButtonItem(title: Strings.Profile.buttonTitleEdit.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onEditProfileAction))
         
-        
-        title = "Profile"
+        title = Strings.Profile.title.rawValue
         
         navigationItem.leftBarButtonItem = backButton
         navigationItem.rightBarButtonItem = editButton

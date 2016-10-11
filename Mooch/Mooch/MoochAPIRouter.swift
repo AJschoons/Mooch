@@ -13,7 +13,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     typealias RoutingInformation = (path: String, method: Alamofire.HTTPMethod, parameters: [String: Any]?, requiresAuthorization: Bool)
     
-    static let baseURLString = "https://mooch-rails-api.appspot.com/api/v1"
+    static let baseURLString = Strings.MoochAPIRouter.baseURL.rawValue
     
     static fileprivate var email: String?
     static fileprivate var authorizationToken: String?
@@ -28,6 +28,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
+    case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?)
     
     //The keys to pass in as parameters mapped to strings
     enum ParameterMapping {
@@ -43,6 +44,19 @@ enum MoochAPIRouter: URLRequestConvertible {
             case price = "price"
             case isFree = "free"
             case categoryId = "category_id"
+        }
+        
+        enum PostUser: String {
+            //Required
+            case communityId = "community_id"
+            case photo = "image"
+            case name = "name"
+            case email = "email"
+            case phone = "phone"
+            case password = "password"
+            
+            //Optional
+            case address = "address"
         }
     }
     
@@ -86,7 +100,15 @@ enum MoochAPIRouter: URLRequestConvertible {
         case .postLogin(let email, let password):
             let parameters = [ParameterMapping.PostLogin.email.rawValue : email, ParameterMapping.PostLogin.password.rawValue : password]
             return ("/sessions", .post, parameters, false)
+        
+        case .postUser(let communityId, let name, let email, let phone, let password, let address):
+            typealias mapping = ParameterMapping.PostUser
+            var parameters: [String : Any] = [mapping.communityId.rawValue : communityId, mapping.name.rawValue : name, mapping.email.rawValue : email, mapping.phone.rawValue : phone, mapping.password.rawValue : password]
+            if address != nil { parameters[mapping.address.rawValue] =  address! }
+            return ("/users", .post, parameters, false)
         }
+        
+        
     }
 
     //Allows the router to perform authorized requests

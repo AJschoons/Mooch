@@ -69,7 +69,7 @@
 		816623B41DA06311009AE72B /* ListingCategoryPickerTableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816623B31DA06311009AE72B /* ListingCategoryPickerTableHandler.swift */; };
 		817CA0901DA2BB4E00489374 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 817CA08F1DA2BB4E00489374 /* Login.storyboard */; };
 		817CA0921DA2BFD500489374 /* LoginTextHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0911DA2BFD500489374 /* LoginTextHandler.swift */; };
-		817CA0941DA2C10D00489374 /* LoginTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0931DA2C10D00489374 /* LoginTextView.swift */; };
+		817CA0941DA2C10D00489374 /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0931DA2C10D00489374 /* LoginTextField.swift */; };
 		817CA0961DA31C3B00489374 /* UserLoginInformationValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0951DA31C3B00489374 /* UserLoginInformationValidator.swift */; };
 		817CA0981DA4305800489374 /* LoadingOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 817CA0971DA4305800489374 /* LoadingOverlayView.xib */; };
 		817CA09A1DA4363100489374 /* LoadingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0991DA4363100489374 /* LoadingOverlayView.swift */; };
@@ -81,6 +81,15 @@
 		81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81CBF0BE1DA750C70066DA75 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0BD1DA750C70066DA75 /* ImageManager.swift */; };
+		81CBF0C01DAB4D220066DA75 /* EditProfileTableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0BF1DAB4D220066DA75 /* EditProfileTableHandler.swift */; };
+		81CBF0C21DAB4EF50066DA75 /* EditedProfileInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0C11DAB4EF50066DA75 /* EditedProfileInformation.swift */; };
+		81CBF0C41DAB50090066DA75 /* EditProfileConfiguation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0C31DAB50090066DA75 /* EditProfileConfiguation.swift */; };
+		81CBF0C61DAB53010066DA75 /* EditProfileTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0C51DAB53010066DA75 /* EditProfileTextField.swift */; };
+		81CBF0C91DAB57470066DA75 /* EditProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0C81DAB57470066DA75 /* EditProfilePhotoCell.swift */; };
+		81CBF0CB1DAB57C70066DA75 /* EditProfileTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CA1DAB57C70066DA75 /* EditProfileTextCell.swift */; };
+		81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */; };
+		81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */; };
+		81CBF0D01DACA3B50066DA75 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
 		81F0EA4A1D9896A000C7AD09 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
 		81F0EA4F1D98AC9400C7AD09 /* GETListings.json in Resources */ = {isa = PBXBuildFile; fileRef = 81F0EA4E1D98AC9400C7AD09 /* GETListings.json */; };
 		81F0EA521D98CD2000C7AD09 /* EditListingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */; };
@@ -179,7 +188,7 @@
 		816623B31DA06311009AE72B /* ListingCategoryPickerTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryPickerTableHandler.swift; sourceTree = "<group>"; };
 		817CA08F1DA2BB4E00489374 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		817CA0911DA2BFD500489374 /* LoginTextHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextHandler.swift; sourceTree = "<group>"; };
-		817CA0931DA2C10D00489374 /* LoginTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextView.swift; sourceTree = "<group>"; };
+		817CA0931DA2C10D00489374 /* LoginTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
 		817CA0951DA31C3B00489374 /* UserLoginInformationValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLoginInformationValidator.swift; sourceTree = "<group>"; };
 		817CA0971DA4305800489374 /* LoadingOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingOverlayView.xib; sourceTree = "<group>"; };
 		817CA0991DA4363100489374 /* LoadingOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingOverlayView.swift; sourceTree = "<group>"; };
@@ -190,6 +199,14 @@
 		81A09FEA1D9F16230021D3FA /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		81CBF0BD1DA750C70066DA75 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
+		81CBF0BF1DAB4D220066DA75 /* EditProfileTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableHandler.swift; sourceTree = "<group>"; };
+		81CBF0C11DAB4EF50066DA75 /* EditedProfileInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditedProfileInformation.swift; sourceTree = "<group>"; };
+		81CBF0C31DAB50090066DA75 /* EditProfileConfiguation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileConfiguation.swift; sourceTree = "<group>"; };
+		81CBF0C51DAB53010066DA75 /* EditProfileTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTextField.swift; sourceTree = "<group>"; };
+		81CBF0C81DAB57470066DA75 /* EditProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfilePhotoCell.swift; sourceTree = "<group>"; };
+		81CBF0CA1DAB57C70066DA75 /* EditProfileTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTextCell.swift; sourceTree = "<group>"; };
+		81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTextHander.swift; sourceTree = "<group>"; };
+		81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberHandler.swift; sourceTree = "<group>"; };
 		81F0EA4E1D98AC9400C7AD09 /* GETListings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETListings.json; sourceTree = "<group>"; };
 		81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextView.swift; sourceTree = "<group>"; };
 		81F0EA531D98D01D00C7AD09 /* EditListingTextHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextHandler.swift; sourceTree = "<group>"; };
@@ -375,6 +392,7 @@
 			children = (
 				815BCF021D7E77E70022F806 /* Errors.swift */,
 				815BCF001D7E77D80022F806 /* Helpers.swift */,
+				81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */,
 				814DB9D11D91EB6C006F34E9 /* Protocols.swift */,
 				81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */,
 				817CA0951DA31C3B00489374 /* UserLoginInformationValidator.swift */,
@@ -473,9 +491,10 @@
 			isa = PBXGroup;
 			children = (
 				81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */,
+				81CBF0C51DAB53010066DA75 /* EditProfileTextField.swift */,
 				817CA0991DA4363100489374 /* LoadingOverlayView.swift */,
 				817CA0971DA4305800489374 /* LoadingOverlayView.xib */,
-				817CA0931DA2C10D00489374 /* LoginTextView.swift */,
+				817CA0931DA2C10D00489374 /* LoginTextField.swift */,
 				81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */,
 				81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */,
 				8149E7CF1D87017D000F0C37 /* RoundedButton.swift */,
@@ -487,8 +506,13 @@
 		8149E7D11D87183C000F0C37 /* Edit Profile */ = {
 			isa = PBXGroup;
 			children = (
-				8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */,
+				81CBF0C71DAB57130066DA75 /* Cells */,
+				81CBF0C11DAB4EF50066DA75 /* EditedProfileInformation.swift */,
 				8149E7D41D871A76000F0C37 /* EditProfile.storyboard */,
+				81CBF0C31DAB50090066DA75 /* EditProfileConfiguation.swift */,
+				81CBF0BF1DAB4D220066DA75 /* EditProfileTableHandler.swift */,
+				81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */,
+				8149E7D21D8719E4000F0C37 /* EditProfileViewController.swift */,
 			);
 			name = "Edit Profile";
 			sourceTree = "<group>";
@@ -534,6 +558,15 @@
 				81A09FEA1D9F16230021D3FA /* CameraViewController.swift */,
 			);
 			name = Camera;
+			sourceTree = "<group>";
+		};
+		81CBF0C71DAB57130066DA75 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				81CBF0C81DAB57470066DA75 /* EditProfilePhotoCell.swift */,
+				81CBF0CA1DAB57C70066DA75 /* EditProfileTextCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -833,6 +866,9 @@
 				816623B41DA06311009AE72B /* ListingCategoryPickerTableHandler.swift in Sources */,
 				816623A61DA048FB009AE72B /* ListingCategoryManager.swift in Sources */,
 				817CA0961DA31C3B00489374 /* UserLoginInformationValidator.swift in Sources */,
+				81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */,
+				81CBF0C61DAB53010066DA75 /* EditProfileTextField.swift in Sources */,
+				81CBF0C41DAB50090066DA75 /* EditProfileConfiguation.swift in Sources */,
 				81F0EA561D9978CF00C7AD09 /* EditListingConfiguration.swift in Sources */,
 				814DB9D71D933B89006F34E9 /* ListingDetailsTableHandler.swift in Sources */,
 				8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */,
@@ -848,16 +884,20 @@
 				817CA09A1DA4363100489374 /* LoadingOverlayView.swift in Sources */,
 				81CBF0BE1DA750C70066DA75 /* ImageManager.swift in Sources */,
 				81A09FDC1D9B350B0021D3FA /* PhotoAddingView.swift in Sources */,
+				81CBF0CB1DAB57C70066DA75 /* EditProfileTextCell.swift in Sources */,
 				813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */,
+				81CBF0C01DAB4D220066DA75 /* EditProfileTableHandler.swift in Sources */,
 				814DB9DB1D933D85006F34E9 /* ListingDetailsActionCell.swift in Sources */,
 				8149E7BF1D85FC6C000F0C37 /* Listing.swift in Sources */,
 				81F0EA541D98D01D00C7AD09 /* EditListingTextHandler.swift in Sources */,
 				814DB9CE1D91DE1A006F34E9 /* EditListingQuantityCell.swift in Sources */,
-				817CA0941DA2C10D00489374 /* LoginTextView.swift in Sources */,
+				817CA0941DA2C10D00489374 /* LoginTextField.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
 				81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */,
+				81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */,
 				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
+				81CBF0C21DAB4EF50066DA75 /* EditedProfileInformation.swift in Sources */,
 				8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */,
 				8110259F1D94C45A00C3931C /* MoochAPIRouter.swift in Sources */,
 				81F0EA581D997A2600C7AD09 /* EditedListingInformation.swift in Sources */,
@@ -878,6 +918,7 @@
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
 				817CA0921DA2BFD500489374 /* LoginTextHandler.swift in Sources */,
 				815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */,
+				81CBF0C91DAB57470066DA75 /* EditProfilePhotoCell.swift in Sources */,
 				815BCF031D7E77E70022F806 /* Errors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -888,6 +929,7 @@
 			files = (
 				B373681A1DA3368500014B25 /* ListingCategory.swift in Sources */,
 				B37368191DA335DA00014B25 /* ListingCategoryTests.swift in Sources */,
+				81CBF0D01DACA3B50066DA75 /* Strings.swift in Sources */,
 				812661F91DA7361500ECD64E /* GETCategories.json in Sources */,
 				815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */,
 				811025A51D94DFAB00C3931C /* MoochAPITests.swift in Sources */,

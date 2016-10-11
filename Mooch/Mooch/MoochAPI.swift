@@ -11,10 +11,12 @@ import Foundation
 
 class MoochAPI {
     
-    static let MaxImageSize = CGSize(width: 800, height: 800)
+    static let MaxImageSize = CGSize(width: 540, height: 540)
+    static let ImageCompressionFactor = CGFloat(0.5)
     
     typealias ExpectingResponseCompletionClosure = (JSON?, Error?) -> ()
     typealias NotExpectingResponseCompletionClosure = (Bool, JSON?, Error?) -> () //Bool: Success/Fail
+    typealias UploadRequestCompletion = (UploadRequest?, Error?) -> ()
     
     //Allows authorized requests to be performed
     static func setAuthorizationCredentials(email: String, authorizationToken: String) {
@@ -25,6 +27,10 @@ class MoochAPI {
     static func clearAuthorizationCredentials() {
         MoochAPIRouter.clearAuthorizationCredentials()
     }
+    
+    //
+    // MARK: API Routes
+    //
     
     static func GETListingCategories(completion: @escaping ([ListingCategory]?, Error?) -> Void) {
         perform(requestExpectingResponse: MoochAPIRouter.getListingCategories) { json, error in
@@ -81,68 +87,71 @@ class MoochAPI {
     static func POSTListing(userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
         
         let route = MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: price, isFree: isFree, categoryId: categoryId)
-        let routingInformation = route.getRoutingInformation()
         
-        var urlRequest: URLRequest!
-        do {
-            urlRequest = try route.asURLRequest()
-        } catch(let error) {
-            completion(false, nil, error)
-            return
-        }
-        
-        let authorizationHeaders = route.authorizationHeaders()
-        Alamofire.upload(
-            multipartFormData: { multipartFormData in
-                
-                //Add image
-                let resizedPhoto = photo.af_imageAspectScaled(toFit: MaxImageSize)
-                if let imageData = UIImagePNGRepresentation(resizedPhoto)
-                {
-                    multipartFormData.append(imageData, withName: MoochAPIRouter.ParameterMapping.PostListing.photo.rawValue, fileName: "listing_image.png", mimeType: "image/png")
-                }
-                
-                //Add the non-image parameters
-                for (key, value) in routingInformation.parameters! {
-                    let data = String(describing: value)
-                    multipartFormData.append(data.data(using: .utf8)!, withName: key)
-                }
-            },
-            usingThreshold: SessionManager.multipartFormDataEncodingMemoryThreshold,
-            to: urlRequest.url!,
-            method: routingInformation.method,
-            headers: authorizationHeaders,
-            encodingCompletion: { encodingResult in
-                switch encodingResult {
-                case .success(let upload, _, _):
-                    upload.uploadProgress(closure: uploadProgressHandler)
-                    validate(dataRequestNotExpectingResponse: upload) { success, json, error in
-                        completion(success, json, error)
-                    }
-                case .failure(let error):
-                    completion(false, nil, error)
-                }
+        performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostListing.photo.rawValue, imageFileName: Strings.MoochAPI.listingImageFilename.rawValue) { uploadRequest, error in
+            
+            guard let uploadRequest = uploadRequest else {
+                completion(false, nil, error)
+                return
             }
-        )
+            
+            uploadRequest.uploadProgress(closure: uploadProgressHandler)
+            validate(dataRequestNotExpectingResponse: uploadRequest) { success, json, error in
+                completion(success, json, error)
+            }
+        }
     }
     
     static func POSTLogin(email: String, password: String, completion: @escaping (LocalUser?, Error?) -> Void) {
         perform(requestExpectingResponse: MoochAPIRouter.postLogin(withEmail: email, andPassword: password)) { json, error in
-            guard let localUserJSON = json else {
+            let processedResult = processLocalUser(fromJSON: json, withError: error)
+            let localUser = processedResult.0
+            let error = processedResult.1
+            completion(localUser, error)
+        }
+    }
+    
+    //The completion Bool will be true on success, false on failure/error
+    static func POSTUser(communityId: Int, photo: UIImage, name: String, email: String, phone: String, password: String, address: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
+        
+        let route = MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address)
+        
+        performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostUser.photo.rawValue, imageFileName: Strings.MoochAPI.userImageFilename.rawValue) { uploadRequest, error in
+            
+            guard let uploadRequest = uploadRequest else {
                 completion(nil, error)
                 return
             }
             
-            do {
-                let localUser = try LocalUser(json: localUserJSON)
-                completion(localUser, nil)
-            } catch let error {
-                print("couldn't create local user with JSON: \(json)")
-                completion(nil, error)
+            uploadRequest.uploadProgress(closure: uploadProgressHandler)
+            validate(dataRequestExpectingResponse: uploadRequest) { json, error in
+                let processedResult = processLocalUser(fromJSON: json, withError: error)
+                let localUser = processedResult.0
+                let error = processedResult.1
+                completion(localUser, error)
             }
         }
     }
 
+    
+    //
+    // MARK: Helpers
+    //
+    
+    fileprivate static func processLocalUser(fromJSON json: JSON?, withError error: Error?) -> (LocalUser?, Error?) {
+        guard let localUserJSON = json else {
+            return (nil, error)
+        }
+        
+        do {
+            let localUser = try LocalUser(json: localUserJSON)
+            return (localUser, nil)
+        } catch let error {
+            print("couldn't create local user with JSON: \(json)")
+            return (nil, error)
+        }
+    }
+    
     //This method does all the same redundant work that would be shared between calls relying on a JSON response
     fileprivate static func perform(requestExpectingResponse: URLRequestConvertible, withCompletion completion: @escaping ExpectingResponseCompletionClosure) {
         let request = Alamofire.request(requestExpectingResponse)
@@ -200,4 +209,47 @@ class MoochAPI {
         }
     }
     
+    //Takes the parameters from the route and the image and encodes them into an UploadRequest
+    fileprivate static func performMultipartFormUpload(forRoute route: MoochAPIRouter, withImage image: UIImage, imageFormParameterName: String, imageFileName: String, completion: @escaping UploadRequestCompletion) {
+        let routingInformation = route.getRoutingInformation()
+        
+        var urlRequest: URLRequest!
+        do {
+            urlRequest = try route.asURLRequest()
+        } catch(let error) {
+            completion(nil, error)
+            return
+        }
+        
+        let authorizationHeaders = route.authorizationHeaders()
+        Alamofire.upload(
+            multipartFormData: { multipartFormData in
+                
+                //Add image
+                let resizedImage = image.af_imageAspectScaled(toFit: MaxImageSize)
+                if let imageData = UIImageJPEGRepresentation(resizedImage, ImageCompressionFactor)
+                {
+                    multipartFormData.append(imageData, withName: imageFormParameterName, fileName: imageFileName, mimeType: "image/jpeg")
+                }
+                
+                //Add the non-image parameters
+                for (key, value) in routingInformation.parameters! {
+                    let data = String(describing: value)
+                    multipartFormData.append(data.data(using: .utf8)!, withName: key)
+                }
+            },
+            usingThreshold: SessionManager.multipartFormDataEncodingMemoryThreshold,
+            to: urlRequest.url!,
+            method: routingInformation.method,
+            headers: authorizationHeaders,
+            encodingCompletion: { encodingResult in
+                switch encodingResult {
+                case .success(let upload, _, _):
+                    completion(upload, nil)
+                case .failure(let error):
+                    completion(nil, error)
+                }
+            }
+        )
+    }
 }

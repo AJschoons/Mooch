@@ -50,17 +50,17 @@ struct EditListingConfiguration {
     func textDescription(forFieldType fieldType: FieldType) -> String {
         switch fieldType {
         case .photo:
-            return "Photo"
+            return Strings.EditListing.fieldTypePhotoTextDescription.rawValue
         case .title:
-            return "Title"
+            return Strings.EditListing.fieldTypeTitleTextDescription.rawValue
         case .description:
-            return "Description"
+            return Strings.EditListing.fieldTypeDescriptionTextDescription.rawValue
         case .price:
-            return "Price"
+            return Strings.EditListing.fieldTypePriceTextDescription.rawValue
         case .quantity:
-            return "Quantity"
+            return Strings.EditListing.fieldTypeQuantityTextDescription.rawValue
         case .category:
-            return "Category"
+            return Strings.EditListing.fieldTypeCategoryTextDescription.rawValue
         }
     }
 }

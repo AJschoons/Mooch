@@ -44,17 +44,17 @@ class ListingsViewController: MoochViewController {
     // MARK: Actions
     
     func onLoginAction() {
-        guard state != .loading else { return }
+        guard state == .loaded else { return }
         presentLoginViewController()
     }
     
     func onProfileAction() {
-        guard state != .loading else { return }
+        guard state == .loaded else { return }
         presentProfileViewController()
     }
     
     func onAddListingAction() {
-        guard state != .loading else { return }
+        guard state == .loaded else { return }
         presentEditListingViewController()
     }
     
@@ -68,7 +68,7 @@ class ListingsViewController: MoochViewController {
     override func setup() {
         super.setup()
         
-        loadListings()
+        loadListings(isRefreshing: false)
         
         setupNavigationBar()
         
@@ -88,10 +88,10 @@ class ListingsViewController: MoochViewController {
         
         nav.navigationBar.isHidden = false
         
-        title = "Listings"
+        title = Strings.Listings.title.rawValue
         
-        loginButton = UIBarButtonItem(title: "Login", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLoginAction))
-        profileButton = UIBarButtonItem(title: "Profile", style: UIBarButtonItemStyle.plain, target: self, action: #selector(onProfileAction))
+        loginButton = UIBarButtonItem(title: Strings.Listings.buttonTitleLogin.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLoginAction))
+        profileButton = UIBarButtonItem(title: Strings.Listings.buttonTitleProfile.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onProfileAction))
         addListingButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(onAddListingAction))
     }
     
@@ -106,18 +106,22 @@ class ListingsViewController: MoochViewController {
         }
     }
     
-    fileprivate func loadListings() {
+    fileprivate func loadListings(isRefreshing: Bool) {
         guard let userCommunityId = LocalUserManager.sharedInstance.userCommunityId else { return }
         
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
         
-        showLoadingOverlayView(withInformationText: "Loading Listings", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
+        if !isRefreshing {
+            showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
+        }
         
         MoochAPI.GETListings(communityId: userCommunityId) { listings, error in
             guard let newListings = listings else {
+                //If refreshing and the overlay isn't shown, this method does nothing
                 self.hideLoadingOverlayView(animated: true)
-                self.presentSingleActionAlert(title: "Problem Loading Listings", message: "Please try pulling to refresh to reload the listings", actionTitle: "Okay")
+                
+                self.presentSingleActionAlert(title: Strings.Listings.loadingListingsErrorAlertTitle.rawValue, message: Strings.Listings.loadingListingsErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                 self.state = .loaded
                 return
             }
@@ -128,9 +132,14 @@ class ListingsViewController: MoochViewController {
                 listingsNotPostedByThisUser = listingsNotPostedByThisUser.filter({$0.owner.id != localUser.user.id})
             }
             
+            self.tableHandler.endRefreshing()
+            
             //Setting this causes the table to reload
             self.listings = listingsNotPostedByThisUser
+            
+            //If refreshing and the overlay isn't shown, this method does nothing
             self.hideLoadingOverlayView(animated: true)
+            
             self.state = .loaded
         }
     }
@@ -170,19 +179,15 @@ class ListingsViewController: MoochViewController {
         present(navC, animated: true, completion: nil)
     }
     
-    fileprivate func presentListingCreatedAlert(forListing listing: Listing) {
-        let alert = UIAlertController(title: "Listing Created", message: "Your listing \"\(listing.title)\" is now visible to all users in your community!", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Keep Mooching", style: .default, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+    fileprivate func presentListingCreatedAlert(forListingWithTitle listingTitle: String) {
+        let title = Strings.Listings.listingCreatedAlertTitle.rawValue
+        let message = "\(Strings.Listings.listingCreatedAlertMessageFirstPart.rawValue)\(listingTitle)\(Strings.Listings.listingCreatedAlertMessageSecondPart.rawValue)"
+        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
+        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
     }
     
     fileprivate func add(listing: Listing) {
         listings.insert(listing, at: 0)
-    }
-    
-    fileprivate func createListing(fromEditedListingInformation eli: EditedListingInformation) -> Listing {
-        return Listing(id: -1, photo: eli.photo!, title: eli.title!, description: eli.description, price: eli.price!, isFree: false, quantity: eli.quantity!, categoryId: eli.categoryId!, isAvailable: true, createdAt: Date(), modifiedAt: Date(), owner: LocalUserManager.sharedInstance.localUser!.user, pictureURL: "", thumbnailPictureURL: "", communityId: 1)
     }
 }
 
@@ -196,21 +201,24 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
     func didSelect(_ listing: Listing) {
         pushListingDetailsViewController(withListing: listing)
     }
+    
+    func refresh() {
+        loadListings(isRefreshing: true)
+    }
 }
 
 extension ListingsViewController: LoginViewControllerDelegate {
     
     func loginViewControllerDidLogin(localUser: LocalUser) {
         updateUI()
-        loadListings()
+        loadListings(isRefreshing: false)
     }
 }
 
 extension ListingsViewController: EditListingViewControllerDelegate {
     
     func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation) {
-        let newListing = createListing(fromEditedListingInformation: editedListingInformation)
-        presentListingCreatedAlert(forListing: newListing)
+        presentListingCreatedAlert(forListingWithTitle: editedListingInformation.title!)
     }
 }
 
@@ -218,6 +226,6 @@ extension ListingsViewController: ProfileViewControllerDelegate {
     
     func didLogOut() {
         updateUI()
-        loadListings()
+        loadListings(isRefreshing: false)
     }
 }
