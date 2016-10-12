@@ -94,7 +94,7 @@ struct Listing {
         guard let title = json[JSONMapping.title.rawValue].string else { throw JSONInitializationError.title }
         guard let price = json[JSONMapping.price.rawValue].float else { throw JSONInitializationError.price }
         guard let isFree = json[JSONMapping.isFree.rawValue].bool else { throw JSONInitializationError.isFree }
-        guard let quantity = json[JSONMapping.categoryId.rawValue].int else { throw JSONInitializationError.quantity }
+        guard let quantity = json[JSONMapping.quantity.rawValue].int else { throw JSONInitializationError.quantity }
         guard let categoryId = json[JSONMapping.categoryId.rawValue].int else { throw JSONInitializationError.categoryId }
         guard let isAvailable = json[JSONMapping.isAvailable.rawValue].bool else { throw JSONInitializationError.isAvailable }
         guard let createdAtString = json[JSONMapping.createdAt.rawValue].string else { throw JSONInitializationError.createdAt }
