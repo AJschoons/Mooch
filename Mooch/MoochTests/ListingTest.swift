@@ -62,7 +62,7 @@ class ListingTest: XCTestCase {
                                  Listing.JSONMapping.title.rawValue : "apple",
                                  Listing.JSONMapping.price.rawValue : 2,
                                  Listing.JSONMapping.isFree.rawValue: true,
-                                 Listing.JSONMapping.quantity.rawValue: 2,
+                                 Listing.JSONMapping.quantity.rawValue : 2,
                                  Listing.JSONMapping.categoryId.rawValue : 4,
                                  Listing.JSONMapping.isAvailable.rawValue : true,
                                  Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z",
@@ -80,7 +80,7 @@ class ListingTest: XCTestCase {
 //            //Test that all the variables are correctly initialized
             XCTAssert(listing.id == 4532)
             XCTAssert(listing.title == "apple")
-            XCTAssert(listing.price == 2)
+            XCTAssert(listing.quantity == 2)
             XCTAssert(listing.isAvailable == true)
             XCTAssert(listing.owner.id == 4132)
             XCTAssert(listing.owner.name == "Bob the User")
@@ -93,13 +93,13 @@ class ListingTest: XCTestCase {
     }
     
     //Test that a Listing throws the expected error when it doesn't have all the data it needs
-    func testConvenienceInitError() {
-        let listJSONDiction: JSON = ["id" : 41]
+    func testConvenienceIdError() {
+        let listJSONDictionTestid: JSON = ["id" : 41]
         
         var jsonErrorThrown = false
         
         do {
-            let _ = try Listing(json: listJSONDiction)
+            let _ = try Listing(json: listJSONDictionTestid)
             XCTFail()
         } catch Listing.JSONInitializationError.title {
             jsonErrorThrown = true
@@ -107,7 +107,188 @@ class ListingTest: XCTestCase {
             
         }
         XCTAssert(jsonErrorThrown)
+        
     }
+    func testConvenienceTitleError() {
+
+        let listJSONDictionTestName: JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple"]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestName)
+            XCTFail()
+        } catch Listing.JSONInitializationError.price {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+        
+    }
+    
+    func testConveniencePriceError() {
+        let listJSONDictionTestPrice : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2]
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestPrice)
+            XCTFail()
+        } catch Listing.JSONInitializationError.isFree {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+        
+    }
+    
+    func testConvenienceIsFreeError() {
+        let listJSONDictionTestIsFree : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2, Listing.JSONMapping.isFree.rawValue : true]
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestIsFree)
+            XCTFail()
+        } catch Listing.JSONInitializationError.quantity {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+        
+    }
+    
+   
+    
+    func testConvenienceQuantityError() {
+        let listJSONDictionTestQuantity : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2, Listing.JSONMapping.isFree.rawValue : true, Listing.JSONMapping.quantity.rawValue : 2]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestQuantity)
+            XCTFail()
+        } catch Listing.JSONInitializationError.categoryId {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    
+    func testConvenienceCategoryIdError() {
+        let listJSONDictionTestCategory : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2, Listing.JSONMapping.isFree.rawValue : true,  Listing.JSONMapping.quantity.rawValue: 2, Listing.JSONMapping.categoryId.rawValue : 4]
+
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestCategory)
+            XCTFail()
+        } catch Listing.JSONInitializationError.isAvailable {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    
+    func testConvenienceIsAvailableError() {
+        
+        let listJSONDictionTestIsAvailable : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2, Listing.JSONMapping.isFree.rawValue : true,  Listing.JSONMapping.quantity.rawValue: 2, Listing.JSONMapping.categoryId.rawValue : 4, Listing.JSONMapping.isAvailable.rawValue : true]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestIsAvailable)
+            XCTFail()
+        } catch Listing.JSONInitializationError.createdAt {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+        
+    }
+    
+    
+    func testConvenienceCreateAtError() {
+        let listJSONDictionTestPictureURL : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2, Listing.JSONMapping.isFree.rawValue : true,  Listing.JSONMapping.quantity.rawValue: 2, Listing.JSONMapping.categoryId.rawValue : 4, Listing.JSONMapping.isAvailable.rawValue : true, Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z"]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestPictureURL)
+            XCTFail()
+        } catch Listing.JSONInitializationError.pictureURL {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    
+    func testConveniencePictureURLError() {
+        let listJSONDictionTestPictureURL : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2, Listing.JSONMapping.isFree.rawValue : true,  Listing.JSONMapping.quantity.rawValue: 2, Listing.JSONMapping.categoryId.rawValue : 4, Listing.JSONMapping.isAvailable.rawValue : true, Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z", Listing.JSONMapping.pictureURL.rawValue : "picture"]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestPictureURL)
+            XCTFail()
+        } catch Listing.JSONInitializationError.communityId {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    
+    
+    func testConvenienceCommunityIdError() {
+        let listJSONDictionTestCommunityId : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2, Listing.JSONMapping.isFree.rawValue : true,  Listing.JSONMapping.quantity.rawValue: 2, Listing.JSONMapping.categoryId.rawValue : 4, Listing.JSONMapping.isAvailable.rawValue : true, Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z", Listing.JSONMapping.pictureURL.rawValue : "picture", Listing.JSONMapping.communityId.rawValue : 5]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestCommunityId)
+            XCTFail()
+        } catch Listing.JSONInitializationError.owner {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    
+    
+    func testConvenienceInitError() {
+        //let userJSONDict = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.currentRating.rawValue : 4.5, User.JSONMapping.ratingCount.rawValue : 5, User.JSONMapping.communityId.rawValue : 4] as [String : Any]
+        let listJSONDictionTestOwner: JSON = [
+            Listing.JSONMapping.id.rawValue : 4532,
+            Listing.JSONMapping.title.rawValue : "apple",
+            Listing.JSONMapping.price.rawValue : 2,
+            Listing.JSONMapping.isFree.rawValue: true,
+            Listing.JSONMapping.quantity.rawValue : 2,
+            Listing.JSONMapping.categoryId.rawValue : 4,
+            Listing.JSONMapping.isAvailable.rawValue : true,
+            Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z",
+            Listing.JSONMapping.pictureURL.rawValue : "picture",
+            Listing.JSONMapping.communityId.rawValue : 5,
+            //Listing.JSONMapping.owner.rawValue : userJSONDict
+        ]
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Listing(json: listJSONDictionTestOwner)
+            XCTFail()
+        } catch Listing.JSONInitializationError.owner {
+            jsonErrorThrown = true
+        } catch {
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+
     
     func testGettersSetters() {
         let photoImage = UIImage(named: "apples")
@@ -148,4 +329,5 @@ class ListingTest: XCTestCase {
 
         
     }
+
 }
