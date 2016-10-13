@@ -87,5 +87,6 @@ extension ListingsTableHandler: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedListing = delegate!.getListings()[(indexPath as NSIndexPath).row]
         delegate!.didSelect(selectedListing)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
