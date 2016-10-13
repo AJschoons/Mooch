@@ -18,6 +18,8 @@ enum MoochAPIRouter: URLRequestConvertible {
     static fileprivate var email: String?
     static fileprivate var authorizationToken: String?
     
+    static fileprivate var isAuthorizedOnce = false
+    
     static fileprivate let NoParametersDictionary = [String : AnyObject]()
     
     static private let AuthorizationHeaderKey = "Authorization"
@@ -25,6 +27,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     case getListingCategories
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
+    case getUserOnce(withId: Int, email: String, authorizationToken: String)
     
     case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
@@ -78,6 +81,9 @@ enum MoochAPIRouter: URLRequestConvertible {
             }
         }
         
+        //Removes the authorization credentials that were needed for just one call
+        MoochAPIRouter.deauthorizeIfAuthorizedOnce()
+        
         return try JSONEncoding.default.encode(urlRequest, with: routingInformation.parameters)
     }
     
@@ -92,6 +98,12 @@ enum MoochAPIRouter: URLRequestConvertible {
             
         case .getUser(let userId):
             return ("/users/\(userId)", .get, nil, false)
+            
+        case .getUserOnce(let userId, let email, let authorizationToken):
+            //Same route as .getUser, but we need to temporarily authenticate for this API call
+            MoochAPIRouter.authorizeOnce(email: email, authorizationToken: authorizationToken)
+            let routingInformation = MoochAPIRouter.getUser(withId: userId).getRoutingInformation()
+            return (routingInformation.path, routingInformation.method, routingInformation.parameters, true)
             
         case .postListing(let userId, let title, let description, let price, let isFree, let quantity, let categoryId):
             var parameters: [String : Any] = [ParameterMapping.PostListing.title.rawValue : title, ParameterMapping.PostListing.price.rawValue : price, ParameterMapping.PostListing.isFree.rawValue : isFree, ParameterMapping.PostListing.quantity.rawValue : quantity, ParameterMapping.PostListing.categoryId.rawValue : categoryId]
@@ -108,8 +120,6 @@ enum MoochAPIRouter: URLRequestConvertible {
             if address != nil { parameters[mapping.address.rawValue] =  address! }
             return ("/users", .post, parameters, false)
         }
-        
-        
     }
 
     //Allows the router to perform authorized requests
@@ -122,6 +132,17 @@ enum MoochAPIRouter: URLRequestConvertible {
     static func clearAuthorizationCredentials() {
         email = nil
         authorizationToken = nil
+    }
+    
+    static fileprivate func authorizeOnce(email: String, authorizationToken: String) {
+        isAuthorizedOnce = true
+        setAuthorizationCredentials(email: email, authorizationToken: authorizationToken)
+    }
+    
+    static fileprivate func deauthorizeIfAuthorizedOnce() {
+        guard isAuthorizedOnce else { return }
+        isAuthorizedOnce = false
+        clearAuthorizationCredentials()
     }
     
     func authorizationHeaders() -> [String : String]? {

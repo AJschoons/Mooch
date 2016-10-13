@@ -141,6 +141,12 @@ enum Strings {
         
         case title = "Profile"
     }
+    
+    enum UserDefaultsKeys: String {
+        case userId = "userId"
+        case authenticationToken = "authenticationToken"
+        case email = "email"
+    }
 }
 
 

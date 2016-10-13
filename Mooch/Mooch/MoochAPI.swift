@@ -68,18 +68,21 @@ class MoochAPI {
     
     static func GETUser(withId id: Int, completion: @escaping (User?, Error?) -> Void) {
         perform(requestExpectingResponse: MoochAPIRouter.getUser(withId: id)) { json, error in
-            guard let json = json else {
-                completion(nil, error)
-                return
-            }
-            
-            do {
-                let user = try User(json: json)
-                completion(user, nil)
-            } catch let error {
-                print("couldn't create user with JSON: \(json)")
-                completion(nil, error)
-            }
+            let processedResult = processUser(fromJSON: json, withError: error)
+            let user = processedResult.0
+            let error = processedResult.1
+            completion(user, error)
+        }
+    }
+    
+    //This will clear the authorization of the API Router; should only be used when there isn't already authorization
+    //Example: when the app first opens and we need to log in a saved user
+    static func GETUserOnce(withId id: Int, email: String, authorizationToken: String, completion: @escaping (User?, Error?) -> Void) {
+        perform(requestExpectingResponse: MoochAPIRouter.getUserOnce(withId: id, email: email, authorizationToken: authorizationToken)) { json, error in
+            let processedResult = processUser(fromJSON: json, withError: error)
+            let user = processedResult.0
+            let error = processedResult.1
+            completion(user, error)
         }
     }
     
@@ -137,6 +140,20 @@ class MoochAPI {
     //
     // MARK: Helpers
     //
+    
+    fileprivate static func processUser(fromJSON json: JSON?, withError error: Error?) -> (User?, Error?) {
+        guard let json = json else {
+            return (nil, error)
+        }
+        
+        do {
+            let user = try User(json: json)
+            return (user, nil)
+        } catch let error {
+            print("couldn't create user with JSON: \(json)")
+            return (nil, error)
+        }
+    }
     
     fileprivate static func processLocalUser(fromJSON json: JSON?, withError error: Error?) -> (LocalUser?, Error?) {
         guard let localUserJSON = json else {
