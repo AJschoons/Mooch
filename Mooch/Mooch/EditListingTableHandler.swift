@@ -134,12 +134,12 @@ class EditListingTableHandler: NSObject {
     
     //Configures an EditListingCategoryCell
     fileprivate func configure(editListingCategoryCell cell: EditListingCategoryCell) {
-        var categoryNameText = "Unselected"
+        var categoryNameText = Strings.EditListing.unselectedCategory.rawValue
         if let selectedCategoryId = delegate.getEditedListingInformation().categoryId {
             if let selectedCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: selectedCategoryId) {
                 categoryNameText = selectedCategory.name
             } else {
-                categoryNameText = Strings.InvalidCategoryId.rawValue
+                categoryNameText = Strings.SharedErrors.invalidCategory.rawValue
             }
         }
         cell.categoryNameLabel.text = categoryNameText

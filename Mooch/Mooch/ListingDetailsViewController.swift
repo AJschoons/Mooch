@@ -41,9 +41,9 @@ class ListingDetailsViewController: MoochViewController {
     
     // MARK: Public variables
     
-    static let DefaultViewingOtherUsersListingConfiguration = Configuration(mode: .viewingOtherUsersListing, title: "Listing Details", fields: [.listing, .viewSellerProfile, .contactSeller])
-    static let DefaultViewingThisUsersListingConfiguration = Configuration(mode: .viewingThisUsersListing, title: "Listing Details", fields: [.listing, .editListing, .deleteListing, .addAnotherListing])
-    static let DefaultViewingOtherUsersCompletedListingConfiguration = Configuration(mode: .viewingThisUsersListing, title: "Listing Details", fields: [.listing, .viewSellerProfile, .rateSeller])
+    static let DefaultViewingOtherUsersListingConfiguration = Configuration(mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, fields: [.listing, .viewSellerProfile, .contactSeller])
+    static let DefaultViewingThisUsersListingConfiguration = Configuration(mode: .viewingThisUsersListing, title: Strings.ListingDetails.title.rawValue, fields: [.listing, .editListing, .deleteListing, .addAnotherListing])
+    static let DefaultViewingOtherUsersCompletedListingConfiguration = Configuration(mode: .viewingThisUsersListing, title: Strings.ListingDetails.title.rawValue, fields: [.listing, .viewSellerProfile, .rateSeller])
     
     @IBOutlet var tableHandler: ListingDetailsTableHandler! {
         didSet {

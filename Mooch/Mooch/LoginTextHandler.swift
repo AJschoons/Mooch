@@ -18,7 +18,6 @@ class LoginTextHandler: NSObject {
     
     weak var delegate: LoginTextHandlerDelegate!
     
-    var test = false
     
     // MARK: Private variables
     
@@ -50,11 +49,11 @@ class LoginTextHandler: NSObject {
     }
     
     fileprivate func shouldAllowChangesForEmailField(withUpdatedText updatedText: String) -> Bool {
-        return !updatedText.contains(" ") && updatedText.characters.count <= UserLoginInformationValidator.MaxPasswordLength
+        return !updatedText.contains(" ")
     }
     
     fileprivate func shouldAllowChangesForPasswordField(withUpdatedText updatedText: String) -> Bool {
-        return !updatedText.contains(" ")
+        return !updatedText.contains(" ") && updatedText.characters.count <= UserLoginInformationValidator.MaxPasswordLength
     }
     
     fileprivate func updateStateAfterSelected(forLoginTextField loginTextField: LoginTextField) {
@@ -70,7 +69,6 @@ class LoginTextHandler: NSObject {
 
 extension LoginTextHandler: UITextFieldDelegate {
     
-    //func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let loginTextField = textField as? LoginTextField, let fieldType = (textField as! LoginTextField).fieldType else { return false }
         

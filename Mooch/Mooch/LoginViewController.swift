@@ -187,18 +187,19 @@ class LoginViewController: MoochModalViewController {
     }
     
     fileprivate func presentAccountCreatedAlert(forLocalUser localUser: LocalUser) {
-        let alert = UIAlertController(title: "Account Created", message: "Welcome to Mooch, \(localUser.user.name)!", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Get Mooching", style: .default) { _ in
+        let title = Strings.Login.accountCreatedAlertTitle.rawValue
+        let message = "\(Strings.Login.accountCreatedAlertMessageFirstPart)\(localUser.user.name)\(Strings.Login.accountCreatedAlertMessageSecondPart)"
+        let actionTitle = Strings.Alert.funGetMoochingSingleActionTitle.rawValue
+        
+        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle) { _ in
             self.dismissSelfAndNotifyDelegateOfLogin(for: localUser)
         }
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
     }
     
     //Makes an API call to login. Shows a loading overlay while waiting. On success logs that user in locally, else shows an alert on failure
     fileprivate func login(email: String, password: String) {
         state = .loggingIn
-        showLoadingOverlayView(withInformationText: "Logging In", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
+        showLoadingOverlayView(withInformationText: Strings.Login.loginOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
         
         MoochAPI.POSTLogin(email: email, password: password) { [weak self] localUser, error in
             guard let strongSelf = self else { return }
@@ -208,7 +209,7 @@ class LoginViewController: MoochModalViewController {
                 strongSelf.dismissSelfAndNotifyDelegateOfLogin(for: localUser)
             } else {
                 strongSelf.state = .loginFieldsFilledAndValid
-                strongSelf.presentSingleActionAlert(title: "Problem Loggin In", message: "Please check the email and password, then try again", actionTitle: "Okay")
+                strongSelf.presentSingleActionAlert(title: Strings.Login.loginErrorAlertTitle.rawValue, message: Strings.Login.loginErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                 strongSelf.hideLoadingOverlayView(animated: true)
             }
         }
@@ -269,10 +270,11 @@ class LoginViewController: MoochModalViewController {
 
 extension LoginViewController: EditProfileViewControllerDelegate {
     
-    func editProfileViewControllerDidFinishEditing(withUser editedUser: User) {
-        let localUser = LocalUser(user: editedUser, authenticationToken: "fake token")
-        LocalUserManager.sharedInstance.login(localUser: localUser)
-        presentAccountCreatedAlert(forLocalUser: localUser)
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
+        if isNewProfile {
+            LocalUserManager.sharedInstance.login(localUser: localUser)
+            presentAccountCreatedAlert(forLocalUser: localUser)
+        }
     }
 }
 

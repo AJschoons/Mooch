@@ -58,8 +58,7 @@ class ListingCategoryPickerViewController: MoochViewController {
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
-        title = "Categories"
-        
+        title = Strings.ListingCategoryPicker.title.rawValue
     }
 }
 

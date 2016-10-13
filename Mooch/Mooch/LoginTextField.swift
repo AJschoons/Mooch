@@ -49,9 +49,9 @@ class LoginTextField: UITextField, NavigableResponder {
     private func placeholderText(forFieldType fieldType: LoginViewController.FieldType) -> String {
         switch fieldType {
         case .email:
-            return "Email"
+            return Strings.LoginTextField.emailPlaceholder.rawValue
         case .password:
-            return "Password"
+            return Strings.LoginTextField.passwordPlaceholder.rawValue
         }
     }
 }

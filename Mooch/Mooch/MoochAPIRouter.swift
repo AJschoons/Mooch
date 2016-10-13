@@ -13,10 +13,12 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     typealias RoutingInformation = (path: String, method: Alamofire.HTTPMethod, parameters: [String: Any]?, requiresAuthorization: Bool)
     
-    static let baseURLString = "https://mooch-rails-api.appspot.com/api/v1"
+    static let baseURLString = Strings.MoochAPIRouter.baseURL.rawValue
     
     static fileprivate var email: String?
     static fileprivate var authorizationToken: String?
+    
+    static fileprivate var isAuthorizedOnce = false
     
     static fileprivate let NoParametersDictionary = [String : AnyObject]()
     
@@ -25,9 +27,11 @@ enum MoochAPIRouter: URLRequestConvertible {
     case getListingCategories
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
+    case getUserOnce(withId: Int, email: String, authorizationToken: String)
     
-    case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int)
+    case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
+    case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?)
     
     //The keys to pass in as parameters mapped to strings
     enum ParameterMapping {
@@ -42,7 +46,21 @@ enum MoochAPIRouter: URLRequestConvertible {
             case description = "detail"
             case price = "price"
             case isFree = "free"
+            case quantity = "quantity"
             case categoryId = "category_id"
+        }
+        
+        enum PostUser: String {
+            //Required
+            case communityId = "community_id"
+            case photo = "image"
+            case name = "name"
+            case email = "email"
+            case phone = "phone"
+            case password = "password"
+            
+            //Optional
+            case address = "address"
         }
     }
     
@@ -63,6 +81,9 @@ enum MoochAPIRouter: URLRequestConvertible {
             }
         }
         
+        //Removes the authorization credentials that were needed for just one call
+        MoochAPIRouter.deauthorizeIfAuthorizedOnce()
+        
         return try JSONEncoding.default.encode(urlRequest, with: routingInformation.parameters)
     }
     
@@ -78,14 +99,26 @@ enum MoochAPIRouter: URLRequestConvertible {
         case .getUser(let userId):
             return ("/users/\(userId)", .get, nil, false)
             
-        case .postListing(let userId, let title, let description, let price, let isFree, let categoryId):
-            var parameters: [String : Any] = [ParameterMapping.PostListing.title.rawValue : title, ParameterMapping.PostListing.price.rawValue : price, ParameterMapping.PostListing.isFree.rawValue : isFree, ParameterMapping.PostListing.categoryId.rawValue : categoryId]
+        case .getUserOnce(let userId, let email, let authorizationToken):
+            //Same route as .getUser, but we need to temporarily authenticate for this API call
+            MoochAPIRouter.authorizeOnce(email: email, authorizationToken: authorizationToken)
+            let routingInformation = MoochAPIRouter.getUser(withId: userId).getRoutingInformation()
+            return (routingInformation.path, routingInformation.method, routingInformation.parameters, true)
+            
+        case .postListing(let userId, let title, let description, let price, let isFree, let quantity, let categoryId):
+            var parameters: [String : Any] = [ParameterMapping.PostListing.title.rawValue : title, ParameterMapping.PostListing.price.rawValue : price, ParameterMapping.PostListing.isFree.rawValue : isFree, ParameterMapping.PostListing.quantity.rawValue : quantity, ParameterMapping.PostListing.categoryId.rawValue : categoryId]
             if description != nil { parameters[ParameterMapping.PostListing.description.rawValue] = description! }
             return ("/users/\(userId)/listings", .post, parameters, true)
             
         case .postLogin(let email, let password):
             let parameters = [ParameterMapping.PostLogin.email.rawValue : email, ParameterMapping.PostLogin.password.rawValue : password]
             return ("/sessions", .post, parameters, false)
+        
+        case .postUser(let communityId, let name, let email, let phone, let password, let address):
+            typealias mapping = ParameterMapping.PostUser
+            var parameters: [String : Any] = [mapping.communityId.rawValue : communityId, mapping.name.rawValue : name, mapping.email.rawValue : email, mapping.phone.rawValue : phone, mapping.password.rawValue : password]
+            if address != nil { parameters[mapping.address.rawValue] =  address! }
+            return ("/users", .post, parameters, false)
         }
     }
 
@@ -99,6 +132,17 @@ enum MoochAPIRouter: URLRequestConvertible {
     static func clearAuthorizationCredentials() {
         email = nil
         authorizationToken = nil
+    }
+    
+    static fileprivate func authorizeOnce(email: String, authorizationToken: String) {
+        isAuthorizedOnce = true
+        setAuthorizationCredentials(email: email, authorizationToken: authorizationToken)
+    }
+    
+    static fileprivate func deauthorizeIfAuthorizedOnce() {
+        guard isAuthorizedOnce else { return }
+        isAuthorizedOnce = false
+        clearAuthorizationCredentials()
     }
     
     func authorizationHeaders() -> [String : String]? {

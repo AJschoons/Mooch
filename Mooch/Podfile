@@ -8,6 +8,8 @@ target 'Mooch' do
 	pod 'AlamofireImage', '~> 3.0'
 	pod 'OHHTTPStubs' # Default subspecs, including support for NSURLSession & JSON etc
 	pod 'OHHTTPStubs/Swift' # Adds the Swiftier API wrapper too
+    pod 'PhoneNumberKit', '~> 1.0'
+    pod 'SwiftyUserDefaults'
     #pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'swift3'
     #pod 'ALCameraViewController' don't need anymore; here for reference just in case
 end

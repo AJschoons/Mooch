@@ -35,6 +35,39 @@ class ListingCategoryTests: XCTestCase {
         }
     }
     
+    func testConvenienceIdError() {
+        let listJSONDictionTestid: JSON = [ListingCategory.JSONMapping.id.rawValue : 1234]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try ListingCategory(json: listJSONDictionTestid)
+            XCTFail()
+        } catch ListingCategory.JSONInitializationError.name {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+        
+    }
+    func testConvenienceNameError() {
+        let listJSONDictionTestid: JSON = [ListingCategory.JSONMapping.id.rawValue : 1234]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try ListingCategory(json: listJSONDictionTestid)
+            XCTFail()
+        } catch ListingCategory.JSONInitializationError.name {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+        
+    }
+    
     //Test that an ListingTag throws the expected error when it doesn't have all the data it needs
     func testConvenienceInitError() {
         let listingCategoryJSON: JSON = ["id" : 5]

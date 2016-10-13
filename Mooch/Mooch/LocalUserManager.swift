@@ -7,6 +7,14 @@
 //
 
 import Foundation
+import SwiftyUserDefaults
+
+//Adds the keys to be used with SwiftyUserDefaults
+extension DefaultsKeys {
+    static let userId = DefaultsKey<Int?>(Strings.UserDefaultsKeys.userId.rawValue)
+    static let authenticationToken = DefaultsKey<String?>(Strings.UserDefaultsKeys.authenticationToken.rawValue)
+    static let email = DefaultsKey<String?>(Strings.UserDefaultsKeys.email.rawValue)
+}
 
 //Singleton for managing the local user
 class LocalUserManager {
@@ -16,6 +24,12 @@ class LocalUserManager {
         case loggedIn
     }
     
+    struct SavedUserInformation {
+        let userId: Int
+        let authenticationToken: String
+        let email: String
+    }
+    
     //The variable to access this class through
     static let sharedInstance = LocalUserManager()
     
@@ -23,7 +37,7 @@ class LocalUserManager {
     fileprivate init() {}
     
     fileprivate var _localUser: LocalUser?
-    fileprivate(set) var guestCommunityId: Int?
+    fileprivate var guestCommunityId: Int?
     fileprivate(set) var state: LocalUserState = .guest
     
     var localUser: LocalUser? {
@@ -52,6 +66,7 @@ class LocalUserManager {
         state = .loggedIn
         guestCommunityId = nil
         MoochAPI.setAuthorizationCredentials(email: localUser.user.contactInformation.email, authorizationToken: localUser.authenticationToken)
+        saveToUserDefaults(localUser)
     }
     
     //Defaults the guest community id to the community id of the user logging out
@@ -61,5 +76,23 @@ class LocalUserManager {
         _localUser = nil
         state = .guest
         MoochAPI.clearAuthorizationCredentials()
+        deleteFromUserDefaults()
+    }
+    
+    func getSavedInformationFromUserDefaults() -> SavedUserInformation? {
+        guard let userId = Defaults[.userId], let authenticationToken = Defaults[.authenticationToken], let email = Defaults[.email] else { return nil }
+        return SavedUserInformation(userId: userId, authenticationToken: authenticationToken, email: email)
+    }
+    
+    private func saveToUserDefaults(_ localUser: LocalUser) {
+        Defaults[.userId] = localUser.user.id
+        Defaults[.authenticationToken] = localUser.authenticationToken
+        Defaults[.email] = localUser.user.contactInformation.email
+    }
+    
+    private func deleteFromUserDefaults() {
+        Defaults[.userId] = nil
+        Defaults[.authenticationToken] = nil
+        Defaults[.email] = nil
     }
 }

@@ -38,6 +38,64 @@ class CommunityTests: XCTestCase {
             XCTFail()
         }
     }
+    //Test that a Community is constructed with failing when given JSON with incomplete the data it needs
+
+    func testConvenienceIdError() {
+        let communityJSON: JSON = [Community.JSONMapping.id.rawValue : 1234]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Community(json: communityJSON)
+            XCTFail()
+        } catch Community.JSONInitializationError.address {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    func testConvenienceAddressError() {
+        let communityJSON: JSON = [Community.JSONMapping.id.rawValue : 1234,Community.JSONMapping.address.rawValue : "1234 address lane"]
+        
+        var jsonErrorThrown = false
+        
+        do {
+            let _ = try Community(json: communityJSON)
+            XCTFail()
+        } catch Community.JSONInitializationError.name {
+            jsonErrorThrown = true
+        } catch {
+            
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    func testConvenienceNameError() {
+        let communityJSON: JSON = [Community.JSONMapping.id.rawValue : 1234,Community.JSONMapping.address.rawValue : "1234 address lane",Community.JSONMapping.name.rawValue : "highrise apartments"]
+        var jsonErrorThrown = false
+        do {
+            let _ = try Community(json: communityJSON)
+            XCTFail()
+        } catch Community.JSONInitializationError.pictureURL {
+            jsonErrorThrown = true
+        } catch {
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    func testConveniencePictureURLError() {
+        let communityJSON: JSON = [Community.JSONMapping.id.rawValue : 1234,Community.JSONMapping.address.rawValue : "1234 address lane",Community.JSONMapping.name.rawValue : "highrise apartments"]
+        var jsonErrorThrown = false
+        do {
+            let _ = try Community(json: communityJSON)
+            XCTFail()
+        } catch Community.JSONInitializationError.pictureURL {
+            jsonErrorThrown = true
+        } catch {
+        }
+        XCTAssert(jsonErrorThrown)
+    }
+    
+
     
     //Test that a Community throws the expected error when it doesn't have all the data it needs
     func testConvenienceInitError() {
