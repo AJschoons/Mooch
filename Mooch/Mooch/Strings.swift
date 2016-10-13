@@ -83,9 +83,9 @@ enum Strings {
         case accountCreatedAlertMessageFirstPart = "Welcome to Mooch, "
         case accountCreatedAlertMessageSecondPart = "!"
         
-        case loginOverlay = "Uploading Listing"
-        case loginErrorAlertTitle = "Problem Uploading Listing"
-        case loginErrorAlertMessage = "Please try uploading the listing again"
+        case loginOverlay = "Logging In"
+        case loginErrorAlertTitle = "Problem Logging In"
+        case loginErrorAlertMessage = "Please check the email and password then try again"
     }
     
     enum LoginTextField: String {

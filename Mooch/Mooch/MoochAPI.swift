@@ -84,9 +84,9 @@ class MoochAPI {
     }
     
     //The completion Bool will be true on success, false on failure/error
-    static func POSTListing(userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
+    static func POSTListing(userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
         
-        let route = MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: price, isFree: isFree, categoryId: categoryId)
+        let route = MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId)
         
         performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostListing.photo.rawValue, imageFileName: Strings.MoochAPI.listingImageFilename.rawValue) { uploadRequest, error in
             

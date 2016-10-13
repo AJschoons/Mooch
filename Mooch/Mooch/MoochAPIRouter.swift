@@ -26,7 +26,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
     
-    case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, categoryId: Int)
+    case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
     case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?)
     
@@ -43,6 +43,7 @@ enum MoochAPIRouter: URLRequestConvertible {
             case description = "detail"
             case price = "price"
             case isFree = "free"
+            case quantity = "quantity"
             case categoryId = "category_id"
         }
         
@@ -92,8 +93,8 @@ enum MoochAPIRouter: URLRequestConvertible {
         case .getUser(let userId):
             return ("/users/\(userId)", .get, nil, false)
             
-        case .postListing(let userId, let title, let description, let price, let isFree, let categoryId):
-            var parameters: [String : Any] = [ParameterMapping.PostListing.title.rawValue : title, ParameterMapping.PostListing.price.rawValue : price, ParameterMapping.PostListing.isFree.rawValue : isFree, ParameterMapping.PostListing.categoryId.rawValue : categoryId]
+        case .postListing(let userId, let title, let description, let price, let isFree, let quantity, let categoryId):
+            var parameters: [String : Any] = [ParameterMapping.PostListing.title.rawValue : title, ParameterMapping.PostListing.price.rawValue : price, ParameterMapping.PostListing.isFree.rawValue : isFree, ParameterMapping.PostListing.quantity.rawValue : quantity, ParameterMapping.PostListing.categoryId.rawValue : categoryId]
             if description != nil { parameters[ParameterMapping.PostListing.description.rawValue] = description! }
             return ("/users/\(userId)/listings", .post, parameters, true)
             

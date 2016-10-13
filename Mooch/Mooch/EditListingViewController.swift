@@ -202,21 +202,23 @@ class EditListingViewController: MoochModalViewController {
     private func uploadNewListing() {
         guard isValidListingCreation() else { return }
         guard let userId = LocalUserManager.sharedInstance.localUser?.user.id else { return }
+        let eli = editedListingInformation
+        guard let photo = eli.photo, let title = eli.title, let price = eli.price, let quantity = eli.quantity, let categoryId = eli.categoryId else { return }
         
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
         
         showLoadingOverlayView(withInformationText: Strings.EditListing.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
         
-        let eli = editedListingInformation
         MoochAPI.POSTListing(
             userId: userId,
-            photo: eli.photo!,
-            title: eli.title!,
+            photo: photo,
+            title: title,
             description: eli.description,
-            price: eli.price!,
+            price: price,
             isFree: false,
-            categoryId: eli.categoryId!,
+            quantity: quantity,
+            categoryId: categoryId,
             uploadProgressHandler: { [weak self] progress in
                 guard let strongSelf = self else { return }
                 strongSelf.loadingOverlayViewBeingShown?.update(withProgress: Float(progress.fractionCompleted))
