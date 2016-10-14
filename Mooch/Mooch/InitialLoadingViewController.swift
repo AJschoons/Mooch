@@ -39,8 +39,12 @@ class InitialLoadingViewController: MoochModalViewController {
         return false
     }
     
-    func onFinishedLoading() {
-        performCrossFadeViewControllerPop()
+    func onFinishedLoading(willShowCommunityPicker: Bool) {
+        (UIApplication.shared.delegate! as! AppDelegate).transitionToMoochTabBarController()
+        
+        if willShowCommunityPicker {
+            print("picking communities not supported yet!")
+        }
     }
     
     
@@ -89,14 +93,15 @@ class InitialLoadingViewController: MoochModalViewController {
     //Handles what should be done when there IS a saved user we downloaded
     private func finishLoading(with localUser: LocalUser) {
         LocalUserManager.sharedInstance.login(localUser: localUser)
-        onFinishedLoading()
+        onFinishedLoading(willShowCommunityPicker: false)
     }
     
     //Handles what should be done when there is NOT a saved user we downloaded
     private func continueWithGuest() {
         //TODO: handle picking a community instead of hardcoding a guest to community with id 1
+        //(also checking is a guest user already picker a community)
         LocalUserManager.sharedInstance.updateGuest(communityId: 1)
-        onFinishedLoading()
+        onFinishedLoading(willShowCommunityPicker: true)
     }
     
     private func presentCouldNotDownloadInitialDataAlert() {

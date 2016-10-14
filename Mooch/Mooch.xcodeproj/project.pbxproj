@@ -73,6 +73,10 @@
 		817CA0961DA31C3B00489374 /* UserLoginInformationValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0951DA31C3B00489374 /* UserLoginInformationValidator.swift */; };
 		817CA0981DA4305800489374 /* LoadingOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 817CA0971DA4305800489374 /* LoadingOverlayView.xib */; };
 		817CA09A1DA4363100489374 /* LoadingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817CA0991DA4363100489374 /* LoadingOverlayView.swift */; };
+		818304E41DB02F9E00E74202 /* MoochTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818304E31DB02F9E00E74202 /* MoochTabBarController.swift */; };
+		818304E81DB0595600E74202 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818304E71DB0595600E74202 /* SearchViewController.swift */; };
+		818304EA1DB0597100E74202 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 818304E91DB0597100E74202 /* Search.storyboard */; };
+		818304EC1DB05BBA00E74202 /* DummySellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818304EB1DB05BBA00E74202 /* DummySellViewController.swift */; };
 		81A09FDA1D9B34DB0021D3FA /* PhotoAddingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */; };
 		81A09FDC1D9B350B0021D3FA /* PhotoAddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */; };
 		81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */; };
@@ -192,6 +196,10 @@
 		817CA0951DA31C3B00489374 /* UserLoginInformationValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserLoginInformationValidator.swift; sourceTree = "<group>"; };
 		817CA0971DA4305800489374 /* LoadingOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingOverlayView.xib; sourceTree = "<group>"; };
 		817CA0991DA4363100489374 /* LoadingOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingOverlayView.swift; sourceTree = "<group>"; };
+		818304E31DB02F9E00E74202 /* MoochTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochTabBarController.swift; sourceTree = "<group>"; };
+		818304E71DB0595600E74202 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		818304E91DB0597100E74202 /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
+		818304EB1DB05BBA00E74202 /* DummySellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummySellViewController.swift; sourceTree = "<group>"; };
 		81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoAddingView.xib; sourceTree = "<group>"; };
 		81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAddingView.swift; sourceTree = "<group>"; };
 		81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
@@ -351,6 +359,8 @@
 				8149E7B71D84B3F3000F0C37 /* Listings */,
 				8149E7B81D84B4E9000F0C37 /* Network Reachability Verification */,
 				813F650C1D87A10A00DEECF0 /* Profile */,
+				818304E61DB058E000E74202 /* Search */,
+				818304E51DB02FA800E74202 /* Tab Bar */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -552,6 +562,24 @@
 			name = "Listing Category Picker";
 			sourceTree = "<group>";
 		};
+		818304E51DB02FA800E74202 /* Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				818304E31DB02F9E00E74202 /* MoochTabBarController.swift */,
+				818304EB1DB05BBA00E74202 /* DummySellViewController.swift */,
+			);
+			name = "Tab Bar";
+			sourceTree = "<group>";
+		};
+		818304E61DB058E000E74202 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				818304E91DB0597100E74202 /* Search.storyboard */,
+				818304E71DB0595600E74202 /* SearchViewController.swift */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
 		81A09FE11D9F09CE0021D3FA /* Camera */ = {
 			isa = PBXGroup;
 			children = (
@@ -691,6 +719,7 @@
 				81A09FE01D9E1D3A0021D3FA /* Listings.storyboard in Resources */,
 				816623AC1DA06202009AE72B /* ListingCategoryPicker.storyboard in Resources */,
 				8149E7C61D865E2D000F0C37 /* ListingDetails.storyboard in Resources */,
+				818304EA1DB0597100E74202 /* Search.storyboard in Resources */,
 				810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */,
 				813F65101D87A19400DEECF0 /* Profile.storyboard in Resources */,
 				810A82391D7A11780086B40F /* Assets.xcassets in Resources */,
@@ -863,6 +892,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				818304E81DB0595600E74202 /* SearchViewController.swift in Sources */,
 				814DB9DD1D933D9D006F34E9 /* ListingDetailsRatingActionCell.swift in Sources */,
 				8149E7BB1D84C2A7000F0C37 /* ListingsTableHandler.swift in Sources */,
 				816623B41DA06311009AE72B /* ListingCategoryPickerTableHandler.swift in Sources */,
@@ -899,6 +929,7 @@
 				81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */,
 				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
+				818304E41DB02F9E00E74202 /* MoochTabBarController.swift in Sources */,
 				81CBF0C21DAB4EF50066DA75 /* EditedProfileInformation.swift in Sources */,
 				8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */,
 				8110259F1D94C45A00C3931C /* MoochAPIRouter.swift in Sources */,
@@ -912,6 +943,7 @@
 				814DB9CC1D905463006F34E9 /* EditListingTableHandler.swift in Sources */,
 				8149E7B11D849B8F000F0C37 /* MoochModalViewController.swift in Sources */,
 				81A09FEB1D9F16230021D3FA /* CameraViewController.swift in Sources */,
+				818304EC1DB05BBA00E74202 /* DummySellViewController.swift in Sources */,
 				8149E7C81D865E5A000F0C37 /* ListingDetailsViewController.swift in Sources */,
 				81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
 				8149E7D01D87017D000F0C37 /* RoundedButton.swift in Sources */,

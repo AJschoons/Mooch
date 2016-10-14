@@ -12,21 +12,35 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    private(set) var moochTabBarController: MoochTabBarController!
+    
+    private let TransitionToTabBarDuration = 0.3
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let mainViewController = ListingsViewController.instantiateFromStoryboard()
         let initialLoadingViewController = InitialLoadingViewController()
-        let navigationController = UINavigationController()
-        navigationController.viewControllers = [mainViewController, initialLoadingViewController]
+        moochTabBarController = MoochTabBarController.instantiate()
         
-        window?.rootViewController = navigationController
+        
+        window?.rootViewController = initialLoadingViewController
         window?.makeKeyAndVisible()
         
         return true
+    }
+    
+    func transitionToMoochTabBarController() {
+        guard let window = window, let moochTabBarController = moochTabBarController else { return }
+        UIView.transition(
+            with: window,
+            duration: TransitionToTabBarDuration,
+            options: UIViewAnimationOptions.transitionCrossDissolve,
+            animations: {
+                window.rootViewController = moochTabBarController
+            },
+            completion: nil)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

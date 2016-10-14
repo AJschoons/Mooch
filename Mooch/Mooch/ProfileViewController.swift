@@ -8,15 +8,9 @@
 
 import UIKit
 
-protocol ProfileViewControllerDelegate: class {
-    func didLogOut()
-}
-
-class ProfileViewController: MoochModalViewController {
+class ProfileViewController: MoochViewController {
     
     // MARK: Public variables
-    
-    weak var delegate: ProfileViewControllerDelegate!
     
     
     // MARK: Private variables
@@ -29,14 +23,8 @@ class ProfileViewController: MoochModalViewController {
     
     // MARK: Actions
     
-    func onBackAction() {
-        dismiss(animated: true, completion: nil)
-    }
-    
     @IBAction func onLogOutAction() {
         LocalUserManager.sharedInstance.logout()
-        delegate.didLogOut()
-        dismiss(animated: true, completion: nil)
     }
     
     func onEditProfileAction() {
@@ -48,7 +36,8 @@ class ProfileViewController: MoochModalViewController {
     override func setup() {
         super.setup()
         
-        setupNavigationBar()
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        tabBarItem = ProfileViewController.tabBarItem()
         
         updateUI()
     }
@@ -63,16 +52,10 @@ class ProfileViewController: MoochModalViewController {
         return storyboard.instantiateViewController(withIdentifier: ProfileViewController.Identifier) as! ProfileViewController
     }
     
+    static func tabBarItem() -> UITabBarItem {
+        return UITabBarItem(title: Strings.TabBar.myProfile.rawValue, image: nil, selectedImage: nil)
+    }
     
     // MARK: Private methods
     
-    fileprivate func setupNavigationBar() {
-        backButton = UIBarButtonItem(title: Strings.Profile.buttonTitleBack.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onBackAction))
-        editButton = UIBarButtonItem(title: Strings.Profile.buttonTitleEdit.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onEditProfileAction))
-        
-        title = Strings.Profile.title.rawValue
-        
-        navigationItem.leftBarButtonItem = backButton
-        navigationItem.rightBarButtonItem = editButton
-    }
 }

@@ -15,6 +15,7 @@ class ListingsViewController: MoochViewController {
         case loaded
     }
     
+    
     // MARK: Public variables
     
     @IBOutlet var tableHandler: ListingsTableHandler! {
@@ -30,33 +31,18 @@ class ListingsViewController: MoochViewController {
         }
     }
     
+    
     // MARK: Private variables
     
     static fileprivate let StoryboardName = "Listings"
     static fileprivate let Identifier = "ListingsViewController"
     
-    fileprivate var loginButton: UIBarButtonItem!
-    fileprivate var profileButton: UIBarButtonItem!
-    fileprivate var addListingButton: UIBarButtonItem!
-    
     fileprivate var state: State = .loading
+
     
     // MARK: Actions
     
-    func onLoginAction() {
-        guard state == .loaded else { return }
-        presentLoginViewController()
-    }
-    
-    func onProfileAction() {
-        guard state == .loaded else { return }
-        presentProfileViewController()
-    }
-    
-    func onAddListingAction() {
-        guard state == .loaded else { return }
-        presentEditListingViewController()
-    }
+
     
     // MARK: Public methods
     
@@ -65,11 +51,16 @@ class ListingsViewController: MoochViewController {
         return storyboard.instantiateViewController(withIdentifier: ListingsViewController.Identifier) as! ListingsViewController
     }
     
+    static func tabBarItem() -> UITabBarItem {
+        return UITabBarItem(title: Strings.TabBar.home.rawValue, image: nil, selectedImage: nil)
+    }
+    
     override func setup() {
         super.setup()
         
         loadListings(isRefreshing: false)
         
+        tabBarItem = ListingsViewController.tabBarItem()
         setupNavigationBar()
         
         updateUI()
@@ -77,8 +68,7 @@ class ListingsViewController: MoochViewController {
     
     override func updateUI() {
         super.updateUI()
-        
-        updateNavigationBar()
+    
     }
     
     // MARK: Private methods
@@ -88,22 +78,7 @@ class ListingsViewController: MoochViewController {
         
         nav.navigationBar.isHidden = false
         
-        title = Strings.Listings.title.rawValue
-        
-        loginButton = UIBarButtonItem(title: Strings.Listings.buttonTitleLogin.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLoginAction))
-        profileButton = UIBarButtonItem(title: Strings.Listings.buttonTitleProfile.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onProfileAction))
-        addListingButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(onAddListingAction))
-    }
-    
-    fileprivate func updateNavigationBar() {
-        switch LocalUserManager.sharedInstance.state {
-        case .guest:
-            navigationItem.leftBarButtonItems = [loginButton]
-            navigationItem.rightBarButtonItems = nil
-        case .loggedIn:
-            navigationItem.leftBarButtonItems = [profileButton]
-            navigationItem.rightBarButtonItems = [addListingButton]
-        }
+        nav.navigationBar.topItem?.title = Strings.Listings.navigationItemTitle.rawValue
     }
     
     fileprivate func loadListings(isRefreshing: Bool) {
@@ -151,44 +126,6 @@ class ListingsViewController: MoochViewController {
 
         navigationController!.pushViewController(vc, animated: true)
     }
-    
-    fileprivate func presentLoginViewController() {
-        guard let navC = navigationController else { return }
-
-        let vc = LoginViewController.instantiateFromStoryboard()
-        vc.delegate = self
-        
-        navC.present(vc, animated: true, completion: nil)
-    }
-    
-    fileprivate func presentProfileViewController() {
-        guard let navC = navigationController else { return }
-        
-        let vc = ProfileViewController.instantiateFromStoryboard()
-        vc.delegate = self
-        let profileNavC = UINavigationController(rootViewController: vc)
-        
-        navC.present(profileNavC, animated: true, completion: nil)
-    }
-    
-    fileprivate func presentEditListingViewController() {
-        let vc = EditListingViewController.instantiateFromStoryboard()
-        vc.configuration = EditListingViewController.DefaultCreatingConfiguration
-        vc.delegate = self
-        let navC = UINavigationController(rootViewController: vc)
-        present(navC, animated: true, completion: nil)
-    }
-    
-    fileprivate func presentListingCreatedAlert(forListingWithTitle listingTitle: String) {
-        let title = Strings.Listings.listingCreatedAlertTitle.rawValue
-        let message = "\(Strings.Listings.listingCreatedAlertMessageFirstPart.rawValue)\(listingTitle)\(Strings.Listings.listingCreatedAlertMessageSecondPart.rawValue)"
-        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
-        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
-    }
-    
-    fileprivate func add(listing: Listing) {
-        listings.insert(listing, at: 0)
-    }
 }
 
 extension ListingsViewController: ListingsTableHandlerDelegate {
@@ -204,28 +141,5 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
     
     func refresh() {
         loadListings(isRefreshing: true)
-    }
-}
-
-extension ListingsViewController: LoginViewControllerDelegate {
-    
-    func loginViewControllerDidLogin(localUser: LocalUser) {
-        updateUI()
-        loadListings(isRefreshing: false)
-    }
-}
-
-extension ListingsViewController: EditListingViewControllerDelegate {
-    
-    func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation) {
-        presentListingCreatedAlert(forListingWithTitle: editedListingInformation.title!)
-    }
-}
-
-extension ListingsViewController: ProfileViewControllerDelegate {
-    
-    func didLogOut() {
-        updateUI()
-        loadListings(isRefreshing: false)
     }
 }

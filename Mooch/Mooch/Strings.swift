@@ -111,19 +111,11 @@ enum Strings {
     }
     
     enum Listings: String {
-        
-        case title = "Listings"
-        
-        case buttonTitleLogin = "Login"
-        case buttonTitleProfile = "Profile"
-        
-        case listingCreatedAlertTitle = "Listing Created"
-        case listingCreatedAlertMessageFirstPart = "Your listing \""
-        case listingCreatedAlertMessageSecondPart = "\" is now visible to all users in your community!"
-        
         case loadingListingsOverlay = "Loading Listings"
         case loadingListingsErrorAlertTitle = "Problem Loading Listings"
         case loadingListingsErrorAlertMessage = "Please try pulling to refresh to reload the listings"
+        
+        case navigationItemTitle = "Mooch"
     }
     
     enum MoochAPI: String {
@@ -136,10 +128,14 @@ enum Strings {
     }
     
     enum Profile: String {
-        case buttonTitleBack = "Back"
-        case buttonTitleEdit = "Edit"
-        
-        case title = "Profile"
+        case tempPlaceholder = "keep this enum around!!!"
+    }
+    
+    enum TabBar: String {
+        case home = "Home"
+        case search = "Search"
+        case sell = "Sell"
+        case myProfile = "My Profile"
     }
     
     enum UserDefaultsKeys: String {
