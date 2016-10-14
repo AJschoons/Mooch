@@ -13,8 +13,6 @@ struct User {
         case id
         case name
         case email
-        case currentRating
-        case ratingCount
         case communityId
     }
     
