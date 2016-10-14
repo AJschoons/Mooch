@@ -13,3 +13,8 @@ import UIKit
 protocol NavigableResponder: class {
     weak var nextNavigableResponder: UIResponder? { get }
 }
+
+//Used to allow the MoochTabBarController to update its view controllers when the login state changes
+protocol LocalUserStateChangeListener {
+    func localUserStateDidChange(to: LocalUserManager.LocalUserState)
+}

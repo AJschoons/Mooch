@@ -129,7 +129,6 @@ class ListingsViewController: MoochViewController {
 }
 
 extension ListingsViewController: ListingsTableHandlerDelegate {
-    // MARK: ListingsTableHandlerDelegate
     
     func getListings() -> [Listing] {
         return listings
@@ -141,5 +140,13 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
     
     func refresh() {
         loadListings(isRefreshing: true)
+    }
+}
+
+extension ListingsViewController: LocalUserStateChangeListener {
+    
+    func localUserStateDidChange(to: LocalUserManager.LocalUserState) {
+        navigationController?.popToRootViewController(animated: false)
+        loadListings(isRefreshing: false)
     }
 }

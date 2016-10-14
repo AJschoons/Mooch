@@ -10,6 +10,7 @@ import UIKit
 
 protocol LoginViewControllerDelegate: class {
     func loginViewControllerDidLogin(localUser: LocalUser)
+    func loginViewControllerDidCancel()
 }
 
 //View controller that handles logging in
