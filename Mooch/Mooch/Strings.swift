@@ -79,10 +79,6 @@ enum Strings {
     }
     
     enum Login: String {
-        case accountCreatedAlertTitle = "Account Created"
-        case accountCreatedAlertMessageFirstPart = "Welcome to Mooch, "
-        case accountCreatedAlertMessageSecondPart = "!"
-        
         case loginOverlay = "Logging In"
         case loginErrorAlertTitle = "Problem Logging In"
         case loginErrorAlertMessage = "Please check the email and password then try again"

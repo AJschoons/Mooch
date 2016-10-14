@@ -61,7 +61,7 @@ class LoginViewController: MoochModalViewController {
         }
     }
     
-    weak var delegate: LoginViewControllerDelegate?
+    weak var delegate: LoginViewControllerDelegate!
     
     
     // MARK: Private variables
@@ -86,7 +86,7 @@ class LoginViewController: MoochModalViewController {
     // MARK: Actions
     
     @IBAction func onCancel() {
-        dismissSelf(completion: nil)
+        notifyDelegateDidCancelAndDismissSelf()
     }
     
     @IBAction func onLogin() {
@@ -187,16 +187,6 @@ class LoginViewController: MoochModalViewController {
         present(navC, animated: true, completion: nil)
     }
     
-    fileprivate func presentAccountCreatedAlert(forLocalUser localUser: LocalUser) {
-        let title = Strings.Login.accountCreatedAlertTitle.rawValue
-        let message = "\(Strings.Login.accountCreatedAlertMessageFirstPart)\(localUser.user.name)\(Strings.Login.accountCreatedAlertMessageSecondPart)"
-        let actionTitle = Strings.Alert.funGetMoochingSingleActionTitle.rawValue
-        
-        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle) { _ in
-            self.dismissSelfAndNotifyDelegateOfLogin(for: localUser)
-        }
-    }
-    
     //Makes an API call to login. Shows a loading overlay while waiting. On success logs that user in locally, else shows an alert on failure
     fileprivate func login(email: String, password: String) {
         state = .loggingIn
@@ -207,19 +197,13 @@ class LoginViewController: MoochModalViewController {
             
             if let localUser = localUser {
                 LocalUserManager.sharedInstance.login(localUser: localUser)
-                strongSelf.dismissSelfAndNotifyDelegateOfLogin(for: localUser)
+                strongSelf.notifyDelegateDidLoginAndDismissSelf(with: localUser)
             } else {
                 strongSelf.state = .loginFieldsFilledAndValid
                 strongSelf.presentSingleActionAlert(title: Strings.Login.loginErrorAlertTitle.rawValue, message: Strings.Login.loginErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                 strongSelf.hideLoadingOverlayView(animated: true)
             }
         }
-    }
-    
-    //Use this method after login or account creation to dismiss this view controller and notify the delegate
-    fileprivate func dismissSelfAndNotifyDelegateOfLogin(for localUser: LocalUser) {
-        delegate?.loginViewControllerDidLogin(localUser: localUser)
-        dismissSelf(completion: nil)
     }
     
     private func setupTextFields() {
@@ -263,9 +247,20 @@ class LoginViewController: MoochModalViewController {
         scrollView.setContentOffset(offset, animated: true)
     }
     
-    fileprivate func dismissSelf(completion: (() -> Void)?) {
+    //Use this method after login or account creation to notify the delegate, which will then dismiss this view controller
+    fileprivate func notifyDelegateDidLoginAndDismissSelf(with localUser: LocalUser) {
+        //Need this so the keyboard listeners are unregistered
         isDismissingSelf = true
-        dismiss(animated: true, completion: completion)
+        
+        delegate.loginViewControllerDidLogin(localUser: localUser)
+    }
+    
+    //Use this method after cancelling to notify the delegate, which will then dismiss this view controller
+    fileprivate func notifyDelegateDidCancelAndDismissSelf() {
+        //Need this so the keyboard listeners are unregistered
+        isDismissingSelf = true
+        
+        delegate.loginViewControllerDidCancel()
     }
 }
 
@@ -274,7 +269,7 @@ extension LoginViewController: EditProfileViewControllerDelegate {
     func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
         if isNewProfile {
             LocalUserManager.sharedInstance.login(localUser: localUser)
-            presentAccountCreatedAlert(forLocalUser: localUser)
+            notifyDelegateDidLoginAndDismissSelf(with: localUser)
         }
     }
 }
