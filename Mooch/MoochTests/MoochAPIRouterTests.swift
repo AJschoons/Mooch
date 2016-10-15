@@ -150,9 +150,9 @@ class MoochAPIRouterTests: XCTestCase {
         let price = 2.0
         let isFree = true
         let categoryId = 2
-        
+        let quantity = 6
         do {
-            let urlRequest = try MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: Float(price), isFree: isFree, categoryId: categoryId).asURLRequest()
+            let urlRequest = try MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: Float(price), isFree: isFree, quantity:quantity, categoryId: categoryId).asURLRequest()
             
             //Does the correct URL get created?
             XCTAssert(urlRequest.url!.absoluteString == "\(MoochAPIRouter.baseURLString)/users/\(userId)/listings")
