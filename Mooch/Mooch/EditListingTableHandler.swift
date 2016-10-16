@@ -125,6 +125,10 @@ class EditListingTableHandler: NSObject {
     //Configures an EditListingPhotoCell
     fileprivate func configure(editListingPhotoCell cell: EditListingPhotoCell) {
         cell.photoAddingView.delegate = delegate
+        
+        if let photo = delegate.getEditedListingInformation().photo {
+            cell.photoAddingView.photo = photo
+        }
     }
     
     //Configures an EditListingQuantityCell

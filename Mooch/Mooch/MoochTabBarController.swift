@@ -26,6 +26,8 @@ class MoochTabBarController: UITabBarController {
     fileprivate var selectedMyProfileTabWhenNotLoggedIn = false
     fileprivate var selectedSellTabWhenNotLoggedIn = false
     
+    fileprivate var cameraViewControllerBeingShown: CameraViewController?
+    
     static func instantiate() -> MoochTabBarController {
         let mtbc = MoochTabBarController()
         mtbc.delegate = mtbc
@@ -89,6 +91,31 @@ class MoochTabBarController: UITabBarController {
         present(lvc, animated: true, completion: nil)
     }
     
+    fileprivate func presentCameraViewController() {
+        let cameraViewController = CameraViewController()
+        cameraViewController.delegate = self
+        cameraViewControllerBeingShown = cameraViewController
+        present(cameraViewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func presentEditListingViewController(with photo: UIImage) {
+        guard let cameraViewController = cameraViewControllerBeingShown else { return }
+        
+        let vc = EditListingViewController.instantiateFromStoryboard()
+        vc.setPhoto(photo: photo)
+        vc.configuration = EditListingViewController.DefaultCreatingConfiguration
+        vc.delegate = self
+        //let navC = UINavigationController(rootViewController: vc)
+        
+        let transtion = CATransition()
+        transtion.duration = 0.3
+        transtion.type = kCATransitionFade
+        cameraViewController.view.layer.add(transtion, forKey: kCATransition)
+        cameraViewController.setNavigationBarHidden(false, animated: false)
+        cameraViewController.pushViewController(vc, animated: false)
+    }
+
+    
     fileprivate func notifyTabViewControllers(ofLocalUserStateChange localUserState: LocalUserManager.LocalUserState) {
         guard let tabViewControllers = viewControllers else { return }
         
@@ -121,6 +148,16 @@ extension MoochTabBarController: UITabBarControllerDelegate {
             }
             
             return true
+        } else if viewControllerToSelect is DummySellViewController {
+            guard LocalUserManager.sharedInstance.state == .loggedIn else {
+                selectedSellTabWhenNotLoggedIn = true
+                presentLoginViewController()
+                return false
+            }
+            
+            //Don't actually let the tab be selected; show the camera view controller
+            presentCameraViewController()
+            return false
         }
         
         return true
@@ -157,5 +194,44 @@ extension MoochTabBarController: ProfileViewControllerDelegate {
     func profileViewControllerDidLogOutUser() {
         notifyTabViewControllers(ofLocalUserStateChange: .guest)
         selectedIndex = Tab.home.index
+    }
+}
+
+extension MoochTabBarController: UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        guard let photo = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
+        }
+        
+        presentEditListingViewController(with: photo)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        cameraViewControllerBeingShown = nil
+        dismiss(animated: true, completion: nil)
+    }
+}
+
+//Required by UIImagePickerController delegate property
+extension MoochTabBarController: UINavigationControllerDelegate {
+ 
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if viewController is EditListingViewController {
+            cameraViewControllerBeingShown?.setStatusBar(hidden: false)
+        }
+    }
+}
+
+extension MoochTabBarController: EditListingViewControllerDelegate {
+    
+    func editListingViewControllerDidFinishEditing(with: EditedListingInformation) {
+        cameraViewControllerBeingShown = nil
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func editListingViewControllerDidCancel() {
+        cameraViewControllerBeingShown = nil
+        dismiss(animated: true, completion: nil)
     }
 }

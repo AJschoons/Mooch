@@ -19,6 +19,11 @@ class CameraViewController: UIImagePickerController {
         return true
     }
     
+    func setStatusBar(hidden: Bool) {
+        let animation: UIStatusBarAnimation = hidden ? .slide : .none
+        UIApplication.shared.setStatusBarHidden(hidden, with: animation)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,12 +35,12 @@ class CameraViewController: UIImagePickerController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.slide)
+        setStatusBar(hidden: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        UIApplication.shared.setStatusBarHidden(false, with: UIStatusBarAnimation.slide)
+        setStatusBar(hidden: false)
     }
 }

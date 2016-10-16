@@ -15,7 +15,10 @@ protocol EditListingField {
 protocol EditListingViewControllerDelegate: class {
     
     //Allows the delegate to handle dismissing this view controller at the appropriate time
-    func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation)
+    func editListingViewControllerDidFinishEditing(with: EditedListingInformation)
+    
+    //Allows the delegate to handle dismissing this view controller
+    func editListingViewControllerDidCancel()
 }
 
 class EditListingViewController: MoochModalViewController {
@@ -83,10 +86,15 @@ class EditListingViewController: MoochModalViewController {
     
     func onCancelAction() {
         guard state != .uploading else { return }
-        dismissSelf(completion: nil)
+        notifyDelegateDidCancelAndDismissSelf()
     }
     
     // MARK: Public methods
+    
+    //Used when instantiated to give a photo to show when creating a listing
+    func setPhoto(photo: UIImage) {
+        editedListingInformation.photo = photo
+    }
     
     override func setup() {
         super.setup()
@@ -232,9 +240,7 @@ class EditListingViewController: MoochModalViewController {
                     return
                 }
     
-                strongSelf.dismissSelf() {
-                    strongSelf.delegate.editListingViewControllerDidFinishEditing(withListingInformation: strongSelf.editedListingInformation)
-                }
+                strongSelf.notifyDelegateDidFinishEditedAndDismissSelf(with: eli)
             }
         )
     }
@@ -267,9 +273,20 @@ class EditListingViewController: MoochModalViewController {
         navC.pushViewController(listingCategoryPickerViewController, animated: true)
     }
     
-    fileprivate func dismissSelf(completion: (() -> Void)?) {
+    //Use this method after login or account creation to notify the delegate, which will then dismiss this view controller
+    fileprivate func notifyDelegateDidFinishEditedAndDismissSelf(with editedListingInformation: EditedListingInformation) {
+        //Need this so the keyboard listeners are unregistered
         isDismissingSelf = true
-        dismiss(animated: true, completion: completion)
+        
+        delegate.editListingViewControllerDidFinishEditing(with: editedListingInformation)
+    }
+    
+    //Use this method after cancelling to notify the delegate, which will then dismiss this view controller
+    fileprivate func notifyDelegateDidCancelAndDismissSelf() {
+        //Need this so the keyboard listeners are unregistered
+        isDismissingSelf = true
+        
+        delegate.editListingViewControllerDidCancel()
     }
 }
 
