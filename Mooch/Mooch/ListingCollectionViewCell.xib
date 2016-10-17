@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="ListingCollectionViewCell" customModule="Mooch" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wxM-w7-MCv" customClass="RoundedView" customModule="Mooch" customModuleProvider="target">
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CT8-Yf-Fka"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nh5-eH-daN" customClass="GradientView" customModule="Mooch" customModuleProvider="target">
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="firstColor">
+                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="secondColor">
+                                        <color key="value" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XbB-yG-8bZ">
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="XbB-yG-8bZ" secondAttribute="trailing" constant="10" id="5qZ-tB-Wb2"/>
+                            <constraint firstAttribute="bottom" secondItem="CT8-Yf-Fka" secondAttribute="bottom" id="Mxj-D3-zIT"/>
+                            <constraint firstAttribute="bottom" secondItem="XbB-yG-8bZ" secondAttribute="bottom" constant="7" id="NXn-Y9-36X"/>
+                            <constraint firstAttribute="bottom" secondItem="nh5-eH-daN" secondAttribute="bottom" id="PF6-aK-9Sm"/>
+                            <constraint firstItem="XbB-yG-8bZ" firstAttribute="leading" secondItem="wxM-w7-MCv" secondAttribute="leading" constant="10" id="TTu-eN-67W"/>
+                            <constraint firstItem="CT8-Yf-Fka" firstAttribute="top" secondItem="wxM-w7-MCv" secondAttribute="top" id="ZkE-Ty-L5j"/>
+                            <constraint firstItem="CT8-Yf-Fka" firstAttribute="leading" secondItem="wxM-w7-MCv" secondAttribute="leading" id="epo-hP-SVh"/>
+                            <constraint firstAttribute="trailing" secondItem="CT8-Yf-Fka" secondAttribute="trailing" id="gey-n2-Byd"/>
+                            <constraint firstItem="XbB-yG-8bZ" firstAttribute="top" secondItem="nh5-eH-daN" secondAttribute="top" constant="20" id="mEM-bC-8JV"/>
+                            <constraint firstAttribute="trailing" secondItem="nh5-eH-daN" secondAttribute="trailing" id="sdu-Kv-zQb"/>
+                            <constraint firstItem="nh5-eH-daN" firstAttribute="leading" secondItem="wxM-w7-MCv" secondAttribute="leading" id="xt9-BV-xxq"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="wxM-w7-MCv" secondAttribute="bottom" id="2kw-4e-am6"/>
+                <constraint firstAttribute="trailing" secondItem="wxM-w7-MCv" secondAttribute="trailing" id="GwS-0j-5jB"/>
+                <constraint firstItem="wxM-w7-MCv" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="JCi-mR-vgY"/>
+                <constraint firstItem="wxM-w7-MCv" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="hq9-q2-Cu0"/>
+            </constraints>
+            <size key="customSize" width="192" height="157"/>
+            <connections>
+                <outlet property="bottomLabel" destination="XbB-yG-8bZ" id="ppf-Kq-21i"/>
+                <outlet property="gradientView" destination="nh5-eH-daN" id="1M1-t9-KKB"/>
+                <outlet property="imageView" destination="CT8-Yf-Fka" id="kug-Sm-EAf"/>
+                <outlet property="roundedView" destination="wxM-w7-MCv" id="osf-Cg-tm2"/>
+            </connections>
+            <point key="canvasLocation" x="96" y="105.5"/>
+        </collectionViewCell>
+    </objects>
+</document>

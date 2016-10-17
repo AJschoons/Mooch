@@ -7,11 +7,12 @@
 //
 
 import Alamofire
+import AVFoundation
 import Foundation
 
 class MoochAPI {
     
-    static let MaxImageSize = CGSize(width: 540, height: 540)
+    static let MaxImageSizeRect = CGRect(x: 0, y: 0, width: 540, height: 540)
     static let ImageCompressionFactor = CGFloat(0.5)
     
     typealias ExpectingResponseCompletionClosure = (JSON?, Error?) -> ()
@@ -243,7 +244,8 @@ class MoochAPI {
             multipartFormData: { multipartFormData in
                 
                 //Add image
-                let resizedImage = image.af_imageAspectScaled(toFit: MaxImageSize)
+                let aspectRatioRect = AVMakeRect(aspectRatio: image.size, insideRect: MaxImageSizeRect)
+                let resizedImage = image.af_imageAspectScaled(toFit: aspectRatioRect.size)
                 if let imageData = UIImageJPEGRepresentation(resizedImage, ImageCompressionFactor)
                 {
                     multipartFormData.append(imageData, withName: imageFormParameterName, fileName: imageFileName, mimeType: "image/jpeg")

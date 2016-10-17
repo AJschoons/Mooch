@@ -18,16 +18,16 @@ class ListingsViewController: MoochViewController {
     
     // MARK: Public variables
     
-    @IBOutlet var tableHandler: ListingsTableHandler! {
+    @IBOutlet var collectionHandler: ListingsCollectionHandler! {
         didSet {
-            tableHandler.delegate = self
+            collectionHandler.delegate = self
         }
     }
     
     var listings = [Listing]() {
         didSet {
-            guard let tableHandler = tableHandler else { return }
-            tableHandler.updateUI()
+            guard let collectionHandler = collectionHandler else { return }
+            collectionHandler.updateUI()
         }
     }
     
@@ -107,7 +107,7 @@ class ListingsViewController: MoochViewController {
                 listingsNotPostedByThisUser = listingsNotPostedByThisUser.filter({$0.owner.id != localUser.user.id})
             }
             
-            self.tableHandler.endRefreshing()
+            self.collectionHandler.endRefreshing()
             
             //Setting this causes the table to reload
             self.listings = listingsNotPostedByThisUser
@@ -128,7 +128,7 @@ class ListingsViewController: MoochViewController {
     }
 }
 
-extension ListingsViewController: ListingsTableHandlerDelegate {
+extension ListingsViewController: ListingsCollectionHandlerDelegate {
     
     func getListings() -> [Listing] {
         return listings
@@ -146,7 +146,8 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
 extension ListingsViewController: LocalUserStateChangeListener {
     
     func localUserStateDidChange(to: LocalUserManager.LocalUserState) {
-        navigationController?.popToRootViewController(animated: false)
+        guard let navC = navigationController else { return }
+        navC.popToRootViewController(animated: false)
         loadListings(isRefreshing: false)
     }
 }
