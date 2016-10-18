@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.0.1)
-  - AlamofireImage (3.0.0):
+  - AlamofireImage (3.1.0):
     - Alamofire (~> 4.0)
   - OHHTTPStubs (5.2.1):
     - OHHTTPStubs/Default (= 5.2.1)
@@ -35,7 +35,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
-  AlamofireImage: 6594aa1139a67dcd36cde6da79ea4e5b318e60fb
+  AlamofireImage: bb8c8351c51cb1633bb6be69b6dbbaff37ce65b7
   OHHTTPStubs: 3a42f25c00563b71355ac73112ba2324e9e6cef4
   PhoneNumberKit: 0b5ea9a5454d201656db766343e9d768f8542496
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4

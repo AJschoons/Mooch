@@ -18,28 +18,46 @@ class ListingsCollectionHandler: ListingCollectionHandler {
     
     private var refreshControl: UIRefreshControl!
     
+    //Allows us to ensure that refreshing takes at least a minimim duration; makes the UX smoother
+    private var endRefreshingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
+    
+    private(set) var isRefreshing = false
+    
     weak var delegate: ListingsCollectionHandlerDelegate!
     
     override func onDidSet(collectionView: UICollectionView) {
         super.onDidSet(collectionView: collectionView)
         
-        collectionView.allowsSelection = true
-        
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(onRefresh), for: .valueChanged)
-        collectionView.insertSubview(refreshControl, at: 0)
+        refreshControl.clipsToBounds = true
+        
+        collectionView.addSubview(refreshControl)
+        collectionView.sendSubview(toBack: refreshControl)
+        
     }
     
-    func updateUI() {
+    func reloadData() {
         collectionView.reloadData()
     }
     
     func onRefresh() {
+        isRefreshing = true
+        
         delegate.refresh()
+        
+        guard endRefreshingAfterMinimumDurationTimer == nil else { return }
+        endRefreshingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
     }
     
-    func endRefreshing() {
-        refreshControl.endRefreshing()
+    func endRefreshingAndReloadData() {
+        guard let timer = endRefreshingAfterMinimumDurationTimer else { return }
+        timer.execute() { [weak self] in
+            self?.isRefreshing = false
+            self?.collectionView.reloadData()
+            self?.refreshControl.endRefreshing()
+            self?.endRefreshingAfterMinimumDurationTimer = nil
+        }
     }
 }
 

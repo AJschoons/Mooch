@@ -24,12 +24,7 @@ class ListingsViewController: MoochViewController {
         }
     }
     
-    var listings = [Listing]() {
-        didSet {
-            guard let collectionHandler = collectionHandler else { return }
-            collectionHandler.updateUI()
-        }
-    }
+    var listings = [Listing]()
     
     
     // MARK: Private variables
@@ -107,10 +102,14 @@ class ListingsViewController: MoochViewController {
                 listingsNotPostedByThisUser = listingsNotPostedByThisUser.filter({$0.owner.id != localUser.user.id})
             }
             
-            self.collectionHandler.endRefreshing()
-            
-            //Setting this causes the table to reload
+            //Must be set before reloading data
             self.listings = listingsNotPostedByThisUser
+            
+            if self.collectionHandler.isRefreshing {
+                self.collectionHandler.endRefreshingAndReloadData()
+            } else {
+                self.collectionHandler.reloadData()
+            }
             
             //If refreshing and the overlay isn't shown, this method does nothing
             self.hideLoadingOverlayView(animated: true)
