@@ -15,7 +15,7 @@ class LocalUserTests: XCTestCase {
     func testDesignatedInitAndGetterSetters() {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
         
-        let user = User(id: 5, name: "test", contactInformation: contactInformation, currentRating: 4.5, ratingCount: 5, communityId: 4, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        let user = User(id: 5, name: "test", contactInformation: contactInformation, communityId: 4, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
         
         var localUser = LocalUser(user: user, authenticationToken: "CorrectPassword")
         
@@ -42,7 +42,7 @@ class LocalUserTests: XCTestCase {
     func testConvenienceInitSuccess() {
 
         
-        let localUserJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.currentRating.rawValue : 4.5, User.JSONMapping.ratingCount.rawValue : 5, User.JSONMapping.communityId.rawValue : 4,LocalUser.JSONMapping.authenticationToken.rawValue : "authToken"]
+        let localUserJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.communityId.rawValue : 4,LocalUser.JSONMapping.authenticationToken.rawValue : "authToken"]
         
         do {
             let localUser = try LocalUser(json: localUserJSON)
