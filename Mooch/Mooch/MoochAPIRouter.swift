@@ -24,6 +24,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     static private let AuthorizationHeaderKey = "Authorization"
     
+    case getCommunities
     case getListingCategories
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
@@ -90,6 +91,9 @@ enum MoochAPIRouter: URLRequestConvertible {
     //Returns the routing information needed to create a url request for each route
     func getRoutingInformation() -> RoutingInformation {
         switch self {
+        case .getCommunities:
+            return ("/communities", .get, nil, false)
+            
         case .getListingCategories:
             return ("/categories", .get, nil, false)
             
