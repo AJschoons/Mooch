@@ -8,13 +8,15 @@
 
 import UIKit
 
-protocol ListingsCollectionHandlerDelegate: class {
+protocol ListingsCollectionHandlerDelegate: class, ListingsCollectionHeaderViewDelegate {
     func getListings() -> [Listing]
     func didSelect(_ listing: Listing)
     func refresh()
 }
 
 class ListingsCollectionHandler: ListingCollectionHandler {
+    
+    fileprivate let HeightForHeader: CGFloat = 40
     
     private var refreshControl: UIRefreshControl!
     
@@ -35,6 +37,9 @@ class ListingsCollectionHandler: ListingCollectionHandler {
         collectionView.addSubview(refreshControl)
         collectionView.sendSubview(toBack: refreshControl)
         
+        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.sectionHeadersPinToVisibleBounds = true
+        }
     }
     
     func reloadData() {
@@ -89,6 +94,21 @@ extension ListingsCollectionHandler {
         
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ListingsCollectionHeaderView.Identifier, for: indexPath) as! ListingsCollectionHeaderView
+        
+        if let userCommunityId = LocalUserManager.sharedInstance.userCommunityId {
+            if let currentCommunity = CommunityManager.sharedInstance.getCommunity(withId: userCommunityId) {
+                headerView.set(communityName: currentCommunity.name)
+            }
+        }
+        
+        headerView.delegate = delegate
+        
+        return headerView
+    }
 }
 
 //MARK: UICollectionViewDelegate
@@ -98,5 +118,13 @@ extension ListingsCollectionHandler {
         let selectedListing = delegate!.getListings()[indexPath.row]
         delegate!.didSelect(selectedListing)
         collectionView.deselectItem(at: indexPath, animated: true)
+    }
+}
+
+//MARK: UICollectionViewDelegateFlowLayout
+extension ListingsCollectionHandler {
+    
+    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: HeightForHeader)
     }
 }

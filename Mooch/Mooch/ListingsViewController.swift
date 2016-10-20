@@ -142,6 +142,13 @@ extension ListingsViewController: ListingsCollectionHandlerDelegate {
     }
 }
 
+extension ListingsViewController: ListingsCollectionHeaderViewDelegate {
+    
+    func onFilterAction() {
+        let wow = 5
+    }
+}
+
 extension ListingsViewController: LocalUserStateChangeListener {
     
     func localUserStateDidChange(to: LocalUserManager.LocalUserState) {
@@ -159,3 +166,4 @@ extension ListingsViewController: CommunityChangeListener {
         loadListings(isRefreshing: false)
     }
 }
+

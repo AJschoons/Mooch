@@ -25,6 +25,7 @@
 		811967631DB7D62D00D085C7 /* CommunityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967611DB7D62D00D085C7 /* CommunityCollectionViewCell.swift */; };
 		811967641DB7D62D00D085C7 /* CommunityCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 811967621DB7D62D00D085C7 /* CommunityCollectionViewCell.xib */; };
 		811967661DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967651DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift */; };
+		811967681DB85B9B00D085C7 /* ListingsCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967671DB85B9B00D085C7 /* ListingsCollectionHeaderView.swift */; };
 		812661F91DA7361500ECD64E /* GETCategories.json in Sources */ = {isa = PBXBuildFile; fileRef = 812661F81DA7361500ECD64E /* GETCategories.json */; };
 		812661FB1DA736C700ECD64E /* POSTLogin.json in Sources */ = {isa = PBXBuildFile; fileRef = 812661FA1DA736C700ECD64E /* POSTLogin.json */; };
 		812BBC4D1DB456E900FED998 /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812BBC4C1DB456E900FED998 /* RoundedView.swift */; };
@@ -164,6 +165,7 @@
 		811967611DB7D62D00D085C7 /* CommunityCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityCollectionViewCell.swift; sourceTree = "<group>"; };
 		811967621DB7D62D00D085C7 /* CommunityCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommunityCollectionViewCell.xib; sourceTree = "<group>"; };
 		811967651DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPickerCollectionHandler.swift; sourceTree = "<group>"; };
+		811967671DB85B9B00D085C7 /* ListingsCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingsCollectionHeaderView.swift; sourceTree = "<group>"; };
 		812661F81DA7361500ECD64E /* GETCategories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETCategories.json; sourceTree = "<group>"; };
 		812661FA1DA736C700ECD64E /* POSTLogin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = POSTLogin.json; sourceTree = "<group>"; };
 		812BBC4C1DB456E900FED998 /* RoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				816623AA1DA061C8009AE72B /* Listing Category Picker */,
 				8149E7C41D865D97000F0C37 /* Listing Details */,
 				8149E7B71D84B3F3000F0C37 /* Listings */,
+				811967691DB8760800D085C7 /* Listings Filter */,
 				81F21A121DB40FBA00D442F8 /* Listings Collection View */,
 				8149E7B81D84B4E9000F0C37 /* Network Reachability Verification */,
 				813F650C1D87A10A00DEECF0 /* Profile */,
@@ -464,6 +467,13 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		811967691DB8760800D085C7 /* Listings Filter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Listings Filter";
+			sourceTree = "<group>";
+		};
 		813F650C1D87A10A00DEECF0 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -489,6 +499,7 @@
 				8149E7BA1D84C2A7000F0C37 /* ListingsCollectionHandler.swift */,
 				8149E7C01D8609BE000F0C37 /* ListingTableViewCell.swift */,
 				81A09FDF1D9E1D3A0021D3FA /* Listings.storyboard */,
+				811967671DB85B9B00D085C7 /* ListingsCollectionHeaderView.swift */,
 			);
 			name = Listings;
 			sourceTree = "<group>";
@@ -965,6 +976,7 @@
 				811967631DB7D62D00D085C7 /* CommunityCollectionViewCell.swift in Sources */,
 				8119675E1DB7C53A00D085C7 /* CommunityPickerViewController.swift in Sources */,
 				8110259E1D94C45A00C3931C /* MoochAPI.swift in Sources */,
+				811967681DB85B9B00D085C7 /* ListingsCollectionHeaderView.swift in Sources */,
 				81F0EA521D98CD2000C7AD09 /* EditListingTextView.swift in Sources */,
 				81F21A141DB410A500D442F8 /* ListingCollectionHandler.swift in Sources */,
 				814DB9D01D91DE90006F34E9 /* EditListingPhotoCell.swift in Sources */,
