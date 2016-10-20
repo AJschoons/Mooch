@@ -36,11 +36,34 @@
                                     <action selector="onLogOutAction" destination="MM3-X4-Kft" eventType="touchUpInside" id="WLd-ov-lL3"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ABD-RN-RU8" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="9vi-UB-bxu"/>
+                                    <constraint firstAttribute="height" constant="30" id="bTo-Ms-EAn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <state key="normal" title="Change Community">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onChangeCommunityAction" destination="MM3-X4-Kft" eventType="touchUpInside" id="WgV-UP-Bga"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="FL0-kN-TOJ" firstAttribute="top" secondItem="X8x-fX-bYc" secondAttribute="bottom" constant="15" id="FHb-Nr-VP3"/>
                             <constraint firstItem="X8x-fX-bYc" firstAttribute="centerX" secondItem="Gdr-ZB-L85" secondAttribute="centerX" id="GTa-6f-EmI"/>
+                            <constraint firstItem="X8x-fX-bYc" firstAttribute="top" secondItem="ABD-RN-RU8" secondAttribute="bottom" constant="15" id="Qj9-fL-esh"/>
+                            <constraint firstItem="ABD-RN-RU8" firstAttribute="width" secondItem="X8x-fX-bYc" secondAttribute="width" id="aWF-ht-4V8"/>
+                            <constraint firstItem="ABD-RN-RU8" firstAttribute="centerX" secondItem="X8x-fX-bYc" secondAttribute="centerX" id="gkZ-kf-gbD"/>
+                            <constraint firstItem="ABD-RN-RU8" firstAttribute="height" secondItem="X8x-fX-bYc" secondAttribute="height" id="uwE-yB-3aX"/>
                         </constraints>
                     </view>
                 </viewController>

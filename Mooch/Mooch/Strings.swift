@@ -16,8 +16,8 @@ enum Strings {
         case singleActionTryAgainTitle = "Try again"
     }
     
-    enum SharedErrors: String {
-        case invalidCategory = "Invalid Category"
+    enum CommunityPicker: String {
+        case title = "Choose Community"
     }
     
     enum EditListing: String {
@@ -127,17 +127,26 @@ enum Strings {
         case tempPlaceholder = "keep this enum around!!!"
     }
     
+    enum SharedErrors: String {
+        case invalidCategory = "Invalid Category"
+    }
+    
     enum TabBar: String {
         case home = "Home"
         case search = "Search"
         case sell = "Sell"
         case myProfile = "My Profile"
+        
+        case loggedOutMyProfileTabActionSheetActionTitleLoginOrSignUp = "Login / Sign up"
+        case loggedOutMyProfileTabActionSheetActionTitleChangeCommunity = "Change Community"
+        case loggedOutMyProfileTabActionSheetActionTitleCancel = "Cancel"
     }
     
     enum UserDefaultsKeys: String {
         case userId = "userId"
         case authenticationToken = "authenticationToken"
         case email = "email"
+        case guestCommunityId = "guestCommunityId"
     }
 }
 

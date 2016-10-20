@@ -14,6 +14,9 @@ class InitialLoadingViewController: MoochModalViewController {
     
     // MARK: Private variables
     
+    //Allows us to ensure that loading takes at least a minimim duration; makes the UX smoother
+    private var finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+    
     // MARK: Actions
     
     // MARK: Public methods
@@ -39,11 +42,16 @@ class InitialLoadingViewController: MoochModalViewController {
         return false
     }
     
+    //Finishes loading after the minimum duration has elapsed
     func onFinishedLoading(willShowCommunityPicker: Bool) {
-        (UIApplication.shared.delegate! as! AppDelegate).transitionToMoochTabBarController()
-        
-        if willShowCommunityPicker {
-            print("picking communities not supported yet!")
+        finishLoadingAfterMinimumDurationTimer.execute() { [weak self] in
+            guard let strongSelf = self else { return }
+            
+            if willShowCommunityPicker {
+                strongSelf.presentCommunityPicker()
+            } else {
+                strongSelf.transitionToMainApp()
+            }
         }
     }
     
@@ -60,6 +68,18 @@ class InitialLoadingViewController: MoochModalViewController {
         MoochAPI.GETListingCategories() { listingCategories, error in
             if let listingCategories = listingCategories {
                 ListingCategoryManager.sharedInstance.update(withListingCategories: listingCategories)
+                self.getCommunities()
+            } else {
+                self.presentCouldNotDownloadInitialDataAlert()
+            }
+        }
+    }
+    
+    //The second API call we make
+    private func getCommunities() {
+        MoochAPI.GETCommunities() { communities, error in
+            if let communities = communities {
+                CommunityManager.sharedInstance.update(withCommunities: communities)
                 self.loginSavedUser()
             } else {
                 self.presentCouldNotDownloadInitialDataAlert()
@@ -98,16 +118,35 @@ class InitialLoadingViewController: MoochModalViewController {
     
     //Handles what should be done when there is NOT a saved user we downloaded
     private func continueWithGuest() {
-        //TODO: handle picking a community instead of hardcoding a guest to community with id 1
-        //(also checking is a guest user already picker a community)
-        LocalUserManager.sharedInstance.updateGuest(communityId: 1)
-        onFinishedLoading(willShowCommunityPicker: true)
+        guard let savedGuestInformation = LocalUserManager.sharedInstance.getSavedGuesInformationFromUserDefaults() else {
+            //We need to force the user to pick a community
+            onFinishedLoading(willShowCommunityPicker: true)
+            return
+        }
+        
+        LocalUserManager.sharedInstance.updateGuest(communityId: savedGuestInformation.communityId)
+        transitionToMainApp()
+    }
+    
+    private func presentCommunityPicker() {
+        let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.delegate = self
+        let navC = UINavigationController(rootViewController: vc)
+        
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
+        
+        present(navC, animated: true, completion: nil)
     }
     
     private func presentCouldNotDownloadInitialDataAlert() {
         presentSingleActionAlert(title: Strings.InitialLoading.couldNotDownloadInitialDataAlertTitle.rawValue, message: Strings.InitialLoading.couldNotDownloadInitialDataAlertMessage.rawValue, actionTitle: Strings.Alert.singleActionTryAgainTitle.rawValue) { action in
             self.getDataInitiallyNeededFromAPI()
         }
+    }
+    
+    fileprivate func transitionToMainApp() {
+        (UIApplication.shared.delegate! as! AppDelegate).transitionToMoochTabBarController()
     }
     
     fileprivate func performCrossFadeViewControllerPop() {
@@ -120,5 +159,13 @@ class InitialLoadingViewController: MoochModalViewController {
         navC.view.layer.add(transtion, forKey: kCATransition)
         navC.setNavigationBarHidden(false, animated: false)
         navC.popViewController(animated: false)
+    }
+}
+
+extension InitialLoadingViewController: CommunityPickerViewControllerDelegate {
+    
+    func didPick(community: Community) {
+        LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
+        transitionToMainApp()
     }
 }

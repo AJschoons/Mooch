@@ -10,6 +10,7 @@ import UIKit
 
 protocol ProfileViewControllerDelegate: class {
     func profileViewControllerDidLogOutUser()
+    func profileViewControllerDidChangeCommunity()
 }
 
 class ProfileViewController: MoochViewController {
@@ -31,6 +32,10 @@ class ProfileViewController: MoochViewController {
     @IBAction func onLogOutAction() {
         LocalUserManager.sharedInstance.logout()
         delegate?.profileViewControllerDidLogOutUser()
+    }
+    
+    @IBAction func onChangeCommunityAction() {
+        presentCommunityPicker()
     }
     
     func onEditProfileAction() {
@@ -64,4 +69,24 @@ class ProfileViewController: MoochViewController {
     
     // MARK: Private methods
     
+    fileprivate func presentCommunityPicker() {
+        let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.delegate = self
+        let navC = UINavigationController(rootViewController: vc)
+        present(navC, animated: true, completion: nil)
+    }
+}
+
+extension ProfileViewController: CommunityPickerViewControllerDelegate {
+    
+    func didPick(community: Community) {
+        guard var localUser = LocalUserManager.sharedInstance.localUser?.user else { return }
+        
+        //Update the user's community id
+        localUser.communityId = community.id
+        LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: localUser)
+        
+        delegate?.profileViewControllerDidChangeCommunity()
+        dismiss(animated: true, completion: nil)
+    }
 }
