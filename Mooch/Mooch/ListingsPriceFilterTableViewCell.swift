@@ -24,6 +24,7 @@ class ListingsPriceFilterTableViewCell: UITableViewCell {
     var delegate: ListingsPriceFilterTableViewCellDelegate!
     
     @IBAction func onPriceRangeSliderValueChange() {
+        delegate.priceRangeDidChange(min: Int(priceRangeSlider.lowerValue), max: Int(priceRangeSlider.upperValue))
         updateLabels()
     }
     

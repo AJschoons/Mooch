@@ -112,6 +112,9 @@ enum Strings {
         case loadingListingsErrorAlertMessage = "Please try pulling to refresh to reload the listings"
         
         case navigationItemTitle = "Mooch"
+        
+        case noListingsInCommunityLabelText = "There are currently no listings in this community"
+        case noListingsAfterFilterAppliedLabelText = "There are currently no listings in this community matching the filters applied"
     }
     
     enum MoochAPI: String {

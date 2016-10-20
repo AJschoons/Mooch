@@ -33,6 +33,17 @@ class ListingsViewController: MoochViewController {
     static fileprivate let Identifier = "ListingsViewController"
     
     fileprivate var state: State = .loading
+    
+    fileprivate var filterApplied: ListingFilter?
+    
+    
+    fileprivate var filteredListings: [Listing] {
+        guard let filter = filterApplied else {
+            return [Listing]()
+        }
+        
+        return ListingProcessingHandler.filter(listings: listings, with: filter)
+    }
 
     
     // MARK: Actions
@@ -141,14 +152,23 @@ class ListingsViewController: MoochViewController {
         navC.modalPresentationStyle = .overFullScreen
         navC.modalTransitionStyle = .crossDissolve
         
+        if let filterApplied = filterApplied {
+            vc.filterApplied = filterApplied
+        }
+        
         present(navC, animated: true, completion: nil)
     }
 }
 
 extension ListingsViewController: ListingsCollectionHandlerDelegate {
     
+    //Returns the listings when a filter isn't applied, or returns the filtered listings when a filter is applied
     func getListings() -> [Listing] {
-        return listings
+        if filterApplied != nil {
+            return filteredListings
+        } else {
+            return listings
+        }
     }
     
     func didSelect(_ listing: Listing) {
@@ -157,6 +177,15 @@ extension ListingsViewController: ListingsCollectionHandlerDelegate {
     
     func refresh() {
         loadListings(isRefreshing: true)
+    }
+    
+    func hasListingsButNoneMatchFilter() -> Bool {
+        guard filterApplied != nil else {
+            //We need to have a filter for this to be true
+            return false
+        }
+        
+        return filteredListings.count == 0 && listings.count > 0
     }
 }
 
@@ -169,12 +198,14 @@ extension ListingsViewController: ListingsCollectionHeaderViewDelegate {
 
 extension ListingsViewController: ListingsFilterViewControllerDelegate {
     
-    func didApplyFilters() {
-        
+    func didApply(listingFilter: ListingFilter) {
+        filterApplied = listingFilter
+        collectionHandler.reloadData()
     }
     
     func didClearFilters() {
-        
+        filterApplied = nil
+        collectionHandler.reloadData()
     }
 }
 
@@ -183,6 +214,7 @@ extension ListingsViewController: LocalUserStateChangeListener {
     func localUserStateDidChange(to: LocalUserManager.LocalUserState) {
         guard let navC = navigationController else { return }
         navC.popToRootViewController(animated: false)
+        filterApplied = nil
         loadListings(isRefreshing: false)
     }
 }
@@ -192,6 +224,7 @@ extension ListingsViewController: CommunityChangeListener {
     func communityDidChange() {
         guard let navC = navigationController else { return }
         navC.popToRootViewController(animated: false)
+        filterApplied = nil
         loadListings(isRefreshing: false)
     }
 }

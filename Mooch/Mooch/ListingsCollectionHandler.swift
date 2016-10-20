@@ -12,6 +12,7 @@ protocol ListingsCollectionHandlerDelegate: class, ListingsCollectionHeaderViewD
     func getListings() -> [Listing]
     func didSelect(_ listing: Listing)
     func refresh()
+    func hasListingsButNoneMatchFilter() -> Bool
 }
 
 class ListingsCollectionHandler: ListingCollectionHandler {
@@ -44,6 +45,12 @@ class ListingsCollectionHandler: ListingCollectionHandler {
     
     func reloadData() {
         collectionView.reloadData()
+        
+        if delegate.getListings().count == 0 {
+            collectionView.backgroundView = createNoListingsBackgroundView()
+        } else {
+            collectionView.backgroundView = nil
+        }
     }
     
     func onRefresh() {
@@ -59,10 +66,30 @@ class ListingsCollectionHandler: ListingCollectionHandler {
         guard let timer = endRefreshingAfterMinimumDurationTimer else { return }
         timer.execute() { [weak self] in
             self?.isRefreshing = false
-            self?.collectionView.reloadData()
+            self?.reloadData()
             self?.refreshControl.endRefreshing()
             self?.endRefreshingAfterMinimumDurationTimer = nil
         }
+    }
+    
+    fileprivate func createNoListingsBackgroundView() -> UIView
+    {
+        let backgroundView = UIView(frame: collectionView.bounds)
+        backgroundView.backgroundColor = UIColor.clear
+        
+        let noListingsLabel = UILabel()
+        noListingsLabel.numberOfLines = 0
+        noListingsLabel.backgroundColor = UIColor.clear
+        noListingsLabel.text = delegate.hasListingsButNoneMatchFilter() ?  Strings.Listings.noListingsAfterFilterAppliedLabelText.rawValue : Strings.Listings.noListingsInCommunityLabelText.rawValue
+        noListingsLabel.textColor = UIColor.darkGray
+        noListingsLabel.font = UIFont.systemFont(ofSize: 15)
+        noListingsLabel.textAlignment = .center
+        let labelPadding: CGFloat = 40
+        noListingsLabel.frame = CGRect(x: labelPadding, y: 0, width: backgroundView.bounds.width - 2*labelPadding, height: backgroundView.bounds.height)
+        
+        backgroundView.addSubview(noListingsLabel)
+        
+        return backgroundView
     }
 }
 

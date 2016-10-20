@@ -10,7 +10,7 @@ import UIKit
 
 protocol ListingsFilterViewControllerDelegate: class {
     func didClearFilters()
-    func didApplyFilters()
+    func didApply(listingFilter: ListingFilter)
 }
 
 class ListingsFilterViewController: MoochViewController {
@@ -51,7 +51,7 @@ class ListingsFilterViewController: MoochViewController {
     }
     
     @IBAction func onDoneAction(_ sender: AnyObject) {
-        delegate.didApplyFilters()
+        delegate.didApply(listingFilter: filterApplied)
         dismiss(animated: true, completion: nil)
     }
     
