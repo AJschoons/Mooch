@@ -150,3 +150,12 @@ extension ListingsViewController: LocalUserStateChangeListener {
         loadListings(isRefreshing: false)
     }
 }
+
+extension ListingsViewController: CommunityChangeListener {
+    
+    func communityDidChange() {
+        guard let navC = navigationController else { return }
+        navC.popToRootViewController(animated: false)
+        loadListings(isRefreshing: false)
+    }
+}

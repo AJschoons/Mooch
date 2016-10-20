@@ -71,7 +71,7 @@ extension ListingsCollectionHandler {
     //Subclasses should override
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let listing = delegate.getListings()[(indexPath as NSIndexPath).row]
+        let listing = delegate.getListings()[indexPath.row]
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListingCollectionViewCell.Identifier, for: indexPath) as! ListingCollectionViewCell
         
@@ -95,7 +95,7 @@ extension ListingsCollectionHandler {
 extension ListingsCollectionHandler {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedListing = delegate!.getListings()[(indexPath as NSIndexPath).row]
+        let selectedListing = delegate!.getListings()[indexPath.row]
         delegate!.didSelect(selectedListing)
         collectionView.deselectItem(at: indexPath, animated: true)
     }

@@ -36,7 +36,7 @@ struct User {
     let id: Int
     var name: String
     var contactInformation: ContactInformation
-    let communityId: Int
+    var communityId: Int
     
     //Optional
     var pictureURL: String?

@@ -20,6 +20,11 @@
 		811025A21D94D76500C3931C /* MoochAPIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */; };
 		811025A31D94D76800C3931C /* MoochAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8110259C1D94C45A00C3931C /* MoochAPI.swift */; };
 		811025A51D94DFAB00C3931C /* MoochAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811025A41D94DFAB00C3931C /* MoochAPITests.swift */; };
+		8119675E1DB7C53A00D085C7 /* CommunityPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8119675D1DB7C53A00D085C7 /* CommunityPickerViewController.swift */; };
+		811967601DB7C6F500D085C7 /* CommunityPicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8119675F1DB7C6F500D085C7 /* CommunityPicker.storyboard */; };
+		811967631DB7D62D00D085C7 /* CommunityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967611DB7D62D00D085C7 /* CommunityCollectionViewCell.swift */; };
+		811967641DB7D62D00D085C7 /* CommunityCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 811967621DB7D62D00D085C7 /* CommunityCollectionViewCell.xib */; };
+		811967661DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967651DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift */; };
 		812661F91DA7361500ECD64E /* GETCategories.json in Sources */ = {isa = PBXBuildFile; fileRef = 812661F81DA7361500ECD64E /* GETCategories.json */; };
 		812661FB1DA736C700ECD64E /* POSTLogin.json in Sources */ = {isa = PBXBuildFile; fileRef = 812661FA1DA736C700ECD64E /* POSTLogin.json */; };
 		812BBC4D1DB456E900FED998 /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812BBC4C1DB456E900FED998 /* RoundedView.swift */; };
@@ -97,6 +102,7 @@
 		81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */; };
 		81CBF0D01DACA3B50066DA75 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
 		81D2A0A71DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D2A0A61DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift */; };
+		81D2A0AA1DB7C10400800747 /* CommunityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D2A0A91DB7C10400800747 /* CommunityManager.swift */; };
 		81F0EA4A1D9896A000C7AD09 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
 		81F0EA4F1D98AC9400C7AD09 /* GETListings.json in Resources */ = {isa = PBXBuildFile; fileRef = 81F0EA4E1D98AC9400C7AD09 /* GETListings.json */; };
 		81F0EA521D98CD2000C7AD09 /* EditListingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */; };
@@ -153,6 +159,11 @@
 		8110259D1D94C45A00C3931C /* MoochAPIRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPIRouter.swift; sourceTree = "<group>"; };
 		811025A01D94D73B00C3931C /* MoochAPIRouterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPIRouterTests.swift; sourceTree = "<group>"; };
 		811025A41D94DFAB00C3931C /* MoochAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoochAPITests.swift; sourceTree = "<group>"; };
+		8119675D1DB7C53A00D085C7 /* CommunityPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPickerViewController.swift; sourceTree = "<group>"; };
+		8119675F1DB7C6F500D085C7 /* CommunityPicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CommunityPicker.storyboard; sourceTree = "<group>"; };
+		811967611DB7D62D00D085C7 /* CommunityCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityCollectionViewCell.swift; sourceTree = "<group>"; };
+		811967621DB7D62D00D085C7 /* CommunityCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommunityCollectionViewCell.xib; sourceTree = "<group>"; };
+		811967651DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityPickerCollectionHandler.swift; sourceTree = "<group>"; };
 		812661F81DA7361500ECD64E /* GETCategories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETCategories.json; sourceTree = "<group>"; };
 		812661FA1DA736C700ECD64E /* POSTLogin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = POSTLogin.json; sourceTree = "<group>"; };
 		812BBC4C1DB456E900FED998 /* RoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
@@ -224,6 +235,7 @@
 		81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTextHander.swift; sourceTree = "<group>"; };
 		81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberHandler.swift; sourceTree = "<group>"; };
 		81D2A0A61DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecuteActionAfterMinimumDurationTimer.swift; sourceTree = "<group>"; };
+		81D2A0A91DB7C10400800747 /* CommunityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityManager.swift; sourceTree = "<group>"; };
 		81F0EA4E1D98AC9400C7AD09 /* GETListings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETListings.json; sourceTree = "<group>"; };
 		81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextView.swift; sourceTree = "<group>"; };
 		81F0EA531D98D01D00C7AD09 /* EditListingTextHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextHandler.swift; sourceTree = "<group>"; };
@@ -360,6 +372,7 @@
 			isa = PBXGroup;
 			children = (
 				81A09FE11D9F09CE0021D3FA /* Camera */,
+				81D2A0A81DB7C00900800747 /* Community Picker */,
 				8149E7CE1D870156000F0C37 /* Custom Elements */,
 				814DB9C21D8C9B66006F34E9 /* Edit Listing */,
 				8149E7D11D87183C000F0C37 /* Edit Profile */,
@@ -382,6 +395,7 @@
 			isa = PBXGroup;
 			children = (
 				810A82311D7A11780086B40F /* AppDelegate.swift */,
+				81D2A0A91DB7C10400800747 /* CommunityManager.swift */,
 				816623A51DA048FB009AE72B /* ListingCategoryManager.swift */,
 				8149E7BC1D84CC93000F0C37 /* LocalUserManager.swift */,
 				81CBF0BD1DA750C70066DA75 /* ImageManager.swift */,
@@ -613,6 +627,18 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		81D2A0A81DB7C00900800747 /* Community Picker */ = {
+			isa = PBXGroup;
+			children = (
+				811967611DB7D62D00D085C7 /* CommunityCollectionViewCell.swift */,
+				811967621DB7D62D00D085C7 /* CommunityCollectionViewCell.xib */,
+				8119675F1DB7C6F500D085C7 /* CommunityPicker.storyboard */,
+				811967651DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift */,
+				8119675D1DB7C53A00D085C7 /* CommunityPickerViewController.swift */,
+			);
+			name = "Community Picker";
+			sourceTree = "<group>";
+		};
 		81F21A121DB40FBA00D442F8 /* Listings Collection View */ = {
 			isa = PBXGroup;
 			children = (
@@ -743,8 +769,10 @@
 			files = (
 				81A09FDA1D9B34DB0021D3FA /* PhotoAddingView.xib in Resources */,
 				81A09FE01D9E1D3A0021D3FA /* Listings.storyboard in Resources */,
+				811967641DB7D62D00D085C7 /* CommunityCollectionViewCell.xib in Resources */,
 				816623AC1DA06202009AE72B /* ListingCategoryPicker.storyboard in Resources */,
 				8149E7C61D865E2D000F0C37 /* ListingDetails.storyboard in Resources */,
+				811967601DB7C6F500D085C7 /* CommunityPicker.storyboard in Resources */,
 				818304EA1DB0597100E74202 /* Search.storyboard in Resources */,
 				810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */,
 				8101CF141DB54E1000CB4ED5 /* ListingCollectionViewCell.xib in Resources */,
@@ -924,14 +952,18 @@
 				8149E7BB1D84C2A7000F0C37 /* ListingsCollectionHandler.swift in Sources */,
 				816623B41DA06311009AE72B /* ListingCategoryPickerTableHandler.swift in Sources */,
 				816623A61DA048FB009AE72B /* ListingCategoryManager.swift in Sources */,
+				81D2A0AA1DB7C10400800747 /* CommunityManager.swift in Sources */,
 				817CA0961DA31C3B00489374 /* UserLoginInformationValidator.swift in Sources */,
 				81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */,
 				81CBF0C61DAB53010066DA75 /* EditProfileTextField.swift in Sources */,
 				81CBF0C41DAB50090066DA75 /* EditProfileConfiguation.swift in Sources */,
 				81F0EA561D9978CF00C7AD09 /* EditListingConfiguration.swift in Sources */,
+				811967661DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift in Sources */,
 				814DB9D71D933B89006F34E9 /* ListingDetailsTableHandler.swift in Sources */,
 				8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */,
 				814DB9C81D8F668E006F34E9 /* EditListingTextCell.swift in Sources */,
+				811967631DB7D62D00D085C7 /* CommunityCollectionViewCell.swift in Sources */,
+				8119675E1DB7C53A00D085C7 /* CommunityPickerViewController.swift in Sources */,
 				8110259E1D94C45A00C3931C /* MoochAPI.swift in Sources */,
 				81F0EA521D98CD2000C7AD09 /* EditListingTextView.swift in Sources */,
 				81F21A141DB410A500D442F8 /* ListingCollectionHandler.swift in Sources */,

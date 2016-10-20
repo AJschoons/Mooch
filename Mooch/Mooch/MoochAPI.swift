@@ -33,6 +33,23 @@ class MoochAPI {
     // MARK: API Routes
     //
     
+    static func GETCommunities(completion: @escaping ([Community]?, Error?) -> Void) {
+        perform(requestExpectingResponse: MoochAPIRouter.getCommunities) { json, error in
+            guard let communitiesJSON = json?.array else {
+                completion(nil, error)
+                return
+            }
+            
+            do {
+                let communities = try communitiesJSON.map({try Community(json: $0)})
+                completion(communities, nil)
+            } catch let error {
+                print("couldn't create communities with JSON: \(json)")
+                completion(nil, error)
+            }
+        }
+    }
+    
     static func GETListingCategories(completion: @escaping ([ListingCategory]?, Error?) -> Void) {
         perform(requestExpectingResponse: MoochAPIRouter.getListingCategories) { json, error in
             guard let listingCategoriesJSON = json?.array else {

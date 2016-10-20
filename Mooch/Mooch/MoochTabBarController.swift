@@ -126,12 +126,49 @@ class MoochTabBarController: UITabBarController {
         }
     }
     
+    fileprivate func notifyTabViewControllersOfCommunityChange() {
+        guard let tabViewControllers = viewControllers else { return }
+        
+        for vc in tabViewControllers {
+            if let vcToNotify = getViewControllerOrRootOfNavigationViewController(from: vc) as? CommunityChangeListener {
+                vcToNotify.communityDidChange()
+            }
+        }
+    }
+    
     //Returns the view controller passed, or the root view controller if that view controller is a navigation controller
     fileprivate func getViewControllerOrRootOfNavigationViewController(from viewController: UIViewController) -> UIViewController {
         guard let navC = viewController as? UINavigationController else {
             return viewController
         }
         return navC.viewControllers[0]
+    }
+    
+    //Action sheet for when the user presses the "My Profile" tab, but is logged out
+    fileprivate func presentLoggedOutMyProfileButtonActionSheet() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let loginOrSignUpAction = UIAlertAction(title: Strings.TabBar.loggedOutMyProfileTabActionSheetActionTitleLoginOrSignUp.rawValue, style: .default) { _ in
+            self.selectedMyProfileTabWhenNotLoggedIn = true
+            self.presentLoginViewController()
+        }
+        let changeCommunityAction = UIAlertAction(title: Strings.TabBar.loggedOutMyProfileTabActionSheetActionTitleChangeCommunity.rawValue, style: .default) { _ in
+            self.presentCommunityPicker()
+        }
+        let cancelAction = UIAlertAction(title: Strings.TabBar.loggedOutMyProfileTabActionSheetActionTitleCancel.rawValue, style: .cancel, handler: nil)
+        
+        actionSheet.addAction(loginOrSignUpAction)
+        actionSheet.addAction(changeCommunityAction)
+        actionSheet.addAction(cancelAction)
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    fileprivate func presentCommunityPicker() {
+        let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.delegate = self
+        let navC = UINavigationController(rootViewController: vc)
+        present(navC, animated: true, completion: nil)
     }
 }
 
@@ -142,8 +179,7 @@ extension MoochTabBarController: UITabBarControllerDelegate {
         
         if viewControllerToSelect is ProfileViewController {
             guard LocalUserManager.sharedInstance.state == .loggedIn else {
-                selectedMyProfileTabWhenNotLoggedIn = true
-                presentLoginViewController()
+                presentLoggedOutMyProfileButtonActionSheet()
                 return false
             }
             
@@ -194,6 +230,21 @@ extension MoochTabBarController: ProfileViewControllerDelegate {
     func profileViewControllerDidLogOutUser() {
         notifyTabViewControllers(ofLocalUserStateChange: .guest)
         selectedIndex = Tab.home.index
+    }
+    
+    func profileViewControllerDidChangeCommunity() {
+        notifyTabViewControllersOfCommunityChange()
+        selectedIndex = Tab.home.index
+    }
+}
+
+extension MoochTabBarController: CommunityPickerViewControllerDelegate {
+    
+    func didPick(community: Community) {
+        LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
+        notifyTabViewControllersOfCommunityChange()
+        selectedIndex = Tab.home.index
+        dismiss(animated: true, completion: nil)
     }
 }
 
