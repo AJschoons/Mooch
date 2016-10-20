@@ -20,7 +20,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XgE-pg-rMm">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="ALb-oX-90y"/>
+                                    <constraint firstAttribute="height" constant="250" id="ALb-oX-90y"/>
                                 </constraints>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="E5g-AF-Rhf" userLabel="Header">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
@@ -87,11 +87,11 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PriceRangeCell" rowHeight="95" id="1f1-ub-c4L">
-                                        <rect key="frame" x="0.0" y="108" width="375" height="95"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingsPriceFilterTableViewCell" rowHeight="100" id="1f1-ub-c4L" customClass="ListingsPriceFilterTableViewCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="108" width="375" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1f1-ub-c4L" id="mo0-CD-do8">
-                                            <frame key="frameInset" width="375" height="94"/>
+                                            <frame key="frameInset" width="375" height="99.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HRb-Jv-D8s">
@@ -102,10 +102,20 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min: $0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzK-3W-bge">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max: $200" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYu-TC-HiQ">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DPC-Vu-ZP0" customClass="RangeSlider" customModule="Mooch" customModuleProvider="target">
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="25" id="agH-d2-Ag2"/>
+                                                        <constraint firstAttribute="height" constant="30" id="agH-d2-Ag2"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
@@ -121,31 +131,29 @@
                                                             <real key="value" value="200"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="onPriceRangeSliderValueChange" destination="1f1-ub-c4L" eventType="valueChanged" id="Q7f-eI-f8H"/>
+                                                    </connections>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZzK-3W-bge">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$200" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYu-TC-HiQ">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="DPC-Vu-ZP0" firstAttribute="leading" secondItem="mo0-CD-do8" secondAttribute="leading" constant="15" id="FwD-R1-ibm"/>
                                                 <constraint firstAttribute="trailing" secondItem="DPC-Vu-ZP0" secondAttribute="trailing" constant="15" id="JmD-31-Gsy"/>
                                                 <constraint firstItem="ZzK-3W-bge" firstAttribute="leading" secondItem="DPC-Vu-ZP0" secondAttribute="leading" id="MUk-H8-DGd"/>
                                                 <constraint firstItem="LYu-TC-HiQ" firstAttribute="trailing" secondItem="DPC-Vu-ZP0" secondAttribute="trailing" id="VSn-av-d5s"/>
-                                                <constraint firstItem="ZzK-3W-bge" firstAttribute="top" secondItem="DPC-Vu-ZP0" secondAttribute="bottom" constant="4" id="a50-x2-eMa"/>
+                                                <constraint firstItem="DPC-Vu-ZP0" firstAttribute="top" secondItem="ZzK-3W-bge" secondAttribute="bottom" constant="7" id="a50-x2-eMa"/>
                                                 <constraint firstAttribute="trailing" secondItem="HRb-Jv-D8s" secondAttribute="trailing" id="aeS-1s-zQy"/>
-                                                <constraint firstItem="DPC-Vu-ZP0" firstAttribute="top" secondItem="HRb-Jv-D8s" secondAttribute="bottom" id="mRc-eb-2WJ"/>
                                                 <constraint firstItem="LYu-TC-HiQ" firstAttribute="top" secondItem="ZzK-3W-bge" secondAttribute="top" id="qI8-ju-43c"/>
                                                 <constraint firstItem="HRb-Jv-D8s" firstAttribute="leading" secondItem="mo0-CD-do8" secondAttribute="leading" constant="15" id="rwo-iI-ZTH"/>
                                                 <constraint firstItem="HRb-Jv-D8s" firstAttribute="top" secondItem="mo0-CD-do8" secondAttribute="top" id="ubS-Eh-JG2"/>
+                                                <constraint firstAttribute="bottom" secondItem="DPC-Vu-ZP0" secondAttribute="bottom" constant="7" id="yEE-WP-8Yl"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="maximumPriceLabel" destination="LYu-TC-HiQ" id="3NW-0m-H8c"/>
+                                            <outlet property="minimumPriceLabel" destination="ZzK-3W-bge" id="jnU-wx-o2f"/>
+                                            <outlet property="priceRangeSlider" destination="DPC-Vu-ZP0" id="Ih8-iF-SQ4"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -154,7 +162,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.25" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="aK9-AI-TG1" firstAttribute="top" secondItem="XgE-pg-rMm" secondAttribute="bottom" id="7ME-Lc-iHE"/>
                             <constraint firstItem="XgE-pg-rMm" firstAttribute="leading" secondItem="oTz-If-LLa" secondAttribute="leading" id="T6O-Ot-2dY"/>

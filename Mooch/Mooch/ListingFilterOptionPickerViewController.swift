@@ -15,16 +15,17 @@ protocol ListingFilterOptionPickerViewControllerDelegate: class {
 
 class ListingFilterOptionPickerViewController: MoochViewController {
     
-    enum OptionPickingMode {
-        case sortBy
-        case postedWithin
+    enum OptionPickingMode: String {
+        case sortBy = "Sort By"
+        case postedWithin = "Posted Within"
     }
     
     // MARK: Public variables
     
     var optionPickingMode: OptionPickingMode!
+    var currentlySelectedSortByOption: ListingFilter.SortByOption?
+    var currentlySelectedPostedWithinOption: ListingFilter.DatePostedWithinOption?
     weak var delegate: ListingFilterOptionPickerViewControllerDelegate!
-    
     
     // MARK: Private variables
     
@@ -44,14 +45,7 @@ class ListingFilterOptionPickerViewController: MoochViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
         view.addSubview(tableView)
         
-        var title: String
-        switch optionPickingMode! {
-        case .sortBy:
-            title = "Sort By"
-        case .postedWithin:
-            title = "Posted Within"
-        }
-        self.title = title
+        title = optionPickingMode.rawValue
     }
     
     
@@ -76,9 +70,13 @@ extension ListingFilterOptionPickerViewController: UITableViewDataSource {
         
         switch optionPickingMode! {
         case .sortBy:
-            cell.textLabel?.text = ListingFilter.SortByOption.option(forIndex: indexPath.row).rawValue
+            let sortByOptionForCell = ListingFilter.SortByOption.option(forIndex: indexPath.row)
+            cell.textLabel?.text = sortByOptionForCell.rawValue
+            cell.accessoryType = sortByOptionForCell == currentlySelectedSortByOption ? .checkmark : .none
         case .postedWithin:
-            cell.textLabel?.text = ListingFilter.DatePostedWithinOption.option(forIndex: indexPath.row).rawValue
+            let datePostedWithinOptionForCell = ListingFilter.DatePostedWithinOption.option(forIndex: indexPath.row)
+            cell.textLabel?.text = datePostedWithinOptionForCell.rawValue
+            cell.accessoryType = datePostedWithinOptionForCell == currentlySelectedPostedWithinOption ? .checkmark : .none
         }
         
         return cell
