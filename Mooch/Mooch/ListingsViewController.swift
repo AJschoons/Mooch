@@ -125,6 +125,24 @@ class ListingsViewController: MoochViewController {
 
         navigationController!.pushViewController(vc, animated: true)
     }
+    
+    fileprivate func presentListingsFilterViewController() {
+        let vc = ListingsFilterViewController.instantiateFromStoryboard()
+        vc.delegate = self
+        let navC = UINavigationController(rootViewController: vc)
+        
+        //http://stackoverflow.com/questions/21760698/ios-modalview-with-background-transparent
+        vc.providesPresentationContextTransitionStyle = true
+        vc.definesPresentationContext = true
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        navC.providesPresentationContextTransitionStyle = true
+        navC.definesPresentationContext = true
+        navC.modalPresentationStyle = .overFullScreen
+        navC.modalTransitionStyle = .crossDissolve
+        
+        present(navC, animated: true, completion: nil)
+    }
 }
 
 extension ListingsViewController: ListingsCollectionHandlerDelegate {
@@ -145,7 +163,18 @@ extension ListingsViewController: ListingsCollectionHandlerDelegate {
 extension ListingsViewController: ListingsCollectionHeaderViewDelegate {
     
     func onFilterAction() {
-        let wow = 5
+        presentListingsFilterViewController()
+    }
+}
+
+extension ListingsViewController: ListingsFilterViewControllerDelegate {
+    
+    func didApplyFilters() {
+        
+    }
+    
+    func didClearFilters() {
+        
     }
 }
 
@@ -166,4 +195,3 @@ extension ListingsViewController: CommunityChangeListener {
         loadListings(isRefreshing: false)
     }
 }
-
