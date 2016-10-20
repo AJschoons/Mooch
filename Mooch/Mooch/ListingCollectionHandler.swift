@@ -42,6 +42,11 @@ extension ListingCollectionHandler: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return UICollectionViewCell()
     }
+    
+    //Subclasses CAN override if needed
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        return UICollectionReusableView()
+    }
 }
 
 //Note: for subclasses to use delegate methods, the method must be defined here and then overriden in the subclass
@@ -51,7 +56,7 @@ extension ListingCollectionHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { }
 }
 
-//Subclasses should NOT override these methods because we want all Listing collections to display the same
+
 extension ListingCollectionHandler: UICollectionViewDelegateFlowLayout {
     
     //Subclasses should NOT override
@@ -76,5 +81,10 @@ extension ListingCollectionHandler: UICollectionViewDelegateFlowLayout {
     //Subclasses should NOT override
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return ListingCollectionHandler.SectionInsets.left
+    }
+    
+    //Subclasses CAN override if needed
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize.zero
     }
 }
