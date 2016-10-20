@@ -13,6 +13,8 @@ protocol ListingsCollectionHandlerDelegate: class, ListingsCollectionHeaderViewD
     func didSelect(_ listing: Listing)
     func refresh()
     func hasListingsButNoneMatchFilter() -> Bool
+    func shouldAllowPullToRefresh() -> Bool
+    func areListingsFromSearch() -> Bool
 }
 
 class ListingsCollectionHandler: ListingCollectionHandler {
@@ -28,15 +30,21 @@ class ListingsCollectionHandler: ListingCollectionHandler {
     
     weak var delegate: ListingsCollectionHandlerDelegate!
     
+    var isCollectionViewSet: Bool {
+        return collectionView != nil
+    }
+    
     override func onDidSet(collectionView: UICollectionView) {
         super.onDidSet(collectionView: collectionView)
         
-        refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(onRefresh), for: .valueChanged)
-        refreshControl.clipsToBounds = true
-        
-        collectionView.addSubview(refreshControl)
-        collectionView.sendSubview(toBack: refreshControl)
+        if delegate.shouldAllowPullToRefresh() {
+            refreshControl = UIRefreshControl()
+            refreshControl.addTarget(self, action: #selector(onRefresh), for: .valueChanged)
+            refreshControl.clipsToBounds = true
+            
+            collectionView.addSubview(refreshControl)
+            collectionView.sendSubview(toBack: refreshControl)
+        }
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.sectionHeadersPinToVisibleBounds = true
@@ -54,6 +62,8 @@ class ListingsCollectionHandler: ListingCollectionHandler {
     }
     
     func onRefresh() {
+        guard delegate.shouldAllowPullToRefresh() else { return }
+        
         isRefreshing = true
         
         delegate.refresh()
@@ -63,6 +73,7 @@ class ListingsCollectionHandler: ListingCollectionHandler {
     }
     
     func endRefreshingAndReloadData() {
+        guard delegate.shouldAllowPullToRefresh() else { return }
         guard let timer = endRefreshingAfterMinimumDurationTimer else { return }
         timer.execute() { [weak self] in
             self?.isRefreshing = false
@@ -78,9 +89,17 @@ class ListingsCollectionHandler: ListingCollectionHandler {
         backgroundView.backgroundColor = UIColor.clear
         
         let noListingsLabel = UILabel()
+        
+        var text: String = ""
+        if delegate.areListingsFromSearch() {
+            text = delegate.hasListingsButNoneMatchFilter() ?  Strings.Listings.noListingsMatchingSearchAfterFilterAppliedLabelText.rawValue : Strings.Listings.noListingsInCommunityMatchingSearchLabelText.rawValue
+        } else {
+            text = delegate.hasListingsButNoneMatchFilter() ?  Strings.Listings.noListingsAfterFilterAppliedLabelText.rawValue : Strings.Listings.noListingsInCommunityLabelText.rawValue
+        }
+        noListingsLabel.text = text
+        
         noListingsLabel.numberOfLines = 0
         noListingsLabel.backgroundColor = UIColor.clear
-        noListingsLabel.text = delegate.hasListingsButNoneMatchFilter() ?  Strings.Listings.noListingsAfterFilterAppliedLabelText.rawValue : Strings.Listings.noListingsInCommunityLabelText.rawValue
         noListingsLabel.textColor = UIColor.darkGray
         noListingsLabel.font = UIFont.systemFont(ofSize: 15)
         noListingsLabel.textAlignment = .center

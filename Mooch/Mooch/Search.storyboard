@@ -16,7 +16,19 @@
                     <view key="view" contentMode="scaleToFill" id="fys-6k-vb5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOk-kz-c4J">
+                                <state key="normal" title="Push Listings"/>
+                                <connections>
+                                    <action selector="onPushListings" destination="1sK-v5-Jh2" eventType="touchUpInside" id="hvf-gY-hKf"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bOk-kz-c4J" firstAttribute="centerX" secondItem="fys-6k-vb5" secondAttribute="centerX" id="Iqb-zU-xcn"/>
+                            <constraint firstItem="bOk-kz-c4J" firstAttribute="centerY" secondItem="fys-6k-vb5" secondAttribute="centerY" id="VIz-PU-GUx"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zW3-bB-hEm" userLabel="First Responder" sceneMemberID="firstResponder"/>

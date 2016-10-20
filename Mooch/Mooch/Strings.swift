@@ -114,7 +114,9 @@ enum Strings {
         case navigationItemTitle = "Mooch"
         
         case noListingsInCommunityLabelText = "There are currently no listings in this community"
+        case noListingsInCommunityMatchingSearchLabelText = "There are currently no listings in this community matching this search"
         case noListingsAfterFilterAppliedLabelText = "There are currently no listings in this community matching the filters applied"
+        case noListingsMatchingSearchAfterFilterAppliedLabelText = "There are currently no listings in this community matching this search and the filters applied"
     }
     
     enum MoochAPI: String {

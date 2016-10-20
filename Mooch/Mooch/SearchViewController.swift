@@ -21,12 +21,16 @@ class SearchViewController: MoochViewController {
     
     // MARK: Actions
     
+    @IBAction func onPushListings() {
+        pushListingsViewController(with: CommunityListingsManager.sharedInstance.listingsInCurrentCommunity)
+    }
+    
+    
     // MARK: Public methods
     
     override func setup() {
         super.setup()
         
-        navigationController?.setNavigationBarHidden(true, animated: false)
         tabBarItem = SearchViewController.tabBarItem()
         
         updateUI()
@@ -48,4 +52,35 @@ class SearchViewController: MoochViewController {
     
     // MARK: Private methods
 
+    func pushListingsViewController(with listings: [Listing]) {
+        guard let navC = navigationController else { return }
+        
+        let vc = ListingsViewController.instantiateFromStoryboard()
+        vc.mode = .nestedInSearch
+        vc.listings = listings
+        
+        navC.pushViewController(vc, animated: true)
+    }
+    
+    //Completely resets the UI and state of the view controller
+    fileprivate func resetForStateChange() {
+        guard let navC = navigationController else { return }
+        navC.popToRootViewController(animated: false)
+        
+        //TODO: clear out and reset any search state
+    }
+}
+
+extension SearchViewController: LocalUserStateChangeListener {
+    
+    func localUserStateDidChange(to: LocalUserManager.LocalUserState) {
+        resetForStateChange()
+    }
+}
+
+extension SearchViewController: CommunityChangeListener {
+    
+    func communityDidChange() {
+        resetForStateChange()
+    }
 }

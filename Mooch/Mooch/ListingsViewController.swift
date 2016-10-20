@@ -15,6 +15,11 @@ class ListingsViewController: MoochViewController {
         case loaded
     }
     
+    enum Mode {
+        case independent    //When its being shown by itself; has to get its own listings
+        case nestedInSearch //When its being used by another view controller; given its listings
+    }
+    
     
     // MARK: Public variables
     
@@ -24,7 +29,28 @@ class ListingsViewController: MoochViewController {
         }
     }
     
-    var listings = [Listing]()
+    //The context the view controller is being used in
+    var mode: Mode = .independent
+    
+    var listings: [Listing] {
+        get {
+            switch mode {
+            case .independent:
+                return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+            case .nestedInSearch:
+                return _givenListings
+            }
+        }
+        set {
+            //Listings can't be set when not in .nestedInSearch mode
+            guard mode == .nestedInSearch else { return }
+            _givenListings = newValue
+            
+            if let collectionHandler = collectionHandler, collectionHandler.isCollectionViewSet {
+                collectionHandler.reloadData()
+            }
+        }
+    }
     
     
     // MARK: Private variables
@@ -36,7 +62,6 @@ class ListingsViewController: MoochViewController {
     
     fileprivate var filterApplied: ListingFilter?
     
-    
     fileprivate var filteredListings: [Listing] {
         guard let filter = filterApplied else {
             return [Listing]()
@@ -44,6 +69,9 @@ class ListingsViewController: MoochViewController {
         
         return ListingProcessingHandler.filter(listings: listings, with: filter)
     }
+    
+    //Used for the listings variable when in .nested mode
+    private var _givenListings = [Listing]()
 
     
     // MARK: Actions
@@ -61,13 +89,23 @@ class ListingsViewController: MoochViewController {
         return UITabBarItem(title: Strings.TabBar.home.rawValue, image: nil, selectedImage: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //The data needs to be reloaded when in .nestedInSearch mode because _givenListings is initially mil
+        if mode == .nestedInSearch {
+            collectionHandler.reloadData()
+        }
+    }
+    
     override func setup() {
         super.setup()
         
-        loadListings(isRefreshing: false)
-        
-        tabBarItem = ListingsViewController.tabBarItem()
-        setupNavigationBar()
+        if mode == .independent {
+            loadListings(isRefreshing: false)
+            tabBarItem = ListingsViewController.tabBarItem()
+            setupNavigationBar()
+        }
         
         updateUI()
     }
@@ -80,6 +118,7 @@ class ListingsViewController: MoochViewController {
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
+        guard mode == .independent else { return }
         guard let nav = navigationController else { return }
         
         nav.navigationBar.isHidden = false
@@ -88,7 +127,7 @@ class ListingsViewController: MoochViewController {
     }
     
     fileprivate func loadListings(isRefreshing: Bool) {
-        guard let userCommunityId = LocalUserManager.sharedInstance.userCommunityId else { return }
+        guard mode == .independent else { return }
         
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
@@ -97,8 +136,8 @@ class ListingsViewController: MoochViewController {
             showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
         }
         
-        MoochAPI.GETListings(communityId: userCommunityId) { listings, error in
-            guard let newListings = listings else {
+        CommunityListingsManager.sharedInstance.loadListingsForCurrentCommunityAndUser() { success, error in
+            guard success else {
                 //If refreshing and the overlay isn't shown, this method does nothing
                 self.hideLoadingOverlayView(animated: true)
                 
@@ -107,14 +146,9 @@ class ListingsViewController: MoochViewController {
                 return
             }
             
-            //Filter to only show listings this user hasn't posted
-            var listingsNotPostedByThisUser = newListings
-            if let localUser = LocalUserManager.sharedInstance.localUser {
-                listingsNotPostedByThisUser = listingsNotPostedByThisUser.filter({$0.owner.id != localUser.user.id})
-            }
-            
-            //Must be set before reloading data
-            self.listings = listingsNotPostedByThisUser
+            //
+            //Note: The new listings can be referenced by: CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+            //
             
             if self.collectionHandler.isRefreshing {
                 self.collectionHandler.endRefreshingAndReloadData()
@@ -158,6 +192,15 @@ class ListingsViewController: MoochViewController {
         
         present(navC, animated: true, completion: nil)
     }
+    
+    //Completely resets the UI and state of the view controller
+    fileprivate func resetForStateChange() {
+        guard mode == .independent else { return }
+        guard let navC = navigationController else { return }
+        navC.popToRootViewController(animated: false)
+        filterApplied = nil
+        loadListings(isRefreshing: false)
+    }
 }
 
 extension ListingsViewController: ListingsCollectionHandlerDelegate {
@@ -187,6 +230,15 @@ extension ListingsViewController: ListingsCollectionHandlerDelegate {
         
         return filteredListings.count == 0 && listings.count > 0
     }
+    
+    func shouldAllowPullToRefresh() -> Bool {
+        //Only allowed when not nested in search. This is to simplify
+        return mode == .independent
+    }
+    
+    func areListingsFromSearch() -> Bool {
+        return mode == .nestedInSearch
+    }
 }
 
 extension ListingsViewController: ListingsCollectionHeaderViewDelegate {
@@ -212,19 +264,13 @@ extension ListingsViewController: ListingsFilterViewControllerDelegate {
 extension ListingsViewController: LocalUserStateChangeListener {
     
     func localUserStateDidChange(to: LocalUserManager.LocalUserState) {
-        guard let navC = navigationController else { return }
-        navC.popToRootViewController(animated: false)
-        filterApplied = nil
-        loadListings(isRefreshing: false)
+        resetForStateChange()
     }
 }
 
 extension ListingsViewController: CommunityChangeListener {
     
     func communityDidChange() {
-        guard let navC = navigationController else { return }
-        navC.popToRootViewController(animated: false)
-        filterApplied = nil
-        loadListings(isRefreshing: false)
+        resetForStateChange()
     }
 }

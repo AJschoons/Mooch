@@ -33,6 +33,7 @@
 		811967731DB89E9C00D085C7 /* ListingFilterOptionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967721DB89E9C00D085C7 /* ListingFilterOptionPickerViewController.swift */; };
 		811967751DB9245F00D085C7 /* ListingsPriceFilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967741DB9245F00D085C7 /* ListingsPriceFilterTableViewCell.swift */; };
 		811967771DB9371900D085C7 /* ListingProcessingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967761DB9371900D085C7 /* ListingProcessingHandler.swift */; };
+		811967791DB9529700D085C7 /* CommunityListingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967781DB9529700D085C7 /* CommunityListingsManager.swift */; };
 		812661F91DA7361500ECD64E /* GETCategories.json in Sources */ = {isa = PBXBuildFile; fileRef = 812661F81DA7361500ECD64E /* GETCategories.json */; };
 		812661FB1DA736C700ECD64E /* POSTLogin.json in Sources */ = {isa = PBXBuildFile; fileRef = 812661FA1DA736C700ECD64E /* POSTLogin.json */; };
 		812BBC4D1DB456E900FED998 /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812BBC4C1DB456E900FED998 /* RoundedView.swift */; };
@@ -180,6 +181,7 @@
 		811967721DB89E9C00D085C7 /* ListingFilterOptionPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingFilterOptionPickerViewController.swift; sourceTree = "<group>"; };
 		811967741DB9245F00D085C7 /* ListingsPriceFilterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingsPriceFilterTableViewCell.swift; sourceTree = "<group>"; };
 		811967761DB9371900D085C7 /* ListingProcessingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingProcessingHandler.swift; sourceTree = "<group>"; };
+		811967781DB9529700D085C7 /* CommunityListingsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityListingsManager.swift; sourceTree = "<group>"; };
 		812661F81DA7361500ECD64E /* GETCategories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETCategories.json; sourceTree = "<group>"; };
 		812661FA1DA736C700ECD64E /* POSTLogin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = POSTLogin.json; sourceTree = "<group>"; };
 		812BBC4C1DB456E900FED998 /* RoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 			children = (
 				810A82311D7A11780086B40F /* AppDelegate.swift */,
 				81D2A0A91DB7C10400800747 /* CommunityManager.swift */,
+				811967781DB9529700D085C7 /* CommunityListingsManager.swift */,
 				816623A51DA048FB009AE72B /* ListingCategoryManager.swift */,
 				8149E7BC1D84CC93000F0C37 /* LocalUserManager.swift */,
 				81CBF0BD1DA750C70066DA75 /* ImageManager.swift */,
@@ -1011,6 +1014,7 @@
 				8149E7C21D8609BE000F0C37 /* ListingTableViewCell.swift in Sources */,
 				817CA09A1DA4363100489374 /* LoadingOverlayView.swift in Sources */,
 				81CBF0BE1DA750C70066DA75 /* ImageManager.swift in Sources */,
+				811967791DB9529700D085C7 /* CommunityListingsManager.swift in Sources */,
 				81A09FDC1D9B350B0021D3FA /* PhotoAddingView.swift in Sources */,
 				81CBF0CB1DAB57C70066DA75 /* EditProfileTextCell.swift in Sources */,
 				811967731DB89E9C00D085C7 /* ListingFilterOptionPickerViewController.swift in Sources */,
