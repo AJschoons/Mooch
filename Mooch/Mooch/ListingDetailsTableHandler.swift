@@ -20,7 +20,7 @@ class ListingDetailsTableHandler: NSObject {
     enum CellType {
         case listing
         case action
-        case ratingAction
+        case listingDescription
     }
     
     // MARK: Public variables
@@ -55,9 +55,9 @@ class ListingDetailsTableHandler: NSObject {
         switch cellType {
         case .listing:
             return ListingDetailsListingCell.Identifier
-        case .ratingAction:
-            return ListingDetailsRatingActionCell.Identifier
-        default:
+        case .listingDescription:
+            return ListingDetailsListingDescriptionCell.Identifier
+        case .action:
             return ListingDetailsActionCell.Identifier
         }
     }
@@ -67,8 +67,8 @@ class ListingDetailsTableHandler: NSObject {
         switch fieldType {
         case .listing:
             return .listing
-        case .rateSeller:
-            return .ratingAction
+        case .listingDescription:
+            return .listingDescription
         default:
             return .action
         }
@@ -79,23 +79,25 @@ class ListingDetailsTableHandler: NSObject {
     }
     
     fileprivate func configure(listingCell: ListingDetailsListingCell, atIndexPath indexPath: IndexPath) {
+        let currentMode = delegate.getConfiguration().mode
         let listing = delegate.getListing()
         
         listingCell.titleLabel.text = listing.title
-        listingCell.descriptionLabel.text = listing.description
-        listingCell.priceLabel.text = "\(Strings.ListingDetails.listingCellPriceLabelFirstPart.rawValue)\(listing.priceString)"
-        listingCell.quantityLabel.text = "\(Strings.ListingDetails.listingCellQuantityLabelFirstPart.rawValue)\(listing.quantity)"
+        listingCell.postedLabel.text = listing.daysSincePostedString
+        listingCell.quantityLabel.text = String(listing.quantity)
+        listingCell.priceLabel.text = listing.priceString
         
-        var categoryLabelText: String
-        if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.categoryId) {
-            categoryLabelText = listingCategory.name
-        } else {
-            categoryLabelText = Strings.SharedErrors.invalidCategory.rawValue
+        let showAlertBanner = currentMode == .viewingOtherUsersCompletedListing || currentMode == .viewingThisUsersCompletedListing
+        listingCell.alertBannerView.isHidden = !showAlertBanner
+        if showAlertBanner {
+            if currentMode == .viewingThisUsersCompletedListing {
+                listingCell.alertBannerLabel.text = Strings.ListingDetails.alertBannerLabelListingSold.rawValue
+            } else if currentMode == .viewingOtherUsersCompletedListing {
+                listingCell.alertBannerLabel.text = Strings.ListingDetails.alertBannerLabelListingEnded.rawValue
+            }
         }
-        listingCell.categoryLabel.text = categoryLabelText
         
         listingCell.tag = indexPath.row
-        listingCell.photoImageView.image = ImageManager.PlaceholderImage
         ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { image in
             //Make sure the cell hasn't been reused by the time the image is downloaded
             guard listingCell.tag == indexPath.row else { return }
@@ -113,19 +115,31 @@ class ListingDetailsTableHandler: NSObject {
         actionCell.actionButton.setTitle(title, for: .normal)
     }
     
+    fileprivate func configure(listingDetailsListingDescriptionCell: ListingDetailsListingDescriptionCell) {
+        let listing = delegate.getListing()
+        
+        let descriptionText = (listing.description != nil) ? listing.description! : Strings.ListingDetails.listingDesriptionNoDescription.rawValue
+        listingDetailsListingDescriptionCell.descriptionLabel.text = descriptionText
+        
+        listingDetailsListingDescriptionCell.bottomSeperator.isHidden = delegate.getConfiguration().isListingDescriptionLastField()
+    }
+    
     //Returns a string for a button's text corresponding to the field type
     fileprivate func actionString(forFieldType fieldType: FieldType) -> String {
+        
         switch fieldType {
-        case .addAnotherListing:
-            return Strings.ListingDetails.fieldTypeAddAnotherListingActionString.rawValue
         case .contactSeller:
             return Strings.ListingDetails.fieldTypeContactSellerActionString.rawValue
-        case .deleteListing:
-            return Strings.ListingDetails.fieldTypeDeleteListingActionString.rawValue
-        case .editListing:
-            return Strings.ListingDetails.fieldTypeEditListingActionString.rawValue
+            
         case .viewSellerProfile:
             return Strings.ListingDetails.fieldTypeViewSellerProfileActionString.rawValue
+            
+        case .markAsSold:
+            return Strings.ListingDetails.fieldTypeMarkAsSoldActionString.rawValue
+            
+        case .endListing:
+            return Strings.ListingDetails.fieldTypeEndListingActionString.rawValue
+            
         default:
             return ""
         }
@@ -146,9 +160,10 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
         
         if let listingCell = cell as? ListingDetailsListingCell {
             configure(listingCell: listingCell, atIndexPath: indexPath)
-        }
-        if let actionCell = cell as? ListingDetailsActionCell {
+        } else if let actionCell = cell as? ListingDetailsActionCell {
             configure(actionCell: actionCell, forFieldType: fieldTypeForRow)
+        } else if let listingDescriptionCell = cell as? ListingDetailsListingDescriptionCell {
+            configure(listingDetailsListingDescriptionCell: listingDescriptionCell)
         }
         
         return cell

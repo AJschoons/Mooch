@@ -64,6 +64,12 @@ struct Listing {
         return "$" + String(format: "%.2f", price)
     }
     
+    var daysSincePostedString: String {
+        let numberOfDaysSincePosted = daysFromTodaySince(previousDate: createdAt)
+        let daysText = numberOfDaysSincePosted > 1 ? "days" : "day"
+        return "\(numberOfDaysSincePosted) \(daysText) ago"
+    }
+    
     //Designated initializer
     init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int) {
         self.id = id
