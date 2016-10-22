@@ -11,14 +11,6 @@ import UIKit
 //Class for using the camera to take a picture
 class CameraViewController: UIImagePickerController {
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .all
-    }
-    
-    override var shouldAutorotate: Bool {
-        return true
-    }
-    
     func setStatusBar(hidden: Bool) {
         let animation: UIStatusBarAnimation = hidden ? .slide : .none
         UIApplication.shared.setStatusBarHidden(hidden, with: animation)

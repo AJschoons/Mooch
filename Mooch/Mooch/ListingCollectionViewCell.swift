@@ -23,9 +23,11 @@ class ListingCollectionViewCell: UICollectionViewCell {
     
     func set(photo: UIImage?) {
         guard let photo = photo else {
+            gradientView.isHidden = true
             imageView.image = nil
             return
         }
+        gradientView.isHidden = false
         imageView.image = photo
     }
     

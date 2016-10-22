@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ListingDetailsTableHandlerDelegate: class {
+protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate {
     func getConfiguration() -> ListingDetailsViewController.Configuration
     func getListing() -> Listing
 }
@@ -19,8 +19,9 @@ class ListingDetailsTableHandler: NSObject {
     
     enum CellType {
         case listing
-        case action
         case listingDescription
+        case aboutSeller
+        case action
     }
     
     // MARK: Public variables
@@ -31,7 +32,9 @@ class ListingDetailsTableHandler: NSObject {
         didSet {
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
-            tableView.estimatedRowHeight = 44
+            
+            //Make the table view inset for the nav bar
+            tableView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
         }
     }
     
@@ -53,10 +56,16 @@ class ListingDetailsTableHandler: NSObject {
     fileprivate func cellIdentifer(forCellType cellType: CellType) -> String {
         
         switch cellType {
+            
         case .listing:
             return ListingDetailsListingCell.Identifier
+            
         case .listingDescription:
             return ListingDetailsListingDescriptionCell.Identifier
+            
+        case .aboutSeller:
+            return ListingDetailsSellerCell.Identifier
+            
         case .action:
             return ListingDetailsActionCell.Identifier
         }
@@ -65,10 +74,16 @@ class ListingDetailsTableHandler: NSObject {
     //Returns the cell type to be used based on the field type
     fileprivate func cellType(forFieldType fieldType: FieldType) -> CellType {
         switch fieldType {
+            
         case .listing:
             return .listing
+            
         case .listingDescription:
             return .listingDescription
+            
+        case .aboutSeller:
+            return .aboutSeller
+            
         default:
             return .action
         }
@@ -109,10 +124,25 @@ class ListingDetailsTableHandler: NSObject {
     
     fileprivate func configure(actionCell: ListingDetailsActionCell, forFieldType fieldType: FieldType) {
         actionCell.fieldType = fieldType
-        actionCell.delegate = self
+        actionCell.delegate = delegate
         
         let title = actionString(forFieldType: fieldType)
         actionCell.actionButton.setTitle(title, for: .normal)
+        
+        let backgroundColor = ThemeColors.listingDetailsActionBackground.color()
+        let textColor = ThemeColors.listingDetailsActionText.color()
+        
+        if fieldType == delegate.getConfiguration().firstActionFieldType() {
+            actionCell.actionButton.backgroundColor = backgroundColor
+            actionCell.actionButton.setTitleColor(textColor, for: UIControlState.normal)
+        } else {
+            //The buttons that aren't the first button get styled with the a background of the first button text color,
+            //and a border/text color of the first button's background color
+            actionCell.actionButton.backgroundColor = textColor
+            actionCell.actionButton.setTitleColor(backgroundColor, for: UIControlState.normal)
+            actionCell.actionButton.borderWidth = 2.0
+            actionCell.actionButton.borderColor = backgroundColor
+        }
     }
     
     fileprivate func configure(listingDetailsListingDescriptionCell: ListingDetailsListingDescriptionCell) {
@@ -124,6 +154,24 @@ class ListingDetailsTableHandler: NSObject {
         listingDetailsListingDescriptionCell.bottomSeperator.isHidden = delegate.getConfiguration().isListingDescriptionLastField()
     }
     
+    fileprivate func configure(listingDetailsSellerCell: ListingDetailsSellerCell, atIndexPath indexPath: IndexPath) {
+        let listing = delegate.getListing()
+        
+        listingDetailsSellerCell.sellerNameLabel.text = listing.owner.name
+        listingDetailsSellerCell.sellerImageView.image = UIImage(named: "defaultProfilePhoto")
+        
+        if let ownerThumbnailPictureURL = listing.owner.thumbnailPictureURL {
+            listingDetailsSellerCell.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: ownerThumbnailPictureURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard listingDetailsSellerCell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                listingDetailsSellerCell.sellerImageView.image = image
+            }
+        }
+    }
+    
     //Returns a string for a button's text corresponding to the field type
     fileprivate func actionString(forFieldType fieldType: FieldType) -> String {
         
@@ -133,9 +181,6 @@ class ListingDetailsTableHandler: NSObject {
             
         case .viewSellerProfile:
             return Strings.ListingDetails.fieldTypeViewSellerProfileActionString.rawValue
-            
-        case .markAsSold:
-            return Strings.ListingDetails.fieldTypeMarkAsSoldActionString.rawValue
             
         case .endListing:
             return Strings.ListingDetails.fieldTypeEndListingActionString.rawValue
@@ -164,6 +209,8 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
             configure(actionCell: actionCell, forFieldType: fieldTypeForRow)
         } else if let listingDescriptionCell = cell as? ListingDetailsListingDescriptionCell {
             configure(listingDetailsListingDescriptionCell: listingDescriptionCell)
+        } else if let listingSellerCell = cell as? ListingDetailsSellerCell {
+            configure(listingDetailsSellerCell: listingSellerCell, atIndexPath: indexPath)
         }
         
         return cell
@@ -172,11 +219,23 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
 
 extension ListingDetailsTableHandler: UITableViewDelegate {
     
-}
-
-extension ListingDetailsTableHandler: ListingDetailsActionCellDelegate {
-    
-    func onActionButton(forFieldType fieldType: ListingDetailsViewController.Configuration.FieldType) {
-        print("received button action for field type: \(fieldType)")
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        let fieldType = self.fieldType(forIndexPath: indexPath)
+        let cellType = self.cellType(forFieldType: fieldType)
+        
+        switch cellType {
+            
+        case .listing:
+            return ListingDetailsListingCell.EstimatedHeight
+        
+        case .listingDescription:
+            return ListingDetailsListingDescriptionCell.EstimatedHeight
+            
+        case .action:
+            return ListingDetailsActionCell.EstimatedHeight
+            
+        case .aboutSeller:
+            return ListingDetailsSellerCell.EstimatedHeight
+        }
     }
 }

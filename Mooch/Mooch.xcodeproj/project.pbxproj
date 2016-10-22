@@ -99,6 +99,8 @@
 		81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */; };
 		81A09FE01D9E1D3A0021D3FA /* Listings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81A09FDF1D9E1D3A0021D3FA /* Listings.storyboard */; };
 		81A09FEB1D9F16230021D3FA /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FEA1D9F16230021D3FA /* CameraViewController.swift */; };
+		81A1E1A11DBAF98600041A78 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A1E1A01DBAF98600041A78 /* CircleImageView.swift */; };
+		81A1E1A41DBAFDF800041A78 /* ListingDetailsSellerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A1E1A31DBAFDF800041A78 /* ListingDetailsSellerCell.swift */; };
 		81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81CBF0BE1DA750C70066DA75 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0BD1DA750C70066DA75 /* ImageManager.swift */; };
@@ -244,6 +246,8 @@
 		81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		81A09FDF1D9E1D3A0021D3FA /* Listings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Listings.storyboard; sourceTree = "<group>"; };
 		81A09FEA1D9F16230021D3FA /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		81A1E1A01DBAF98600041A78 /* CircleImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
+		81A1E1A31DBAFDF800041A78 /* ListingDetailsSellerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetailsSellerCell.swift; sourceTree = "<group>"; };
 		81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		81CBF0BD1DA750C70066DA75 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		81CBF0BF1DAB4D220066DA75 /* EditProfileTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableHandler.swift; sourceTree = "<group>"; };
@@ -542,10 +546,8 @@
 		8149E7C41D865D97000F0C37 /* Listing Details */ = {
 			isa = PBXGroup;
 			children = (
+				81A1E1A21DBAFDD400041A78 /* Cells */,
 				8149E7C51D865E2D000F0C37 /* ListingDetails.storyboard */,
-				814DB9DA1D933D85006F34E9 /* ListingDetailsActionCell.swift */,
-				814DB9D81D933D5A006F34E9 /* ListingDetailsListingCell.swift */,
-				814DB9DC1D933D9D006F34E9 /* ListingDetailsListingDescriptionCell.swift */,
 				814DB9D61D933B89006F34E9 /* ListingDetailsTableHandler.swift */,
 				8149E7C71D865E5A000F0C37 /* ListingDetailsViewController.swift */,
 			);
@@ -565,6 +567,7 @@
 		8149E7CE1D870156000F0C37 /* Custom Elements */ = {
 			isa = PBXGroup;
 			children = (
+				81A1E1A01DBAF98600041A78 /* CircleImageView.swift */,
 				81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */,
 				81CBF0C51DAB53010066DA75 /* EditProfileTextField.swift */,
 				81F21A191DB4153000D442F8 /* GradientView.swift */,
@@ -654,6 +657,17 @@
 				81A09FEA1D9F16230021D3FA /* CameraViewController.swift */,
 			);
 			name = Camera;
+			sourceTree = "<group>";
+		};
+		81A1E1A21DBAFDD400041A78 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				814DB9DA1D933D85006F34E9 /* ListingDetailsActionCell.swift */,
+				814DB9D81D933D5A006F34E9 /* ListingDetailsListingCell.swift */,
+				814DB9DC1D933D9D006F34E9 /* ListingDetailsListingDescriptionCell.swift */,
+				81A1E1A31DBAFDF800041A78 /* ListingDetailsSellerCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		81CBF0C71DAB57130066DA75 /* Cells */ = {
@@ -1059,10 +1073,12 @@
 				81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
 				8149E7D01D87017D000F0C37 /* RoundedButton.swift in Sources */,
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
+				81A1E1A11DBAF98600041A78 /* CircleImageView.swift in Sources */,
 				814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */,
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
 				81F21A171DB413C500D442F8 /* ListingCollectionViewCell.swift in Sources */,
 				817CA0921DA2BFD500489374 /* LoginTextHandler.swift in Sources */,
+				81A1E1A41DBAFDF800041A78 /* ListingDetailsSellerCell.swift in Sources */,
 				815BCF161D805EAE0022F806 /* LocalUser.swift in Sources */,
 				81CBF0C91DAB57470066DA75 /* EditProfilePhotoCell.swift in Sources */,
 				815BCF031D7E77E70022F806 /* Errors.swift in Sources */,

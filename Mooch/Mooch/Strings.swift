@@ -101,7 +101,6 @@ enum Strings {
         
         case fieldTypeContactSellerActionString = "Contact Seller"
         case fieldTypeViewSellerProfileActionString = "View Seller Profile"
-        case fieldTypeMarkAsSoldActionString = "Mark As Sold"
         case fieldTypeEndListingActionString = "End Listing"
         
         case listingDesriptionNoDescription = "No description provided"

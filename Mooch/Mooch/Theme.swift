@@ -12,12 +12,21 @@ enum ThemeColors {
     
     case formSeperator
     
+    case listingDetailsActionBackground
+    case listingDetailsActionText
+    
     //Returns the Red, Green, Blue ints that should get divided by 255. Also the alpha, from 0.0-1.0
     private func colorRGBA() -> (Int, Int, Int, Float) {
         switch self {
         
         case .formSeperator:
-            return (170, 170, 170, 1.0)
+            return (200, 200, 200, 1.0)
+            
+        case .listingDetailsActionBackground:
+            return (85, 85, 85, 1.0)
+            
+        case .listingDetailsActionText:
+            return (255, 255, 255, 1.0)
         }
     }
     
