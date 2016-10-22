@@ -76,6 +76,9 @@ enum Strings {
     enum InitialLoading: String {
         case couldNotDownloadInitialDataAlertTitle = "Problem Connecting to Mooch"
         case couldNotDownloadInitialDataAlertMessage = "We were unable to download the data needed to launch"
+        
+        case loadingText = "Loading"
+        case failedPushNotificationRegistrationText = "Mooch requires push notifications to be enabled.\n\nPlease enable them at:\nSettings > Notifications > Mooch\n\nThen restart the app"
     }
     
     enum Login: String {

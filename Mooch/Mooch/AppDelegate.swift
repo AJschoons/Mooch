@@ -7,6 +7,13 @@
 //
 
 import UIKit
+import UserNotifications
+
+struct Platform {
+    static var isSimulator: Bool {
+        return TARGET_OS_SIMULATOR != 0
+    }
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,12 +25,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let TransitionToTabBarDuration = 0.3
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let initialLoadingViewController = InitialLoadingViewController()
-        moochTabBarController = MoochTabBarController.instantiate()
+        PushNotificationsManager.sharedInstance.registrationDelegate = initialLoadingViewController
         
+        moochTabBarController = MoochTabBarController.instantiate()
+        PushNotificationsManager.sharedInstance.notificationsDelegate = moochTabBarController
+        
+        //Must be called after the delegates are setup
+        PushNotificationsManager.sharedInstance.handlePushNotificationLaunchOptions(launchOptions: launchOptions)
+        
+        registerForPushNotifications(application)
         
         window?.rootViewController = initialLoadingViewController
         window?.makeKeyAndVisible()
@@ -59,12 +72,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        //Reset the badge count when the app is opened
+        application.applicationIconBadgeNumber = 0
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    
+    //
+    //Push notification stuff
+    //
+    
+    //Helper method
+    private func registerForPushNotifications(_ application: UIApplication) {
+        let notificationSettings = PushNotificationsManager.sharedInstance.notificationSettings()
+        application.registerUserNotificationSettings(notificationSettings)
+    }
+    
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        if PushNotificationsManager.sharedInstance.areValid(registeredNotifcationSettings: notificationSettings) {
+            application.registerForRemoteNotifications()
+        } else {
+            PushNotificationsManager.sharedInstance.failedToRegister()
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        PushNotificationsManager.sharedInstance.successfullyRegistered(withDeviceToken: deviceTokenString)
+    }
+    
+    func application(_ : UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        PushNotificationsManager.sharedInstance.failedToRegister()
+        print("Failed to register push notifications: ", error)
+    }
+    
+    //Callback when app is opened by custom action
+    public func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [AnyHashable : Any], withResponseInfo responseInfo: [AnyHashable : Any], completionHandler: @escaping () -> Swift.Void) {
+        PushNotificationsManager.sharedInstance.handleAction(withIdentifier: identifier, forRemoteNotification: userInfo, withResponseInfo: responseInfo, completionHandler: completionHandler)
+    }
+    
+    //Callback for when a push notification is received
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Swift.Void) {
+        PushNotificationsManager.sharedInstance.handleDidReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+    }
 }
 

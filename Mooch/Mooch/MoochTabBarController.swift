@@ -286,3 +286,14 @@ extension MoochTabBarController: EditListingViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
 }
+
+extension MoochTabBarController: PushNotificationsManagerNotificationsDelegate {
+    
+    func onBuyerExchangeRequest(receivedWhenAppClosed: Bool) {
+        print("onBuyerExchangeRequest... when app closed: \(receivedWhenAppClosed)")
+    }
+    
+    func onSellerApprovedExchange(receivedWhenAppClosed: Bool) {
+        print("onSellerApprovedExchange... when app closed: \(receivedWhenAppClosed)")
+    }
+}
