@@ -130,6 +130,9 @@
 		B373681A1DA3368500014B25 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37368121DA31FF100014B25 /* ListingCategory.swift */; };
 		B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7BE1D85FC6B000F0C37 /* Listing.swift */; };
 		B38E8B1D1D8C7678002A9439 /* ListingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38E8B1C1D8C7678002A9439 /* ListingTest.swift */; };
+		B3BAF2211DBC162600ED10F0 /* ListingProcessingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967761DB9371900D085C7 /* ListingProcessingHandler.swift */; };
+		B3BAF2221DBC165600ED10F0 /* ListingFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811967701DB8996800D085C7 /* ListingFilter.swift */; };
+		B3BAF2241DBC170600ED10F0 /* searchFilterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BAF2231DBC170600ED10F0 /* searchFilterTest.swift */; };
 		C8DDB888FA80968AA36AC434 /* Pods_MoochUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */; };
 		DAC699662D2523B0ABBC3381 /* Pods_MoochTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */; };
 /* End PBXBuildFile section */
@@ -277,6 +280,7 @@
 		B37368121DA31FF100014B25 /* ListingCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategory.swift; sourceTree = "<group>"; };
 		B37368181DA335DA00014B25 /* ListingCategoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryTests.swift; sourceTree = "<group>"; };
 		B38E8B1C1D8C7678002A9439 /* ListingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTest.swift; sourceTree = "<group>"; };
+		B3BAF2231DBC170600ED10F0 /* searchFilterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = searchFilterTest.swift; sourceTree = "<group>"; };
 		DB0A3D9FB6A1E3D95ECCCD45 /* Pods-Mooch.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mooch.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mooch/Pods-Mooch.debug.xcconfig"; sourceTree = "<group>"; };
 		E49A73BAC724FE7A87D6C8A0 /* Pods-MoochUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -373,6 +377,7 @@
 		810A82451D7A11780086B40F /* MoochTests */ = {
 			isa = PBXGroup;
 			children = (
+				B3BAF2231DBC170600ED10F0 /* searchFilterTest.swift */,
 				B37368181DA335DA00014B25 /* ListingCategoryTests.swift */,
 				815BCF0A1D7E7F5C0022F806 /* CommunityTests.swift */,
 				B38E8B1C1D8C7678002A9439 /* ListingTest.swift */,
@@ -1103,10 +1108,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3BAF2221DBC165600ED10F0 /* ListingFilter.swift in Sources */,
 				B373681A1DA3368500014B25 /* ListingCategory.swift in Sources */,
 				B37368191DA335DA00014B25 /* ListingCategoryTests.swift in Sources */,
 				81CBF0D01DACA3B50066DA75 /* Strings.swift in Sources */,
 				812661F91DA7361500ECD64E /* GETCategories.json in Sources */,
+				B3BAF2211DBC162600ED10F0 /* ListingProcessingHandler.swift in Sources */,
 				815BCF1C1D8070B80022F806 /* LocalUserTests.swift in Sources */,
 				811025A51D94DFAB00C3931C /* MoochAPITests.swift in Sources */,
 				811025A11D94D73B00C3931C /* MoochAPIRouterTests.swift in Sources */,
@@ -1115,6 +1122,7 @@
 				B38E8B1B1D8C741B002A9439 /* Listing.swift in Sources */,
 				81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */,
 				815BCF081D7E7F070022F806 /* Community.swift in Sources */,
+				B3BAF2241DBC170600ED10F0 /* searchFilterTest.swift in Sources */,
 				815BCF0E1D7E83160022F806 /* UserTests.swift in Sources */,
 				811025A31D94D76800C3931C /* MoochAPI.swift in Sources */,
 				815BCF191D806F970022F806 /* LocalUser.swift in Sources */,
