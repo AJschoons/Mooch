@@ -124,6 +124,9 @@ class ListingsViewController: MoochViewController {
         nav.navigationBar.isHidden = false
         
         nav.navigationBar.topItem?.title = Strings.Listings.navigationItemTitle.rawValue
+        
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func loadListings(isRefreshing: Bool) {

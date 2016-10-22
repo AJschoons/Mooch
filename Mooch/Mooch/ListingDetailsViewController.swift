@@ -15,6 +15,8 @@ class ListingDetailsViewController: MoochViewController {
         var mode: Mode
         
         var title: String
+        var leftBarButtons: [BarButtonType]?
+        var rightBarButtons: [BarButtonType]?
         
         //The fields that should be shown
         var fields: [FieldType]
@@ -23,27 +25,51 @@ class ListingDetailsViewController: MoochViewController {
             case viewingOtherUsersListing
             case viewingThisUsersListing
             case viewingOtherUsersCompletedListing
+            case viewingThisUsersCompletedListing
+        }
+        
+        //The bar buttons that can be added
+        enum BarButtonType {
+            case edit
         }
         
         enum FieldType {
             //Information
             case listing
+            case listingDescription
+            case aboutSeller
             
-            //Actions
+            //Actions: Make sure to update isAction() when adding an action
             case contactSeller
             case viewSellerProfile
-            case rateSeller
-            case editListing
-            case deleteListing
-            case addAnotherListing
+            case endListing
+            
+            
+            func isAction() -> Bool {
+                return self == .contactSeller || self == .viewSellerProfile || self == .endListing
+            }
+        }
+        
+        func isListingDescriptionLastField() -> Bool {
+            return fields.last == .listingDescription
+        }
+        
+        func firstActionFieldType() -> FieldType? {
+            for field in fields {
+                if field.isAction() {
+                    return field
+                }
+            }
+            return nil
         }
     }
     
     // MARK: Public variables
     
-    static let DefaultViewingOtherUsersListingConfiguration = Configuration(mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, fields: [.listing, .viewSellerProfile, .contactSeller])
-    static let DefaultViewingThisUsersListingConfiguration = Configuration(mode: .viewingThisUsersListing, title: Strings.ListingDetails.title.rawValue, fields: [.listing, .editListing, .deleteListing, .addAnotherListing])
-    static let DefaultViewingOtherUsersCompletedListingConfiguration = Configuration(mode: .viewingThisUsersListing, title: Strings.ListingDetails.title.rawValue, fields: [.listing, .viewSellerProfile, .rateSeller])
+    static let DefaultViewingOtherUsersListingConfiguration = Configuration(mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .contactSeller, .viewSellerProfile, .listingDescription, .aboutSeller])
+    static let DefaultViewingThisUsersListingConfiguration = Configuration(mode: .viewingThisUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: [.edit], fields: [.listing, .endListing, .listingDescription])
+    static let DefaultViewingOtherUsersCompletedListingConfiguration = Configuration(mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .viewSellerProfile, .listingDescription, .aboutSeller])
+    static let DefaultViewingThisUsersCompletedListingConfiguration = Configuration(mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .listingDescription])
     
     @IBOutlet var tableHandler: ListingDetailsTableHandler! {
         didSet {
@@ -62,7 +88,25 @@ class ListingDetailsViewController: MoochViewController {
     static fileprivate let StoryboardName = "ListingDetails"
     static fileprivate let Identifier = "ListingDetailsViewController"
     
+    fileprivate var editButton: UIBarButtonItem!
+    
     // MARK: Actions
+    
+    func onEditAction() {
+        print("edit action")
+    }
+    
+    func onContactSellerAction() {
+        print("contact seller action")
+    }
+    
+    func onViewSellerProfileAction() {
+        print("view seller action")
+    }
+    
+    func onEndListingAction() {
+        print("end listing action")
+    }
     
     // MARK: Public methods
     
@@ -87,7 +131,32 @@ class ListingDetailsViewController: MoochViewController {
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
+        editButton = UIBarButtonItem(image: UIImage(named: "settings"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onEditAction))
+        
         title = configuration.title
+        
+        if let leftButtons = configuration.leftBarButtons {
+            navigationItem.leftBarButtonItems = barButtons(fromTypeList: leftButtons)
+        } else {
+            navigationItem.leftBarButtonItems = nil
+        }
+        
+        if let rightButtons = configuration.rightBarButtons {
+            navigationItem.rightBarButtonItems = barButtons(fromTypeList: rightButtons)
+        } else {
+            navigationItem.rightBarButtonItems = nil
+        }
+    }
+    
+    fileprivate func barButtons(fromTypeList typeList: [Configuration.BarButtonType]) -> [UIBarButtonItem] {
+        return typeList.map({barButton(forType: $0)})
+    }
+    
+    fileprivate func barButton(forType type: Configuration.BarButtonType) -> UIBarButtonItem {
+        switch type {
+        case .edit:
+            return editButton
+        }
     }
 }
 
@@ -99,5 +168,26 @@ extension ListingDetailsViewController: ListingDetailsTableHandlerDelegate {
     
     func getListing() -> Listing {
         return listing
+    }
+}
+
+extension ListingDetailsViewController: ListingDetailsActionCellDelegate {
+    
+    func onActionButton(forFieldType fieldType: ListingDetailsViewController.Configuration.FieldType) {
+        guard fieldType.isAction() else { return }
+        switch fieldType {
+            
+        case .contactSeller:
+            onContactSellerAction()
+            
+        case .viewSellerProfile:
+            onViewSellerProfileAction()
+            
+        case .endListing:
+            onEndListingAction()
+            
+        default:
+            return
+        }
     }
 }

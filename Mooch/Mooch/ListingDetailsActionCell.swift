@@ -15,7 +15,7 @@ protocol ListingDetailsActionCellDelegate: class {
 class ListingDetailsActionCell: UITableViewCell {
     
     static let Identifier = "ListingDetailsActionCell"
-    static let EstimatedHeight: CGFloat = 44
+    static let EstimatedHeight: CGFloat = 54
     
     @IBOutlet weak var actionButton: RoundedButton!
     weak var delegate: ListingDetailsActionCellDelegate!

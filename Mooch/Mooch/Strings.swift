@@ -94,16 +94,16 @@ enum Strings {
     }
     
     enum ListingDetails: String {
-        case title = "Listing Details"
+        case alertBannerLabelListingSold = "LISTING SOLD"
+        case alertBannerLabelListingEnded = "LISTING ENDED"
         
-        case fieldTypeAddAnotherListingActionString = "Add New Listing"
-        case fieldTypeContactSellerActionString = "Claim"
-        case fieldTypeDeleteListingActionString = "Delete Listing"
-        case fieldTypeEditListingActionString = "Edit Listing"
+        case title = "View Listing"
+        
+        case fieldTypeContactSellerActionString = "Contact Seller"
         case fieldTypeViewSellerProfileActionString = "View Seller Profile"
+        case fieldTypeEndListingActionString = "End Listing"
         
-        case listingCellPriceLabelFirstPart = "Price: "
-        case listingCellQuantityLabelFirstPart = "Quantity: "
+        case listingDesriptionNoDescription = "No description provided"
     }
     
     enum Listings: String {

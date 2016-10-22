@@ -61,7 +61,16 @@ struct Listing {
     let owner: User
     
     var priceString: String {
+        guard price > 0.009 else {
+            return "Free"
+        }
         return "$" + String(format: "%.2f", price)
+    }
+    
+    var daysSincePostedString: String {
+        let numberOfDaysSincePosted = daysFromTodaySince(previousDate: createdAt)
+        let daysText = numberOfDaysSincePosted > 1 ? "days" : "day"
+        return "\(numberOfDaysSincePosted) \(daysText) ago"
     }
     
     //Designated initializer
@@ -116,7 +125,10 @@ struct Listing {
         //Optional variables
         //
         
-        let description = json[JSONMapping.description.rawValue].string
+        var description = json[JSONMapping.description.rawValue].string
+        if description != nil && description!.isEmpty {
+            description = nil
+        }
         
         var modifiedAt: Date?
         if let modifiedAtString = json[JSONMapping.modifiedAt.rawValue].string {

@@ -24,6 +24,22 @@ func isEmpty(_ string: String?) -> Bool {
     return string == ""
 }
 
+//Returns the number of days since the current date
+fileprivate let calendar = Calendar.current
+func daysFromTodaySince(previousDate: Date) -> Int {
+    let now = calendar.startOfDay(for: Date())
+    let previousDay = calendar.startOfDay(for: previousDate)
+    
+    let dayComponentSet = Set<Calendar.Component>([Calendar.Component.day])
+    let compenents = calendar.dateComponents(dayComponentSet, from: now, to: previousDay)
+    
+    guard let numberOfDays = compenents.day else {
+        return 1
+    }
+    
+    return max(numberOfDays, 1)
+}
+
 // Get the largest square portion of an image from the center
 func cropBiggestCenteredSquareImage(from image: UIImage, toLength length: CGFloat) -> UIImage {
     // Get size of current image
