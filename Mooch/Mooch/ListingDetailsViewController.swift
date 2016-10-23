@@ -10,66 +10,10 @@ import UIKit
 
 class ListingDetailsViewController: MoochViewController {
     
-    //A configuration to setup the class with
-    struct Configuration {
-        var mode: Mode
-        
-        var title: String
-        var leftBarButtons: [BarButtonType]?
-        var rightBarButtons: [BarButtonType]?
-        
-        //The fields that should be shown
-        var fields: [FieldType]
-        
-        enum Mode {
-            case viewingOtherUsersListing
-            case viewingThisUsersListing
-            case viewingOtherUsersCompletedListing
-            case viewingThisUsersCompletedListing
-        }
-        
-        //The bar buttons that can be added
-        enum BarButtonType {
-            case edit
-        }
-        
-        enum FieldType {
-            //Information
-            case listing
-            case listingDescription
-            case aboutSeller
-            
-            //Actions: Make sure to update isAction() when adding an action
-            case contactSeller
-            case viewSellerProfile
-            case endListing
-            
-            
-            func isAction() -> Bool {
-                return self == .contactSeller || self == .viewSellerProfile || self == .endListing
-            }
-        }
-        
-        func isListingDescriptionLastField() -> Bool {
-            return fields.last == .listingDescription
-        }
-        
-        func firstActionFieldType() -> FieldType? {
-            for field in fields {
-                if field.isAction() {
-                    return field
-                }
-            }
-            return nil
-        }
-    }
+    typealias Configuration = ListingDetailsConfiguration
     
     // MARK: Public variables
     
-    static let DefaultViewingOtherUsersListingConfiguration = Configuration(mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .contactSeller, .viewSellerProfile, .listingDescription, .aboutSeller])
-    static let DefaultViewingThisUsersListingConfiguration = Configuration(mode: .viewingThisUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: [.edit], fields: [.listing, .endListing, .listingDescription])
-    static let DefaultViewingOtherUsersCompletedListingConfiguration = Configuration(mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .viewSellerProfile, .listingDescription, .aboutSeller])
-    static let DefaultViewingThisUsersCompletedListingConfiguration = Configuration(mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .listingDescription])
     
     @IBOutlet var tableHandler: ListingDetailsTableHandler! {
         didSet {
@@ -106,6 +50,10 @@ class ListingDetailsViewController: MoochViewController {
     
     func onEndListingAction() {
         print("end listing action")
+    }
+    
+    func onDidAcceptBuyer(_ buyer: User) {
+        print("did accept buyer ", buyer)
     }
     
     // MARK: Public methods
@@ -162,12 +110,12 @@ class ListingDetailsViewController: MoochViewController {
 
 extension ListingDetailsViewController: ListingDetailsTableHandlerDelegate {
     
-    func getConfiguration() -> ListingDetailsViewController.Configuration {
+    func getConfiguration() -> Configuration {
         return configuration
     }
     
-    func getListing() -> Listing {
-        return listing
+    func tabBarHeight() -> CGFloat {
+        return (tabBarController != nil) ? tabBarController!.tabBar.frame.height : CGFloat(0.0)
     }
 }
 
@@ -189,5 +137,12 @@ extension ListingDetailsViewController: ListingDetailsActionCellDelegate {
         default:
             return
         }
+    }
+}
+
+extension ListingDetailsViewController: ListingDetailsInterestedBuyerCellDelegate {
+    
+    func didAccept(buyer: User) {
+        onDidAcceptBuyer(buyer)
     }
 }

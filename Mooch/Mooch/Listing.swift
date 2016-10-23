@@ -60,6 +60,8 @@ struct Listing {
     let communityId: Int
     let owner: User
     
+    var interestedBuyers: [User]?
+    
     var priceString: String {
         guard price > 0.009 else {
             return "Free"

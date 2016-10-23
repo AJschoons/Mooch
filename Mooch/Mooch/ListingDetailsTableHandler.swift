@@ -8,9 +8,11 @@
 
 import UIKit
 
-protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate {
-    func getConfiguration() -> ListingDetailsViewController.Configuration
-    func getListing() -> Listing
+protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate, ListingDetailsInterestedBuyerCellDelegate {
+    typealias Configuration = ListingDetailsConfiguration
+    
+    func getConfiguration() -> Configuration
+    func tabBarHeight() -> CGFloat
 }
 
 class ListingDetailsTableHandler: NSObject {
@@ -19,9 +21,11 @@ class ListingDetailsTableHandler: NSObject {
     
     enum CellType {
         case listing
+        case action
         case listingDescription
         case aboutSeller
-        case action
+        case interestedBuyersHeader
+        case interestedBuyer
     }
     
     // MARK: Public variables
@@ -33,8 +37,10 @@ class ListingDetailsTableHandler: NSObject {
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
             
-            //Make the table view inset for the nav bar
-            tableView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
+            //Make the table view inset for the nav bar and tab bar
+            let navBarHeight: CGFloat = 64.0
+            tableView.contentInset = UIEdgeInsets(top: navBarHeight, left: 0, bottom: delegate.tabBarHeight(), right: 0)
+            tableView.scrollIndicatorInsets = UIEdgeInsets(top: navBarHeight, left: 0, bottom: delegate.tabBarHeight(), right: 0)
         }
     }
     
@@ -49,7 +55,7 @@ class ListingDetailsTableHandler: NSObject {
     
     //Returns the field type that a row is displaying
     fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> FieldType {
-        return delegate!.getConfiguration().fields[indexPath.row]
+        return delegate!.getConfiguration().fieldType(forRow: indexPath.row)
     }
     
     //Returns the identifier string for
@@ -60,14 +66,20 @@ class ListingDetailsTableHandler: NSObject {
         case .listing:
             return ListingDetailsListingCell.Identifier
             
+        case .action:
+            return ListingDetailsActionCell.Identifier
+            
         case .listingDescription:
             return ListingDetailsListingDescriptionCell.Identifier
             
         case .aboutSeller:
             return ListingDetailsSellerCell.Identifier
             
-        case .action:
-            return ListingDetailsActionCell.Identifier
+        case .interestedBuyersHeader:
+            return ListingDetailsInterestedBuyersHeaderCell.Identifier
+            
+        case .interestedBuyer:
+            return ListingDetailsInterestedBuyerCell.Identifier
         }
     }
     
@@ -84,6 +96,12 @@ class ListingDetailsTableHandler: NSObject {
         case .aboutSeller:
             return .aboutSeller
             
+        case .interestedBuyersHeader:
+            return .interestedBuyersHeader
+            
+        case .interestedBuyer:
+            return .interestedBuyer
+            
         default:
             return .action
         }
@@ -94,8 +112,9 @@ class ListingDetailsTableHandler: NSObject {
     }
     
     fileprivate func configure(listingCell: ListingDetailsListingCell, atIndexPath indexPath: IndexPath) {
-        let currentMode = delegate.getConfiguration().mode
-        let listing = delegate.getListing()
+        let configuration = delegate.getConfiguration()
+        let currentMode = configuration.mode
+        let listing = configuration.listing
         
         listingCell.titleLabel.text = listing.title
         listingCell.postedLabel.text = listing.daysSincePostedString
@@ -138,15 +157,12 @@ class ListingDetailsTableHandler: NSObject {
         } else {
             //The buttons that aren't the first button get styled with the a background of the first button text color,
             //and a border/text color of the first button's background color
-            actionCell.actionButton.backgroundColor = textColor
-            actionCell.actionButton.setTitleColor(backgroundColor, for: UIControlState.normal)
-            actionCell.actionButton.borderWidth = 2.0
-            actionCell.actionButton.borderColor = backgroundColor
+            styleBorderedRoundedButton(actionCell.actionButton, borderWidth: 2.0, borderAndTextColor: backgroundColor, backgroundColor: textColor)
         }
     }
     
     fileprivate func configure(listingDetailsListingDescriptionCell: ListingDetailsListingDescriptionCell) {
-        let listing = delegate.getListing()
+        let listing = delegate.getConfiguration().listing
         
         let descriptionText = (listing.description != nil) ? listing.description! : Strings.ListingDetails.listingDesriptionNoDescription.rawValue
         listingDetailsListingDescriptionCell.descriptionLabel.text = descriptionText
@@ -155,7 +171,7 @@ class ListingDetailsTableHandler: NSObject {
     }
     
     fileprivate func configure(listingDetailsSellerCell: ListingDetailsSellerCell, atIndexPath indexPath: IndexPath) {
-        let listing = delegate.getListing()
+        let listing = delegate.getConfiguration().listing
         
         listingDetailsSellerCell.sellerNameLabel.text = listing.owner.name
         listingDetailsSellerCell.sellerImageView.image = UIImage(named: "defaultProfilePhoto")
@@ -170,6 +186,36 @@ class ListingDetailsTableHandler: NSObject {
                 listingDetailsSellerCell.sellerImageView.image = image
             }
         }
+    }
+    
+    fileprivate func configure(listingDetailsInterestedBuyerCell: ListingDetailsInterestedBuyerCell, atIndexPath indexPath: IndexPath) {
+        let interestedBuyer = delegate.getConfiguration().interestedBuyer(forRow: indexPath.row)!
+        
+        listingDetailsInterestedBuyerCell.delegate = delegate
+        listingDetailsInterestedBuyerCell.buyer = interestedBuyer
+        listingDetailsInterestedBuyerCell.buyerNameLabel.text = interestedBuyer.name
+        listingDetailsInterestedBuyerCell.buyerImageView.image = UIImage(named: "defaultProfilePhoto")
+        
+        //Opposite color styling from main action button
+        let buttonBackgroundColor = ThemeColors.listingDetailsActionText.color()
+        let buttonTextColor = ThemeColors.listingDetailsActionBackground.color()
+        styleBorderedRoundedButton(listingDetailsInterestedBuyerCell.acceptBuyerButton, borderWidth: 1.0, borderAndTextColor: buttonTextColor, backgroundColor: buttonBackgroundColor)
+        
+        if let ownerThumbnailPictureURL = interestedBuyer.thumbnailPictureURL {
+            listingDetailsInterestedBuyerCell.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: ownerThumbnailPictureURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard listingDetailsInterestedBuyerCell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                listingDetailsInterestedBuyerCell.buyerImageView.image = image
+            }
+        }
+    }
+    
+    fileprivate func configure(listingDetailsInterestedBuyersHeaderCell: ListingDetailsInterestedBuyersHeaderCell) {
+        let text = delegate.getConfiguration().noInterestedBuyersForInterestedBuyersHeader ? "Currently No Interested Buyers" : "Interested Buyers"
+        listingDetailsInterestedBuyersHeaderCell.headerLabel.text = text
     }
     
     //Returns a string for a button's text corresponding to the field type
@@ -188,6 +234,13 @@ class ListingDetailsTableHandler: NSObject {
         default:
             return ""
         }
+    }
+    
+    private func styleBorderedRoundedButton(_ button: RoundedButton, borderWidth: CGFloat, borderAndTextColor: UIColor, backgroundColor: UIColor) {
+        button.backgroundColor = backgroundColor
+        button.setTitleColor(borderAndTextColor, for: UIControlState.normal)
+        button.borderWidth = borderWidth
+        button.borderColor = borderAndTextColor
     }
 }
 
@@ -211,6 +264,10 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
             configure(listingDetailsListingDescriptionCell: listingDescriptionCell)
         } else if let listingSellerCell = cell as? ListingDetailsSellerCell {
             configure(listingDetailsSellerCell: listingSellerCell, atIndexPath: indexPath)
+        } else if let interestedBuyerCell = cell as? ListingDetailsInterestedBuyerCell {
+            configure(listingDetailsInterestedBuyerCell: interestedBuyerCell, atIndexPath: indexPath)
+        } else if let interestedBuyersHeaderCell = cell as? ListingDetailsInterestedBuyersHeaderCell {
+            configure(listingDetailsInterestedBuyersHeaderCell: interestedBuyersHeaderCell)
         }
         
         return cell
@@ -236,6 +293,12 @@ extension ListingDetailsTableHandler: UITableViewDelegate {
             
         case .aboutSeller:
             return ListingDetailsSellerCell.EstimatedHeight
+            
+        case .interestedBuyersHeader:
+            return ListingDetailsInterestedBuyersHeaderCell.EstimatedHeight
+            
+        case .interestedBuyer:
+            return ListingDetailsInterestedBuyerCell.EstimatedHeight
         }
     }
 }
