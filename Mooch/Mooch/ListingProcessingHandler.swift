@@ -17,30 +17,21 @@ class ListingProcessingHandler {
     
     //Filters the Listings array passed with the given Filter, then returns the Listings that match the Filter
     static func filter(listings: [Listing], with filter: ListingFilter) -> [Listing] {
-        let sortOrder = SortOrder()
+        //let sortOrder = SortOrder()
         var sortedLists : [Listing]
         switch filter.sortByOption{
         case .lowestPrice:
-            sortedLists = sortOrder.sortPriceLowerToHigh(listings: listings)
+            sortedLists = ListingProcessingHandler.sortPriceLowerToHigh(listings: listings)
         case .highestPrice:
-            sortedLists = sortOrder.sortPriceHighToLower(listings: listings)
+            sortedLists = ListingProcessingHandler.sortPriceHighToLower(listings: listings)
         case .newest:
-            sortedLists = sortOrder.newest(listings: listings)
+            sortedLists = ListingProcessingHandler.newest(listings: listings)
         default:
-            sortedLists = sortOrder.bestMatch(listings: listings)
+            sortedLists = ListingProcessingHandler.bestMatch(listings: listings)
         }
-
-        let SortByOrderAndSortCategory = SortCategory()
-        sortedLists = SortByOrderAndSortCategory.sortByCategory(listings: sortedLists, with: filter)
-        
-        let SortByOrderSortCategoryAndExpireDay = SortExpireDay()
-        
-        sortedLists = SortByOrderSortCategoryAndExpireDay.sortExpireDay(listings: sortedLists, with: filter)
-        
-        let SortByOrderCategoryExpireAndPriceR = SortByPriceRange()
-
-        
-        sortedLists = SortByOrderCategoryExpireAndPriceR.sortByPriceRange(listings: sortedLists, with: filter)
+        sortedLists = ListingProcessingHandler.sortByCategory(listings: sortedLists, with: filter)
+        sortedLists = ListingProcessingHandler.sortExpireDay(listings: sortedLists, with: filter)
+        sortedLists = ListingProcessingHandler.sortByPriceRange(listings: sortedLists, with: filter)
         
         return sortedLists
     }
@@ -64,34 +55,28 @@ class ListingProcessingHandler {
         return lists
     }
     
-}
-
-class SortOrder{
     //default
-    func bestMatch(listings: [Listing])->[Listing]{
+    static func bestMatch(listings: [Listing])->[Listing]{
         return listings
     }
     //sort high to lower
-    func sortPriceHighToLower(listings: [Listing])->[Listing]{
+    static func sortPriceHighToLower(listings: [Listing])->[Listing]{
         let HighToLowList = listings.sorted(by: {$0.price > $1.price})
         return HighToLowList
     }
     
     //sort lower to high
-    func sortPriceLowerToHigh(listings: [Listing])->[Listing]{
+    static func sortPriceLowerToHigh(listings: [Listing])->[Listing]{
         let LowToHighList = listings.sorted(by: {$0.price < $1.price})
         return LowToHighList
     }
     //newest
-    func newest(listings: [Listing])->[Listing]{
+    static func newest(listings: [Listing])->[Listing]{
         let newest = listings.sorted(by: {$0.createdAt > $1.createdAt})
         return newest
     }
-
-}
-
-class SortCategory{
-    func sortByCategory (listings: [Listing], with filter: ListingFilter)->[Listing]{
+    
+    static func sortByCategory (listings: [Listing], with filter: ListingFilter)->[Listing]{
         //if user does select category. means he does't care and he want all categore
         if (filter.category == nil){
             return listings
@@ -106,16 +91,13 @@ class SortCategory{
         
         return returnLists
     }
-}
-
-//
-class SortExpireDay {
-    func sortExpireDay (listings: [Listing], with filter: ListingFilter)->[Listing]{
+    
+    static func sortExpireDay (listings: [Listing], with filter: ListingFilter)->[Listing]{
         //if user does select expire day. means he does't care and whatever how long he will take
         if (filter.datePostedWithinOption == nil){
             return listings
         }
-
+        
         var day : Int = 0
         switch filter.datePostedWithinOption! {
         case .oneDay:
@@ -142,10 +124,8 @@ class SortExpireDay {
         }
         return returnLists
     }
-}
-
-class SortByPriceRange {
-    func sortByPriceRange(listings: [Listing], with filter: ListingFilter)->[Listing]{
+    
+    static func sortByPriceRange(listings: [Listing], with filter: ListingFilter)->[Listing]{
         let sortlists = listings
         var returnLists : [Listing] = []
         for item in sortlists{
@@ -155,42 +135,6 @@ class SortByPriceRange {
         }
         return returnLists
     }
-}
-
-
-extension String {
-    func replace(string:String, replacement:String) -> String {
-        return self.replacingOccurrences(of: string, with: replacement)
-    }
-    
-    func removeWhitespace() -> String {
-        return self.replace(string: " ", replacement: "")
-    }
-}
-
-extension Date {
-    func isLessThanDate(dateToCompare: Date) -> Bool {
-        var isLess = false
-        if self.compare(dateToCompare) == ComparisonResult.orderedAscending {
-            isLess = true
-        }
-        return isLess
-    }
-    
-    func isGreaterThanDate(dateToCompare: Date) -> Bool {
-        var isGreater = false
-        if self.compare(dateToCompare as Date) == ComparisonResult.orderedDescending {
-            isGreater = true
-        }
-        return isGreater
-    }
-    
-    func addDays(daysToAdd: Int) -> Date {
-        let secondsInDays: TimeInterval = Double(daysToAdd) * 60 * 60 * 24
-        let dateWithDaysAdded: Date = self.addingTimeInterval(secondsInDays)
-        return dateWithDaysAdded
-    }
-    
 }
 
 
