@@ -23,8 +23,6 @@ class ListingDetailsViewController: MoochViewController {
     
     //The configuration used to setup the class
     var configuration: Configuration!
-    
-    var listing: Listing!
 
     
     // MARK: Private variables
@@ -106,6 +104,58 @@ class ListingDetailsViewController: MoochViewController {
             return editButton
         }
     }
+    
+    fileprivate func presentPhoneNumberOptionsActionSheet() {
+        guard let phoneNumber = configuration.listing.owner.contactInformation.phone else {
+            return
+        }
+        
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let textAction = UIAlertAction(title: "Text", style: .default) { _ in
+            self.openMessagesApp(withNumber: phoneNumber)
+        }
+        let callAction = UIAlertAction(title: "Call", style: .default) { _ in
+            self.openPhoneApp(withNumber: phoneNumber)
+        }
+        let cancelAction = UIAlertAction(title: Strings.TabBar.loggedOutMyProfileTabActionSheetActionTitleCancel.rawValue, style: .cancel, handler: nil)
+        
+        actionSheet.addAction(textAction)
+        actionSheet.addAction(callAction)
+        actionSheet.addAction(cancelAction)
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    fileprivate func openMailApp(withEmail email: String) {
+        let cleanedEmail = cleanURLFormatting(forEmail: email)
+        if let emailUrl =  URL(string: "mailto:\(cleanedEmail)") {
+            UIApplication.shared.openURL(emailUrl)
+        }
+    }
+    
+    fileprivate func openPhoneApp(withNumber number: String) {
+        let cleanedNumber = cleanURLFormatting(forNumber: number)
+        if let textUrl =  URL(string: "tel:\(cleanedNumber)") {
+            UIApplication.shared.openURL(textUrl)
+        }
+    }
+    
+    fileprivate func openMessagesApp(withNumber number: String) {
+        let cleanedNumber = cleanURLFormatting(forNumber: number)
+        if let textUrl =  URL(string: "sms:\(cleanedNumber)") {
+            UIApplication.shared.openURL(textUrl)
+        }
+    }
+    
+    fileprivate func cleanURLFormatting(forNumber number: String) -> String {
+        //http://stackoverflow.com/questions/6323171/making-a-phone-call-in-an-ios-application
+        return number.components(separatedBy: CharacterSet(charactersIn: "0123456789-+()").inverted).joined(separator: "")
+    }
+    
+    fileprivate func cleanURLFormatting(forEmail email: String) -> String {
+        return email.components(separatedBy: CharacterSet.whitespacesAndNewlines).joined(separator: "")
+    }
 }
 
 extension ListingDetailsViewController: ListingDetailsTableHandlerDelegate {
@@ -124,7 +174,7 @@ extension ListingDetailsViewController: ListingDetailsActionCellDelegate {
     func onActionButton(forFieldType fieldType: ListingDetailsViewController.Configuration.FieldType) {
         guard fieldType.isAction() else { return }
         switch fieldType {
-            
+        
         case .contactSeller:
             onContactSellerAction()
             
@@ -144,5 +194,16 @@ extension ListingDetailsViewController: ListingDetailsInterestedBuyerCellDelegat
     
     func didAccept(buyer: User) {
         onDidAcceptBuyer(buyer)
+    }
+}
+
+extension ListingDetailsViewController: ListingDetailsSellerCellDelegate {
+    
+    func onPhone() {
+        presentPhoneNumberOptionsActionSheet()
+    }
+    
+    func onEmail() {
+        openMailApp(withEmail: configuration.listing.owner.contactInformation.email)
     }
 }

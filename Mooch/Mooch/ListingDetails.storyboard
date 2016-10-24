@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -281,11 +282,11 @@
                                             <outlet property="topSeperator" destination="o3s-mw-Jgw" id="mfG-mA-flK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsSellerCell" rowHeight="106" id="IpA-Vw-aPe" customClass="ListingDetailsSellerCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="527" width="375" height="106"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsSellerCell" rowHeight="203" id="IpA-Vw-aPe" customClass="ListingDetailsSellerCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="527" width="375" height="203"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IpA-Vw-aPe" id="Fqy-hf-qBu">
-                                            <frame key="frameInset" width="375" height="106"/>
+                                            <frame key="frameInset" width="375" height="203"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Seller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Sn-JE-NOa">
@@ -307,26 +308,145 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QcE-9a-TGb">
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seller contact information is hidden until the seller is contacted and approves the exchange" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pJv-3V-U0Y">
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="pJv-3V-U0Y" firstAttribute="leading" secondItem="QcE-9a-TGb" secondAttribute="leading" id="4bO-Ku-gnD"/>
+                                                        <constraint firstItem="pJv-3V-U0Y" firstAttribute="centerY" secondItem="QcE-9a-TGb" secondAttribute="centerY" id="AIS-2D-eKd"/>
+                                                        <constraint firstAttribute="trailing" secondItem="pJv-3V-U0Y" secondAttribute="trailing" id="Fj6-YN-uoF"/>
+                                                    </constraints>
+                                                </view>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0Gk-cO-pnk">
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xwZ-Dg-aHI" userLabel="Email">
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="email" translatesAutoresizingMaskIntoConstraints="NO" id="7gx-GF-Rk7">
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="7gx-GF-Rk7" secondAttribute="height" multiplier="1:1" id="JIP-73-otc"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-Ur-D6K">
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <state key="normal" title="example@email.com">
+                                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    </state>
+                                                                    <connections>
+                                                                        <action selector="onEmailButton" destination="IpA-Vw-aPe" eventType="touchUpInside" id="cPO-WJ-hU4"/>
+                                                                    </connections>
+                                                                </button>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="bottom" secondItem="I6b-Ur-D6K" secondAttribute="bottom" id="3iD-Hl-X8a"/>
+                                                                <constraint firstAttribute="bottom" secondItem="7gx-GF-Rk7" secondAttribute="bottom" id="dWy-Dq-ysQ"/>
+                                                                <constraint firstItem="7gx-GF-Rk7" firstAttribute="top" secondItem="xwZ-Dg-aHI" secondAttribute="top" id="ggY-Xg-3AH"/>
+                                                                <constraint firstItem="I6b-Ur-D6K" firstAttribute="top" secondItem="xwZ-Dg-aHI" secondAttribute="top" id="u2Y-E8-nWn"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aQ9-ek-YuP" userLabel="Phone">
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="phone" translatesAutoresizingMaskIntoConstraints="NO" id="kgr-Sq-mAX">
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="kgr-Sq-mAX" secondAttribute="height" multiplier="1:1" id="7Lb-RY-Z9V"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QYD-Jy-sAK">
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <state key="normal" title="(555) 555-5555">
+                                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    </state>
+                                                                    <connections>
+                                                                        <action selector="onPhoneButton" destination="IpA-Vw-aPe" eventType="touchUpInside" id="lyV-Vy-UgP"/>
+                                                                    </connections>
+                                                                </button>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="bottom" secondItem="kgr-Sq-mAX" secondAttribute="bottom" id="7t4-Qu-TQ3"/>
+                                                                <constraint firstAttribute="bottom" secondItem="QYD-Jy-sAK" secondAttribute="bottom" id="CXG-9r-iUj"/>
+                                                                <constraint firstItem="kgr-Sq-mAX" firstAttribute="top" secondItem="aQ9-ek-YuP" secondAttribute="top" id="OlR-Oj-P8Q"/>
+                                                                <constraint firstItem="QYD-Jy-sAK" firstAttribute="top" secondItem="aQ9-ek-YuP" secondAttribute="top" id="eKl-00-EcQ"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M5C-Od-nfH" userLabel="Address">
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home" translatesAutoresizingMaskIntoConstraints="NO" id="vD9-2l-aDG">
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="vD9-2l-aDG" secondAttribute="height" multiplier="1:1" id="zu8-aa-AzC"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJ3-pZ-auA">
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                    <state key="normal" title="Apartment #643">
+                                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    </state>
+                                                                </button>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstItem="vD9-2l-aDG" firstAttribute="top" secondItem="M5C-Od-nfH" secondAttribute="top" id="JBE-t0-lba"/>
+                                                                <constraint firstAttribute="bottom" secondItem="VJ3-pZ-auA" secondAttribute="bottom" id="Jxr-kT-iqu"/>
+                                                                <constraint firstAttribute="bottom" secondItem="vD9-2l-aDG" secondAttribute="bottom" id="VFZ-pU-fTd"/>
+                                                                <constraint firstItem="VJ3-pZ-auA" firstAttribute="top" secondItem="M5C-Od-nfH" secondAttribute="top" id="vtG-mV-LMJ"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstItem="QYD-Jy-sAK" firstAttribute="trailing" secondItem="I6b-Ur-D6K" secondAttribute="trailing" id="1FQ-Jx-aMr"/>
+                                                        <constraint firstAttribute="height" constant="80" id="Fah-4k-FBj"/>
+                                                        <constraint firstItem="kgr-Sq-mAX" firstAttribute="centerX" secondItem="7gx-GF-Rk7" secondAttribute="centerX" id="GYB-XB-9aF"/>
+                                                        <constraint firstItem="VJ3-pZ-auA" firstAttribute="trailing" secondItem="I6b-Ur-D6K" secondAttribute="trailing" id="YmY-NX-RpK"/>
+                                                        <constraint firstItem="vD9-2l-aDG" firstAttribute="centerX" secondItem="7gx-GF-Rk7" secondAttribute="centerX" id="gI1-uZ-P56"/>
+                                                        <constraint firstItem="VJ3-pZ-auA" firstAttribute="leading" secondItem="I6b-Ur-D6K" secondAttribute="leading" id="ihy-5w-nbU"/>
+                                                        <constraint firstItem="QYD-Jy-sAK" firstAttribute="leading" secondItem="I6b-Ur-D6K" secondAttribute="leading" id="yj7-Oh-wYZ"/>
+                                                    </constraints>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="0Gk-cO-pnk" secondAttribute="bottom" constant="17" id="08l-AJ-dPF"/>
+                                                <constraint firstItem="I6b-Ur-D6K" firstAttribute="leading" secondItem="9Ja-ks-qzN" secondAttribute="leading" id="3YF-B0-PAa"/>
+                                                <constraint firstItem="QcE-9a-TGb" firstAttribute="leading" secondItem="0Gk-cO-pnk" secondAttribute="leading" id="5Qp-yl-gIK"/>
                                                 <constraint firstItem="wNT-kp-rN4" firstAttribute="top" secondItem="1Sn-JE-NOa" secondAttribute="bottom" constant="10" id="8fn-fa-f75"/>
-                                                <constraint firstAttribute="bottom" secondItem="wNT-kp-rN4" secondAttribute="bottom" constant="17" id="8hm-b7-Zas"/>
+                                                <constraint firstItem="I6b-Ur-D6K" firstAttribute="trailing" secondItem="9Ja-ks-qzN" secondAttribute="trailing" id="8h8-cN-zsL"/>
+                                                <constraint firstItem="QcE-9a-TGb" firstAttribute="bottom" secondItem="0Gk-cO-pnk" secondAttribute="bottom" id="Ltz-wQ-NNg"/>
                                                 <constraint firstItem="1Sn-JE-NOa" firstAttribute="top" secondItem="Fqy-hf-qBu" secondAttribute="top" constant="10" id="O4k-LY-mwF"/>
+                                                <constraint firstItem="7gx-GF-Rk7" firstAttribute="centerX" secondItem="wNT-kp-rN4" secondAttribute="centerX" id="QBc-ME-5nl"/>
                                                 <constraint firstItem="wNT-kp-rN4" firstAttribute="leading" secondItem="1Sn-JE-NOa" secondAttribute="leading" id="QJK-mZ-JP1"/>
                                                 <constraint firstAttribute="trailing" secondItem="1Sn-JE-NOa" secondAttribute="trailing" constant="15" id="Zoi-3p-5JP"/>
+                                                <constraint firstItem="QcE-9a-TGb" firstAttribute="top" secondItem="0Gk-cO-pnk" secondAttribute="top" id="aYQ-Kz-PS7"/>
                                                 <constraint firstItem="9Ja-ks-qzN" firstAttribute="centerY" secondItem="wNT-kp-rN4" secondAttribute="centerY" id="bOw-nQ-jGS"/>
+                                                <constraint firstItem="0Gk-cO-pnk" firstAttribute="top" secondItem="wNT-kp-rN4" secondAttribute="bottom" constant="17" id="bl8-Wh-9L6"/>
+                                                <constraint firstItem="QcE-9a-TGb" firstAttribute="trailing" secondItem="0Gk-cO-pnk" secondAttribute="trailing" id="ep3-nf-rYc"/>
+                                                <constraint firstItem="0Gk-cO-pnk" firstAttribute="leading" secondItem="wNT-kp-rN4" secondAttribute="leading" id="gEQ-Nu-1f5"/>
+                                                <constraint firstItem="0Gk-cO-pnk" firstAttribute="trailing" secondItem="9Ja-ks-qzN" secondAttribute="trailing" id="gOX-nh-670"/>
                                                 <constraint firstItem="9Ja-ks-qzN" firstAttribute="leading" secondItem="wNT-kp-rN4" secondAttribute="trailing" constant="15" id="hSQ-y9-K2Z"/>
                                                 <constraint firstItem="1Sn-JE-NOa" firstAttribute="leading" secondItem="Fqy-hf-qBu" secondAttribute="leading" constant="15" id="jFE-F8-QWa"/>
                                                 <constraint firstItem="9Ja-ks-qzN" firstAttribute="trailing" secondItem="1Sn-JE-NOa" secondAttribute="trailing" id="ncY-EX-14g"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="addressButton" destination="VJ3-pZ-auA" id="RM1-nY-mHo"/>
+                                            <outlet property="addressImageView" destination="vD9-2l-aDG" id="AbQ-xm-a5l"/>
+                                            <outlet property="emailButton" destination="I6b-Ur-D6K" id="Kba-Sb-l9F"/>
+                                            <outlet property="emailImageView" destination="7gx-GF-Rk7" id="UjR-5Z-a23"/>
+                                            <outlet property="hiddenContactInformationView" destination="QcE-9a-TGb" id="AYe-d6-G87"/>
+                                            <outlet property="phoneButton" destination="QYD-Jy-sAK" id="myT-aU-GoG"/>
+                                            <outlet property="phoneImageView" destination="kgr-Sq-mAX" id="E9T-os-wD8"/>
+                                            <outlet property="sellerContactInformation" destination="0Gk-cO-pnk" id="mDp-os-ySE"/>
                                             <outlet property="sellerImageView" destination="wNT-kp-rN4" id="5T2-5c-cKm"/>
                                             <outlet property="sellerNameLabel" destination="9Ja-ks-qzN" id="vaL-sH-hnB"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsInterestedBuyersHeaderCell" rowHeight="34" id="3eu-9W-Ax9" customClass="ListingDetailsInterestedBuyersHeaderCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="633" width="375" height="34"/>
+                                        <rect key="frame" x="0.0" y="730" width="375" height="34"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3eu-9W-Ax9" id="KhB-hN-Qfw">
                                             <frame key="frameInset" width="375" height="34"/>
@@ -353,7 +473,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsInterestedBuyerCell" rowHeight="70" id="77c-hC-chr" customClass="ListingDetailsInterestedBuyerCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="667" width="375" height="70"/>
+                                        <rect key="frame" x="0.0" y="764" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="77c-hC-chr" id="E3z-cB-Wpf">
                                             <frame key="frameInset" width="375" height="70"/>
@@ -440,4 +560,9 @@
             <point key="canvasLocation" x="324" y="173.16341829085459"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="email" width="32" height="24"/>
+        <image name="home" width="32" height="32"/>
+        <image name="phone" width="32" height="32"/>
+    </resources>
 </document>

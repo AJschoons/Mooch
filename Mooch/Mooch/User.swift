@@ -92,9 +92,21 @@ struct User {
             thumbnailPictureURL = nil
         }
         
+        
+        //
         //Setup contact information
-        let address = json[JSONMapping.address.rawValue].string
-        let phone = json[JSONMapping.phone.rawValue].string
+        //
+        
+        var address = json[JSONMapping.address.rawValue].string
+        if address != nil && address!.isEmpty {
+            address = nil
+        }
+        
+        var phone = json[JSONMapping.phone.rawValue].string
+        if phone != nil && phone!.isEmpty {
+            phone = nil
+        }
+        
         let contactInformation = ContactInformation(address: address, email: email, phone: phone)
         
         

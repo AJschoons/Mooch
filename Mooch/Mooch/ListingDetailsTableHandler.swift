@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate, ListingDetailsInterestedBuyerCellDelegate {
+protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate, ListingDetailsInterestedBuyerCellDelegate, ListingDetailsSellerCellDelegate {
     typealias Configuration = ListingDetailsConfiguration
     
     func getConfiguration() -> Configuration
@@ -173,8 +173,13 @@ class ListingDetailsTableHandler: NSObject {
     fileprivate func configure(listingDetailsSellerCell: ListingDetailsSellerCell, atIndexPath indexPath: IndexPath) {
         let listing = delegate.getConfiguration().listing
         
+        listingDetailsSellerCell.delegate = delegate
+        
         listingDetailsSellerCell.sellerNameLabel.text = listing.owner.name
         listingDetailsSellerCell.sellerImageView.image = UIImage(named: "defaultProfilePhoto")
+        
+        listingDetailsSellerCell.setButtonStateAndText(from: listing)
+        listingDetailsSellerCell.setIconsAndButtons(with: ThemeColors.listingDetailsActionBackground.color())
         
         if let ownerThumbnailPictureURL = listing.owner.thumbnailPictureURL {
             listingDetailsSellerCell.tag = indexPath.row
