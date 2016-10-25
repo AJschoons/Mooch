@@ -60,6 +60,10 @@ struct Listing {
     let communityId: Int
     let owner: User
     
+    var interestedBuyers: [User]?
+    var isUserAllowedToSeeOwnerContactInformation: Bool? = false
+    var isOwnerContactedByThisUser: Bool? = false
+    
     var priceString: String {
         guard price > 0.009 else {
             return "Free"
@@ -119,7 +123,6 @@ struct Listing {
         if let thumbnailURL = json[JSONMapping.thumbnailPictureURL.rawValue].string {
             thumbnailPictureURL = thumbnailURL
         }
-        
         
         //
         //Optional variables

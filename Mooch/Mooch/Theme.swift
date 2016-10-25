@@ -13,6 +13,7 @@ enum ThemeColors {
     case formSeperator
     
     case listingDetailsActionBackground
+    case listingDetailsActionBackgroundDisabled
     case listingDetailsActionText
     
     //Returns the Red, Green, Blue ints that should get divided by 255. Also the alpha, from 0.0-1.0
@@ -23,10 +24,13 @@ enum ThemeColors {
             return (200, 200, 200, 1.0)
             
         case .listingDetailsActionBackground:
-            return (85, 85, 85, 1.0)
+            return (85, 85, 85, 1.0) //Currently: "Dark Gray Color"
+        
+        case .listingDetailsActionBackgroundDisabled:
+            return (170, 170, 170, 1.0) //Currently: "Light Gray Color"
             
         case .listingDetailsActionText:
-            return (255, 255, 255, 1.0)
+            return (255, 255, 255, 1.0) //Currently: White
         }
     }
     

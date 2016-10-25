@@ -43,4 +43,12 @@ class CommunityListingsManager {
             completion(true, nil)
         }
     }
+    
+    func updateInformation(for updatedListing: Listing) {
+        guard let indexOfListingToUpdate = listingsInCurrentCommunity.index(where: {$0.id == updatedListing.id}) else {
+            return
+        }
+        
+        listingsInCurrentCommunity[indexOfListingToUpdate] = updatedListing
+    }
 }

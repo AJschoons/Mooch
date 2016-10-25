@@ -22,7 +22,6 @@ class ListingDetailsActionCell: UITableViewCell {
     var fieldType: ListingDetailsViewController.Configuration.FieldType!
     
     @IBAction func onActionButton() {
-        print(actionButton.titleLabel?.text)
         delegate.onActionButton(forFieldType: fieldType)
     }
 }
