@@ -102,7 +102,8 @@ enum Strings {
         
         case title = "View Listing"
         
-        case fieldTypeContactSellerActionString = "Contact Seller"
+        case fieldTypeContactSellerNoContactYetActionString = "Contact Seller"
+        case fieldTypeContactSellerAlreadyContactedActionString = "Contacted Seller"
         case fieldTypeViewSellerProfileActionString = "View Seller Profile"
         case fieldTypeEndListingActionString = "End Listing"
         

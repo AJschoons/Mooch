@@ -39,7 +39,7 @@ class ListingDetailsViewController: MoochViewController {
     }
     
     func onContactSellerAction() {
-        print("contact seller action")
+        contactSeller()
     }
     
     func onViewSellerProfileAction() {
@@ -103,6 +103,21 @@ class ListingDetailsViewController: MoochViewController {
         case .edit:
             return editButton
         }
+    }
+    
+    fileprivate func contactSeller() {
+        //TODO: actually make the api call
+        
+        //Update the listing for this view controller, AND make sure it's updated 
+        //with the CommunityListingsManager so the change persists after leaving this view controller
+        configuration.listing.isOwnerContactedByThisUser = true
+        CommunityListingsManager.sharedInstance.updateInformation(for: configuration.listing)
+        
+        guard let contactSellerRow = configuration.firstIndex(of: .contactSeller) else {
+            return
+        }
+        tableHandler.reloadRow(at: IndexPath(row: contactSellerRow, section: 0))
+        
     }
     
     fileprivate func presentPhoneNumberOptionsActionSheet() {

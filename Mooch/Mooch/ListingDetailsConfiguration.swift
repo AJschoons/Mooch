@@ -39,7 +39,7 @@ struct ListingDetailsConfiguration {
         }
     }
     
-    let listing: Listing
+    var listing: Listing
     
     let mode: Mode
     
@@ -117,5 +117,9 @@ struct ListingDetailsConfiguration {
             }
         }
         return nil
+    }
+    
+    func firstIndex(of fieldType: FieldType) -> Int? {
+        return fields.index(of: fieldType)
     }
 }

@@ -46,10 +46,14 @@ class ListingDetailsTableHandler: NSObject {
     
     weak var delegate: ListingDetailsTableHandlerDelegate!
     
-    
     // MARK: Actions
     
     // MARK: Public methods
+    
+    func reloadRow(at indexPath: IndexPath) {
+        tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
+    }
+    
     
     // MARK: Private methods
     
@@ -142,14 +146,22 @@ class ListingDetailsTableHandler: NSObject {
     }
     
     fileprivate func configure(actionCell: ListingDetailsActionCell, forFieldType fieldType: FieldType) {
+        let listing = delegate.getConfiguration().listing
+        
         actionCell.fieldType = fieldType
         actionCell.delegate = delegate
         
-        let title = actionString(forFieldType: fieldType)
+        let title = actionString(forFieldType: fieldType, andListing: listing)
         actionCell.actionButton.setTitle(title, for: .normal)
         
-        let backgroundColor = ThemeColors.listingDetailsActionBackground.color()
+        var backgroundColor = ThemeColors.listingDetailsActionBackground.color()
         let textColor = ThemeColors.listingDetailsActionText.color()
+        
+        //Set the action button to be disabled for the contact seller button when the user already contacted them
+        if fieldType == .contactSeller && listing.isOwnerContactedByThisUser != nil && listing.isOwnerContactedByThisUser! == true {
+            backgroundColor = ThemeColors.listingDetailsActionBackgroundDisabled.color()
+            actionCell.actionButton.isUserInteractionEnabled = false
+        }
         
         if fieldType == delegate.getConfiguration().firstActionFieldType() {
             actionCell.actionButton.backgroundColor = backgroundColor
@@ -224,11 +236,15 @@ class ListingDetailsTableHandler: NSObject {
     }
     
     //Returns a string for a button's text corresponding to the field type
-    fileprivate func actionString(forFieldType fieldType: FieldType) -> String {
+    fileprivate func actionString(forFieldType fieldType: FieldType, andListing listing: Listing) -> String {
         
         switch fieldType {
         case .contactSeller:
-            return Strings.ListingDetails.fieldTypeContactSellerActionString.rawValue
+            var actionString = Strings.ListingDetails.fieldTypeContactSellerNoContactYetActionString.rawValue
+            if listing.isOwnerContactedByThisUser != nil && listing.isOwnerContactedByThisUser! == true {
+                actionString = Strings.ListingDetails.fieldTypeContactSellerAlreadyContactedActionString.rawValue
+            }
+            return actionString
             
         case .viewSellerProfile:
             return Strings.ListingDetails.fieldTypeViewSellerProfileActionString.rawValue
