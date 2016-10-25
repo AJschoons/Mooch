@@ -119,6 +119,9 @@
 		81CBF0D01DACA3B50066DA75 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
 		81D2A0A71DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D2A0A61DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift */; };
 		81D2A0AA1DB7C10400800747 /* CommunityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D2A0A91DB7C10400800747 /* CommunityManager.swift */; };
+		81E97F561DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E97F551DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift */; };
+		81E97F581DBFD4E000AA88E1 /* ProfileConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E97F571DBFD4E000AA88E1 /* ProfileConfiguration.swift */; };
+		81E97F5A1DBFE87100AA88E1 /* ProfileCollectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E97F591DBFE87100AA88E1 /* ProfileCollectionHandler.swift */; };
 		81F0EA4A1D9896A000C7AD09 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
 		81F0EA4F1D98AC9400C7AD09 /* GETListings.json in Resources */ = {isa = PBXBuildFile; fileRef = 81F0EA4E1D98AC9400C7AD09 /* GETListings.json */; };
 		81F0EA521D98CD2000C7AD09 /* EditListingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */; };
@@ -275,6 +278,9 @@
 		81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberHandler.swift; sourceTree = "<group>"; };
 		81D2A0A61DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecuteActionAfterMinimumDurationTimer.swift; sourceTree = "<group>"; };
 		81D2A0A91DB7C10400800747 /* CommunityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityManager.swift; sourceTree = "<group>"; };
+		81E97F551DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionHeaderView.swift; sourceTree = "<group>"; };
+		81E97F571DBFD4E000AA88E1 /* ProfileConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileConfiguration.swift; sourceTree = "<group>"; };
+		81E97F591DBFE87100AA88E1 /* ProfileCollectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionHandler.swift; sourceTree = "<group>"; };
 		81F0EA4E1D98AC9400C7AD09 /* GETListings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETListings.json; sourceTree = "<group>"; };
 		81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextView.swift; sourceTree = "<group>"; };
 		81F0EA531D98D01D00C7AD09 /* EditListingTextHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextHandler.swift; sourceTree = "<group>"; };
@@ -531,8 +537,11 @@
 		813F650C1D87A10A00DEECF0 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				813F650D1D87A18100DEECF0 /* ProfileViewController.swift */,
 				813F650F1D87A19400DEECF0 /* Profile.storyboard */,
+				81E97F591DBFE87100AA88E1 /* ProfileCollectionHandler.swift */,
+				81E97F551DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift */,
+				813F650D1D87A18100DEECF0 /* ProfileViewController.swift */,
+				81E97F571DBFD4E000AA88E1 /* ProfileConfiguration.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -1052,6 +1061,7 @@
 				814DB9C81D8F668E006F34E9 /* EditListingTextCell.swift in Sources */,
 				811967631DB7D62D00D085C7 /* CommunityCollectionViewCell.swift in Sources */,
 				8119675E1DB7C53A00D085C7 /* CommunityPickerViewController.swift in Sources */,
+				81E97F581DBFD4E000AA88E1 /* ProfileConfiguration.swift in Sources */,
 				8110259E1D94C45A00C3931C /* MoochAPI.swift in Sources */,
 				8119676F1DB8888100D085C7 /* RangeSlider.swift in Sources */,
 				811967681DB85B9B00D085C7 /* ListingsCollectionHeaderView.swift in Sources */,
@@ -1084,6 +1094,7 @@
 				811967751DB9245F00D085C7 /* ListingsPriceFilterTableViewCell.swift in Sources */,
 				81F21A1A1DB4153000D442F8 /* GradientView.swift in Sources */,
 				81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */,
+				81E97F5A1DBFE87100AA88E1 /* ProfileCollectionHandler.swift in Sources */,
 				81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */,
 				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
@@ -1114,6 +1125,7 @@
 				810A82321D7A11780086B40F /* AppDelegate.swift in Sources */,
 				8134AA061DBC7DC6004239C5 /* ListingDetailsInterestedBuyerCell.swift in Sources */,
 				81A1E1A11DBAF98600041A78 /* CircleImageView.swift in Sources */,
+				81E97F561DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift in Sources */,
 				814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */,
 				8149E7D31D8719E4000F0C37 /* EditProfileViewController.swift in Sources */,
 				81F21A171DB413C500D442F8 /* ListingCollectionViewCell.swift in Sources */,

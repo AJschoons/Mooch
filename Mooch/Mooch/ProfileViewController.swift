@@ -9,46 +9,69 @@
 import UIKit
 
 protocol ProfileViewControllerDelegate: class {
-    func profileViewControllerDidLogOutUser()
-    func profileViewControllerDidChangeCommunity()
+    func profileViewControllerDidLogOutUser(_ profileViewController: ProfileViewController)
+    func profileViewControllerDidChangeCommunity(_ profileViewController: ProfileViewController)
 }
 
 class ProfileViewController: MoochViewController {
     
+    
+    typealias Configuration = ProfileConfiguration
+    
     // MARK: Public variables
     
+    
+    @IBOutlet var collectionHandler: ProfileCollectionHandler! {
+        didSet {
+            collectionHandler.delegate = self
+        }
+    }
+    
+    //The user whose profile is being displayed
+    private(set) var user: User?
+    
+    //The configuration used to setup the class
+    var configuration: Configuration!
+    
     weak var delegate: ProfileViewControllerDelegate?
+    
     
     // MARK: Private variables
     
     static fileprivate let StoryboardName = "Profile"
     static fileprivate let Identifier = "ProfileViewController"
     
-    fileprivate var backButton: UIBarButtonItem!
-    fileprivate var editButton: UIBarButtonItem!
+    fileprivate var settingsButton: UIBarButtonItem!
     
     // MARK: Actions
     
     @IBAction func onLogOutAction() {
         LocalUserManager.sharedInstance.logout()
-        delegate?.profileViewControllerDidLogOutUser()
+        delegate?.profileViewControllerDidLogOutUser(self)
     }
     
     @IBAction func onChangeCommunityAction() {
         presentCommunityPicker()
     }
     
-    func onEditProfileAction() {
+    func onSettingsAction() {
         
     }
     
     // MARK: Public methods
     
+    func updateWith(user: User?) {
+        self.user = user
+    }
+    
     override func setup() {
         super.setup()
         
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        tabBarItem = ProfileViewController.tabBarItem()
+        setupNavigationBar()
+        
+        if configuration.mode == .localUser {
+            tabBarItem = ProfileViewController.tabBarItem()
+        }
         
         updateUI()
     }
@@ -69,11 +92,55 @@ class ProfileViewController: MoochViewController {
     
     // MARK: Private methods
     
+    fileprivate func setupNavigationBar() {
+        settingsButton = UIBarButtonItem(image: UIImage(named: "settings"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onSettingsAction))
+        
+        title = configuration.title
+        
+        if let leftButtons = configuration.leftBarButtons {
+            navigationItem.leftBarButtonItems = barButtons(fromTypeList: leftButtons)
+        } else {
+            navigationItem.leftBarButtonItems = nil
+        }
+        
+        if let rightButtons = configuration.rightBarButtons {
+            navigationItem.rightBarButtonItems = barButtons(fromTypeList: rightButtons)
+        } else {
+            navigationItem.rightBarButtonItems = nil
+        }
+    }
+    
+    fileprivate func barButtons(fromTypeList typeList: [Configuration.BarButtonType]) -> [UIBarButtonItem] {
+        return typeList.map({barButton(forType: $0)})
+    }
+    
+    fileprivate func barButton(forType type: Configuration.BarButtonType) -> UIBarButtonItem {
+        switch type {
+        case .settings:
+            return settingsButton
+        }
+    }
+    
     fileprivate func presentCommunityPicker() {
         let vc = CommunityPickerViewController.instantiateFromStoryboard()
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)
+    }
+}
+
+extension ProfileViewController: ProfileCollectionHandlerDelegate {
+    
+    func getListings() -> [Listing] {
+        return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+    }
+    
+    func didSelect(_ listing: Listing) {
+        print(listing)
+    }
+    
+    func getInsetForTabBar() -> CGFloat {
+        return (tabBarController != nil) ? tabBarController!.tabBar.frame.height : CGFloat(0.0)
     }
 }
 
@@ -86,7 +153,7 @@ extension ProfileViewController: CommunityPickerViewControllerDelegate {
         localUser.communityId = community.id
         LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: localUser)
         
-        delegate?.profileViewControllerDidChangeCommunity()
+        delegate?.profileViewControllerDidChangeCommunity(self)
         dismiss(animated: true, completion: nil)
     }
 }

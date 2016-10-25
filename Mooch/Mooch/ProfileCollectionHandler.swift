@@ -1,54 +1,32 @@
 //
-//  ListingsTableHandler.swift
+//  ProfileCollectionHandler.swift
 //  Mooch
 //
-//  Created by adam on 9/10/16.
+//  Created by adam on 10/25/16.
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
 import UIKit
 
-protocol ListingsCollectionHandlerDelegate: class, ListingsCollectionHeaderViewDelegate {
+protocol ProfileCollectionHandlerDelegate: class {
+    
     func getListings() -> [Listing]
     func didSelect(_ listing: Listing)
-    func refresh()
-    func hasListingsButNoneMatchFilter() -> Bool
-    func shouldAllowPullToRefresh() -> Bool
-    func areListingsFromSearch() -> Bool
+    func getInsetForTabBar() -> CGFloat
 }
 
-class ListingsCollectionHandler: ListingCollectionHandler {
+class ProfileCollectionHandler: ListingCollectionHandler {
     
-    fileprivate let HeightForHeader: CGFloat = 40
-    
-    private var refreshControl: UIRefreshControl!
-    
-    //Allows us to ensure that refreshing takes at least a minimim duration; makes the UX smoother
-    private var endRefreshingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
-    
-    private(set) var isRefreshing = false
-    
-    weak var delegate: ListingsCollectionHandlerDelegate!
-    
-    var isCollectionViewSet: Bool {
-        return collectionView != nil
-    }
+    weak var delegate: ProfileCollectionHandlerDelegate!
     
     override func onDidSet(collectionView: UICollectionView) {
         super.onDidSet(collectionView: collectionView)
         
-        if delegate.shouldAllowPullToRefresh() {
-            refreshControl = UIRefreshControl()
-            refreshControl.addTarget(self, action: #selector(onRefresh), for: .valueChanged)
-            refreshControl.clipsToBounds = true
-            
-            collectionView.addSubview(refreshControl)
-            collectionView.sendSubview(toBack: refreshControl)
-        }
-        
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.sectionHeadersPinToVisibleBounds = true
         }
+        
+        collectionView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
     }
     
     func reloadData() {
@@ -61,42 +39,13 @@ class ListingsCollectionHandler: ListingCollectionHandler {
         }
     }
     
-    func onRefresh() {
-        guard delegate.shouldAllowPullToRefresh() else { return }
-        
-        isRefreshing = true
-        
-        delegate.refresh()
-        
-        guard endRefreshingAfterMinimumDurationTimer == nil else { return }
-        endRefreshingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
-    }
-    
-    func endRefreshingAndReloadData() {
-        guard delegate.shouldAllowPullToRefresh() else { return }
-        guard let timer = endRefreshingAfterMinimumDurationTimer else { return }
-        timer.execute() { [weak self] in
-            self?.isRefreshing = false
-            self?.reloadData()
-            self?.refreshControl.endRefreshing()
-            self?.endRefreshingAfterMinimumDurationTimer = nil
-        }
-    }
-    
     fileprivate func createNoListingsBackgroundView() -> UIView
     {
         let backgroundView = UIView(frame: collectionView.bounds)
         backgroundView.backgroundColor = UIColor.clear
         
         let noListingsLabel = UILabel()
-        
-        var text: String = ""
-        if delegate.areListingsFromSearch() {
-            text = delegate.hasListingsButNoneMatchFilter() ?  Strings.Listings.noListingsMatchingSearchAfterFilterAppliedLabelText.rawValue : Strings.Listings.noListingsInCommunityMatchingSearchLabelText.rawValue
-        } else {
-            text = delegate.hasListingsButNoneMatchFilter() ?  Strings.Listings.noListingsAfterFilterAppliedLabelText.rawValue : Strings.Listings.noListingsInCommunityLabelText.rawValue
-        }
-        noListingsLabel.text = text
+        noListingsLabel.text = Strings.Profile.noListings.rawValue
         
         noListingsLabel.numberOfLines = 0
         noListingsLabel.backgroundColor = UIColor.clear
@@ -113,14 +62,14 @@ class ListingsCollectionHandler: ListingCollectionHandler {
 }
 
 //MARK: UICollectionViewDataSource
-extension ListingsCollectionHandler {
+extension ProfileCollectionHandler {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return delegate.getListings().count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+        
         let listing = delegate.getListings()[indexPath.row]
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListingCollectionViewCell.Identifier, for: indexPath) as! ListingCollectionViewCell
@@ -141,23 +90,23 @@ extension ListingsCollectionHandler {
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ListingsCollectionHeaderView.Identifier, for: indexPath) as! ListingsCollectionHeaderView
         
-        if let userCommunityId = LocalUserManager.sharedInstance.userCommunityId {
-            if let currentCommunity = CommunityManager.sharedInstance.getCommunity(withId: userCommunityId) {
-                headerView.set(communityName: currentCommunity.name)
-            }
-        }
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ProfileCollectionHeaderView.Identifier, for: indexPath) as! ProfileCollectionHeaderView
         
-        headerView.delegate = delegate
+//        if let userCommunityId = LocalUserManager.sharedInstance.userCommunityId {
+//            if let currentCommunity = CommunityManager.sharedInstance.getCommunity(withId: userCommunityId) {
+//                headerView.set(communityName: currentCommunity.name)
+//            }
+//        }
+        
+        //headerView.delegate = delegate
         
         return headerView
     }
 }
 
 //MARK: UICollectionViewDelegate
-extension ListingsCollectionHandler {
+extension ProfileCollectionHandler {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedListing = delegate!.getListings()[indexPath.row]
@@ -167,9 +116,9 @@ extension ListingsCollectionHandler {
 }
 
 //MARK: UICollectionViewDelegateFlowLayout
-extension ListingsCollectionHandler {
+extension ProfileCollectionHandler {
     
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: HeightForHeader)
+        return CGSize(width: collectionView.frame.width, height: ProfileCollectionHeaderView.EstimatedHeight)
     }
 }

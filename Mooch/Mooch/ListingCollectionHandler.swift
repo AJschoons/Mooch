@@ -11,7 +11,7 @@ import UIKit
 //Super class that handles a Listings collection view. Should be subclassed
 class ListingCollectionHandler: NSObject {
     
-    static let SectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+    static let SectionInsets = Theming.InsetsForTileCollectionViewCells
     
     //Subclasses CAN choose to override this to do more things, such as adding a refresh control
     func onDidSet(collectionView: UICollectionView) {
