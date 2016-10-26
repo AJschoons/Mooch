@@ -203,7 +203,7 @@ class EditProfileViewController: MoochModalViewController {
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
         
-        showLoadingOverlayView(withInformationText: Strings.EditProfile.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true)
+        showLoadingOverlayView(withInformationText: Strings.EditProfile.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true, withHiddenAlertView: false)
         
         MoochAPI.POSTUser(
             communityId: communityId,
