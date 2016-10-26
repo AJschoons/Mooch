@@ -56,9 +56,9 @@ class ListingDetailsSellerCell: UITableViewCell {
         addressButton.setTitleColor(color, for: .normal)
     }
     
-    func setButtonStateAndText(from listing: Listing) {
-        if let showInfo = listing.isUserAllowedToSeeOwnerContactInformation {
-            showSellerInfo = showInfo
+    func setButtonStateAndText(from listing: Listing, for user: User?) {
+        if let user = user {
+            showSellerInfo = listing.isUserContactInformationVisible(to: user)
         }
         
         //An informational view will be shown instead to show how to get seller information

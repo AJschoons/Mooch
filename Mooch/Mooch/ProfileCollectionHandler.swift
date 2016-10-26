@@ -54,8 +54,11 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         noListingsLabel.textColor = UIColor.darkGray
         noListingsLabel.font = UIFont.systemFont(ofSize: 15)
         noListingsLabel.textAlignment = .center
+        
+        let labelY = ProfileCollectionHeaderView.EstimatedHeight
+        let labelHeight = backgroundView.bounds.height - ProfileCollectionHeaderView.EstimatedHeight
         let labelPadding: CGFloat = 40
-        noListingsLabel.frame = CGRect(x: labelPadding, y: 0, width: backgroundView.bounds.width - 2*labelPadding, height: backgroundView.bounds.height)
+        noListingsLabel.frame = CGRect(x: labelPadding, y: labelY, width: backgroundView.bounds.width - 2*labelPadding, height: labelHeight)
         
         backgroundView.addSubview(noListingsLabel)
         

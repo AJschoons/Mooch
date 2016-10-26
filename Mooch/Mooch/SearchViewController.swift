@@ -22,7 +22,7 @@ class SearchViewController: MoochViewController {
     // MARK: Actions
     
     @IBAction func onPushListings() {
-        pushListingsViewController(with: CommunityListingsManager.sharedInstance.listingsInCurrentCommunity)
+        pushListingsViewController(with: CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity)
     }
     
     

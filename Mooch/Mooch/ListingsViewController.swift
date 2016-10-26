@@ -36,7 +36,7 @@ class ListingsViewController: MoochViewController {
         get {
             switch mode {
             case .independent:
-                return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+                return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
             case .nestedInSearch:
                 return _givenListings
             }

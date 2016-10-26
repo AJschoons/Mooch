@@ -106,11 +106,13 @@ class ListingDetailsViewController: MoochViewController {
     }
     
     fileprivate func contactSeller() {
+        guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
+        
         //TODO: actually make the api call
         
         //Update the listing for this view controller, AND make sure it's updated 
         //with the CommunityListingsManager so the change persists after leaving this view controller
-        configuration.listing.isOwnerContactedByThisUser = true
+        configuration.listing.addInterestedBuyer(localUser.user)
         CommunityListingsManager.sharedInstance.updateInformation(for: configuration.listing)
         
         guard let contactSellerRow = configuration.firstIndex(of: .contactSeller) else {

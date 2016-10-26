@@ -60,9 +60,7 @@ struct Listing {
     let communityId: Int
     let owner: User
     
-    var interestedBuyers: [User]?
-    var isUserAllowedToSeeOwnerContactInformation: Bool? = false
-    var isOwnerContactedByThisUser: Bool? = false
+    private(set) var interestedBuyers = [User]()
     
     var priceString: String {
         guard price > 0.009 else {
@@ -75,6 +73,20 @@ struct Listing {
         let numberOfDaysSincePosted = daysFromTodaySince(previousDate: createdAt)
         let daysText = numberOfDaysSincePosted > 1 ? "days" : "day"
         return "\(numberOfDaysSincePosted) \(daysText) ago"
+    }
+    
+    func isOwnerContactedBy(by userToCheck: User) -> Bool {
+        return interestedBuyers.contains(where: {$0.id == userToCheck.id})
+    }
+    
+    func isUserContactInformationVisible(to userToCheck: User) -> Bool {
+        //TODO: implement once exchanges are added
+        return false
+    }
+    
+    mutating func addInterestedBuyer(_ user: User) {
+        guard !interestedBuyers.contains(where: {$0.id == user.id}) else { return }
+        interestedBuyers.append(user)
     }
     
     //Designated initializer
@@ -123,6 +135,7 @@ struct Listing {
         if let thumbnailURL = json[JSONMapping.thumbnailPictureURL.rawValue].string {
             thumbnailPictureURL = thumbnailURL
         }
+        
         
         //
         //Optional variables

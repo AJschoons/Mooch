@@ -160,7 +160,7 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
     }
     
     func getListings() -> [Listing] {
-        return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+        return CommunityListingsManager.sharedInstance.listingsOwnedByCurrentUser
     }
     
     func getConfiguration() -> Configuration {

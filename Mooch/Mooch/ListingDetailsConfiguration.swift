@@ -82,14 +82,14 @@ struct ListingDetailsConfiguration {
         
         //We have to generate the interested buyer fields from the listing
         if fields.contains(.interestedBuyersHeader) {
-            guard let interestedBuyers =  listing.interestedBuyers else {
+            guard listing.interestedBuyers.count > 0 else {
                 noInterestedBuyersForInterestedBuyersHeader = true
                 return
             }
             
             numberOfNonInterestedBuyerFields = self.fields.count
             
-            for _ in 0..<interestedBuyers.count {
+            for _ in 0..<listing.interestedBuyers.count {
                 self.fields.append(.interestedBuyer)
             }
         }
@@ -102,8 +102,7 @@ struct ListingDetailsConfiguration {
     func interestedBuyer(forRow row: Int) -> User? {
         guard noInterestedBuyersForInterestedBuyersHeader == false else { return nil }
         guard let numberOfNonInterestedBuyerFields = numberOfNonInterestedBuyerFields else { return nil }
-        guard let interestedBuyers =  listing.interestedBuyers else { return nil }
-        return interestedBuyers[row - numberOfNonInterestedBuyerFields]
+        return listing.interestedBuyers[row - numberOfNonInterestedBuyerFields]
     }
     
     func isListingDescriptionLastField() -> Bool {
