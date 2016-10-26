@@ -6,6 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
+import GSKStretchyHeaderView
 import UIKit
 
 protocol ProfileCollectionHandlerDelegate: class, BottomBarDoubleSegmentedControlDelegate {
@@ -23,12 +24,13 @@ class ProfileCollectionHandler: ListingCollectionHandler {
     
     weak var delegate: ProfileCollectionHandlerDelegate!
     
+    private(set) var headerView: ProfileCollectionHeaderView!
+    
     override func onDidSet(collectionView: UICollectionView) {
         super.onDidSet(collectionView: collectionView)
         
-        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.sectionHeadersPinToVisibleBounds = true
-        }
+        setupHeaderView(in: collectionView)
+        reloadHeaderView()
     }
     
     func reloadData() {
@@ -40,6 +42,46 @@ class ProfileCollectionHandler: ListingCollectionHandler {
             collectionView.backgroundView = createNoListingsBackgroundView()
         } else {
             collectionView.backgroundView = nil
+        }
+    }
+    
+    fileprivate func setupHeaderView(in collectionView: UICollectionView) {
+        collectionView.layoutIfNeeded()
+        
+        let headerSize = CGSize(width: collectionView.frame.width, height: ProfileCollectionHeaderView.EstimatedHeight)
+        headerView = ProfileCollectionHeaderView(frame: CGRect(x: 0, y: 0, width: headerSize.width, height: headerSize.height))
+        headerView.contentAnchor = GSKStretchyHeaderViewContentAnchor.bottom
+        headerView.minimumContentHeight = 35 + 64
+        //headerView.maximumContentHeight = ProfileCollectionHeaderView.EstimatedHeight + 50
+        headerView.contentExpands = false
+        //headerView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 44, right: 0)
+        collectionView.addSubview(headerView)
+        
+        headerView.bottomBarDoubleSegmentedControl.delegate = delegate
+        headerView.bottomBarDoubleSegmentedControl.set(title: "My Listings", for: .first)
+        headerView.bottomBarDoubleSegmentedControl.set(title: "Contact History", for: .second)
+        headerView.setup(for: delegate.getConfiguration().mode)
+    }
+    
+    fileprivate func reloadHeaderView() {
+        let user = delegate.getUser()
+        guard let profileUser = user else { return }
+        
+        headerView.userNameLabel.text = profileUser.name
+        
+        var communityText = ""
+        if let currentCommunity = CommunityManager.sharedInstance.getCommunity(withId: profileUser.communityId) {
+            communityText = currentCommunity.name
+        }
+        headerView.userCommunityLabel.text = communityText
+        
+        headerView.userImageView.image = UIImage(named: "defaultProfilePhoto")
+        
+        if let profilePhotoURL = profileUser.pictureURL {
+            ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { [weak self] image in
+                guard let image = image else { return }
+                self?.headerView.userImageView.image = image
+            }
         }
     }
     
@@ -95,41 +137,6 @@ extension ProfileCollectionHandler {
         
         return cell
     }
-    
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let user = delegate.getUser()
-        
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ProfileCollectionHeaderView.Identifier, for: indexPath) as! ProfileCollectionHeaderView
-        
-        guard let profileUser = user else {
-            return headerView
-        }
-        
-        
-        headerView.bottomBarDoubleSegmentedControl.delegate = delegate
-        headerView.bottomBarDoubleSegmentedControl.set(title: "My Listings", for: .first)
-        headerView.bottomBarDoubleSegmentedControl.set(title: "Contact History", for: .second)
-        headerView.setup(for: delegate.getConfiguration().mode)
-        
-        headerView.userNameLabel.text = profileUser.name
-        
-        var communityText = ""
-        if let currentCommunity = CommunityManager.sharedInstance.getCommunity(withId: profileUser.communityId) {
-            communityText = currentCommunity.name
-        }
-        headerView.userCommunityLabel.text = communityText
-        
-        headerView.userImageView.image = UIImage(named: "defaultProfilePhoto")
-        
-        if let profilePhotoURL = profileUser.pictureURL {
-            ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { image in
-                guard let image = image else { return }
-                headerView.userImageView.image = image
-            }
-        }
-        
-        return headerView
-    }
 }
 
 //MARK: UICollectionViewDelegate
@@ -145,7 +152,7 @@ extension ProfileCollectionHandler {
 //MARK: UICollectionViewDelegateFlowLayout
 extension ProfileCollectionHandler {
     
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: ProfileCollectionHeaderView.EstimatedHeight)
-    }
+//    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: collectionView.frame.width, height: ProfileCollectionHeaderView.EstimatedHeight)
+//    }
 }

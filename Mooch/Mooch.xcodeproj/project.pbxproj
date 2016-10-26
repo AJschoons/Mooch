@@ -124,6 +124,7 @@
 		81E97F5A1DBFE87100AA88E1 /* ProfileCollectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E97F591DBFE87100AA88E1 /* ProfileCollectionHandler.swift */; };
 		81E97F5C1DC01E6E00AA88E1 /* BottomBarDoubleSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E97F5B1DC01E6E00AA88E1 /* BottomBarDoubleSegmentedControl.swift */; };
 		81E97F5E1DC01E9700AA88E1 /* BottomBarDoubleSegmentedControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81E97F5D1DC01E9700AA88E1 /* BottomBarDoubleSegmentedControl.xib */; };
+		81E97F601DC10D6100AA88E1 /* ProfileCollectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81E97F5F1DC10D6100AA88E1 /* ProfileCollectionHeaderView.xib */; };
 		81F0EA4A1D9896A000C7AD09 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815BCF001D7E77D80022F806 /* Helpers.swift */; };
 		81F0EA4F1D98AC9400C7AD09 /* GETListings.json in Resources */ = {isa = PBXBuildFile; fileRef = 81F0EA4E1D98AC9400C7AD09 /* GETListings.json */; };
 		81F0EA521D98CD2000C7AD09 /* EditListingTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */; };
@@ -285,6 +286,7 @@
 		81E97F591DBFE87100AA88E1 /* ProfileCollectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionHandler.swift; sourceTree = "<group>"; };
 		81E97F5B1DC01E6E00AA88E1 /* BottomBarDoubleSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomBarDoubleSegmentedControl.swift; sourceTree = "<group>"; };
 		81E97F5D1DC01E9700AA88E1 /* BottomBarDoubleSegmentedControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BottomBarDoubleSegmentedControl.xib; sourceTree = "<group>"; };
+		81E97F5F1DC10D6100AA88E1 /* ProfileCollectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileCollectionHeaderView.xib; sourceTree = "<group>"; };
 		81F0EA4E1D98AC9400C7AD09 /* GETListings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GETListings.json; sourceTree = "<group>"; };
 		81F0EA511D98CD2000C7AD09 /* EditListingTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextView.swift; sourceTree = "<group>"; };
 		81F0EA531D98D01D00C7AD09 /* EditListingTextHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextHandler.swift; sourceTree = "<group>"; };
@@ -544,8 +546,9 @@
 				813F650F1D87A19400DEECF0 /* Profile.storyboard */,
 				81E97F591DBFE87100AA88E1 /* ProfileCollectionHandler.swift */,
 				81E97F551DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift */,
-				813F650D1D87A18100DEECF0 /* ProfileViewController.swift */,
+				81E97F5F1DC10D6100AA88E1 /* ProfileCollectionHeaderView.xib */,
 				81E97F571DBFD4E000AA88E1 /* ProfileConfiguration.swift */,
+				813F650D1D87A18100DEECF0 /* ProfileViewController.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -870,6 +873,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81A09FDA1D9B34DB0021D3FA /* PhotoAddingView.xib in Resources */,
+				81E97F601DC10D6100AA88E1 /* ProfileCollectionHeaderView.xib in Resources */,
 				81A09FE01D9E1D3A0021D3FA /* Listings.storyboard in Resources */,
 				811967641DB7D62D00D085C7 /* CommunityCollectionViewCell.xib in Resources */,
 				816623AC1DA06202009AE72B /* ListingCategoryPicker.storyboard in Resources */,

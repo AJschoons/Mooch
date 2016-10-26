@@ -6,13 +6,16 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
+import GSKStretchyHeaderView
 import UIKit
 
-class ProfileCollectionHeaderView: UICollectionReusableView {
+class ProfileCollectionHeaderView: GSKStretchyHeaderView {
     
     static let Identifier = "ProfileCollectionHeaderView"
     static let EstimatedHeight: CGFloat = 271
 
+    @IBOutlet var view: UIView!
+    
     @IBOutlet weak var userImageView: CircleImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userCommunityLabel: UILabel!
@@ -39,5 +42,21 @@ class ProfileCollectionHeaderView: UICollectionReusableView {
             allListingsHeaderView.isHidden = false
             differentListingsToShowHeaderView.isHidden = true
         }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        Bundle.main.loadNibNamed("ProfileCollectionHeaderView", owner: self, options: nil)
+        self.addSubview(view)
+        view.frame = self.bounds
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        Bundle.main.loadNibNamed("ProfileCollectionHeaderView", owner: self, options: nil)
+        self.addSubview(view)
+        view.frame = frame
     }
 }
