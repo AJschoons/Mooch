@@ -8,9 +8,13 @@
 
 import UIKit
 
-protocol ProfileCollectionHandlerDelegate: class {
+protocol ProfileCollectionHandlerDelegate: class, BottomBarDoubleSegmentedControlDelegate {
     
+    typealias Configuration = ProfileConfiguration
+    
+    func getUser() -> User?
     func getListings() -> [Listing]
+    func getConfiguration() -> Configuration
     func didSelect(_ listing: Listing)
     func getInsetForTabBar() -> CGFloat
 }
@@ -90,16 +94,41 @@ extension ProfileCollectionHandler {
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let user = delegate.getUser()
         
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ProfileCollectionHeaderView.Identifier, for: indexPath) as! ProfileCollectionHeaderView
         
-//        if let userCommunityId = LocalUserManager.sharedInstance.userCommunityId {
-//            if let currentCommunity = CommunityManager.sharedInstance.getCommunity(withId: userCommunityId) {
-//                headerView.set(communityName: currentCommunity.name)
-//            }
-//        }
+        guard let profileUser = user else {
+            return headerView
+        }
         
-        //headerView.delegate = delegate
+        
+        headerView.bottomBarDoubleSegmentedControl.delegate = delegate
+        headerView.bottomBarDoubleSegmentedControl.set(title: "My Listings", for: .first)
+        headerView.bottomBarDoubleSegmentedControl.set(title: "Contact History", for: .second)
+        headerView.setup(for: delegate.getConfiguration().mode)
+        
+        headerView.userNameLabel.text = profileUser.name
+        
+        var communityText = ""
+        if let currentCommunity = CommunityManager.sharedInstance.getCommunity(withId: profileUser.communityId) {
+            communityText = currentCommunity.name
+        }
+        headerView.userCommunityLabel.text = communityText
+        
+        
+        headerView.userImageView.image = UIImage(named: "defaultProfilePhoto")
+        
+        if let profilePhotoURL = profileUser.pictureURL {
+            headerView.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard headerView.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                headerView.userImageView.image = image
+            }
+        }
         
         return headerView
     }

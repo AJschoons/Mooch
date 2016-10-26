@@ -23,10 +23,10 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsListingCell" rowHeight="363" id="TPf-a3-e2h" customClass="ListingDetailsListingCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="363"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="363"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TPf-a3-e2h" id="90g-AV-8Vf">
-                                            <frame key="frameInset" width="375" height="363"/>
+                                            <frame key="frameInset" width="600" height="363"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v4q-VH-sbz">
@@ -188,10 +188,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsActionCell" rowHeight="54" id="u4h-PX-O38" customClass="ListingDetailsActionCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="391" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="391" width="600" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u4h-PX-O38" id="v7T-b6-EuJ">
-                                            <frame key="frameInset" width="375" height="54"/>
+                                            <frame key="frameInset" width="600" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="60U-bf-6Kk" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
@@ -225,10 +225,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsListingDescriptionCell" rowHeight="82" id="Onu-LA-G5W" customClass="ListingDetailsListingDescriptionCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="445" width="375" height="82"/>
+                                        <rect key="frame" x="0.0" y="445" width="600" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Onu-LA-G5W" id="KoL-KP-UJ2">
-                                            <frame key="frameInset" width="375" height="82"/>
+                                            <frame key="frameInset" width="600" height="82"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o3s-mw-Jgw" userLabel="Top Seperator">
@@ -283,10 +283,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsSellerCell" rowHeight="203" id="IpA-Vw-aPe" customClass="ListingDetailsSellerCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="527" width="375" height="203"/>
+                                        <rect key="frame" x="0.0" y="527" width="600" height="203"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IpA-Vw-aPe" id="Fqy-hf-qBu">
-                                            <frame key="frameInset" width="375" height="203"/>
+                                            <frame key="frameInset" width="600" height="203"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Seller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Sn-JE-NOa">
@@ -446,10 +446,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsInterestedBuyersHeaderCell" rowHeight="34" id="3eu-9W-Ax9" customClass="ListingDetailsInterestedBuyersHeaderCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="730" width="375" height="34"/>
+                                        <rect key="frame" x="0.0" y="730" width="600" height="34"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3eu-9W-Ax9" id="KhB-hN-Qfw">
-                                            <frame key="frameInset" width="375" height="34"/>
+                                            <frame key="frameInset" width="600" height="34"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Interested Buyers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QkE-C5-afC">
@@ -473,10 +473,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsInterestedBuyerCell" rowHeight="70" id="77c-hC-chr" customClass="ListingDetailsInterestedBuyerCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="764" width="375" height="70"/>
+                                        <rect key="frame" x="0.0" y="764" width="600" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="77c-hC-chr" id="E3z-cB-Wpf">
-                                            <frame key="frameInset" width="375" height="70"/>
+                                            <frame key="frameInset" width="600" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HRt-bA-Ahy" customClass="CircleImageView" customModule="Mooch" customModuleProvider="target">

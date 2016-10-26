@@ -131,8 +131,16 @@ class ProfileViewController: MoochViewController {
 
 extension ProfileViewController: ProfileCollectionHandlerDelegate {
     
+    func getUser() -> User? {
+        return user
+    }
+    
     func getListings() -> [Listing] {
         return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+    }
+    
+    func getConfiguration() -> Configuration {
+        return configuration
     }
     
     func didSelect(_ listing: Listing) {
@@ -141,6 +149,14 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
     
     func getInsetForTabBar() -> CGFloat {
         return (tabBarController != nil) ? tabBarController!.tabBar.frame.height : CGFloat(0.0)
+    }
+}
+
+extension ProfileViewController: BottomBarDoubleSegmentedControlDelegate {
+    //Part of ProfileCollectionHandlerDelegate
+    
+    func didSelect(_ selectedControl: BottomBarDoubleSegmentedControl.Control) {
+        print(selectedControl)
     }
 }
 

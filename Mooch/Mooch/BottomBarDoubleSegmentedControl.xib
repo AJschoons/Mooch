@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BottomBarDoubleSegmentedControl" customModule="Mooch" customModuleProvider="target">
+            <connections>
+                <outlet property="firstControlBottomBar" destination="P4C-xm-Tjf" id="E8n-0o-sJP"/>
+                <outlet property="firstControlButton" destination="9bL-na-NG6" id="CxS-SE-uJ6"/>
+                <outlet property="firstControlView" destination="BJJ-I0-GFD" id="W1g-h5-hRL"/>
+                <outlet property="secondControlBottomBar" destination="64U-F2-YKT" id="ONP-Xe-lMH"/>
+                <outlet property="secondControlButton" destination="A6f-N8-xeX" id="dyP-5D-m4Y"/>
+                <outlet property="secondControlView" destination="rwZ-e7-KlN" id="MH6-XE-uiu"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Xj3-AA-6QA"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yTV-8B-DRj">
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BJJ-I0-GFD" userLabel="First">
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9bL-na-NG6">
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <state key="normal" title="Button">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onFirstControl" destination="-1" eventType="touchUpInside" id="mtD-fE-9sx"/>
+                                    </connections>
+                                </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P4C-xm-Tjf" userLabel="BottomBar">
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="2" id="mzs-fj-lMm"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="P4C-xm-Tjf" firstAttribute="top" secondItem="9bL-na-NG6" secondAttribute="bottom" id="5o5-Q5-Q1s"/>
+                                <constraint firstItem="9bL-na-NG6" firstAttribute="leading" secondItem="BJJ-I0-GFD" secondAttribute="leading" id="Fk3-HE-5gZ"/>
+                                <constraint firstAttribute="bottom" secondItem="P4C-xm-Tjf" secondAttribute="bottom" id="UNz-Dr-rrE"/>
+                                <constraint firstItem="P4C-xm-Tjf" firstAttribute="leading" secondItem="BJJ-I0-GFD" secondAttribute="leading" id="hlC-lV-atg"/>
+                                <constraint firstAttribute="trailing" secondItem="9bL-na-NG6" secondAttribute="trailing" id="ipo-LU-nQ7"/>
+                                <constraint firstItem="9bL-na-NG6" firstAttribute="top" secondItem="BJJ-I0-GFD" secondAttribute="top" id="niI-Cg-Fbw"/>
+                                <constraint firstAttribute="trailing" secondItem="P4C-xm-Tjf" secondAttribute="trailing" id="x1j-5H-1W0"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rwZ-e7-KlN" userLabel="Second">
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A6f-N8-xeX">
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <state key="normal" title="Button">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onSecondControl" destination="-1" eventType="touchUpInside" id="mEV-Ve-smZ"/>
+                                    </connections>
+                                </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="64U-F2-YKT" userLabel="BottomBar">
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="2" id="qWv-hZ-5fP"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="64U-F2-YKT" secondAttribute="bottom" id="2hU-JU-bs6"/>
+                                <constraint firstItem="64U-F2-YKT" firstAttribute="top" secondItem="A6f-N8-xeX" secondAttribute="bottom" id="5O4-3a-Cxj"/>
+                                <constraint firstAttribute="trailing" secondItem="64U-F2-YKT" secondAttribute="trailing" id="Als-2f-Wu2"/>
+                                <constraint firstItem="A6f-N8-xeX" firstAttribute="leading" secondItem="rwZ-e7-KlN" secondAttribute="leading" id="KVp-Tx-nra"/>
+                                <constraint firstItem="A6f-N8-xeX" firstAttribute="top" secondItem="rwZ-e7-KlN" secondAttribute="top" id="X66-YH-2uA"/>
+                                <constraint firstAttribute="trailing" secondItem="A6f-N8-xeX" secondAttribute="trailing" id="jOY-ea-hiu"/>
+                                <constraint firstItem="64U-F2-YKT" firstAttribute="leading" secondItem="rwZ-e7-KlN" secondAttribute="leading" id="kRD-Mu-GGr"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="yTV-8B-DRj" secondAttribute="trailing" id="Xo0-3D-vob"/>
+                <constraint firstItem="yTV-8B-DRj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fLu-cC-toh"/>
+                <constraint firstItem="yTV-8B-DRj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qM1-Yg-90k"/>
+                <constraint firstAttribute="bottom" secondItem="yTV-8B-DRj" secondAttribute="bottom" id="xHQ-hq-EPJ"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-29.5" y="28"/>
+        </view>
+    </objects>
+</document>
