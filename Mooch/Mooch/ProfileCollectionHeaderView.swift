@@ -11,7 +11,7 @@ import UIKit
 class ProfileCollectionHeaderView: UICollectionReusableView {
     
     static let Identifier = "ProfileCollectionHeaderView"
-    static let EstimatedHeight: CGFloat = 266
+    static let EstimatedHeight: CGFloat = 271
 
     @IBOutlet weak var userImageView: CircleImageView!
     @IBOutlet weak var userNameLabel: UILabel!

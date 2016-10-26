@@ -24,13 +24,13 @@ class BottomBarDoubleSegmentedControl: UIView {
     
     @IBOutlet private var view: UIView!
     
+    @IBOutlet private var bottomBar: UIView!
+    
     @IBOutlet private var firstControlView: UIView!
     @IBOutlet private var firstControlButton: UIButton!
-    @IBOutlet private var firstControlBottomBar: UIView!
     
     @IBOutlet private var secondControlView: UIView!
     @IBOutlet private var secondControlButton: UIButton!
-    @IBOutlet private var secondControlBottomBar: UIView!
     
     private(set) var selectedControl: Control = .first
     
@@ -50,13 +50,13 @@ class BottomBarDoubleSegmentedControl: UIView {
     
     @IBAction func onFirstControl() {
         selectedControl = .first
-        updateUI()
+        updateUI(withAnimation: true)
         delegate?.didSelect(.first)
     }
     
     @IBAction func onSecondControl() {
         selectedControl = .second
-        updateUI()
+        updateUI(withAnimation: true)
         delegate?.didSelect(.second)
     }
     
@@ -67,7 +67,7 @@ class BottomBarDoubleSegmentedControl: UIView {
         self.addSubview(view)
         view.frame = self.bounds
         
-        updateUI()
+        updateUI(withAnimation: false)
     }
     
     override init(frame: CGRect) {
@@ -77,10 +77,10 @@ class BottomBarDoubleSegmentedControl: UIView {
         self.addSubview(view)
         view.frame = frame
         
-        updateUI()
+        updateUI(withAnimation: false)
     }
     
-    func updateUI() {
+    func updateUI(withAnimation shouldAnimate: Bool) {
         view.backgroundColor = .clear
         
         let isFirstControlSelected = (selectedControl == .first)
@@ -92,14 +92,29 @@ class BottomBarDoubleSegmentedControl: UIView {
         unselectedControlButton.titleLabel?.font = UIFont.systemFont(ofSize: fontSize)
         unselectedControlButton.setTitleColor(textColor, for: .normal)
         
-        let selectedControlBottomBar: UIView = isFirstControlSelected ? firstControlBottomBar : secondControlBottomBar
-        let unselectedControlBottomBar: UIView = isFirstControlSelected ? secondControlBottomBar : firstControlBottomBar
-        selectedControlBottomBar.backgroundColor = textColor
-        selectedControlBottomBar.isHidden = false
-        unselectedControlBottomBar.backgroundColor = textColor
-        unselectedControlBottomBar.isHidden = true
-        
         firstControlView.backgroundColor = controlBackgroundColor
         secondControlView.backgroundColor = controlBackgroundColor
+        
+        bottomBar.backgroundColor = textColor
+        
+        var newFrameForBottomBar = bottomBar.frame
+        let newXForBottomBar = isFirstControlSelected ? firstControlView.frame.origin.x : secondControlView.frame.origin.x
+        newFrameForBottomBar.origin.x = newXForBottomBar
+        
+        if shouldAnimate {
+            UIView.animate(
+                withDuration: 0.3,
+                delay: 0,
+                usingSpringWithDamping: 0.7,
+                initialSpringVelocity: 0.7,
+                options: .curveEaseOut,
+                animations: {
+                    self.bottomBar.frame = newFrameForBottomBar
+                },
+                completion: nil
+            )
+        } else {
+            bottomBar.frame = newFrameForBottomBar
+        }
     }
 }

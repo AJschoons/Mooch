@@ -23,13 +23,13 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="W48-rC-WZj">
                                     <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="50" height="266"/>
+                                    <size key="headerReferenceSize" width="50" height="271"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="ProfileCollectionHeaderView" reuseIdentifier="ProfileCollectionHeaderView" id="9Er-Iv-Wt4" customClass="ProfileCollectionHeaderView" customModule="Mooch" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="266"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="271"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z73-dQ-gPg" userLabel="User Profile Stuff">
@@ -129,7 +129,7 @@
                                                                 </constraints>
                                                             </view>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                            <blurEffect style="extraLight"/>
+                                                            <blurEffect style="light"/>
                                                         </visualEffectView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -189,7 +189,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="YhJ-oW-hoK" secondAttribute="trailing" id="0xg-Rh-sip"/>
                                                 <constraint firstItem="UVp-Lz-ORe" firstAttribute="top" secondItem="Vuk-k5-qe9" secondAttribute="top" id="Cjs-GL-KOV"/>
                                                 <constraint firstAttribute="bottom" secondItem="YhJ-oW-hoK" secondAttribute="bottom" id="Dea-8J-Fre"/>
-                                                <constraint firstAttribute="height" constant="30" id="EQc-us-NfA"/>
+                                                <constraint firstAttribute="height" constant="35" id="EQc-us-NfA"/>
                                                 <constraint firstItem="UVp-Lz-ORe" firstAttribute="leading" secondItem="Vuk-k5-qe9" secondAttribute="leading" id="Fdo-iU-g65"/>
                                                 <constraint firstItem="YhJ-oW-hoK" firstAttribute="leading" secondItem="Vuk-k5-qe9" secondAttribute="leading" id="Tfv-Wd-Vlb"/>
                                                 <constraint firstAttribute="trailing" secondItem="UVp-Lz-ORe" secondAttribute="trailing" id="mJJ-KF-htJ"/>
