@@ -43,7 +43,7 @@ class ListingDetailsViewController: MoochViewController {
     }
     
     func onViewSellerProfileAction() {
-        print("view seller action")
+        showSellerProfile()
     }
     
     func onEndListingAction() {
@@ -92,6 +92,9 @@ class ListingDetailsViewController: MoochViewController {
         } else {
             navigationItem.rightBarButtonItems = nil
         }
+        
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func barButtons(fromTypeList typeList: [Configuration.BarButtonType]) -> [UIBarButtonItem] {
@@ -120,6 +123,14 @@ class ListingDetailsViewController: MoochViewController {
         }
         tableHandler.reloadRow(at: IndexPath(row: contactSellerRow, section: 0))
         
+    }
+    
+    fileprivate func showSellerProfile() {
+        let profileViewController = ProfileViewController.instantiateFromStoryboard()
+        profileViewController.configuration = ProfileConfiguration.defaultConfiguration(for: .seller)
+        profileViewController.updateWith(user: configuration.listing.owner)
+        
+        navigationController?.pushViewController(profileViewController, animated: true)
     }
     
     fileprivate func presentPhoneNumberOptionsActionSheet() {
