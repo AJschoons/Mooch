@@ -213,7 +213,7 @@ extension MoochTabBarController: LoginViewControllerDelegate {
         notifyTabViewControllers(ofLocalUserStateChange: .loggedIn)
         
         if selectedMyProfileTabWhenNotLoggedIn {
-            selectedIndex = Tab.myProfile.index
+            selectedIndex = Tab.home.index
         }
         
         //Reset these now that the user logged in

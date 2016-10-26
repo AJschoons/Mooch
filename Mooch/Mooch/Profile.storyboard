@@ -10,7 +10,7 @@
         <!--Profile View Controller-->
         <scene sceneID="agF-uP-9WJ">
             <objects>
-                <viewController storyboardIdentifier="ProfileViewController" automaticallyAdjustsScrollViewInsets="NO" id="MM3-X4-Kft" customClass="ProfileViewController" customModule="Mooch" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="MM3-X4-Kft" customClass="ProfileViewController" customModule="Mooch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="24Z-F3-Idi"/>
                         <viewControllerLayoutGuide type="bottom" id="FL0-kN-TOJ"/>
@@ -45,6 +45,11 @@
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" secondItem="4XU-W3-EgE" secondAttribute="height" multiplier="1:1" id="Rzg-BN-qEj"/>
                                                                         </constraints>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                                <real key="value" value="1"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CE2-iD-dXh">
                                                                         <constraints>
@@ -227,8 +232,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="NMh-L7-dGQ" secondAttribute="bottom" id="Z0m-Si-Cu2"/>
                             <constraint firstItem="NMh-L7-dGQ" firstAttribute="leading" secondItem="Gdr-ZB-L85" secondAttribute="leading" id="e13-dm-DHp"/>
-                            <constraint firstItem="FL0-kN-TOJ" firstAttribute="top" secondItem="NMh-L7-dGQ" secondAttribute="bottom" id="fYf-rn-Iae"/>
                             <constraint firstAttribute="trailing" secondItem="NMh-L7-dGQ" secondAttribute="trailing" id="hdG-gM-Miq"/>
                             <constraint firstItem="NMh-L7-dGQ" firstAttribute="top" secondItem="Gdr-ZB-L85" secondAttribute="top" id="qeP-es-TPf"/>
                         </constraints>

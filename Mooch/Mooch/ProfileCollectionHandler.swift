@@ -29,8 +29,6 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.sectionHeadersPinToVisibleBounds = true
         }
-        
-        collectionView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
     }
     
     func reloadData() {
@@ -116,15 +114,10 @@ extension ProfileCollectionHandler {
         }
         headerView.userCommunityLabel.text = communityText
         
-        
         headerView.userImageView.image = UIImage(named: "defaultProfilePhoto")
         
         if let profilePhotoURL = profileUser.pictureURL {
-            headerView.tag = indexPath.row
             ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { image in
-                //Make sure the cell hasn't been reused by the time the image is downloaded
-                guard headerView.tag == indexPath.row else { return }
-                
                 guard let image = image else { return }
                 headerView.userImageView.image = image
             }

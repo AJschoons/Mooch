@@ -15,11 +15,9 @@ protocol ProfileViewControllerDelegate: class {
 
 class ProfileViewController: MoochViewController {
     
-    
     typealias Configuration = ProfileConfiguration
     
     // MARK: Public variables
-    
     
     @IBOutlet var collectionHandler: ProfileCollectionHandler! {
         didSet {
@@ -45,20 +43,16 @@ class ProfileViewController: MoochViewController {
     
     // MARK: Actions
     
-    @IBAction func onLogOutAction() {
-        LocalUserManager.sharedInstance.logout()
-        delegate?.profileViewControllerDidLogOutUser(self)
-    }
-    
-    @IBAction func onChangeCommunityAction() {
-        presentCommunityPicker()
-    }
-    
     func onSettingsAction() {
-        
+        presentSettingsActionSheet()
     }
     
     // MARK: Public methods
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        collectionHandler.reloadData()
+    }
     
     func updateWith(user: User?) {
         self.user = user
@@ -79,6 +73,7 @@ class ProfileViewController: MoochViewController {
     override func updateUI() {
         super.updateUI()
         
+        collectionHandler.reloadData()
     }
     
     static func instantiateFromStoryboard() -> ProfileViewController {
@@ -119,6 +114,35 @@ class ProfileViewController: MoochViewController {
         case .settings:
             return settingsButton
         }
+    }
+    
+    fileprivate func presentSettingsActionSheet() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let editProfileAction = UIAlertAction(title: "Edit Profile", style: .default) { _ in
+            //
+        }
+        let changeCommunityAction = UIAlertAction(title: "Change Community", style: .default) { _ in
+            self.presentCommunityPicker()
+        }
+        let logoutAction = UIAlertAction(title: "Log Out", style: .destructive) { _ in
+            self.logout()
+        }
+        let cancelAction = UIAlertAction(title: Strings.TabBar.loggedOutMyProfileTabActionSheetActionTitleCancel.rawValue, style: .cancel, handler: nil)
+        
+        actionSheet.addAction(editProfileAction)
+        actionSheet.addAction(changeCommunityAction)
+        actionSheet.addAction(logoutAction)
+        actionSheet.addAction(cancelAction)
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    
+    
+    fileprivate func logout() {
+        LocalUserManager.sharedInstance.logout()
+        delegate?.profileViewControllerDidLogOutUser(self)
     }
     
     fileprivate func presentCommunityPicker() {
