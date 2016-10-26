@@ -32,6 +32,8 @@ class ProfileCollectionHandler: ListingCollectionHandler {
     }
     
     func reloadData() {
+        guard let collectionView = collectionView else { return }
+        
         collectionView.reloadData()
         
         if delegate.getListings().count == 0 {

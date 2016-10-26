@@ -81,13 +81,13 @@ class CommunityListingsManager {
         
         if let localUser = LocalUserManager.sharedInstance.localUser {
             //Filter to only show listings this user hasn't posted
-            listingsVisibleToCurrentUserInCurrentCommunity = listingsVisibleToCurrentUserInCurrentCommunity.filter({$0.owner.id != localUser.user.id})
+            listingsVisibleToCurrentUserInCurrentCommunity = newListings.filter({$0.owner.id != localUser.user.id})
             
             //Filter to only show listings this user has posted
             listingsOwnedByCurrentUser = allListingsOwned(by: localUser.user)
             
             //Filter to only show listings this user has contacted
-            listingsCurrentUserHasContacted = listingsCurrentUserHasContacted.filter({$0.isOwnerContactedBy(by: localUser.user)})
+            listingsCurrentUserHasContacted = newListings.filter({$0.isOwnerContactedBy(by: localUser.user)})
         }
         
         
@@ -97,6 +97,6 @@ class CommunityListingsManager {
         
         _listingsVisibleToCurrentUserInCurrentCommunity = listingsVisibleToCurrentUserInCurrentCommunity
         _listingsOwnedByCurrentUser = listingsOwnedByCurrentUser
-        _listingsCurrentUserHasContacted = listingsVisibleToCurrentUserInCurrentCommunity
+        _listingsCurrentUserHasContacted = listingsCurrentUserHasContacted
     }
 }

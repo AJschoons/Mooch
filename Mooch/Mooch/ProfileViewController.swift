@@ -41,6 +41,8 @@ class ProfileViewController: MoochViewController {
     
     fileprivate var settingsButton: UIBarButtonItem!
     
+    fileprivate var selectedControl: BottomBarDoubleSegmentedControl.Control = .first
+    
     // MARK: Actions
     
     func onSettingsAction() {
@@ -56,6 +58,8 @@ class ProfileViewController: MoochViewController {
     
     func updateWith(user: User?) {
         self.user = user
+        selectedControl = .first
+        updateUI()
     }
     
     override func setup() {
@@ -160,7 +164,22 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
     }
     
     func getListings() -> [Listing] {
-        return CommunityListingsManager.sharedInstance.listingsOwnedByCurrentUser
+        switch configuration.mode {
+            
+        case .localUser:
+            switch selectedControl {
+            case .first:
+                return CommunityListingsManager.sharedInstance.listingsOwnedByCurrentUser
+            case .second:
+                return CommunityListingsManager.sharedInstance.listingsCurrentUserHasContacted
+            }
+            
+        case .seller:
+            guard let user = user else {
+                return [Listing]()
+            }
+            return CommunityListingsManager.sharedInstance.allListingsOwned(by: user)
+        }
     }
     
     func getConfiguration() -> Configuration {
@@ -180,7 +199,8 @@ extension ProfileViewController: BottomBarDoubleSegmentedControlDelegate {
     //Part of ProfileCollectionHandlerDelegate
     
     func didSelect(_ selectedControl: BottomBarDoubleSegmentedControl.Control) {
-        print(selectedControl)
+        self.selectedControl = selectedControl
+        updateUI()
     }
 }
 
