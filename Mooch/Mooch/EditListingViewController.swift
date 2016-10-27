@@ -15,7 +15,7 @@ protocol EditListingField {
 protocol EditListingViewControllerDelegate: class {
     
     //Allows the delegate to handle dismissing this view controller at the appropriate time
-    func editListingViewControllerDidFinishEditing(with: EditedListingInformation)
+    func editListingViewControllerDidFinishEditing(with: Listing, isNew: Bool)
     
     //Allows the delegate to handle dismissing this view controller
     func editListingViewControllerDidCancel()
@@ -209,7 +209,7 @@ class EditListingViewController: MoochModalViewController {
     
     private func uploadNewListing() {
         guard isValidListingCreation() else { return }
-        guard let userId = LocalUserManager.sharedInstance.localUser?.user.id else { return }
+        guard let localUser = LocalUserManager.sharedInstance.localUser?.user else { return }
         let eli = editedListingInformation
         guard let photo = eli.photo, let title = eli.title, let price = eli.price, let quantity = eli.quantity, let categoryId = eli.categoryId else { return }
         
@@ -219,7 +219,7 @@ class EditListingViewController: MoochModalViewController {
         showLoadingOverlayView(withInformationText: Strings.EditListing.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true, withHiddenAlertView: false)
         
         MoochAPI.POSTListing(
-            userId: userId,
+            userId: localUser.id,
             photo: photo,
             title: title,
             description: eli.description,
@@ -239,8 +239,9 @@ class EditListingViewController: MoochModalViewController {
                     strongSelf.state = .editing
                     return
                 }
-    
-                strongSelf.notifyDelegateDidFinishEditedAndDismissSelf(with: eli)
+                
+                let localListing = Listing(id: -1, photo: photo, title: title, description: eli.description, price: price, isFree: false, quantity: quantity, categoryId: categoryId, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: localUser, pictureURL: "", thumbnailPictureURL: "", communityId: localUser.communityId, exchanges: [])
+                strongSelf.notifyDelegateDidFinishEditingAndDismissSelf(with: localListing, isNew: true)
             }
         )
     }
@@ -274,11 +275,11 @@ class EditListingViewController: MoochModalViewController {
     }
     
     //Use this method after login or account creation to notify the delegate, which will then dismiss this view controller
-    fileprivate func notifyDelegateDidFinishEditedAndDismissSelf(with editedListingInformation: EditedListingInformation) {
+    fileprivate func notifyDelegateDidFinishEditingAndDismissSelf(with listing: Listing, isNew: Bool) {
         //Need this so the keyboard listeners are unregistered
         isDismissingSelf = true
         
-        delegate.editListingViewControllerDidFinishEditing(with: editedListingInformation)
+        delegate.editListingViewControllerDidFinishEditing(with: listing, isNew: isNew)
     }
     
     //Use this method after cancelling to notify the delegate, which will then dismiss this view controller

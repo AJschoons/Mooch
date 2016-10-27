@@ -24,12 +24,16 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     static private let AuthorizationHeaderKey = "Authorization"
     
+    case deleteListing(ownerId: Int, listingId: Int)
+    
     case getCommunities
+    case getExchangeAccept(listingOwnerId: Int, listingId: Int, exchangeId: Int)
     case getListingCategories
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
     case getUserOnce(withId: Int, email: String, authorizationToken: String)
     
+    case postExchange(listingOwnerId: Int, listingId: Int)
     case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
     case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?)
@@ -91,8 +95,14 @@ enum MoochAPIRouter: URLRequestConvertible {
     //Returns the routing information needed to create a url request for each route
     func getRoutingInformation() -> RoutingInformation {
         switch self {
+        case .deleteListing(let userId, let listingId):
+            return ("/users/\(userId)/listings/\(listingId)", .delete, nil, true)
+            
         case .getCommunities:
             return ("/communities", .get, nil, false)
+            
+        case .getExchangeAccept(let listingOwnerId, let listingId, let exchangeId):
+            return ("/users/\(listingOwnerId)/listings/\(listingId)/exchanges/\(exchangeId)/accept", .get, nil, true)
             
         case .getListingCategories:
             return ("/categories", .get, nil, false)
@@ -108,6 +118,9 @@ enum MoochAPIRouter: URLRequestConvertible {
             MoochAPIRouter.authorizeOnce(email: email, authorizationToken: authorizationToken)
             let routingInformation = MoochAPIRouter.getUser(withId: userId).getRoutingInformation()
             return (routingInformation.path, routingInformation.method, routingInformation.parameters, true)
+            
+        case .postExchange(let listingOwnerId, let listingId):
+            return ("/users/\(listingOwnerId)/listings/\(listingId)/exchanges/", .post, nil, true)
             
         case .postListing(let userId, let title, let description, let price, let isFree, let quantity, let categoryId):
             var parameters: [String : Any] = [ParameterMapping.PostListing.title.rawValue : title, ParameterMapping.PostListing.price.rawValue : price, ParameterMapping.PostListing.isFree.rawValue : isFree, ParameterMapping.PostListing.quantity.rawValue : quantity, ParameterMapping.PostListing.categoryId.rawValue : categoryId]

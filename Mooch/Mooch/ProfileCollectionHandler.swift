@@ -151,13 +151,17 @@ extension ProfileCollectionHandler {
         cell.set(bottomLabelText: listing.priceString)
         
         cell.tag = indexPath.row
-        //cell.photo.image = ImageManager.PlaceholderImage
-        ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
-            //Make sure the cell hasn't been reused by the time the image is downloaded
-            guard cell.tag == indexPath.row else { return }
-            
-            guard let image = image else { return }
-            cell.set(photo: image)
+        
+        if let localPhoto = listing.photo {
+            cell.set(photo: localPhoto)
+        } else {
+            ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard cell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                cell.set(photo: image)
+            }
         }
         
         return cell

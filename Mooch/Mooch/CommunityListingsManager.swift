@@ -57,6 +57,21 @@ class CommunityListingsManager {
         updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
     }
     
+    func add(_ listing: Listing) {
+        _allListingsInCurrentCommunity.insert(listing, at: 0)
+        updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
+    }
+    
+    func delete(_ listing: Listing) {
+        guard let indexOfListingToDelete = _allListingsInCurrentCommunity.index(where: {$0.id == listing.id}) else {
+            return
+        }
+        
+        _allListingsInCurrentCommunity.remove(at: indexOfListingToDelete)
+        
+        updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
+    }
+    
     func allListingsOwned(by user: User) -> [Listing] {
         return _allListingsInCurrentCommunity.filter({$0.owner.id == user.id})
     }

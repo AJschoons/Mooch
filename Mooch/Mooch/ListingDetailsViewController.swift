@@ -47,7 +47,7 @@ class ListingDetailsViewController: MoochViewController {
     }
     
     func onEndListingAction() {
-        print("end listing action")
+        deleteListing()
     }
     
     func onDidAcceptBuyer(_ buyer: User) {
@@ -111,18 +111,40 @@ class ListingDetailsViewController: MoochViewController {
     fileprivate func contactSeller() {
         guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
         
-        //TODO: actually make the api call
-        
-        //Update the listing for this view controller, AND make sure it's updated 
-        //with the CommunityListingsManager so the change persists after leaving this view controller
-        configuration.listing.addInterestedBuyer(localUser.user)
-        CommunityListingsManager.sharedInstance.updateInformation(for: configuration.listing)
-        
-        guard let contactSellerRow = configuration.firstIndex(of: .contactSeller) else {
-            return
+        MoochAPI.POSTExchange(listingOwnerId: configuration.listing.owner.id, listingId: configuration.listing.id) { success, error in
+            guard success else {
+                self.presentSingleActionAlert(title: "Problem Contacting Seller", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                return
+            }
+            
+            //Update the listing for this view controller, AND make sure it's updated
+            //with the CommunityListingsManager so the change persists after leaving this view controller
+            self.configuration.listing.addInterestedBuyer(localUser.user)
+            CommunityListingsManager.sharedInstance.updateInformation(for: self.configuration.listing)
+            
+            guard let contactSellerRow = self.configuration.firstIndex(of: .contactSeller) else {
+                return
+            }
+            self.tableHandler.reloadRow(at: IndexPath(row: contactSellerRow, section: 0))
         }
-        tableHandler.reloadRow(at: IndexPath(row: contactSellerRow, section: 0))
+    }
+    
+    fileprivate func deleteListing() {
+        guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
         
+        MoochAPI.DELETEListing(ownerId: localUser.user.id, listingId: configuration.listing.id) { success, error in
+            guard success else {
+                self.presentSingleActionAlert(title: "Problem Ending Listing", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                return
+            }
+            
+            //Make sure the change is updated locally in the CommunityListingsManager so the change persists after leaving this view controller
+            CommunityListingsManager.sharedInstance.delete(self.configuration.listing)
+            
+            if let navigationController = self.navigationController {
+                navigationController.popViewController(animated: true)
+            }
+        }
     }
     
     fileprivate func showSellerProfile() {
