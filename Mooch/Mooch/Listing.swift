@@ -24,6 +24,7 @@ struct Listing {
         case thumbnailPictureURL
         case communityId
         case owner
+        case exchanges
     }
     
     enum JSONMapping: String {
@@ -42,6 +43,7 @@ struct Listing {
         case thumbnailPictureURL = "thumbnail_image_url"
         case communityId = "community_id"
         case owner = "user"
+        case exchanges = "exchanges"
     }
     
     let id: Int
@@ -59,6 +61,7 @@ struct Listing {
     var thumbnailPictureURL: String
     let communityId: Int
     let owner: User
+    var exchanges: [Exchange]
     
     private(set) var interestedBuyers = [User]()
     
@@ -80,14 +83,12 @@ struct Listing {
     }
     
     func isUserContactInformationVisible(to userToCheck: User) -> Bool {
-        //TODO: implement once exchanges are added
-        return false
+        return exchanges.contains(where: {$0.id == userToCheck.id && $0.sellerAccepted})
     }
     
     //Returns true when a listing has been completed
     func isCompleted() -> Bool {
-        //TODO: implement once exchanges are added
-        return false
+        return exchanges.contains(where: {$0.sellerAccepted})
     }
     
     mutating func addInterestedBuyer(_ user: User) {
@@ -96,7 +97,7 @@ struct Listing {
     }
     
     //Designated initializer
-    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int) {
+    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int, exchanges: [Exchange]) {
         self.id = id
         self.photo = photo
         self.title = title
@@ -112,6 +113,9 @@ struct Listing {
         self.pictureURL = pictureURL
         self.thumbnailPictureURL = thumbnailPictureURL
         self.communityId = communityId
+        
+        self.exchanges = exchanges
+        self.interestedBuyers = self.exchanges.map({$0.buyer})
     }
     
     //Convenience JSON initializer
@@ -132,9 +136,11 @@ struct Listing {
         guard let pictureURL = json[JSONMapping.pictureURL.rawValue].string else { throw JSONInitializationError.pictureURL }
         guard let communityId = json[JSONMapping.communityId.rawValue].int else { throw JSONInitializationError.communityId }
         guard json[JSONMapping.owner.rawValue].exists() else { throw JSONInitializationError.owner }
+        guard let exchangesJSON = json[JSONMapping.exchanges.rawValue].array else { throw JSONInitializationError.exchanges }
         
         let createdAt = date(fromAPITimespamp: createdAtString)
         let owner = try User(json: JSON(json[JSONMapping.owner.rawValue].object))
+        let exchanges = try exchangesJSON.map({try Exchange(json: $0)})
         
         //If the thumbnail URL isn't present then default to the pictureURL
         var thumbnailPictureURL = pictureURL
@@ -162,15 +168,15 @@ struct Listing {
         //Intialization
         //
 
-        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL, communityId: communityId)
+        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL, communityId: communityId, exchanges: exchanges)
     }
     
-    static func createDummy(fromNumber i: Int) -> Listing {
-        let photo = UIImage(named: "apples")
-        let description = "This is some text that describes what the listing is but that will hopefully be more useful than this decription specifically"
-        let price = Float(i % 100) * 1.68723
-        let owner = User.createDummy(fromNumber: i)
-        
-        return Listing(id: i, photo: photo, title: "Listing \(i)", description: description, price: price, isFree: false, quantity: i, categoryId: i, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: owner, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100", communityId: i)
-    }
+//    static func createDummy(fromNumber i: Int) -> Listing {
+//        let photo = UIImage(named: "apples")
+//        let description = "This is some text that describes what the listing is but that will hopefully be more useful than this decription specifically"
+//        let price = Float(i % 100) * 1.68723
+//        let owner = User.createDummy(fromNumber: i)
+//        
+//        return Listing(id: i, photo: photo, title: "Listing \(i)", description: description, price: price, isFree: false, quantity: i, categoryId: i, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: owner, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100", communityId: i)
+//    }
 }
