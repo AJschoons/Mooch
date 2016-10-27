@@ -15,7 +15,7 @@ protocol CommunityPickerCollectionHandlerDelegate: class {
 
 class CommunityPickerCollectionHandler: NSObject {
     
-    static let SectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+    static let SectionInsets = Theming.InsetsForTileCollectionViewCells
     
     weak var delegate: CommunityPickerCollectionHandlerDelegate!
     

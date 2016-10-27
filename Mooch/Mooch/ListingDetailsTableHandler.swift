@@ -158,7 +158,7 @@ class ListingDetailsTableHandler: NSObject {
         let textColor = ThemeColors.listingDetailsActionText.color()
         
         //Set the action button to be disabled for the contact seller button when the user already contacted them
-        if fieldType == .contactSeller && listing.isOwnerContactedByThisUser != nil && listing.isOwnerContactedByThisUser! == true {
+        if fieldType == .contactSeller && LocalUserManager.sharedInstance.localUser != nil && listing.isOwnerContactedBy(by: LocalUserManager.sharedInstance.localUser!.user) {
             backgroundColor = ThemeColors.listingDetailsActionBackgroundDisabled.color()
             actionCell.actionButton.isUserInteractionEnabled = false
         }
@@ -190,7 +190,7 @@ class ListingDetailsTableHandler: NSObject {
         listingDetailsSellerCell.sellerNameLabel.text = listing.owner.name
         listingDetailsSellerCell.sellerImageView.image = UIImage(named: "defaultProfilePhoto")
         
-        listingDetailsSellerCell.setButtonStateAndText(from: listing)
+        listingDetailsSellerCell.setButtonStateAndText(from: listing, for: LocalUserManager.sharedInstance.localUser?.user)
         listingDetailsSellerCell.setIconsAndButtons(with: ThemeColors.listingDetailsActionBackground.color())
         
         if let ownerThumbnailPictureURL = listing.owner.thumbnailPictureURL {
@@ -241,7 +241,7 @@ class ListingDetailsTableHandler: NSObject {
         switch fieldType {
         case .contactSeller:
             var actionString = Strings.ListingDetails.fieldTypeContactSellerNoContactYetActionString.rawValue
-            if listing.isOwnerContactedByThisUser != nil && listing.isOwnerContactedByThisUser! == true {
+            if LocalUserManager.sharedInstance.localUser != nil && listing.isOwnerContactedBy(by: LocalUserManager.sharedInstance.localUser!.user) {
                 actionString = Strings.ListingDetails.fieldTypeContactSellerAlreadyContactedActionString.rawValue
             }
             return actionString

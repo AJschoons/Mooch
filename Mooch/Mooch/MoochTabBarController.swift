@@ -46,6 +46,7 @@ class MoochTabBarController: UITabBarController {
         
         //Fourth tab
         let profileViewController = ProfileViewController.instantiateFromStoryboard()
+        profileViewController.configuration = ProfileConfiguration.defaultConfiguration(for: .localUser)
         profileViewController.delegate = mtbc
         let profileViewControllerNav = UINavigationController(rootViewController: profileViewController)
         
@@ -178,9 +179,15 @@ extension MoochTabBarController: UITabBarControllerDelegate {
         let viewControllerToSelect = getViewControllerOrRootOfNavigationViewController(from: viewController)
         
         if viewControllerToSelect is ProfileViewController {
-            guard LocalUserManager.sharedInstance.state == .loggedIn else {
+            guard LocalUserManager.sharedInstance.state == .loggedIn, let localUser = LocalUserManager.sharedInstance.localUser else {
                 presentLoggedOutMyProfileButtonActionSheet()
                 return false
+            }
+            
+            if let profileViewController = viewControllerToSelect as? ProfileViewController {
+                if profileViewController.user == nil {
+                    profileViewController.updateWith(user: localUser.user)
+                }
             }
             
             return true
@@ -206,7 +213,7 @@ extension MoochTabBarController: LoginViewControllerDelegate {
         notifyTabViewControllers(ofLocalUserStateChange: .loggedIn)
         
         if selectedMyProfileTabWhenNotLoggedIn {
-            selectedIndex = Tab.myProfile.index
+            selectedIndex = Tab.home.index
         }
         
         //Reset these now that the user logged in
@@ -227,12 +234,14 @@ extension MoochTabBarController: LoginViewControllerDelegate {
 
 extension MoochTabBarController: ProfileViewControllerDelegate {
     
-    func profileViewControllerDidLogOutUser() {
+    func profileViewControllerDidLogOutUser(_ profileViewController: ProfileViewController) {
         notifyTabViewControllers(ofLocalUserStateChange: .guest)
         selectedIndex = Tab.home.index
+        
+        profileViewController.updateWith(user: nil)
     }
     
-    func profileViewControllerDidChangeCommunity() {
+    func profileViewControllerDidChangeCommunity(_ profileViewController: ProfileViewController) {
         notifyTabViewControllersOfCommunityChange()
         selectedIndex = Tab.home.index
     }

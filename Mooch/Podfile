@@ -6,6 +6,7 @@ use_frameworks!
 target 'Mooch' do
 	pod 'Alamofire', '~> 4.0'
 	pod 'AlamofireImage', '~> 3.0'
+    pod 'GSKStretchyHeaderView'
 	pod 'OHHTTPStubs' # Default subspecs, including support for NSURLSession & JSON etc
 	pod 'OHHTTPStubs/Swift' # Adds the Swiftier API wrapper too
     pod 'PhoneNumberKit', '~> 1.0'

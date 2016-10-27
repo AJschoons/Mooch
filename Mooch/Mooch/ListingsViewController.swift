@@ -36,7 +36,7 @@ class ListingsViewController: MoochViewController {
         get {
             switch mode {
             case .independent:
-                return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+                return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
             case .nestedInSearch:
                 return _givenListings
             }
@@ -73,6 +73,8 @@ class ListingsViewController: MoochViewController {
     //Used for the listings variable when in .nested mode
     private var _givenListings = [Listing]()
 
+    //Allows us to ensure that loading takes at least a minimum duration; makes the UX smoother
+    private var finishLoadingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
     
     // MARK: Actions
     
@@ -135,40 +137,53 @@ class ListingsViewController: MoochViewController {
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
         
-        if !isRefreshing {
-            showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
-        }
+        showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: true, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: isRefreshing)
         
-        CommunityListingsManager.sharedInstance.loadListingsForCurrentCommunityAndUser() { success, error in
-            guard success else {
+        finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+        
+        CommunityListingsManager.sharedInstance.loadListingsForCurrentCommunityAndUser() { [unowned self] success, error in
+            //The code inside this execute closure gets executed only after the minimum duration has passed
+            self.finishLoadingAfterMinimumDurationTimer!.execute { [unowned self] in
+                //DO NOT keep the timer around after it's been executed
+                self.finishLoadingAfterMinimumDurationTimer = nil
+                
+                guard success else {
+                    //If refreshing and the overlay isn't shown, this method does nothing
+                    self.hideLoadingOverlayView(animated: true)
+                    
+                    if self.collectionHandler.isRefreshing {
+                        self.collectionHandler.endRefreshingAndReloadData()
+                    } else {
+                        self.collectionHandler.reloadData()
+                    }
+                    
+                    self.presentSingleActionAlert(title: Strings.Listings.loadingListingsErrorAlertTitle.rawValue, message: Strings.Listings.loadingListingsErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                    self.state = .loaded
+                    return
+                }
+                
+                //
+                //Note: The new listings can be referenced by: CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+                //
+                
+                if self.collectionHandler.isRefreshing {
+                    self.collectionHandler.endRefreshingAndReloadData()
+                } else {
+                    self.collectionHandler.reloadData()
+                }
+                
                 //If refreshing and the overlay isn't shown, this method does nothing
                 self.hideLoadingOverlayView(animated: true)
                 
-                self.presentSingleActionAlert(title: Strings.Listings.loadingListingsErrorAlertTitle.rawValue, message: Strings.Listings.loadingListingsErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                 self.state = .loaded
-                return
             }
-            
-            //
-            //Note: The new listings can be referenced by: CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
-            //
-            
-            if self.collectionHandler.isRefreshing {
-                self.collectionHandler.endRefreshingAndReloadData()
-            } else {
-                self.collectionHandler.reloadData()
-            }
-            
-            //If refreshing and the overlay isn't shown, this method does nothing
-            self.hideLoadingOverlayView(animated: true)
-            
-            self.state = .loaded
         }
     }
     
+    
     fileprivate func pushListingDetailsViewController(withListing listing: Listing) {
         let vc = ListingDetailsViewController.instantiateFromStoryboard()
-        vc.configuration = ListingDetailsConfiguration.defaultConfiguration(for: .viewingOtherUsersListing, with: listing)
+        vc.configuration = ListingDetailsConfiguration.defaultConfiguration(for: .viewingOtherUsersListing, with: listing, isViewingSellerProfileNotAllowed: false)
 
         navigationController!.pushViewController(vc, animated: true)
     }

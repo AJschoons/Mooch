@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BottomBarDoubleSegmentedControl" customModule="Mooch" customModuleProvider="target">
+            <connections>
+                <outlet property="firstControlButton" destination="9bL-na-NG6" id="CxS-SE-uJ6"/>
+                <outlet property="firstControlView" destination="BJJ-I0-GFD" id="W1g-h5-hRL"/>
+                <outlet property="secondControlButton" destination="A6f-N8-xeX" id="dyP-5D-m4Y"/>
+                <outlet property="secondControlView" destination="rwZ-e7-KlN" id="MH6-XE-uiu"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Xj3-AA-6QA"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yTV-8B-DRj">
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BJJ-I0-GFD" userLabel="First">
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9bL-na-NG6">
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <state key="normal" title="Button">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onFirstControl" destination="-1" eventType="touchUpInside" id="mtD-fE-9sx"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="9bL-na-NG6" secondAttribute="bottom" id="9xb-1W-tre"/>
+                                <constraint firstItem="9bL-na-NG6" firstAttribute="leading" secondItem="BJJ-I0-GFD" secondAttribute="leading" id="Fk3-HE-5gZ"/>
+                                <constraint firstAttribute="trailing" secondItem="9bL-na-NG6" secondAttribute="trailing" id="ipo-LU-nQ7"/>
+                                <constraint firstItem="9bL-na-NG6" firstAttribute="top" secondItem="BJJ-I0-GFD" secondAttribute="top" id="niI-Cg-Fbw"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rwZ-e7-KlN" userLabel="Second">
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A6f-N8-xeX">
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <state key="normal" title="Button">
+                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="onSecondControl" destination="-1" eventType="touchUpInside" id="mEV-Ve-smZ"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="A6f-N8-xeX" firstAttribute="leading" secondItem="rwZ-e7-KlN" secondAttribute="leading" id="KVp-Tx-nra"/>
+                                <constraint firstAttribute="bottom" secondItem="A6f-N8-xeX" secondAttribute="bottom" id="OdU-cO-D1Q"/>
+                                <constraint firstItem="A6f-N8-xeX" firstAttribute="top" secondItem="rwZ-e7-KlN" secondAttribute="top" id="X66-YH-2uA"/>
+                                <constraint firstAttribute="trailing" secondItem="A6f-N8-xeX" secondAttribute="trailing" id="jOY-ea-hiu"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </stackView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="yTV-8B-DRj" secondAttribute="trailing" id="Xo0-3D-vob"/>
+                <constraint firstItem="yTV-8B-DRj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fLu-cC-toh"/>
+                <constraint firstAttribute="bottom" secondItem="yTV-8B-DRj" secondAttribute="bottom" constant="3" id="gB4-cM-bhQ"/>
+                <constraint firstItem="yTV-8B-DRj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qM1-Yg-90k"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-29.5" y="28"/>
+        </view>
+    </objects>
+</document>

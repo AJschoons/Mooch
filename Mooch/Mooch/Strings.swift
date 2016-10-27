@@ -133,7 +133,11 @@ enum Strings {
     }
     
     enum Profile: String {
-        case tempPlaceholder = "keep this enum around!!!"
+        case titleLocalUser = "My Profile"
+        case titleSellerProfile = "Seller Profile"
+        
+        case noListings = "There are currently no listings to show"
+
     }
     
     enum SharedErrors: String {

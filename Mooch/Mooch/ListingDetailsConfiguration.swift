@@ -54,13 +54,23 @@ struct ListingDetailsConfiguration {
     
     private var numberOfNonInterestedBuyerFields: Int?
     
-    static func defaultConfiguration(for mode: Mode, with listing: Listing) -> ListingDetailsConfiguration {
+    static func defaultConfiguration(for mode: Mode, with listing: Listing, isViewingSellerProfileNotAllowed: Bool) -> ListingDetailsConfiguration {
         switch mode {
             
         case .viewingOtherUsersListing:
-            return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .contactSeller, .viewSellerProfile, .listingDescription, .aboutSeller])
+            var fields: [FieldType] = [.listing, .contactSeller, .viewSellerProfile, .listingDescription, .aboutSeller]
+            if isViewingSellerProfileNotAllowed, let viewSellerProfileIndex = fields.index(of: .viewSellerProfile) {
+                fields.remove(at: viewSellerProfileIndex)
+            }
+            
+            return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: fields)
             
         case .viewingOtherUsersCompletedListing:
+            var fields: [FieldType] = [.listing, .viewSellerProfile, .listingDescription, .aboutSeller]
+            if isViewingSellerProfileNotAllowed, let viewSellerProfileIndex = fields.index(of: .viewSellerProfile) {
+                fields.remove(at: viewSellerProfileIndex)
+            }
+            
             return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .viewSellerProfile, .listingDescription, .aboutSeller])
             
         case .viewingThisUsersListing:
@@ -82,14 +92,14 @@ struct ListingDetailsConfiguration {
         
         //We have to generate the interested buyer fields from the listing
         if fields.contains(.interestedBuyersHeader) {
-            guard let interestedBuyers =  listing.interestedBuyers else {
+            guard listing.interestedBuyers.count > 0 else {
                 noInterestedBuyersForInterestedBuyersHeader = true
                 return
             }
             
             numberOfNonInterestedBuyerFields = self.fields.count
             
-            for _ in 0..<interestedBuyers.count {
+            for _ in 0..<listing.interestedBuyers.count {
                 self.fields.append(.interestedBuyer)
             }
         }
@@ -102,8 +112,7 @@ struct ListingDetailsConfiguration {
     func interestedBuyer(forRow row: Int) -> User? {
         guard noInterestedBuyersForInterestedBuyersHeader == false else { return nil }
         guard let numberOfNonInterestedBuyerFields = numberOfNonInterestedBuyerFields else { return nil }
-        guard let interestedBuyers =  listing.interestedBuyers else { return nil }
-        return interestedBuyers[row - numberOfNonInterestedBuyerFields]
+        return listing.interestedBuyers[row - numberOfNonInterestedBuyerFields]
     }
     
     func isListingDescriptionLastField() -> Bool {

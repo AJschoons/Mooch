@@ -23,9 +23,6 @@ class ListingsCollectionHandler: ListingCollectionHandler {
     
     private var refreshControl: UIRefreshControl!
     
-    //Allows us to ensure that refreshing takes at least a minimim duration; makes the UX smoother
-    private var endRefreshingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
-    
     private(set) var isRefreshing = false
     
     weak var delegate: ListingsCollectionHandlerDelegate!
@@ -67,20 +64,14 @@ class ListingsCollectionHandler: ListingCollectionHandler {
         isRefreshing = true
         
         delegate.refresh()
-        
-        guard endRefreshingAfterMinimumDurationTimer == nil else { return }
-        endRefreshingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
     }
     
     func endRefreshingAndReloadData() {
         guard delegate.shouldAllowPullToRefresh() else { return }
-        guard let timer = endRefreshingAfterMinimumDurationTimer else { return }
-        timer.execute() { [weak self] in
-            self?.isRefreshing = false
-            self?.reloadData()
-            self?.refreshControl.endRefreshing()
-            self?.endRefreshingAfterMinimumDurationTimer = nil
-        }
+        
+        isRefreshing = false
+        reloadData()
+        refreshControl.endRefreshing()
     }
     
     fileprivate func createNoListingsBackgroundView() -> UIView
@@ -119,7 +110,6 @@ extension ListingsCollectionHandler {
         return delegate.getListings().count
     }
     
-    //Subclasses should override
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let listing = delegate.getListings()[indexPath.row]
