@@ -26,6 +26,8 @@ class ProfileCollectionHandler: ListingCollectionHandler {
     
     private(set) var headerView: ProfileCollectionHeaderView!
     
+    let ZeroScrollContentOffset = CGPoint(x: 0, y: -ProfileCollectionHeaderView.EstimatedHeight)
+    
     override func onDidSet(collectionView: UICollectionView) {
         super.onDidSet(collectionView: collectionView)
         
@@ -37,6 +39,7 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         guard let collectionView = collectionView else { return }
         
         collectionView.reloadData()
+        reloadHeaderView()
         
         if delegate.getListings().count == 0 {
             collectionView.backgroundView = createNoListingsBackgroundView()
@@ -45,13 +48,18 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         }
     }
     
+    func resetScrollPosition() {
+        guard let collectionView = collectionView else { return }
+        collectionView.contentOffset = ZeroScrollContentOffset
+    }
+    
     fileprivate func setupHeaderView(in collectionView: UICollectionView) {
         collectionView.layoutIfNeeded()
         
         let headerSize = CGSize(width: collectionView.frame.width, height: ProfileCollectionHeaderView.EstimatedHeight)
         headerView = ProfileCollectionHeaderView(frame: CGRect(x: 0, y: 0, width: headerSize.width, height: headerSize.height))
         headerView.contentAnchor = GSKStretchyHeaderViewContentAnchor.bottom
-        headerView.minimumContentHeight = 35 + 64
+        headerView.minimumContentHeight = 64 + 35 //Nav bar plus height of header control
         //headerView.maximumContentHeight = ProfileCollectionHeaderView.EstimatedHeight + 50
         headerView.contentExpands = false
         //headerView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 44, right: 0)
@@ -83,6 +91,8 @@ class ProfileCollectionHandler: ListingCollectionHandler {
                 self?.headerView.userImageView.image = image
             }
         }
+        
+        headerView.layoutIfNeeded()
     }
     
     fileprivate func createNoListingsBackgroundView() -> UIView
@@ -108,21 +118,32 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         
         return backgroundView
     }
+    
+    fileprivate func isInvisibleItem(at index: IndexPath) -> Bool {
+        return index.row > (delegate.getListings().count - 1)
+    }
 }
 
 //MARK: UICollectionViewDataSource
 extension ProfileCollectionHandler {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return delegate.getListings().count
+        return max(delegate.getListings().count, 6)
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let listing = delegate.getListings()[indexPath.row]
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListingCollectionViewCell.Identifier, for: indexPath) as! ListingCollectionViewCell
+        cell.alpha = 1.0
+        cell.isUserInteractionEnabled = true
         
+        guard !isInvisibleItem(at: indexPath) else {
+            cell.alpha = 0.0
+            cell.isUserInteractionEnabled = false
+            return cell
+        }
+        
+        let listing = delegate.getListings()[indexPath.row]
         cell.set(bottomLabelText: listing.priceString)
         
         cell.tag = indexPath.row

@@ -24,7 +24,7 @@ class BottomBarDoubleSegmentedControl: UIView {
     
     @IBOutlet private var view: UIView!
     
-    @IBOutlet private var bottomBar: UIView!
+    private var bottomBar: UIView!
     
     @IBOutlet private var firstControlView: UIView!
     @IBOutlet private var firstControlButton: UIButton!
@@ -37,6 +37,14 @@ class BottomBarDoubleSegmentedControl: UIView {
     private var textColor: UIColor = .black
     private var controlBackgroundColor: UIColor = .clear
     private var fontSize: CGFloat = 12
+    
+    private let HeightForBottomBar: CGFloat = 3
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        bottomBar.frame = frameForBottomBar()
+    }
     
     func set(title: String, for control: Control) {
         switch control {
@@ -67,7 +75,7 @@ class BottomBarDoubleSegmentedControl: UIView {
         self.addSubview(view)
         view.frame = self.bounds
         
-        updateUI(withAnimation: false)
+        setup()
     }
     
     override init(frame: CGRect) {
@@ -77,7 +85,7 @@ class BottomBarDoubleSegmentedControl: UIView {
         self.addSubview(view)
         view.frame = frame
         
-        updateUI(withAnimation: false)
+        setup()
     }
     
     func updateUI(withAnimation shouldAnimate: Bool) {
@@ -97,9 +105,7 @@ class BottomBarDoubleSegmentedControl: UIView {
         
         bottomBar.backgroundColor = textColor
         
-        var newFrameForBottomBar = bottomBar.frame
-        let newXForBottomBar = isFirstControlSelected ? firstControlView.frame.origin.x : secondControlView.frame.origin.x
-        newFrameForBottomBar.origin.x = newXForBottomBar
+        let newFrameForBottomBar = frameForBottomBar()
         
         if shouldAnimate {
             UIView.animate(
@@ -116,5 +122,23 @@ class BottomBarDoubleSegmentedControl: UIView {
         } else {
             bottomBar.frame = newFrameForBottomBar
         }
+    }
+    
+    private func setup() {
+        createBottomBar()
+        updateUI(withAnimation: false)
+    }
+    
+    private func createBottomBar() {
+        bottomBar = UIView(frame: frameForBottomBar())
+        bottomBar.backgroundColor = textColor
+        view.addSubview(bottomBar)
+    }
+    
+    private func frameForBottomBar() -> CGRect {
+        let y = view.bounds.height - HeightForBottomBar
+        let x = selectedControl == .first ? firstControlView.frame.origin.x : secondControlView.frame.origin.x
+        let width = view.bounds.width / 2
+        return CGRect(x: x, y: y, width: width, height: HeightForBottomBar)
     }
 }

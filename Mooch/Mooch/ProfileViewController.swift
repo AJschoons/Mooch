@@ -59,6 +59,7 @@ class ProfileViewController: MoochViewController {
     func updateWith(user: User?) {
         self.user = user
         selectedControl = .first
+        collectionHandler.resetScrollPosition()
         updateUI()
     }
     

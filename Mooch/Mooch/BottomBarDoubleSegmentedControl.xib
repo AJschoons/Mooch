@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BottomBarDoubleSegmentedControl" customModule="Mooch" customModuleProvider="target">
             <connections>
-                <outlet property="bottomBar" destination="dW3-mK-V0u" id="Lx4-ax-WD3"/>
                 <outlet property="firstControlButton" destination="9bL-na-NG6" id="CxS-SE-uJ6"/>
                 <outlet property="firstControlView" destination="BJJ-I0-GFD" id="W1g-h5-hRL"/>
                 <outlet property="secondControlButton" destination="A6f-N8-xeX" id="dyP-5D-m4Y"/>
@@ -20,12 +19,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dW3-mK-V0u" userLabel="BottomBar">
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="3" id="AQQ-3R-Toi"/>
-                    </constraints>
-                </view>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yTV-8B-DRj">
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BJJ-I0-GFD" userLabel="First">
@@ -76,13 +69,10 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="dW3-mK-V0u" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="7kp-el-MDU"/>
-                <constraint firstAttribute="bottom" secondItem="dW3-mK-V0u" secondAttribute="bottom" id="WSW-T9-jaJ"/>
                 <constraint firstAttribute="trailing" secondItem="yTV-8B-DRj" secondAttribute="trailing" id="Xo0-3D-vob"/>
-                <constraint firstItem="dW3-mK-V0u" firstAttribute="top" secondItem="yTV-8B-DRj" secondAttribute="bottom" id="d8U-JJ-Jbd"/>
                 <constraint firstItem="yTV-8B-DRj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="fLu-cC-toh"/>
+                <constraint firstAttribute="bottom" secondItem="yTV-8B-DRj" secondAttribute="bottom" constant="3" id="gB4-cM-bhQ"/>
                 <constraint firstItem="yTV-8B-DRj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="qM1-Yg-90k"/>
-                <constraint firstItem="dW3-mK-V0u" firstAttribute="width" secondItem="BJJ-I0-GFD" secondAttribute="width" id="rlw-eO-7nB"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
