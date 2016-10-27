@@ -108,6 +108,9 @@ class ProfileViewController: MoochViewController {
         } else {
             navigationItem.rightBarButtonItems = nil
         }
+        
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func barButtons(fromTypeList typeList: [Configuration.BarButtonType]) -> [UIBarButtonItem] {
@@ -143,8 +146,6 @@ class ProfileViewController: MoochViewController {
         present(actionSheet, animated: true, completion: nil)
     }
     
-    
-    
     fileprivate func logout() {
         LocalUserManager.sharedInstance.logout()
         delegate?.profileViewControllerDidLogOutUser(self)
@@ -155,6 +156,20 @@ class ProfileViewController: MoochViewController {
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)
+    }
+    
+    fileprivate func pushListingDetailsViewController(with listing: Listing, in mode: ListingDetailsConfiguration.Mode, isViewingSellerProfileNotAllowed: Bool) {
+        let vc = ListingDetailsViewController.instantiateFromStoryboard()
+        vc.configuration = ListingDetailsConfiguration.defaultConfiguration(for: mode, with: listing, isViewingSellerProfileNotAllowed: isViewingSellerProfileNotAllowed)
+        navigationController!.pushViewController(vc, animated: true)
+    }
+    
+    //Completely resets the UI and state of the view controller
+    fileprivate func resetForStateChange() {
+        guard configuration.mode == .localUser else { return }
+        guard let navC = navigationController else { return }
+        navC.popToRootViewController(animated: false)
+        collectionHandler.resetScrollPosition()
     }
 }
 
@@ -170,8 +185,10 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
         case .localUser:
             switch selectedControl {
             case .first:
+                //My Listings
                 return CommunityListingsManager.sharedInstance.listingsOwnedByCurrentUser
             case .second:
+                //Contact History
                 return CommunityListingsManager.sharedInstance.listingsCurrentUserHasContacted
             }
             
@@ -188,7 +205,26 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
     }
     
     func didSelect(_ listing: Listing) {
-        print(listing)
+        let isListingCompleted = listing.isCompleted()
+        
+        switch configuration.mode {
+        case .localUser:
+            switch selectedControl {
+            case .first:
+                //My Listings
+                let mode: ListingDetailsConfiguration.Mode = isListingCompleted ? .viewingThisUsersCompletedListing : .viewingThisUsersListing
+                pushListingDetailsViewController(with: listing, in: mode, isViewingSellerProfileNotAllowed: false)
+                
+            case .second:
+                //Contact History
+                let mode: ListingDetailsConfiguration.Mode = isListingCompleted ? .viewingOtherUsersCompletedListing : .viewingOtherUsersListing
+                pushListingDetailsViewController(with: listing, in: mode, isViewingSellerProfileNotAllowed: false)
+            }
+            
+        case .seller:
+            let mode: ListingDetailsConfiguration.Mode = isListingCompleted ? .viewingOtherUsersCompletedListing : .viewingOtherUsersListing
+            pushListingDetailsViewController(with: listing, in: mode, isViewingSellerProfileNotAllowed: true)
+        }
     }
     
     func getInsetForTabBar() -> CGFloat {
@@ -218,3 +254,18 @@ extension ProfileViewController: CommunityPickerViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
 }
+
+extension ProfileViewController: LocalUserStateChangeListener {
+    
+    func localUserStateDidChange(to: LocalUserManager.LocalUserState) {
+        resetForStateChange()
+    }
+}
+
+extension ProfileViewController: CommunityChangeListener {
+    
+    func communityDidChange() {
+        resetForStateChange()
+    }
+}
+

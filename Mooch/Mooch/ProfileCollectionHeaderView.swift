@@ -12,7 +12,7 @@ import UIKit
 class ProfileCollectionHeaderView: GSKStretchyHeaderView {
     
     static let Identifier = "ProfileCollectionHeaderView"
-    static let EstimatedHeight: CGFloat = 271
+    static let EstimatedHeight: CGFloat = 335
 
     @IBOutlet var view: UIView!
     

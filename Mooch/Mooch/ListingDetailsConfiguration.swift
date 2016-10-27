@@ -54,13 +54,23 @@ struct ListingDetailsConfiguration {
     
     private var numberOfNonInterestedBuyerFields: Int?
     
-    static func defaultConfiguration(for mode: Mode, with listing: Listing) -> ListingDetailsConfiguration {
+    static func defaultConfiguration(for mode: Mode, with listing: Listing, isViewingSellerProfileNotAllowed: Bool) -> ListingDetailsConfiguration {
         switch mode {
             
         case .viewingOtherUsersListing:
-            return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .contactSeller, .viewSellerProfile, .listingDescription, .aboutSeller])
+            var fields: [FieldType] = [.listing, .contactSeller, .viewSellerProfile, .listingDescription, .aboutSeller]
+            if isViewingSellerProfileNotAllowed, let viewSellerProfileIndex = fields.index(of: .viewSellerProfile) {
+                fields.remove(at: viewSellerProfileIndex)
+            }
+            
+            return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: fields)
             
         case .viewingOtherUsersCompletedListing:
+            var fields: [FieldType] = [.listing, .viewSellerProfile, .listingDescription, .aboutSeller]
+            if isViewingSellerProfileNotAllowed, let viewSellerProfileIndex = fields.index(of: .viewSellerProfile) {
+                fields.remove(at: viewSellerProfileIndex)
+            }
+            
             return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .viewSellerProfile, .listingDescription, .aboutSeller])
             
         case .viewingThisUsersListing:

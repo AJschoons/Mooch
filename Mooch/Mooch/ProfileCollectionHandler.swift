@@ -42,21 +42,25 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         reloadHeaderView()
         
         if delegate.getListings().count == 0 {
+            collectionView.isScrollEnabled = false
+            collectionView.setContentOffset(ZeroScrollContentOffset, animated: true)
             collectionView.backgroundView = createNoListingsBackgroundView()
         } else {
+            collectionView.isScrollEnabled = true
             collectionView.backgroundView = nil
         }
     }
     
     func resetScrollPosition() {
         guard let collectionView = collectionView else { return }
-        collectionView.contentOffset = ZeroScrollContentOffset
+        collectionView.setContentOffset(ZeroScrollContentOffset, animated: false)
     }
     
     fileprivate func setupHeaderView(in collectionView: UICollectionView) {
         collectionView.layoutIfNeeded()
         
-        let headerSize = CGSize(width: collectionView.frame.width, height: ProfileCollectionHeaderView.EstimatedHeight)
+        let height = ProfileCollectionHeaderView.EstimatedHeight - 64 //Subtracted by tab bar height because this stretchy header library just adds that in for some reason
+        let headerSize = CGSize(width: collectionView.frame.width, height: height)
         headerView = ProfileCollectionHeaderView(frame: CGRect(x: 0, y: 0, width: headerSize.width, height: headerSize.height))
         headerView.contentAnchor = GSKStretchyHeaderViewContentAnchor.bottom
         headerView.minimumContentHeight = 64 + 35 //Nav bar plus height of header control
@@ -173,7 +177,4 @@ extension ProfileCollectionHandler {
 //MARK: UICollectionViewDelegateFlowLayout
 extension ProfileCollectionHandler {
     
-//    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: collectionView.frame.width, height: ProfileCollectionHeaderView.EstimatedHeight)
-//    }
 }

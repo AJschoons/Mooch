@@ -84,6 +84,12 @@ struct Listing {
         return false
     }
     
+    //Returns true when a listing has been completed
+    func isCompleted() -> Bool {
+        //TODO: implement once exchanges are added
+        return false
+    }
+    
     mutating func addInterestedBuyer(_ user: User) {
         guard !interestedBuyers.contains(where: {$0.id == user.id}) else { return }
         interestedBuyers.append(user)
