@@ -121,6 +121,7 @@ class LoginViewController: MoochModalViewController {
     override func setup() {
         super.setup()
         
+        setupInitialColorsAndElements()
         setupTextFields()
         registerForKeyboardNotifacations()
         
@@ -138,17 +139,17 @@ class LoginViewController: MoochModalViewController {
         
         switch state {
         case .loginFieldsUnfilledOrInvalid:
-            loginButtonColor = UIColor.darkGray
+            loginButtonColor = ThemeColors.moochRedDisabled.color()
             loginButtonUserInteractionEnabled = false
             createAccountButtonUserInteractionEnabled = true
             textFieldUserInteractionEnabled = true
         case .loginFieldsFilledAndValid:
-            loginButtonColor = UIColor(red: 0.00, green: 0.76, blue: 0.00, alpha: 1.0)
+            loginButtonColor = ThemeColors.moochRed.color()
             loginButtonUserInteractionEnabled = true
             createAccountButtonUserInteractionEnabled = true
             textFieldUserInteractionEnabled = true
         case .loggingIn:
-            loginButtonColor = UIColor.darkGray
+            loginButtonColor = ThemeColors.moochRedDisabled.color()
             loginButtonUserInteractionEnabled = false
             createAccountButtonUserInteractionEnabled = false
             textFieldUserInteractionEnabled = false
@@ -204,6 +205,24 @@ class LoginViewController: MoochModalViewController {
                 strongSelf.hideLoadingOverlayView(animated: true)
             }
         }
+    }
+    
+    private func setupInitialColorsAndElements() {
+        emailTextField.backgroundColor = UIColor.clear
+        emailTextField.borderColor = ThemeColors.moochGray.color()
+        emailTextField.borderWidth = 1.0
+        
+        passwordTextField.backgroundColor = UIColor.clear
+        passwordTextField.borderColor = ThemeColors.moochGray.color()
+        passwordTextField.borderWidth = 1.0
+        
+        exitButton.setImage(UIImage(named: "cancel")?.imageWithColor(color: ThemeColors.moochRed.color()), for: .normal)
+        
+        loginButton.backgroundColor = ThemeColors.moochRedDisabled.color()
+        loginButton.setTitleColor(ThemeColors.moochWhite.color(), for: .normal)
+        
+        createAccountButton.backgroundColor = UIColor.clear
+        createAccountButton.setTitleColor(ThemeColors.moochRed.color(), for: .normal)
     }
     
     private func setupTextFields() {
