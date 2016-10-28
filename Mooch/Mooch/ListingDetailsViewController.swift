@@ -233,7 +233,7 @@ class ListingDetailsViewController: MoochViewController {
     fileprivate func sendListingVisitToAPI() {
         guard configuration.mode == Configuration.Mode.viewingOtherUsersListing else { return }
         
-        MoochAPI.GETListingVisit(listingId: configuration.listing.id) { [weak self] success, error in
+        MoochAPI.GETListingVisit(listingId: configuration.listing.id) { success, error in
             //Do nothing, we don't care if it suceeds or fails (once we know it initially works, of course)
         }
     }
