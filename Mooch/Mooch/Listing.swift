@@ -78,6 +78,11 @@ struct Listing {
         return "\(numberOfDaysSincePosted) \(daysText) ago"
     }
     
+    var acceptedUser: User? {
+        guard let acceptedUserIndex = exchanges.index(where: {$0.sellerAccepted}) else { return nil }
+        return exchanges[acceptedUserIndex].buyer
+    }
+    
     func isOwnerContactedBy(by userToCheck: User) -> Bool {
         return interestedBuyers.contains(where: {$0.id == userToCheck.id})
     }
@@ -91,15 +96,15 @@ struct Listing {
         return exchanges.contains(where: {$0.sellerAccepted})
     }
     
+    //Should only be used for temporary local changes
     mutating func addInterestedBuyer(_ user: User) {
         guard !interestedBuyers.contains(where: {$0.id == user.id}) else { return }
         interestedBuyers.append(user)
     }
     
     mutating func accept(exchange: Exchange) {
-        guard let acceptedExchangeIndex =  exchanges.index(where: {$0.id == exchange.id}) else { return }
-        var acceptedExchange = exchanges[acceptedExchangeIndex]
-        acceptedExchange.sellerAccepted = true
+        guard let acceptedExchangeIndex = exchanges.index(where: {$0.id == exchange.id}) else { return }
+        exchanges[acceptedExchangeIndex].sellerAccepted = true
     }
     
     //Designated initializer

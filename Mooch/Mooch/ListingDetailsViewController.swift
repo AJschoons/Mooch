@@ -109,7 +109,10 @@ class ListingDetailsViewController: MoochViewController {
     }
     
     fileprivate func contactSeller() {
-        guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
+        guard let localUser = LocalUserManager.sharedInstance.localUser else {
+            presentSingleActionAlert(title: "Guests cannot contact sellers", message: "Please login or create an account, and then try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+            return
+        }
         
         MoochAPI.POSTExchange(listingOwnerId: configuration.listing.owner.id, listingId: configuration.listing.id) { success, error in
             guard success else {
@@ -265,7 +268,7 @@ extension ListingDetailsViewController: ListingDetailsInterestedBuyerCellDelegat
     }
 }
 
-extension ListingDetailsViewController: ListingDetailsSellerCellDelegate {
+extension ListingDetailsViewController: ListingDetailsUserCellDelegate {
     
     func onPhone() {
         presentPhoneNumberOptionsActionSheet()
