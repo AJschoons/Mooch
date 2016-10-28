@@ -32,7 +32,7 @@ struct Exchange {
     let sellerUserId: Int
     let buyerUserId: Int
     
-    let sellerAccepted: Bool
+    var sellerAccepted: Bool
     let buyer: User
     
     //Designated initializer

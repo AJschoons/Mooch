@@ -54,6 +54,10 @@ class ListingDetailsTableHandler: NSObject {
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
     }
     
+    func reloadData() {
+        tableView.reloadData()
+    }
+    
     
     // MARK: Private methods
     
@@ -206,10 +210,11 @@ class ListingDetailsTableHandler: NSObject {
     }
     
     fileprivate func configure(listingDetailsInterestedBuyerCell: ListingDetailsInterestedBuyerCell, atIndexPath indexPath: IndexPath) {
-        let interestedBuyer = delegate.getConfiguration().interestedBuyer(forRow: indexPath.row)!
+        let exchange = delegate.getConfiguration().exchange(forRow: indexPath.row)!
+        let interestedBuyer = exchange.buyer
         
         listingDetailsInterestedBuyerCell.delegate = delegate
-        listingDetailsInterestedBuyerCell.buyer = interestedBuyer
+        listingDetailsInterestedBuyerCell.exchange = exchange
         listingDetailsInterestedBuyerCell.buyerNameLabel.text = interestedBuyer.name
         listingDetailsInterestedBuyerCell.buyerImageView.image = UIImage(named: "defaultProfilePhoto")
         

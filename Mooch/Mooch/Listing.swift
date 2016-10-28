@@ -83,7 +83,7 @@ struct Listing {
     }
     
     func isUserContactInformationVisible(to userToCheck: User) -> Bool {
-        return exchanges.contains(where: {$0.id == userToCheck.id && $0.sellerAccepted})
+        return exchanges.contains(where: {$0.buyer.id == userToCheck.id && $0.sellerAccepted})
     }
     
     //Returns true when a listing has been completed
@@ -94,6 +94,12 @@ struct Listing {
     mutating func addInterestedBuyer(_ user: User) {
         guard !interestedBuyers.contains(where: {$0.id == user.id}) else { return }
         interestedBuyers.append(user)
+    }
+    
+    mutating func accept(exchange: Exchange) {
+        guard let acceptedExchangeIndex =  exchanges.index(where: {$0.id == exchange.id}) else { return }
+        var acceptedExchange = exchanges[acceptedExchangeIndex]
+        acceptedExchange.sellerAccepted = true
     }
     
     //Designated initializer

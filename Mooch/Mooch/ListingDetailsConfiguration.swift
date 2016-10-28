@@ -109,10 +109,10 @@ struct ListingDetailsConfiguration {
         return fields[row]
     }
     
-    func interestedBuyer(forRow row: Int) -> User? {
+    func exchange(forRow row: Int) -> Exchange? {
         guard noInterestedBuyersForInterestedBuyersHeader == false else { return nil }
         guard let numberOfNonInterestedBuyerFields = numberOfNonInterestedBuyerFields else { return nil }
-        return listing.interestedBuyers[row - numberOfNonInterestedBuyerFields]
+        return listing.exchanges[row - numberOfNonInterestedBuyerFields]
     }
     
     func isListingDescriptionLastField() -> Bool {

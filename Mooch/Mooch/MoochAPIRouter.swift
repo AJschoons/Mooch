@@ -40,6 +40,10 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     //The keys to pass in as parameters mapped to strings
     enum ParameterMapping {
+        enum PostExchange: String {
+            case completed = "completed"
+        }
+        
         enum PostLogin: String {
             case email = "email"
             case password = "password"
@@ -120,7 +124,8 @@ enum MoochAPIRouter: URLRequestConvertible {
             return (routingInformation.path, routingInformation.method, routingInformation.parameters, true)
             
         case .postExchange(let listingOwnerId, let listingId):
-            return ("/users/\(listingOwnerId)/listings/\(listingId)/exchanges/", .post, nil, true)
+            let parameters = [ParameterMapping.PostExchange.completed.rawValue : false]
+            return ("/users/\(listingOwnerId)/listings/\(listingId)/exchanges/", .post, parameters, true)
             
         case .postListing(let userId, let title, let description, let price, let isFree, let quantity, let categoryId):
             var parameters: [String : Any] = [ParameterMapping.PostListing.title.rawValue : title, ParameterMapping.PostListing.price.rawValue : price, ParameterMapping.PostListing.isFree.rawValue : isFree, ParameterMapping.PostListing.quantity.rawValue : quantity, ParameterMapping.PostListing.categoryId.rawValue : categoryId]

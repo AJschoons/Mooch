@@ -96,7 +96,7 @@ class CommunityListingsManager {
         
         if let localUser = LocalUserManager.sharedInstance.localUser {
             //Filter to only show listings this user hasn't posted
-            listingsVisibleToCurrentUserInCurrentCommunity = newListings.filter({$0.owner.id != localUser.user.id})
+            listingsVisibleToCurrentUserInCurrentCommunity = newListings.filter({$0.owner.id != localUser.user.id && !$0.isCompleted() && !$0.isOwnerContactedBy(by: localUser.user)})
             
             //Filter to only show listings this user has posted
             listingsOwnedByCurrentUser = allListingsOwned(by: localUser.user)

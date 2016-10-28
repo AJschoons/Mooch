@@ -50,8 +50,8 @@ class ListingDetailsViewController: MoochViewController {
         deleteListing()
     }
     
-    func onDidAcceptBuyer(_ buyer: User) {
-        print("did accept buyer ", buyer)
+    func onDidAccept(exchange: Exchange) {
+        accept(exchange: exchange)
     }
     
     // MARK: Public methods
@@ -144,6 +144,24 @@ class ListingDetailsViewController: MoochViewController {
             if let navigationController = self.navigationController {
                 navigationController.popViewController(animated: true)
             }
+        }
+    }
+    
+    fileprivate func accept(exchange: Exchange) {
+        
+        MoochAPI.GETExchangeAccept(listingOwnerId: exchange.sellerUserId, listingId: exchange.listingId, exchangeId: exchange.id) { success, error in
+            guard success else {
+                self.presentSingleActionAlert(title: "Problem Accepting Exchange", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                return
+            }
+            
+            //Update the listing for this view controller, AND make sure it's updated locally
+            //with the CommunityListingsManager so the change persists after leaving this view controller
+            self.configuration.listing.accept(exchange: exchange)
+            CommunityListingsManager.sharedInstance.updateInformation(for: self.configuration.listing)
+            
+            self.configuration = ListingDetailsConfiguration.defaultConfiguration(for: .viewingThisUsersCompletedListing, with: self.configuration.listing, isViewingSellerProfileNotAllowed: true)
+            self.tableHandler.reloadData()
         }
     }
     
@@ -242,8 +260,8 @@ extension ListingDetailsViewController: ListingDetailsActionCellDelegate {
 
 extension ListingDetailsViewController: ListingDetailsInterestedBuyerCellDelegate {
     
-    func didAccept(buyer: User) {
-        onDidAcceptBuyer(buyer)
+    func didAccept(exchange: Exchange) {
+        onDidAccept(exchange: exchange)
     }
 }
 

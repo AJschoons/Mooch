@@ -16,8 +16,8 @@ protocol ProfileCollectionHandlerDelegate: class, BottomBarDoubleSegmentedContro
     func getUser() -> User?
     func getListings() -> [Listing]
     func getConfiguration() -> Configuration
+    func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control
     func didSelect(_ listing: Listing)
-    func getInsetForTabBar() -> CGFloat
 }
 
 class ProfileCollectionHandler: ListingCollectionHandler {
@@ -78,6 +78,9 @@ class ProfileCollectionHandler: ListingCollectionHandler {
     fileprivate func reloadHeaderView() {
         let user = delegate.getUser()
         guard let profileUser = user else { return }
+        
+        let selectedControl = delegate.getSelectedControl()
+        headerView.bottomBarDoubleSegmentedControl.update(selectedControl: selectedControl, animated: false)
         
         headerView.userNameLabel.text = profileUser.name
         
