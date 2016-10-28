@@ -139,13 +139,17 @@ class ListingDetailsTableHandler: NSObject {
             }
         }
         
-        listingCell.tag = indexPath.row
-        ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { image in
-            //Make sure the cell hasn't been reused by the time the image is downloaded
-            guard listingCell.tag == indexPath.row else { return }
-            
-            guard let image = image else { return }
-            listingCell.photoImageView.image = image
+        if let localPhoto = listing.photo {
+            listingCell.photoImageView.image = localPhoto
+        } else {
+            listingCell.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard listingCell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                listingCell.photoImageView.image = image
+            }
         }
     }
     

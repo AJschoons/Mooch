@@ -240,8 +240,20 @@ class EditListingViewController: MoochModalViewController {
                     return
                 }
                 
-                let localListing = Listing(id: -1, photo: photo, title: title, description: eli.description, price: price, isFree: false, quantity: quantity, categoryId: categoryId, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: localUser, pictureURL: "", thumbnailPictureURL: "", communityId: localUser.communityId, exchanges: [])
-                strongSelf.notifyDelegateDidFinishEditingAndDismissSelf(with: localListing, isNew: true)
+                var createdListing: Listing!
+                if let json = json {
+                    do {
+                        createdListing = try Listing(json: json)
+                    } catch let error {
+                        print(error)
+                    }
+                }
+                if createdListing == nil {
+                    let localListing = Listing(id: -1, photo: photo, title: title, description: eli.description, price: price, isFree: false, quantity: quantity, categoryId: categoryId, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: localUser, pictureURL: "", thumbnailPictureURL: "", communityId: localUser.communityId, exchanges: [])
+                    createdListing = localListing
+                }
+                
+                strongSelf.notifyDelegateDidFinishEditingAndDismissSelf(with: createdListing, isNew: true)
             }
         )
     }
