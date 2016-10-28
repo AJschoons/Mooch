@@ -62,6 +62,8 @@ class ListingDetailsViewController: MoochViewController {
         setupNavigationBar()
         
         updateUI()
+        
+        sendListingVisitToAPI()
     }
     
     override func updateUI() {
@@ -226,6 +228,14 @@ class ListingDetailsViewController: MoochViewController {
     
     fileprivate func cleanURLFormatting(forEmail email: String) -> String {
         return email.components(separatedBy: CharacterSet.whitespacesAndNewlines).joined(separator: "")
+    }
+    
+    fileprivate func sendListingVisitToAPI() {
+        guard configuration.mode == Configuration.Mode.viewingOtherUsersListing else { return }
+        
+        MoochAPI.GETListingVisit(listingId: configuration.listing.id) { [weak self] success, error in
+            //Do nothing, we don't care if it suceeds or fails (once we know it initially works, of course)
+        }
     }
 }
 

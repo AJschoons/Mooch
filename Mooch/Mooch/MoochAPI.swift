@@ -116,6 +116,12 @@ class MoochAPI {
         }
     }
     
+    static func GETListingVisit(listingId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.getVisit(listingId: listingId)) { success, json, error in
+            completion(success, error)
+        }
+    }
+    
     static func POSTExchange(listingOwnerId: Int, listingId: Int, completion: @escaping (Bool, Error?) -> Void) {
         perform(requestNotExpectingResponse: MoochAPIRouter.postExchange(listingOwnerId: listingOwnerId, listingId: listingId)) { success, json, error in
             completion(success, error)

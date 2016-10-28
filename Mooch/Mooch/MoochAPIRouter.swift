@@ -32,6 +32,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
     case getUserOnce(withId: Int, email: String, authorizationToken: String)
+    case getVisit(listingId: Int)
     
     case postExchange(listingOwnerId: Int, listingId: Int)
     case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
@@ -122,6 +123,9 @@ enum MoochAPIRouter: URLRequestConvertible {
             MoochAPIRouter.authorizeOnce(email: email, authorizationToken: authorizationToken)
             let routingInformation = MoochAPIRouter.getUser(withId: userId).getRoutingInformation()
             return (routingInformation.path, routingInformation.method, routingInformation.parameters, true)
+            
+        case .getVisit(let listingId):
+            return ("/listings/\(listingId)/visit", .get, nil, false)
             
         case .postExchange(let listingOwnerId, let listingId):
             let parameters = [ParameterMapping.PostExchange.completed.rawValue : false]
