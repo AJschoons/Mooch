@@ -10,7 +10,7 @@ import UIKit
 
 protocol ListingDetailsInterestedBuyerCellDelegate: class {
     
-    func didAccept(buyer: User)
+    func didAccept(exchange: Exchange)
 }
 
 class ListingDetailsInterestedBuyerCell: UITableViewCell {
@@ -22,10 +22,10 @@ class ListingDetailsInterestedBuyerCell: UITableViewCell {
     @IBOutlet weak var buyerNameLabel: UILabel!
     @IBOutlet weak var acceptBuyerButton: RoundedButton!
     
-    var buyer: User!
+    var exchange: Exchange!
     weak var delegate: ListingDetailsInterestedBuyerCellDelegate!
     
     @IBAction func onAcceptBuyer() {
-        delegate.didAccept(buyer: buyer)
+        delegate.didAccept(exchange: exchange)
     }
 }

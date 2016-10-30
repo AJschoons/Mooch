@@ -33,6 +33,12 @@ class MoochAPI {
     // MARK: API Routes
     //
     
+    static func DELETEListing(ownerId: Int, listingId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.deleteListing(ownerId: ownerId, listingId: listingId)) { success, json, error in
+            completion(success, error)
+        }
+    }
+    
     static func GETCommunities(completion: @escaping ([Community]?, Error?) -> Void) {
         perform(requestExpectingResponse: MoochAPIRouter.getCommunities) { json, error in
             guard let communitiesJSON = json?.array else {
@@ -47,6 +53,12 @@ class MoochAPI {
                 print("couldn't create communities with JSON: \(json)")
                 completion(nil, error)
             }
+        }
+    }
+    
+    static func GETExchangeAccept(listingOwnerId: Int, listingId: Int, exchangeId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.getExchangeAccept(listingOwnerId: listingOwnerId, listingId: listingId, exchangeId: exchangeId)) { success, json, error in
+            completion(success, error)
         }
     }
     
@@ -101,6 +113,18 @@ class MoochAPI {
             let user = processedResult.0
             let error = processedResult.1
             completion(user, error)
+        }
+    }
+    
+    static func GETListingVisit(listingId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.getVisit(listingId: listingId)) { success, json, error in
+            completion(success, error)
+        }
+    }
+    
+    static func POSTExchange(listingOwnerId: Int, listingId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.postExchange(listingOwnerId: listingOwnerId, listingId: listingId)) { success, json, error in
+            completion(success, error)
         }
     }
     

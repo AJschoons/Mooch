@@ -88,7 +88,12 @@ class BottomBarDoubleSegmentedControl: UIView {
         setup()
     }
     
-    func updateUI(withAnimation shouldAnimate: Bool) {
+    func update(selectedControl: Control, animated: Bool) {
+        self.selectedControl = selectedControl
+        updateUI(withAnimation: animated)
+    }
+    
+    private func updateUI(withAnimation shouldAnimate: Bool) {
         view.backgroundColor = .clear
         
         let isFirstControlSelected = (selectedControl == .first)

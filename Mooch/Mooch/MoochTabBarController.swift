@@ -285,7 +285,11 @@ extension MoochTabBarController: UINavigationControllerDelegate {
 
 extension MoochTabBarController: EditListingViewControllerDelegate {
     
-    func editListingViewControllerDidFinishEditing(with: EditedListingInformation) {
+    func editListingViewControllerDidFinishEditing(with listing: Listing, isNew: Bool) {
+        if isNew {
+            CommunityListingsManager.sharedInstance.add(listing)
+        }
+        
         cameraViewControllerBeingShown = nil
         dismiss(animated: true, completion: nil)
     }

@@ -47,11 +47,11 @@ class ListingDetailsViewController: MoochViewController {
     }
     
     func onEndListingAction() {
-        print("end listing action")
+        deleteListing()
     }
     
-    func onDidAcceptBuyer(_ buyer: User) {
-        print("did accept buyer ", buyer)
+    func onDidAccept(exchange: Exchange) {
+        accept(exchange: exchange)
     }
     
     // MARK: Public methods
@@ -62,6 +62,8 @@ class ListingDetailsViewController: MoochViewController {
         setupNavigationBar()
         
         updateUI()
+        
+        sendListingVisitToAPI()
     }
     
     override func updateUI() {
@@ -109,20 +111,63 @@ class ListingDetailsViewController: MoochViewController {
     }
     
     fileprivate func contactSeller() {
-        guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
-        
-        //TODO: actually make the api call
-        
-        //Update the listing for this view controller, AND make sure it's updated 
-        //with the CommunityListingsManager so the change persists after leaving this view controller
-        configuration.listing.addInterestedBuyer(localUser.user)
-        CommunityListingsManager.sharedInstance.updateInformation(for: configuration.listing)
-        
-        guard let contactSellerRow = configuration.firstIndex(of: .contactSeller) else {
+        guard let localUser = LocalUserManager.sharedInstance.localUser else {
+            presentSingleActionAlert(title: "Guests cannot contact sellers", message: "Please login or create an account, and then try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
             return
         }
-        tableHandler.reloadRow(at: IndexPath(row: contactSellerRow, section: 0))
         
+        MoochAPI.POSTExchange(listingOwnerId: configuration.listing.owner.id, listingId: configuration.listing.id) { success, error in
+            guard success else {
+                self.presentSingleActionAlert(title: "Problem Contacting Seller", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                return
+            }
+            
+            //Update the listing for this view controller, AND make sure it's updated
+            //with the CommunityListingsManager so the change persists after leaving this view controller
+            self.configuration.listing.addInterestedBuyer(localUser.user)
+            CommunityListingsManager.sharedInstance.updateInformation(for: self.configuration.listing)
+            
+            guard let contactSellerRow = self.configuration.firstIndex(of: .contactSeller) else {
+                return
+            }
+            self.tableHandler.reloadRow(at: IndexPath(row: contactSellerRow, section: 0))
+        }
+    }
+    
+    fileprivate func deleteListing() {
+        guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
+        
+        MoochAPI.DELETEListing(ownerId: localUser.user.id, listingId: configuration.listing.id) { success, error in
+            guard success else {
+                self.presentSingleActionAlert(title: "Problem Ending Listing", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                return
+            }
+            
+            //Make sure the change is updated locally in the CommunityListingsManager so the change persists after leaving this view controller
+            CommunityListingsManager.sharedInstance.delete(self.configuration.listing)
+            
+            if let navigationController = self.navigationController {
+                navigationController.popViewController(animated: true)
+            }
+        }
+    }
+    
+    fileprivate func accept(exchange: Exchange) {
+        
+        MoochAPI.GETExchangeAccept(listingOwnerId: exchange.sellerUserId, listingId: exchange.listingId, exchangeId: exchange.id) { success, error in
+            guard success else {
+                self.presentSingleActionAlert(title: "Problem Accepting Exchange", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                return
+            }
+            
+            //Update the listing for this view controller, AND make sure it's updated locally
+            //with the CommunityListingsManager so the change persists after leaving this view controller
+            self.configuration.listing.accept(exchange: exchange)
+            CommunityListingsManager.sharedInstance.updateInformation(for: self.configuration.listing)
+            
+            self.configuration = ListingDetailsConfiguration.defaultConfiguration(for: .viewingThisUsersCompletedListing, with: self.configuration.listing, isViewingSellerProfileNotAllowed: true)
+            self.tableHandler.reloadData()
+        }
     }
     
     fileprivate func showSellerProfile() {
@@ -184,6 +229,14 @@ class ListingDetailsViewController: MoochViewController {
     fileprivate func cleanURLFormatting(forEmail email: String) -> String {
         return email.components(separatedBy: CharacterSet.whitespacesAndNewlines).joined(separator: "")
     }
+    
+    fileprivate func sendListingVisitToAPI() {
+        guard configuration.mode == Configuration.Mode.viewingOtherUsersListing else { return }
+        
+        MoochAPI.GETListingVisit(listingId: configuration.listing.id) { success, error in
+            //Do nothing, we don't care if it suceeds or fails (once we know it initially works, of course)
+        }
+    }
 }
 
 extension ListingDetailsViewController: ListingDetailsTableHandlerDelegate {
@@ -220,12 +273,12 @@ extension ListingDetailsViewController: ListingDetailsActionCellDelegate {
 
 extension ListingDetailsViewController: ListingDetailsInterestedBuyerCellDelegate {
     
-    func didAccept(buyer: User) {
-        onDidAcceptBuyer(buyer)
+    func didAccept(exchange: Exchange) {
+        onDidAccept(exchange: exchange)
     }
 }
 
-extension ListingDetailsViewController: ListingDetailsSellerCellDelegate {
+extension ListingDetailsViewController: ListingDetailsUserCellDelegate {
     
     func onPhone() {
         presentPhoneNumberOptionsActionSheet()

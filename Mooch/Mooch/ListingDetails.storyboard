@@ -282,14 +282,14 @@
                                             <outlet property="topSeperator" destination="o3s-mw-Jgw" id="mfG-mA-flK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsSellerCell" rowHeight="203" id="IpA-Vw-aPe" customClass="ListingDetailsSellerCell" customModule="Mooch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsUserCell" rowHeight="203" id="IpA-Vw-aPe" customClass="ListingDetailsUserCell" customModule="Mooch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="527" width="375" height="203"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IpA-Vw-aPe" id="Fqy-hf-qBu">
                                             <frame key="frameInset" width="375" height="203"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Seller" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Sn-JE-NOa">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Sn-JE-NOa">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="19" id="28Y-b7-8Pe"/>
                                                     </constraints>
@@ -437,12 +437,13 @@
                                             <outlet property="addressImageView" destination="vD9-2l-aDG" id="AbQ-xm-a5l"/>
                                             <outlet property="emailButton" destination="I6b-Ur-D6K" id="Kba-Sb-l9F"/>
                                             <outlet property="emailImageView" destination="7gx-GF-Rk7" id="UjR-5Z-a23"/>
+                                            <outlet property="headingLabel" destination="1Sn-JE-NOa" id="hWQ-cX-uLw"/>
                                             <outlet property="hiddenContactInformationView" destination="QcE-9a-TGb" id="AYe-d6-G87"/>
                                             <outlet property="phoneButton" destination="QYD-Jy-sAK" id="myT-aU-GoG"/>
                                             <outlet property="phoneImageView" destination="kgr-Sq-mAX" id="E9T-os-wD8"/>
-                                            <outlet property="sellerContactInformation" destination="0Gk-cO-pnk" id="mDp-os-ySE"/>
-                                            <outlet property="sellerImageView" destination="wNT-kp-rN4" id="5T2-5c-cKm"/>
-                                            <outlet property="sellerNameLabel" destination="9Ja-ks-qzN" id="vaL-sH-hnB"/>
+                                            <outlet property="userContactInformation" destination="0Gk-cO-pnk" id="Ppt-tO-5wD"/>
+                                            <outlet property="userImageView" destination="wNT-kp-rN4" id="Hmw-Ub-kmc"/>
+                                            <outlet property="userNameLabel" destination="9Ja-ks-qzN" id="nto-ea-CIf"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsInterestedBuyersHeaderCell" rowHeight="34" id="3eu-9W-Ax9" customClass="ListingDetailsInterestedBuyersHeaderCell" customModule="Mooch" customModuleProvider="target">

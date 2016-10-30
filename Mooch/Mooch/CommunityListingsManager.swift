@@ -57,6 +57,21 @@ class CommunityListingsManager {
         updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
     }
     
+    func add(_ listing: Listing) {
+        _allListingsInCurrentCommunity.insert(listing, at: 0)
+        updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
+    }
+    
+    func delete(_ listing: Listing) {
+        guard let indexOfListingToDelete = _allListingsInCurrentCommunity.index(where: {$0.id == listing.id}) else {
+            return
+        }
+        
+        _allListingsInCurrentCommunity.remove(at: indexOfListingToDelete)
+        
+        updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
+    }
+    
     func allListingsOwned(by user: User) -> [Listing] {
         return _allListingsInCurrentCommunity.filter({$0.owner.id == user.id})
     }
@@ -81,13 +96,13 @@ class CommunityListingsManager {
         
         if let localUser = LocalUserManager.sharedInstance.localUser {
             //Filter to only show listings this user hasn't posted
-            listingsVisibleToCurrentUserInCurrentCommunity = newListings.filter({$0.owner.id != localUser.user.id})
+            listingsVisibleToCurrentUserInCurrentCommunity = newListings.filter({$0.owner.id != localUser.user.id && !$0.isCompleted()})
             
             //Filter to only show listings this user has posted
             listingsOwnedByCurrentUser = allListingsOwned(by: localUser.user)
             
-            //Filter to only show listings this user has contacted
-            listingsCurrentUserHasContacted = newListings.filter({$0.isOwnerContactedBy(by: localUser.user)})
+            //Filter to only show listings this user has contacted, and sort them so the earliest created are at the start of the array
+            listingsCurrentUserHasContacted = newListings.filter({$0.isOwnerContactedBy(by: localUser.user)}).sorted(by: {$0.createdAt < $1.createdAt})
         }
         
         

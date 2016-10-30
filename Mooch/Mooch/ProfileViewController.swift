@@ -204,6 +204,10 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
         return configuration
     }
     
+    func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control {
+        return selectedControl
+    }
+    
     func didSelect(_ listing: Listing) {
         let isListingCompleted = listing.isCompleted()
         

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate, ListingDetailsInterestedBuyerCellDelegate, ListingDetailsSellerCellDelegate {
+protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate, ListingDetailsInterestedBuyerCellDelegate, ListingDetailsUserCellDelegate {
     typealias Configuration = ListingDetailsConfiguration
     
     func getConfiguration() -> Configuration
@@ -23,7 +23,7 @@ class ListingDetailsTableHandler: NSObject {
         case listing
         case action
         case listingDescription
-        case aboutSeller
+        case aboutOtherUser
         case interestedBuyersHeader
         case interestedBuyer
     }
@@ -54,6 +54,10 @@ class ListingDetailsTableHandler: NSObject {
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
     }
     
+    func reloadData() {
+        tableView.reloadData()
+    }
+    
     
     // MARK: Private methods
     
@@ -76,8 +80,8 @@ class ListingDetailsTableHandler: NSObject {
         case .listingDescription:
             return ListingDetailsListingDescriptionCell.Identifier
             
-        case .aboutSeller:
-            return ListingDetailsSellerCell.Identifier
+        case .aboutOtherUser:
+            return ListingDetailsUserCell.Identifier
             
         case .interestedBuyersHeader:
             return ListingDetailsInterestedBuyersHeaderCell.Identifier
@@ -97,8 +101,8 @@ class ListingDetailsTableHandler: NSObject {
         case .listingDescription:
             return .listingDescription
             
-        case .aboutSeller:
-            return .aboutSeller
+        case .aboutOtherUser:
+            return .aboutOtherUser
             
         case .interestedBuyersHeader:
             return .interestedBuyersHeader
@@ -135,13 +139,17 @@ class ListingDetailsTableHandler: NSObject {
             }
         }
         
-        listingCell.tag = indexPath.row
-        ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { image in
-            //Make sure the cell hasn't been reused by the time the image is downloaded
-            guard listingCell.tag == indexPath.row else { return }
-            
-            guard let image = image else { return }
-            listingCell.photoImageView.image = image
+        if let localPhoto = listing.photo {
+            listingCell.photoImageView.image = localPhoto
+        } else {
+            listingCell.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard listingCell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                listingCell.photoImageView.image = image
+            }
         }
     }
     
@@ -182,34 +190,69 @@ class ListingDetailsTableHandler: NSObject {
         listingDetailsListingDescriptionCell.bottomSeperator.isHidden = delegate.getConfiguration().isListingDescriptionLastField()
     }
     
-    fileprivate func configure(listingDetailsSellerCell: ListingDetailsSellerCell, atIndexPath indexPath: IndexPath) {
+    fileprivate func configure(listingDetailsUserCell: ListingDetailsUserCell, atIndexPath indexPath: IndexPath) {
         let listing = delegate.getConfiguration().listing
         
-        listingDetailsSellerCell.delegate = delegate
+        listingDetailsUserCell.delegate = delegate
+        listingDetailsUserCell.setIconsAndButtons(with: ThemeColors.listingDetailsActionBackground.color())
         
-        listingDetailsSellerCell.sellerNameLabel.text = listing.owner.name
-        listingDetailsSellerCell.sellerImageView.image = UIImage(named: "defaultProfilePhoto")
+        var isShowingSeller: Bool
+        switch delegate.getConfiguration().mode {
+        case .viewingOtherUsersListing, .viewingOtherUsersCompletedListing:
+            isShowingSeller = true
+        case .viewingThisUsersListing, .viewingThisUsersCompletedListing:
+            isShowingSeller = false
+        }
         
-        listingDetailsSellerCell.setButtonStateAndText(from: listing, for: LocalUserManager.sharedInstance.localUser?.user)
-        listingDetailsSellerCell.setIconsAndButtons(with: ThemeColors.listingDetailsActionBackground.color())
+        var user: User!
+        if isShowingSeller {
+            user = listing.owner
+        } else {
+            user = listing.acceptedUser
+        }
         
-        if let ownerThumbnailPictureURL = listing.owner.thumbnailPictureURL {
-            listingDetailsSellerCell.tag = indexPath.row
-            ImageManager.sharedInstance.downloadImage(url: ownerThumbnailPictureURL) { image in
+        guard let listingUserToShow = user else { return }
+        
+        listingDetailsUserCell.userNameLabel.text = listingUserToShow.name
+        listingDetailsUserCell.userImageView.image = UIImage(named: "defaultProfilePhoto")
+        
+        let type: ListingDetailsUserCell.UserType = isShowingSeller ? .seller : .buyer
+        
+        var isUserContactInformationVisible: Bool
+        switch type {
+        case .buyer:
+            //The only times the buyer would be sowen would be when a user is viewing their completed listing,
+            //and in that case we always want to show the buyer
+            isUserContactInformationVisible = true
+        case .seller:
+            if let localUser = LocalUserManager.sharedInstance.localUser?.user {
+                isUserContactInformationVisible = listing.isUserContactInformationVisible(to: localUser)
+            } else {
+                //Guests can never see seller information
+                isUserContactInformationVisible = false
+            }
+        }
+        
+        listingDetailsUserCell.setup(with: user, andType: type, isUserContactInformationVisible: isUserContactInformationVisible)
+        
+        if let thumbnailPictureURL = listingUserToShow.thumbnailPictureURL {
+            listingDetailsUserCell.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: thumbnailPictureURL) { image in
                 //Make sure the cell hasn't been reused by the time the image is downloaded
-                guard listingDetailsSellerCell.tag == indexPath.row else { return }
+                guard listingDetailsUserCell.tag == indexPath.row else { return }
                 
                 guard let image = image else { return }
-                listingDetailsSellerCell.sellerImageView.image = image
+                listingDetailsUserCell.userImageView.image = image
             }
         }
     }
     
     fileprivate func configure(listingDetailsInterestedBuyerCell: ListingDetailsInterestedBuyerCell, atIndexPath indexPath: IndexPath) {
-        let interestedBuyer = delegate.getConfiguration().interestedBuyer(forRow: indexPath.row)!
+        let exchange = delegate.getConfiguration().exchange(forRow: indexPath.row)!
+        let interestedBuyer = exchange.buyer
         
         listingDetailsInterestedBuyerCell.delegate = delegate
-        listingDetailsInterestedBuyerCell.buyer = interestedBuyer
+        listingDetailsInterestedBuyerCell.exchange = exchange
         listingDetailsInterestedBuyerCell.buyerNameLabel.text = interestedBuyer.name
         listingDetailsInterestedBuyerCell.buyerImageView.image = UIImage(named: "defaultProfilePhoto")
         
@@ -283,8 +326,8 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
             configure(actionCell: actionCell, forFieldType: fieldTypeForRow)
         } else if let listingDescriptionCell = cell as? ListingDetailsListingDescriptionCell {
             configure(listingDetailsListingDescriptionCell: listingDescriptionCell)
-        } else if let listingSellerCell = cell as? ListingDetailsSellerCell {
-            configure(listingDetailsSellerCell: listingSellerCell, atIndexPath: indexPath)
+        } else if let listingUserCell = cell as? ListingDetailsUserCell {
+            configure(listingDetailsUserCell: listingUserCell, atIndexPath: indexPath)
         } else if let interestedBuyerCell = cell as? ListingDetailsInterestedBuyerCell {
             configure(listingDetailsInterestedBuyerCell: interestedBuyerCell, atIndexPath: indexPath)
         } else if let interestedBuyersHeaderCell = cell as? ListingDetailsInterestedBuyersHeaderCell {
@@ -312,8 +355,8 @@ extension ListingDetailsTableHandler: UITableViewDelegate {
         case .action:
             return ListingDetailsActionCell.EstimatedHeight
             
-        case .aboutSeller:
-            return ListingDetailsSellerCell.EstimatedHeight
+        case .aboutOtherUser:
+            return ListingDetailsUserCell.EstimatedHeight
             
         case .interestedBuyersHeader:
             return ListingDetailsInterestedBuyersHeaderCell.EstimatedHeight

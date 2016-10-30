@@ -16,8 +16,8 @@ protocol ProfileCollectionHandlerDelegate: class, BottomBarDoubleSegmentedContro
     func getUser() -> User?
     func getListings() -> [Listing]
     func getConfiguration() -> Configuration
+    func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control
     func didSelect(_ listing: Listing)
-    func getInsetForTabBar() -> CGFloat
 }
 
 class ProfileCollectionHandler: ListingCollectionHandler {
@@ -78,6 +78,9 @@ class ProfileCollectionHandler: ListingCollectionHandler {
     fileprivate func reloadHeaderView() {
         let user = delegate.getUser()
         guard let profileUser = user else { return }
+        
+        let selectedControl = delegate.getSelectedControl()
+        headerView.bottomBarDoubleSegmentedControl.update(selectedControl: selectedControl, animated: false)
         
         headerView.userNameLabel.text = profileUser.name
         
@@ -151,13 +154,17 @@ extension ProfileCollectionHandler {
         cell.set(bottomLabelText: listing.priceString)
         
         cell.tag = indexPath.row
-        //cell.photo.image = ImageManager.PlaceholderImage
-        ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
-            //Make sure the cell hasn't been reused by the time the image is downloaded
-            guard cell.tag == indexPath.row else { return }
-            
-            guard let image = image else { return }
-            cell.set(photo: image)
+        
+        if let localPhoto = listing.photo {
+            cell.set(photo: localPhoto)
+        } else {
+            ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard cell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                cell.set(photo: image)
+            }
         }
         
         return cell

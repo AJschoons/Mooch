@@ -8,22 +8,27 @@
 
 import UIKit
 
-protocol ListingDetailsSellerCellDelegate: class {
+protocol ListingDetailsUserCellDelegate: class {
     func onEmail()
     func onPhone()
 }
 
-class ListingDetailsSellerCell: UITableViewCell {
+class ListingDetailsUserCell: UITableViewCell {
     
-    static let Identifier = "ListingDetailsSellerCell"
+    enum UserType {
+        case seller
+        case buyer
+    }
+    
+    static let Identifier = "ListingDetailsUserCell"
     static let EstimatedHeight: CGFloat = 203
     
-    @IBOutlet weak var sellerImageView: CircleImageView!
-    @IBOutlet weak var sellerNameLabel: UILabel!
+    @IBOutlet weak var userImageView: CircleImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
     
-    weak var delegate: ListingDetailsSellerCellDelegate!
+    @IBOutlet private weak var headingLabel: UILabel!
     
-    @IBOutlet private weak var sellerContactInformation: UIStackView!
+    @IBOutlet private weak var userContactInformation: UIStackView!
     @IBOutlet private weak var hiddenContactInformationView: UIView!
     
     @IBOutlet private weak var emailImageView: UIImageView!
@@ -34,15 +39,16 @@ class ListingDetailsSellerCell: UITableViewCell {
     @IBOutlet private weak var phoneButton: UIButton!
     @IBOutlet private weak var addressButton: UIButton!
     
-    private var showSellerInfo = false
+    weak var delegate: ListingDetailsUserCellDelegate!
+    private var showUserInfo = false
     
     @IBAction func onEmailButton() {
-        guard showSellerInfo else { return }
+        guard showUserInfo else { return }
         delegate.onEmail()
     }
     
     @IBAction func onPhoneButton() {
-        guard showSellerInfo else { return }
+        guard showUserInfo else { return }
         delegate.onPhone()
     }
     
@@ -56,22 +62,27 @@ class ListingDetailsSellerCell: UITableViewCell {
         addressButton.setTitleColor(color, for: .normal)
     }
     
-    func setButtonStateAndText(from listing: Listing, for user: User?) {
-        if let user = user {
-            showSellerInfo = listing.isUserContactInformationVisible(to: user)
+    func setup(with user: User, andType userType: UserType, isUserContactInformationVisible: Bool) {
+        switch userType {
+        case .buyer:
+            headingLabel.text = "About Buyer"
+        case .seller:
+            headingLabel.text = "About Seller"
         }
         
+        showUserInfo = isUserContactInformationVisible
+        
         //An informational view will be shown instead to show how to get seller information
-        guard showSellerInfo else {
-            sellerContactInformation.isHidden = true
+        guard showUserInfo else {
+            userContactInformation.isHidden = true
             return
         }
         
         hiddenContactInformationView.isHidden = true
         
-        emailButton.setTitle(listing.owner.contactInformation.email, for: .normal)
+        emailButton.setTitle(user.contactInformation.email, for: .normal)
         
-        if let phone = listing.owner.contactInformation.phone {
+        if let phone = user.contactInformation.phone {
             let formattedPhone = PhoneNumberHandler.format(number: phone)
             phoneButton.setTitle(formattedPhone, for: .normal)
             phoneButton.isUserInteractionEnabled = true
@@ -83,7 +94,7 @@ class ListingDetailsSellerCell: UITableViewCell {
         
         //Nothing to do with the address button, so always disabled
         addressButton.isUserInteractionEnabled = false
-        if let address = listing.owner.contactInformation.address {
+        if let address = user.contactInformation.address {
             addressButton.setTitle(address, for: .normal)
         } else {
             addressButton.setTitle("No address provided", for: .normal)

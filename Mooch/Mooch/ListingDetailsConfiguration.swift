@@ -25,7 +25,7 @@ struct ListingDetailsConfiguration {
         //Information
         case listing
         case listingDescription
-        case aboutSeller
+        case aboutOtherUser
         case interestedBuyersHeader
         case interestedBuyer
         
@@ -58,7 +58,7 @@ struct ListingDetailsConfiguration {
         switch mode {
             
         case .viewingOtherUsersListing:
-            var fields: [FieldType] = [.listing, .contactSeller, .viewSellerProfile, .listingDescription, .aboutSeller]
+            var fields: [FieldType] = [.listing, .contactSeller, .viewSellerProfile, .listingDescription, .aboutOtherUser]
             if isViewingSellerProfileNotAllowed, let viewSellerProfileIndex = fields.index(of: .viewSellerProfile) {
                 fields.remove(at: viewSellerProfileIndex)
             }
@@ -66,18 +66,18 @@ struct ListingDetailsConfiguration {
             return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: fields)
             
         case .viewingOtherUsersCompletedListing:
-            var fields: [FieldType] = [.listing, .viewSellerProfile, .listingDescription, .aboutSeller]
+            var fields: [FieldType] = [.listing, .viewSellerProfile, .listingDescription, .aboutOtherUser]
             if isViewingSellerProfileNotAllowed, let viewSellerProfileIndex = fields.index(of: .viewSellerProfile) {
                 fields.remove(at: viewSellerProfileIndex)
             }
             
-            return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .viewSellerProfile, .listingDescription, .aboutSeller])
+            return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: fields)
             
         case .viewingThisUsersListing:
             return ListingDetailsConfiguration(listing: listing, mode: .viewingThisUsersListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: [.edit], fields: [.listing, .endListing, .listingDescription, .interestedBuyersHeader])
             
         case .viewingThisUsersCompletedListing:
-            return ListingDetailsConfiguration(listing: listing, mode: .viewingOtherUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .listingDescription])
+            return ListingDetailsConfiguration(listing: listing, mode: .viewingThisUsersCompletedListing, title: Strings.ListingDetails.title.rawValue, leftBarButtons: nil, rightBarButtons: nil, fields: [.listing, .listingDescription, .aboutOtherUser])
         }
     }
     
@@ -109,10 +109,10 @@ struct ListingDetailsConfiguration {
         return fields[row]
     }
     
-    func interestedBuyer(forRow row: Int) -> User? {
+    func exchange(forRow row: Int) -> Exchange? {
         guard noInterestedBuyersForInterestedBuyersHeader == false else { return nil }
         guard let numberOfNonInterestedBuyerFields = numberOfNonInterestedBuyerFields else { return nil }
-        return listing.interestedBuyers[row - numberOfNonInterestedBuyerFields]
+        return listing.exchanges[row - numberOfNonInterestedBuyerFields]
     }
     
     func isListingDescriptionLastField() -> Bool {
