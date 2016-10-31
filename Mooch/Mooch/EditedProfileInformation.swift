@@ -23,6 +23,7 @@ struct EditedProfileInformation {
     var address: String?
     var password1: String?
     var password2: String?
+    var communityId: Int?
     
     init(fieldsShownToRequiredPairs: [(FieldType, Bool)]) {
         self.fieldsShownToRequiredPairs = fieldsShownToRequiredPairs
@@ -40,7 +41,7 @@ struct EditedProfileInformation {
     }
     
     var isAllRequiredInformationFilledAndValid: Bool {
-        return isRequiredInformationFilled && isEmailValid && isPhoneValid && isPasswordValid && isPasswordMatchValid
+        return isRequiredInformationFilled && isEmailValid && isPhoneValid && isPasswordValid && isPasswordMatchValid && isCommunityValid
     }
     
     var isRequiredInformationFilled: Bool {
@@ -123,6 +124,23 @@ struct EditedProfileInformation {
         }
     }
     
+    var isCommunityValid: Bool {
+        //Valid if the community field isn't shown
+        let showsCommunity = fieldsShownToRequiredMapping[.community] != nil
+        guard showsCommunity else { return true }
+        
+        let isCommunityRequired = fieldsShownToRequiredMapping[.community]!
+        let isCommunityPresent = variable(forFieldType: .community) != nil
+        
+        if isCommunityRequired || isCommunityPresent {
+            guard let _ = variable(forFieldType: .community) as? Int else { return false }
+            return true
+        } else {
+            //If the community isn't required or present then it is valid
+            return true
+        }
+    }
+    
     func firstUnfilledRequiredFieldType() -> FieldType? {
         var unfilledFieldType: EditProfileConfiguration.FieldType? = nil
         
@@ -169,6 +187,10 @@ struct EditedProfileInformation {
             return password1
         case .password2:
             return password2
+        case .community:
+            return communityId
+        default:
+            return nil
         }
     }
 }

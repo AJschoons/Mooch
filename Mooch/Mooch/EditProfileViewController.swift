@@ -26,9 +26,6 @@ class EditProfileViewController: MoochModalViewController {
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = EditProfileConfiguration(mode: .creating, title: Strings.EditProfile.defaultCreatingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, true), (.name, true), (.email, true), (.phone, true), (.address, false), (.password1, true), (.password2, true)])
-    static let DefaultEditingConfiguration = EditProfileConfiguration(mode: .creating, title: Strings.EditProfile.defaultEditingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, false), (.name, false), (.email, false), (.phone, false), (.address, false), (.password1, false), (.password2, false)])
-    
     @IBOutlet var tableHandler: EditProfileTableHandler! {
         didSet { tableHandler.delegate = self }
     }
@@ -56,9 +53,6 @@ class EditProfileViewController: MoochModalViewController {
     static fileprivate let StoryboardName = "EditProfile"
     static fileprivate let Identifier = "EditProfileViewController"
     
-    fileprivate var doneButton: UIBarButtonItem!
-    fileprivate var cancelButton: UIBarButtonItem!
-    
     //Used to track what Profile information has been edited
     fileprivate var editedProfileInformation: EditedProfileInformation!
     
@@ -85,6 +79,7 @@ class EditProfileViewController: MoochModalViewController {
         guard state != .uploading else { return }
         dismissSelf(completion: nil)
     }
+    
     
     // MARK: Public methods
     
@@ -137,35 +132,7 @@ class EditProfileViewController: MoochModalViewController {
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
-        doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onDoneAction))
-        cancelButton = UIBarButtonItem(title: Strings.EditProfile.cancelButtonTitle.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
-        
         title = configuration.title
-        
-        if let leftButtons = configuration.leftBarButtons {
-            navigationItem.leftBarButtonItems = barButtons(fromTypeList: leftButtons)
-        } else {
-            navigationItem.leftBarButtonItems = nil
-        }
-        
-        if let rightButtons = configuration.rightBarButtons {
-            navigationItem.rightBarButtonItems = barButtons(fromTypeList: rightButtons)
-        } else {
-            navigationItem.rightBarButtonItems = nil
-        }
-    }
-    
-    fileprivate func barButtons(fromTypeList typeList: [EditProfileConfiguration.BarButtonType]) -> [UIBarButtonItem] {
-        return typeList.map({barButton(forType: $0)})
-    }
-    
-    fileprivate func barButton(forType type: EditProfileConfiguration.BarButtonType) -> UIBarButtonItem {
-        switch type {
-        case .cancel:
-            return cancelButton
-        case .done:
-            return doneButton
-        }
     }
     
     fileprivate func registerForKeyboardNotifacations() {
@@ -244,7 +211,7 @@ class EditProfileViewController: MoochModalViewController {
         
         if !editedProfileInformation.isRequiredInformationFilled {
             guard let fieldToNotifyAbout = editedProfileInformation.firstUnfilledRequiredFieldType() else { return }
-            message = "\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoSecondPart.rawValue))"
+            message = "\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoSecondPart.rawValue)"
         } else if !editedProfileInformation.isEmailValid {
             message = Strings.EditProfile.invalidCreationErrorAlertMessageEmail.rawValue
         } else if !editedProfileInformation.isPhoneValid {
@@ -284,6 +251,10 @@ extension EditProfileViewController: EditProfileTableHandlerDelegate {
     func getEditedProfileInformation() -> EditedProfileInformation {
         return editedProfileInformation
     }
+    
+    func didSelectCommunityCell() {
+        print("community cell")
+    }
 }
 
 extension EditProfileViewController: EditProfileTextHandlerDelegate {
@@ -316,7 +287,6 @@ extension EditProfileViewController: EditProfileTextHandlerDelegate {
     }
 }
 
-
 extension EditProfileViewController: PhotoAddingViewDelegate {
     
     func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
@@ -325,6 +295,17 @@ extension EditProfileViewController: PhotoAddingViewDelegate {
     
     func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
         editedProfileInformation.photo = nil
+    }
+}
+
+extension EditProfileViewController: EditListingActionsCellDelegate {
+    
+    func onDone() {
+        onDoneAction()
+    }
+    
+    func onCancel() {
+        onCancelAction()
     }
 }
 
