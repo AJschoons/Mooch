@@ -28,7 +28,7 @@ class ListingTest: XCTestCase {
         let photoImage = UIImage(named: "apples")
 
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
-        let user = User(id: 5, name: "test", contactInformation: contactInformation, currentRating: 4.5, ratingCount: 5, communityId:4 , pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        let user = User(id: 5, name: "test", contactInformation: contactInformation, communityId:4 , pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
         let createDate = Date(dateString:"2014-06-06")
         let modifyDate = Date(dateString:"2016-07-06")
         
@@ -55,7 +55,7 @@ class ListingTest: XCTestCase {
     
     //Test that a listing is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
-        let userJSONDict = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.currentRating.rawValue : 4.5, User.JSONMapping.ratingCount.rawValue : 5, User.JSONMapping.communityId.rawValue : 4] as [String : Any]
+        let userJSONDict = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.communityId.rawValue : 4] as [String : Any]
 
         let listingJSON: JSON = [
                                  Listing.JSONMapping.id.rawValue : 4532,
@@ -293,7 +293,7 @@ class ListingTest: XCTestCase {
     func testGettersSetters() {
         let photoImage = UIImage(named: "apples")
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
-        let user = User(id: 5, name: "test", contactInformation: contactInformation, currentRating: 4.5, ratingCount: 5, communityId: 7, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        let user = User(id: 5, name: "test", contactInformation: contactInformation, communityId: 7, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
        
         let createDate = Date(dateString:"2014-06-06")
         let modifyDate = Date(dateString:"2016-07-06")
@@ -316,7 +316,7 @@ class ListingTest: XCTestCase {
         
 
         listing.title = "banana"
-        _ = User(id: 12, name: "jiang", contactInformation: contactInformation,currentRating: 4.5, ratingCount: 9, communityId : 11, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        _ = User(id: 12, name: "jiang", contactInformation: contactInformation, communityId : 11, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
         
         let newList = Listing(id: 2, photo: photoImage, title: "banana", description: "nice apple", price: 3, isFree: false, quantity: 2, categoryId: 13, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 11)
         

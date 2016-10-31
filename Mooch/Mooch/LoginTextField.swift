@@ -18,6 +18,18 @@ class LoginTextField: UITextField, NavigableResponder {
         }
     }
     
+    @IBInspectable var borderColor: UIColor? {
+        didSet {
+            layer.borderColor = borderColor?.cgColor
+        }
+    }
+    
+    @IBInspectable var borderWidth: CGFloat = 1 {
+        didSet {
+            layer.borderWidth = borderWidth
+        }
+    }
+    
     func setPlaceholder(hidden: Bool) {
         if hidden {
             attributedPlaceholder = nil

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol EditListingTableHandlerDelegate: class, EditListingQuantityCellDelegate, PhotoAddingViewDelegate {
+protocol EditListingTableHandlerDelegate: class, EditListingActionsCellDelegate {
     func getConfiguration() -> EditListingConfiguration
     func getTextHandler() -> EditListingTextHandler
     func getEditedListingInformation() -> EditedListingInformation
@@ -25,9 +25,8 @@ class EditListingTableHandler: NSObject {
     
     // MARK: Private variables
     
-    //The spacing between cells is 14, so half that is 7
-    //Used for knowing how much to offset due to keyboard so it doesn't go right under the cell
-    private let HalfTheSpacingBetweenCells: CGFloat = 7.0
+    //Used for knowing how much to offset due to keyboard so it doesn't go right under the text field
+    private let HalfTheSpacingBetweenCells: CGFloat = 5.0
     
     //Used to track the setup of the navigable text views between configurations
     fileprivate var lastTextViewConfigured: EditListingTextView?
@@ -93,7 +92,7 @@ class EditListingTableHandler: NSObject {
     //Returns true if a field type maps to a EditListingTextFieldCell
     func isTextField(forFieldType fieldType: EditListingConfiguration.FieldType) -> Bool {
         switch fieldType {
-        case .title, .description, .price:
+        case .title, .description, .price, .quantity:
             return true
         default:
             return false
@@ -113,10 +112,10 @@ class EditListingTableHandler: NSObject {
         switch fieldType {
         case .photo:
             return EditListingPhotoCell.Identifier
-        case .quantity:
-            return EditListingQuantityCell.Identifier
         case .category:
             return EditListingCategoryCell.Identifier
+        case .actions:
+            return EditListingActionsCell.Identifier
         default:
             return EditListingTextCell.Identifier
         }
@@ -124,12 +123,9 @@ class EditListingTableHandler: NSObject {
     
     //Configures an EditListingPhotoCell
     fileprivate func configure(editListingPhotoCell cell: EditListingPhotoCell) {
-        cell.photoAddingView.delegate = delegate
-    }
-    
-    //Configures an EditListingQuantityCell
-    fileprivate func configure(editListingQuantityCell cell: EditListingQuantityCell) {
-        cell.delegate = delegate
+        if let photo = delegate.getEditedListingInformation().photo {
+            cell.photoImageView.image = photo
+        }
     }
     
     //Configures an EditListingCategoryCell
@@ -144,14 +140,23 @@ class EditListingTableHandler: NSObject {
         }
         cell.categoryNameLabel.text = categoryNameText
     }
+    
+    //Configures an EditListingActionsCell
+    fileprivate func configure(editListingActionsCell cell: EditListingActionsCell) {
+        cell.delegate = delegate
+    }
 
     //Configures an EditListingTextCell based on the field type
     fileprivate func configure(editListingTextCell cell: EditListingTextCell, withFieldType fieldType: EditListingConfiguration.FieldType, andIndexPath indexPath: IndexPath) {
         
-        cell.fieldLabel.text = fieldLabel(forTextFieldType: fieldType)
+        cell.fieldLabel.text = "\(fieldLabel(forTextFieldType: fieldType)):"
         cell.textView.keyboardType = keyboardType(forTextFieldFieldType: fieldType)
         cell.textView.fieldType = fieldType
         cell.textView.delegate = self
+        
+        if let text = delegate.getEditedListingInformation().string(for: fieldType) {
+            cell.textView.text = text
+        }
         
         //Make the last cell have done key instead of next
         var returnKeyType: UIReturnKeyType!
@@ -180,7 +185,7 @@ class EditListingTableHandler: NSObject {
     //Returns the placeholder text for fieldTypes that are used in the EditListingTextField cells
     fileprivate func keyboardType(forTextFieldFieldType textfieldFieldType: EditListingConfiguration.FieldType) -> UIKeyboardType {
         switch textfieldFieldType {
-        case .price:
+        case .price, .quantity:
             return .numbersAndPunctuation
         default:
             return .default
@@ -210,12 +215,12 @@ extension EditListingTableHandler: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         if let textCell = cell as? EditListingTextCell {
             configure(editListingTextCell: textCell, withFieldType: fieldTypeForRow, andIndexPath: indexPath)
-        } else if let quantityCell = cell as? EditListingQuantityCell {
-            configure(editListingQuantityCell: quantityCell)
         } else if let photoCell = cell as? EditListingPhotoCell {
             configure(editListingPhotoCell: photoCell)
         } else if let categoryCell = cell as? EditListingCategoryCell {
             configure(editListingCategoryCell: categoryCell)
+        } else if let actionsCell = cell as? EditListingActionsCell {
+            configure(editListingActionsCell: actionsCell)
         }
         
         return cell

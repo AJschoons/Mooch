@@ -16,15 +16,15 @@ enum Strings {
         case singleActionTryAgainTitle = "Try again"
     }
     
-    enum SharedErrors: String {
-        case invalidCategory = "Invalid Category"
+    enum CommunityPicker: String {
+        case title = "Choose Community"
     }
     
     enum EditListing: String {
         case cancelButtonTitle = "Cancel"
         
-        case defaultCreatingTitle = "Create Listing"
-        case defaultEditingTitle = "Edit Listing"
+        case defaultCreatingTitle = "Sell Item"
+        case defaultEditingTitle = "Edit Item"
         
         case fieldTypePhotoTextDescription = "Photo"
         case fieldTypeTitleTextDescription = "Title"
@@ -33,9 +33,13 @@ enum Strings {
         case fieldTypeQuantityTextDescription = "Quantity"
         case fieldTypeCategoryTextDescription = "Category"
         
+        case invalidEditErrorAlertTitle = "Problem editing listing"
         case invalidCreationErrorAlertTitle = "Problem creating listing"
         case invalidCreationErrorAlertMessageFirstPart = "Please complete filling out the information for the "
         case invalidCreationErrorAlertMessageSecondPart = " field"
+        case invalidCreationErrorInvalidPriceAlertMessage = "The price cannot be greater than $200.00"
+        
+        case noInformationChangedAlertMessage = "The listing information has not been changed"
         
         case uploadingNewLoadingOverlay = "Uploading Listing"
         case uploadingNewErrorAlertTitle = "Problem Uploading Listing"
@@ -58,7 +62,7 @@ enum Strings {
         case fieldTypePassword1TextDescription = "Password"
         case fieldTypePassword2TextDescription = "Confirm Password"
         
-        case invalidCreationErrorAlertTitle = "Problem creating listing"
+        case invalidCreationErrorAlertTitle = "Problem creating profile"
         case invalidCreationErrorAlertMessageUnfilledInfoFirstPart = "Please complete filling out the information for the "
         case invalidCreationErrorAlertMessageUnfilledInfoSecondPart = " field"
         case invalidCreationErrorAlertMessageEmail = "Please enter a valid email address"
@@ -76,13 +80,12 @@ enum Strings {
     enum InitialLoading: String {
         case couldNotDownloadInitialDataAlertTitle = "Problem Connecting to Mooch"
         case couldNotDownloadInitialDataAlertMessage = "We were unable to download the data needed to launch"
+        
+        case loadingText = "Loading"
+        case failedPushNotificationRegistrationText = "Mooch requires push notifications to be enabled.\n\nPlease enable them at:\nSettings > Notifications > Mooch\n\nThen restart the app"
     }
     
     enum Login: String {
-        case accountCreatedAlertTitle = "Account Created"
-        case accountCreatedAlertMessageFirstPart = "Welcome to Mooch, "
-        case accountCreatedAlertMessageSecondPart = "!"
-        
         case loginOverlay = "Logging In"
         case loginErrorAlertTitle = "Problem Logging In"
         case loginErrorAlertMessage = "Please check the email and password then try again"
@@ -98,32 +101,30 @@ enum Strings {
     }
     
     enum ListingDetails: String {
-        case title = "Listing Details"
+        case alertBannerLabelListingSold = "LISTING SOLD"
+        case alertBannerLabelListingEnded = "LISTING ENDED"
         
-        case fieldTypeAddAnotherListingActionString = "Add New Listing"
-        case fieldTypeContactSellerActionString = "Claim"
-        case fieldTypeDeleteListingActionString = "Delete Listing"
-        case fieldTypeEditListingActionString = "Edit Listing"
+        case title = "View Listing"
+        
+        case fieldTypeContactSellerNoContactYetActionString = "Contact Seller"
+        case fieldTypeContactSellerAlreadyContactedActionString = "Contacted Seller"
         case fieldTypeViewSellerProfileActionString = "View Seller Profile"
+        case fieldTypeEndListingActionString = "End Listing"
         
-        case listingCellPriceLabelFirstPart = "Price: "
-        case listingCellQuantityLabelFirstPart = "Quantity: "
+        case listingDesriptionNoDescription = "No description provided"
     }
     
     enum Listings: String {
-        
-        case title = "Listings"
-        
-        case buttonTitleLogin = "Login"
-        case buttonTitleProfile = "Profile"
-        
-        case listingCreatedAlertTitle = "Listing Created"
-        case listingCreatedAlertMessageFirstPart = "Your listing \""
-        case listingCreatedAlertMessageSecondPart = "\" is now visible to all users in your community!"
-        
         case loadingListingsOverlay = "Loading Listings"
         case loadingListingsErrorAlertTitle = "Problem Loading Listings"
         case loadingListingsErrorAlertMessage = "Please try pulling to refresh to reload the listings"
+        
+        case navigationItemTitle = "Mooch"
+        
+        case noListingsInCommunityLabelText = "There are currently no listings in this community"
+        case noListingsInCommunityMatchingSearchLabelText = "There are currently no listings in this community matching this search"
+        case noListingsAfterFilterAppliedLabelText = "There are currently no listings in this community matching the filters applied"
+        case noListingsMatchingSearchAfterFilterAppliedLabelText = "There are currently no listings in this community matching this search and the filters applied"
     }
     
     enum MoochAPI: String {
@@ -136,16 +137,33 @@ enum Strings {
     }
     
     enum Profile: String {
-        case buttonTitleBack = "Back"
-        case buttonTitleEdit = "Edit"
+        case titleLocalUser = "My Profile"
+        case titleSellerProfile = "Seller Profile"
         
-        case title = "Profile"
+        case noListings = "There are currently no listings to show"
+
+    }
+    
+    enum SharedErrors: String {
+        case invalidCategory = "Invalid Category"
+    }
+    
+    enum TabBar: String {
+        case home = "Home"
+        case search = "Search"
+        case sell = "Sell"
+        case myProfile = "My Profile"
+        
+        case loggedOutMyProfileTabActionSheetActionTitleLoginOrSignUp = "Login / Sign up"
+        case loggedOutMyProfileTabActionSheetActionTitleChangeCommunity = "Change Community"
+        case loggedOutMyProfileTabActionSheetActionTitleCancel = "Cancel"
     }
     
     enum UserDefaultsKeys: String {
         case userId = "userId"
         case authenticationToken = "authenticationToken"
         case email = "email"
+        case guestCommunityId = "guestCommunityId"
     }
 }
 

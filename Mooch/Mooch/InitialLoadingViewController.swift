@@ -10,9 +10,21 @@ import UIKit
 
 class InitialLoadingViewController: MoochModalViewController {
 
+    enum State {
+        case loading
+        case failedPushNotifcationRegistration
+    }
+    
     // MARK: Public variables
     
     // MARK: Private variables
+    
+    @IBOutlet weak var loadingLabel: UILabel!
+    @IBOutlet weak var loadingActivityIndicator: UIActivityIndicatorView!
+    
+    
+    //Allows us to ensure that loading takes at least a minimim duration; makes the UX smoother
+    private var finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
     
     // MARK: Actions
     
@@ -20,11 +32,13 @@ class InitialLoadingViewController: MoochModalViewController {
     
     override func setup() {
         super.setup()
+        
+        set(state: .loading)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        getDataInitiallyNeededFromAPI()
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        PushNotificationsManager.sharedInstance.registrationDelegate = nil
     }
     
     override func prefersNavigationBarHidden() -> Bool {
@@ -39,15 +53,37 @@ class InitialLoadingViewController: MoochModalViewController {
         return false
     }
     
-    func onFinishedLoading() {
-        performCrossFadeViewControllerPop()
+    //Finishes loading after the minimum duration has elapsed
+    func onFinishedLoading(willShowCommunityPicker: Bool) {
+        finishLoadingAfterMinimumDurationTimer.execute() { [weak self] in
+            guard let strongSelf = self else { return }
+            
+            if willShowCommunityPicker {
+                strongSelf.presentCommunityPicker()
+            } else {
+                strongSelf.transitionToMainApp()
+            }
+        }
     }
     
     
     // MARK: Private methods
 
+    fileprivate func set(state: State) {
+        switch state {
+
+        case .loading:
+            loadingLabel.text = Strings.InitialLoading.loadingText.rawValue
+            loadingActivityIndicator.isHidden = false
+            
+        case .failedPushNotifcationRegistration:
+            loadingLabel.text = Strings.InitialLoading.failedPushNotificationRegistrationText.rawValue
+            loadingActivityIndicator.isHidden = true
+        }
+    }
+    
     //Kicks off the string of API requests we need to load and launch the app
-    private func getDataInitiallyNeededFromAPI() {
+    fileprivate func getDataInitiallyNeededFromAPI() {
         getListingCategories()
     }
     
@@ -56,6 +92,18 @@ class InitialLoadingViewController: MoochModalViewController {
         MoochAPI.GETListingCategories() { listingCategories, error in
             if let listingCategories = listingCategories {
                 ListingCategoryManager.sharedInstance.update(withListingCategories: listingCategories)
+                self.getCommunities()
+            } else {
+                self.presentCouldNotDownloadInitialDataAlert()
+            }
+        }
+    }
+    
+    //The second API call we make
+    private func getCommunities() {
+        MoochAPI.GETCommunities() { communities, error in
+            if let communities = communities {
+                CommunityManager.sharedInstance.update(withCommunities: communities)
                 self.loginSavedUser()
             } else {
                 self.presentCouldNotDownloadInitialDataAlert()
@@ -89,20 +137,40 @@ class InitialLoadingViewController: MoochModalViewController {
     //Handles what should be done when there IS a saved user we downloaded
     private func finishLoading(with localUser: LocalUser) {
         LocalUserManager.sharedInstance.login(localUser: localUser)
-        onFinishedLoading()
+        onFinishedLoading(willShowCommunityPicker: false)
     }
     
     //Handles what should be done when there is NOT a saved user we downloaded
     private func continueWithGuest() {
-        //TODO: handle picking a community instead of hardcoding a guest to community with id 1
-        LocalUserManager.sharedInstance.updateGuest(communityId: 1)
-        onFinishedLoading()
+        guard let savedGuestInformation = LocalUserManager.sharedInstance.getSavedGuesInformationFromUserDefaults() else {
+            //We need to force the user to pick a community
+            onFinishedLoading(willShowCommunityPicker: true)
+            return
+        }
+        
+        LocalUserManager.sharedInstance.updateGuest(communityId: savedGuestInformation.communityId)
+        transitionToMainApp()
+    }
+    
+    private func presentCommunityPicker() {
+        let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.delegate = self
+        let navC = UINavigationController(rootViewController: vc)
+        
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
+        
+        present(navC, animated: true, completion: nil)
     }
     
     private func presentCouldNotDownloadInitialDataAlert() {
         presentSingleActionAlert(title: Strings.InitialLoading.couldNotDownloadInitialDataAlertTitle.rawValue, message: Strings.InitialLoading.couldNotDownloadInitialDataAlertMessage.rawValue, actionTitle: Strings.Alert.singleActionTryAgainTitle.rawValue) { action in
             self.getDataInitiallyNeededFromAPI()
         }
+    }
+    
+    fileprivate func transitionToMainApp() {
+        (UIApplication.shared.delegate! as! AppDelegate).transitionToMoochTabBarController()
     }
     
     fileprivate func performCrossFadeViewControllerPop() {
@@ -115,5 +183,25 @@ class InitialLoadingViewController: MoochModalViewController {
         navC.view.layer.add(transtion, forKey: kCATransition)
         navC.setNavigationBarHidden(false, animated: false)
         navC.popViewController(animated: false)
+    }
+}
+
+extension InitialLoadingViewController: CommunityPickerViewControllerDelegate {
+    
+    func didPick(community: Community) {
+        LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
+        transitionToMainApp()
+    }
+}
+
+extension InitialLoadingViewController: PushNotificationsManagerRegistrationDelegate {
+    
+    func pushNotificationsDidRegister(success: Bool) {
+        if success || Platform.isSimulator {
+            set(state: .loading)
+            getDataInitiallyNeededFromAPI()
+        } else {
+            set(state: .failedPushNotifcationRegistration)
+        }
     }
 }

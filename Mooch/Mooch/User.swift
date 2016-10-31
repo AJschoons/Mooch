@@ -13,8 +13,6 @@ struct User {
         case id
         case name
         case email
-        case currentRating
-        case ratingCount
         case communityId
     }
     
@@ -25,7 +23,7 @@ struct User {
         case email = "email"
         case phone = "phone"
         case communityId = "community_id"
-        case pictureURL = "profile_pic"
+        case pictureURL = "profile_image_url"
         case thumbnailPictureURL = "profile_pic_small"
     }
     
@@ -38,7 +36,7 @@ struct User {
     let id: Int
     var name: String
     var contactInformation: ContactInformation
-    let communityId: Int
+    var communityId: Int
     
     //Optional
     var pictureURL: String?
@@ -51,8 +49,20 @@ struct User {
         self.contactInformation = contactInformation
         self.communityId = communityId
         
-        self.pictureURL = pictureURL
-        self.thumbnailPictureURL = thumbnailPictureURL
+        //If either of the URLs provided are nil, then default it to the non-nil one
+        if pictureURL == nil || thumbnailPictureURL == nil {
+            var urlToUse: String?
+            if pictureURL != nil {
+                urlToUse = pictureURL
+            } else if thumbnailPictureURL != nil {
+                urlToUse = thumbnailPictureURL
+            }
+            self.pictureURL = urlToUse
+            self.thumbnailPictureURL = urlToUse
+        } else {
+            self.pictureURL = pictureURL
+            self.thumbnailPictureURL = thumbnailPictureURL
+        }
     }
     
     //Convenience JSON initializer
@@ -72,12 +82,31 @@ struct User {
         //Optional variables
         //
         
-        let pictureURL = json[JSONMapping.pictureURL.rawValue].string
-        let thumbnailPictureURL = json[JSONMapping.thumbnailPictureURL.rawValue].string
+        var pictureURL = json[JSONMapping.pictureURL.rawValue].string
+        if pictureURL != nil && pictureURL!.isEmpty {
+            pictureURL = nil
+        }
         
+        var thumbnailPictureURL = json[JSONMapping.thumbnailPictureURL.rawValue].string
+        if thumbnailPictureURL != nil && thumbnailPictureURL!.isEmpty {
+            thumbnailPictureURL = nil
+        }
+        
+        
+        //
         //Setup contact information
-        let address = json[JSONMapping.address.rawValue].string
-        let phone = json[JSONMapping.phone.rawValue].string
+        //
+        
+        var address = json[JSONMapping.address.rawValue].string
+        if address != nil && address!.isEmpty {
+            address = nil
+        }
+        
+        var phone = json[JSONMapping.phone.rawValue].string
+        if phone != nil && phone!.isEmpty {
+            phone = nil
+        }
+        
         let contactInformation = ContactInformation(address: address, email: email, phone: phone)
         
         

@@ -11,7 +11,7 @@
   "updated_at": "2016-10-04T06:05:46.000Z",
   "thumbnail_image_url": null,
   "image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/24/full",
-  "quantity": null,
+  "quantity": 2,
   "category_id": 5,
   "community_id": 1,
   "user": {
@@ -49,7 +49,7 @@
   "updated_at": "2016-10-02T23:32:16.000Z",
   "thumbnail_image_url": null,
   "image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/29/full",
-  "quantity": null,
+  "quantity": 2,
   "category_id": 7,
   "community_id": 1,
   "user": {
@@ -87,7 +87,7 @@
   "updated_at": "2016-10-04T03:17:02.000Z",
   "thumbnail_image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/31/thumbnail",
   "image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/31/full",
-  "quantity": null,
+  "quantity": 2,
   "category_id": 1,
   "community_id": 1,
   "user": {
@@ -125,7 +125,7 @@
   "updated_at": "2016-10-03T23:50:14.000Z",
   "thumbnail_image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/32/thumbnail",
   "image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/32/full",
-  "quantity": null,
+  "quantity": 2,
   "category_id": 1,
   "community_id": 1,
   "user": {
@@ -163,7 +163,7 @@
   "updated_at": "2016-10-04T05:43:25.000Z",
   "thumbnail_image_url": null,
   "image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/43/full",
-  "quantity": null,
+  "quantity": 2,
   "category_id": 21,
   "community_id": 1,
   "user": {
@@ -201,7 +201,7 @@
   "updated_at": "2016-10-05T21:04:37.000Z",
   "thumbnail_image_url": null,
   "image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/44/full",
-  "quantity": null,
+  "quantity": 2,
   "category_id": 1,
   "community_id": 1,
   "user": {
@@ -239,7 +239,7 @@
   "updated_at": "2016-10-05T01:15:15.000Z",
   "thumbnail_image_url": null,
   "image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/45/full",
-  "quantity": null,
+  "quantity": 2,
   "category_id": 8,
   "community_id": 1,
   "user": {
@@ -277,7 +277,7 @@
   "updated_at": "2016-10-05T20:29:54.000Z",
   "thumbnail_image_url": null,
   "image_url": "https://mooch-rails-api.storage.googleapis.com/listing_images/46/full",
-  "quantity": null,
+  "quantity": 2,
   "category_id": 1,
   "community_id": 1,
   "user": {

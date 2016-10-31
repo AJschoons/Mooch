@@ -7,11 +7,12 @@
 //
 
 import Alamofire
+import AVFoundation
 import Foundation
 
 class MoochAPI {
     
-    static let MaxImageSize = CGSize(width: 540, height: 540)
+    static let MaxImageSizeRect = CGRect(x: 0, y: 0, width: 540, height: 540)
     static let ImageCompressionFactor = CGFloat(0.5)
     
     typealias ExpectingResponseCompletionClosure = (JSON?, Error?) -> ()
@@ -31,6 +32,35 @@ class MoochAPI {
     //
     // MARK: API Routes
     //
+    
+    static func DELETEListing(ownerId: Int, listingId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.deleteListing(ownerId: ownerId, listingId: listingId)) { success, json, error in
+            completion(success, error)
+        }
+    }
+    
+    static func GETCommunities(completion: @escaping ([Community]?, Error?) -> Void) {
+        perform(requestExpectingResponse: MoochAPIRouter.getCommunities) { json, error in
+            guard let communitiesJSON = json?.array else {
+                completion(nil, error)
+                return
+            }
+            
+            do {
+                let communities = try communitiesJSON.map({try Community(json: $0)})
+                completion(communities, nil)
+            } catch let error {
+                print("couldn't create communities with JSON: \(json)")
+                completion(nil, error)
+            }
+        }
+    }
+    
+    static func GETExchangeAccept(listingOwnerId: Int, listingId: Int, exchangeId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.getExchangeAccept(listingOwnerId: listingOwnerId, listingId: listingId, exchangeId: exchangeId)) { success, json, error in
+            completion(success, error)
+        }
+    }
     
     static func GETListingCategories(completion: @escaping ([ListingCategory]?, Error?) -> Void) {
         perform(requestExpectingResponse: MoochAPIRouter.getListingCategories) { json, error in
@@ -86,6 +116,18 @@ class MoochAPI {
         }
     }
     
+    static func GETListingVisit(listingId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.getVisit(listingId: listingId)) { success, json, error in
+            completion(success, error)
+        }
+    }
+    
+    static func POSTExchange(listingOwnerId: Int, listingId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        perform(requestNotExpectingResponse: MoochAPIRouter.postExchange(listingOwnerId: listingOwnerId, listingId: listingId)) { success, json, error in
+            completion(success, error)
+        }
+    }
+    
     //The completion Bool will be true on success, false on failure/error
     static func POSTListing(userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
         
@@ -132,6 +174,24 @@ class MoochAPI {
                 let localUser = processedResult.0
                 let error = processedResult.1
                 completion(localUser, error)
+            }
+        }
+    }
+    
+    //The completion Bool will be true on success, false on failure/error
+    static func PUTListing(listingId: Int, userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
+        
+        let route = MoochAPIRouter.putListing(listingId: listingId, userId: userId, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId)
+        
+        performMultipartFormUpload(forRoute: route, withImage: nil, imageFormParameterName: nil, imageFileName: nil) { uploadRequest, error in
+            guard let uploadRequest = uploadRequest else {
+                completion(false, nil, error)
+                return
+            }
+            
+            uploadRequest.uploadProgress(closure: uploadProgressHandler)
+            validate(dataRequestNotExpectingResponse: uploadRequest) { success, json, error in
+                completion(success, json, error)
             }
         }
     }
@@ -227,7 +287,7 @@ class MoochAPI {
     }
     
     //Takes the parameters from the route and the image and encodes them into an UploadRequest
-    fileprivate static func performMultipartFormUpload(forRoute route: MoochAPIRouter, withImage image: UIImage, imageFormParameterName: String, imageFileName: String, completion: @escaping UploadRequestCompletion) {
+    fileprivate static func performMultipartFormUpload(forRoute route: MoochAPIRouter, withImage image: UIImage?, imageFormParameterName: String?, imageFileName: String?, completion: @escaping UploadRequestCompletion) {
         let routingInformation = route.getRoutingInformation()
         
         var urlRequest: URLRequest!
@@ -242,11 +302,14 @@ class MoochAPI {
         Alamofire.upload(
             multipartFormData: { multipartFormData in
                 
-                //Add image
-                let resizedImage = image.af_imageAspectScaled(toFit: MaxImageSize)
-                if let imageData = UIImageJPEGRepresentation(resizedImage, ImageCompressionFactor)
-                {
-                    multipartFormData.append(imageData, withName: imageFormParameterName, fileName: imageFileName, mimeType: "image/jpeg")
+                //Add image if it exists
+                if let image = image, let imageFormParameterName = imageFormParameterName, let imageFileName = imageFileName {
+                    let aspectRatioRect = AVMakeRect(aspectRatio: image.size, insideRect: MaxImageSizeRect)
+                    let resizedImage = image.af_imageAspectScaled(toFit: aspectRatioRect.size)
+                    if let imageData = UIImageJPEGRepresentation(resizedImage, ImageCompressionFactor)
+                    {
+                        multipartFormData.append(imageData, withName: imageFormParameterName, fileName: imageFileName, mimeType: "image/jpeg")
+                    }
                 }
                 
                 //Add the non-image parameters

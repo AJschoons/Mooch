@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Community Picker View Controller-->
+        <scene sceneID="Fh0-dx-r5Z">
+            <objects>
+                <viewController storyboardIdentifier="CommunityPickerViewController" id="k4z-V8-uCm" customClass="CommunityPickerViewController" customModule="Mooch" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Mcy-Fy-BdU"/>
+                        <viewControllerLayoutGuide type="bottom" id="KQU-W3-tOd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lND-aw-ByJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="N9c-Of-mKW">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Hr1-Hf-fvf">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="9g0-2s-GgS" id="f4h-kv-hoC"/>
+                                    <outlet property="delegate" destination="9g0-2s-GgS" id="3OK-hC-pWV"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="N9c-Of-mKW" firstAttribute="top" secondItem="lND-aw-ByJ" secondAttribute="top" id="NjC-eD-r1a"/>
+                            <constraint firstAttribute="trailing" secondItem="N9c-Of-mKW" secondAttribute="trailing" id="S9w-Jw-lxr"/>
+                            <constraint firstItem="N9c-Of-mKW" firstAttribute="leading" secondItem="lND-aw-ByJ" secondAttribute="leading" id="SbJ-2M-jSx"/>
+                            <constraint firstAttribute="bottom" secondItem="N9c-Of-mKW" secondAttribute="bottom" id="bEz-D0-75l"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionHandler" destination="9g0-2s-GgS" id="YmI-6g-1FU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xX6-8D-Ruc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="9g0-2s-GgS" customClass="CommunityPickerCollectionHandler" customModule="Mooch" customModuleProvider="target">
+                    <connections>
+                        <outlet property="collectionView" destination="N9c-Of-mKW" id="vjr-E3-HhD"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="-150" y="215"/>
+        </scene>
+    </scenes>
+</document>

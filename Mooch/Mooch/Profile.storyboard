@@ -17,36 +17,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X8x-fX-bYc" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="FzT-dL-5CU"/>
-                                    <constraint firstAttribute="height" constant="30" id="Lyb-FV-H6l"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Log Out">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NMh-L7-dGQ">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="W48-rC-WZj">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
                                 <connections>
-                                    <action selector="onLogOutAction" destination="MM3-X4-Kft" eventType="touchUpInside" id="WLd-ov-lL3"/>
+                                    <outlet property="dataSource" destination="exp-9o-dYk" id="zwb-sr-Yxr"/>
+                                    <outlet property="delegate" destination="exp-9o-dYk" id="Qa7-Ff-Sp4"/>
                                 </connections>
-                            </button>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="FL0-kN-TOJ" firstAttribute="top" secondItem="X8x-fX-bYc" secondAttribute="bottom" constant="15" id="FHb-Nr-VP3"/>
-                            <constraint firstItem="X8x-fX-bYc" firstAttribute="centerX" secondItem="Gdr-ZB-L85" secondAttribute="centerX" id="GTa-6f-EmI"/>
+                            <constraint firstAttribute="bottom" secondItem="NMh-L7-dGQ" secondAttribute="bottom" id="Z0m-Si-Cu2"/>
+                            <constraint firstItem="NMh-L7-dGQ" firstAttribute="leading" secondItem="Gdr-ZB-L85" secondAttribute="leading" id="e13-dm-DHp"/>
+                            <constraint firstAttribute="trailing" secondItem="NMh-L7-dGQ" secondAttribute="trailing" id="hdG-gM-Miq"/>
+                            <constraint firstItem="NMh-L7-dGQ" firstAttribute="top" secondItem="Gdr-ZB-L85" secondAttribute="top" id="qeP-es-TPf"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionHandler" destination="exp-9o-dYk" id="2ym-2w-Q05"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jnK-ns-upa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="exp-9o-dYk" customClass="ProfileCollectionHandler" customModule="Mooch" customModuleProvider="target">
+                    <connections>
+                        <outlet property="collectionView" destination="NMh-L7-dGQ" id="cl6-1S-vI1"/>
+                    </connections>
+                </customObject>
             </objects>
-            <point key="canvasLocation" x="186" y="275"/>
+            <point key="canvasLocation" x="184.80000000000001" y="274.81259370314842"/>
         </scene>
     </scenes>
 </document>

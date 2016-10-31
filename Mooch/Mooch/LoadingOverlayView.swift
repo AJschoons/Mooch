@@ -20,7 +20,9 @@ class LoadingOverlayView: UIView {
         progressView.setProgress(progress, animated: true)
     }
     
-    func setup(withInformationText informationText: String?, isUserInteractionEnabled: Bool, isProgressBased: Bool) {
+    func setup(withInformationText informationText: String?, isUserInteractionEnabled: Bool, isProgressBased: Bool, isAlertViewHidden: Bool) {
+        alertView.isHidden = isAlertViewHidden
+        
         if let text = informationText {
             informationLabel.text = text
         } else {
@@ -39,6 +41,8 @@ class LoadingOverlayView: UIView {
         Bundle.main.loadNibNamed("LoadingOverlayView", owner: self, options: nil)
         self.addSubview(view)
         view.frame = self.bounds
+        
+        initialSetup()
     }
     
     override init(frame: CGRect) {
@@ -47,12 +51,18 @@ class LoadingOverlayView: UIView {
         Bundle.main.loadNibNamed("LoadingOverlayView", owner: self, options: nil)
         self.addSubview(view)
         view.frame = frame
+        
+        initialSetup()
+    }
+    
+    private func initialSetup() {
+        progressView.tintColor = ThemeColors.moochRed.color()
     }
     
     //Allows touches to pass through the overlay. Returning false allows the touch to pass through
     //http://stackoverflow.com/questions/3046813/how-can-i-click-a-button-behind-a-transparent-uiview
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        guard isUserInteractionEnabled else { return true }
+        guard view.isUserInteractionEnabled else { return true }
         
         return alertView.point(inside: convert(point, to: alertView), with: event)
     }

@@ -25,71 +25,85 @@ class MoochAPITests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
         super.tearDown()
     }
+//    GETUser
     
-//    func testGETUser_success() {
-//        
-//        let userId = 2
-//        
-//        let asynchronousTestExpectation = expectation(description: "the completion closure returns the correct User with no error")
-//        var returnedUser: User?
-//        var returnedError: Error?
-//        
-//        MoochAPI.GETUser(withId: userId) { user, error in
-//            returnedUser = user
-//            returnedError = error
-//            asynchronousTestExpectation.fulfill()
-//        }
-//        
-//        waitForExpectations(timeout: 5) { error in
-//            //Is a user returned with no error?
-//            XCTAssert(returnedError == nil)
-//            guard let user = returnedUser else {
-//                XCTFail()
-//                return
-//            }
-//            
-//            //Is the user's information correct?
-//            XCTAssert(user.id == userId)
-//        }
-//    }
+    
+    func testGETCategories_success() {
+        guard let path = OHPathForFile("GETCategories.json", type(of: self)) else {
+            preconditionFailure("Could not find expected file in test bundle")
+        }
+        _ = stub(condition: isHost(host) && isPath("\(startOfPath)/categories"))
+        { request in
+            print("\nRequest: \(request)\n")
+            return OHHTTPStubsResponse(
+                fileAtPath:path,
+                statusCode: 200,
+                headers: [
+                    "ContentType": "application/json"
+                ]
+            )
+        }
+        let asynchronousTestExpectation = expectation(description: "the completion closure returns the correct Listings with no error")
+        var returnedListings: [ListingCategory]?
+        var returnedError: Error?
+        MoochAPI.GETListingCategories { categories, error in
+            print(categories?.count)
+            returnedListings = categories
+            returnedError = error
+            asynchronousTestExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 10) { error in
+            //Are the listings returned with no error?
+            XCTAssert(returnedError == nil)
+            guard let listings = returnedListings else {
+                XCTFail()
+                return
+            }
+            //Are the listings information correct?
+            XCTAssert(listings.count == 18)
+        }
+    }
+    
+    
+    
     
     func testGETListings_success() {
-        
-//        let _ = stub(isHost(host) && isPath("\(startOfPath)/listings")) { request in
-//            return OHHTTPStubsResponse(
-//                fileAtPath: OHPathForFile("GETListings.json", type(of: self))!,
-//                statusCode: 200,
-//                headers: [
-//                    "ContentType": "application/json"
-//                ]
-//            )
-//        }
-//
-//        let asynchronousTestExpectation = expectation(description: "the completion closure returns the correct Listings with no error")
-//        var returnedListings: [Listing]?
-//        var returnedError: Error?
-//        
-//        MoochAPI.GETListings { listings, error in
-//            returnedListings = listings
-//            returnedError = error
-//            asynchronousTestExpectation.fulfill()
-//        }
-//        
-//        waitForExpectations(timeout: 5) { error in
-//            //Are the listings returned with no error?
-//            XCTAssert(returnedError == nil)
-//            guard let listings = returnedListings else {
-//                XCTFail()
-//                return
-//            }
-//            
-//            //Are the listings information correct?
-//            XCTAssert(listings.count == 6)
-//            
-//            
-//            
-//        }
+        guard let path = OHPathForFile("GETListings.json", type(of: self)) else {
+            preconditionFailure("Could not find expected file in test bundle")
+        }
+        _ = stub(condition: isHost(host) && isPath("\(startOfPath)/communities/1/listings")) { request in
+            print("\nRequest: \(request)\n")
+            return OHHTTPStubsResponse(
+                fileAtPath:path,
+                statusCode: 200,
+                headers: [
+                    "ContentType": "application/json"
+                ]
+            )
+        }
+        let asynchronousTestExpectation = expectation(description: "the completion closure returns the correct Listings with no error")
+        var returnedListings: [Listing]?
+        var returnedError: Error?
+        let community_id = 1
+        MoochAPI.GETListings(communityId:community_id) { listings, error in
+            returnedListings = listings
+            returnedError = error
+            asynchronousTestExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 10) { error in
+            //Are the listings returned with no error?
+            XCTAssert(returnedError == nil)
+            guard let listings = returnedListings else {
+                XCTFail()
+                return
+            }
+            //Are the listings information correct?
+            XCTAssert(listings.count == 8)
+        }
     }
+    
+    
+    
     
 
 }

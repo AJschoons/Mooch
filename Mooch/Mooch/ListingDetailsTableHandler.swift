@@ -8,9 +8,12 @@
 
 import UIKit
 
-protocol ListingDetailsTableHandlerDelegate: class {
-    func getConfiguration() -> ListingDetailsViewController.Configuration
-    func getListing() -> Listing
+protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate, ListingDetailsInterestedBuyerCellDelegate, ListingDetailsUserCellDelegate {
+    typealias Configuration = ListingDetailsConfiguration
+    
+    func getConfiguration() -> Configuration
+    func tabBarHeight() -> CGFloat
+    func didGet(listingImage: UIImage)
 }
 
 class ListingDetailsTableHandler: NSObject {
@@ -20,7 +23,10 @@ class ListingDetailsTableHandler: NSObject {
     enum CellType {
         case listing
         case action
-        case ratingAction
+        case listingDescription
+        case aboutOtherUser
+        case interestedBuyersHeader
+        case interestedBuyer
     }
     
     // MARK: Public variables
@@ -31,44 +37,80 @@ class ListingDetailsTableHandler: NSObject {
         didSet {
             //Must set these to get cells to use autolayout and self-size themselves in the table
             tableView.rowHeight = UITableViewAutomaticDimension
-            tableView.estimatedRowHeight = 44
+            
+            //Make the table view inset for the nav bar and tab bar
+            let navBarHeight: CGFloat = 64.0
+            tableView.contentInset = UIEdgeInsets(top: navBarHeight, left: 0, bottom: delegate.tabBarHeight(), right: 0)
+            tableView.scrollIndicatorInsets = UIEdgeInsets(top: navBarHeight, left: 0, bottom: delegate.tabBarHeight(), right: 0)
         }
     }
     
     weak var delegate: ListingDetailsTableHandlerDelegate!
     
-    
     // MARK: Actions
     
     // MARK: Public methods
+    
+    func reloadRow(at indexPath: IndexPath) {
+        tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.none)
+    }
+    
+    func reloadData() {
+        tableView.reloadData()
+    }
+    
     
     // MARK: Private methods
     
     //Returns the field type that a row is displaying
     fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> FieldType {
-        return delegate!.getConfiguration().fields[indexPath.row]
+        return delegate!.getConfiguration().fieldType(forRow: indexPath.row)
     }
     
     //Returns the identifier string for
     fileprivate func cellIdentifer(forCellType cellType: CellType) -> String {
         
         switch cellType {
+            
         case .listing:
             return ListingDetailsListingCell.Identifier
-        case .ratingAction:
-            return ListingDetailsRatingActionCell.Identifier
-        default:
+            
+        case .action:
             return ListingDetailsActionCell.Identifier
+            
+        case .listingDescription:
+            return ListingDetailsListingDescriptionCell.Identifier
+            
+        case .aboutOtherUser:
+            return ListingDetailsUserCell.Identifier
+            
+        case .interestedBuyersHeader:
+            return ListingDetailsInterestedBuyersHeaderCell.Identifier
+            
+        case .interestedBuyer:
+            return ListingDetailsInterestedBuyerCell.Identifier
         }
     }
     
     //Returns the cell type to be used based on the field type
     fileprivate func cellType(forFieldType fieldType: FieldType) -> CellType {
         switch fieldType {
+            
         case .listing:
             return .listing
-        case .rateSeller:
-            return .ratingAction
+            
+        case .listingDescription:
+            return .listingDescription
+            
+        case .aboutOtherUser:
+            return .aboutOtherUser
+            
+        case .interestedBuyersHeader:
+            return .interestedBuyersHeader
+            
+        case .interestedBuyer:
+            return .interestedBuyer
+            
         default:
             return .action
         }
@@ -79,56 +121,193 @@ class ListingDetailsTableHandler: NSObject {
     }
     
     fileprivate func configure(listingCell: ListingDetailsListingCell, atIndexPath indexPath: IndexPath) {
-        let listing = delegate.getListing()
+        let configuration = delegate.getConfiguration()
+        let currentMode = configuration.mode
+        let listing = configuration.listing
         
         listingCell.titleLabel.text = listing.title
-        listingCell.descriptionLabel.text = listing.description
-        listingCell.priceLabel.text = "\(Strings.ListingDetails.listingCellPriceLabelFirstPart.rawValue)\(listing.priceString)"
-        listingCell.quantityLabel.text = "\(Strings.ListingDetails.listingCellQuantityLabelFirstPart.rawValue)\(listing.quantity)"
+        listingCell.postedLabel.text = listing.daysSincePostedString
+        listingCell.quantityLabel.text = String(listing.quantity)
+        listingCell.priceLabel.text = listing.priceString
         
-        var categoryLabelText: String
-        if let listingCategory = ListingCategoryManager.sharedInstance.getListingCategory(withId: listing.categoryId) {
-            categoryLabelText = listingCategory.name
-        } else {
-            categoryLabelText = Strings.SharedErrors.invalidCategory.rawValue
+        let showAlertBanner = currentMode == .viewingOtherUsersCompletedListing || currentMode == .viewingThisUsersCompletedListing
+        listingCell.alertBannerView.isHidden = !showAlertBanner
+        if showAlertBanner {
+            if currentMode == .viewingThisUsersCompletedListing {
+                listingCell.alertBannerLabel.text = Strings.ListingDetails.alertBannerLabelListingSold.rawValue
+            } else if currentMode == .viewingOtherUsersCompletedListing {
+                listingCell.alertBannerLabel.text = Strings.ListingDetails.alertBannerLabelListingEnded.rawValue
+            }
         }
-        listingCell.categoryLabel.text = categoryLabelText
         
-        listingCell.tag = indexPath.row
-        listingCell.photoImageView.image = ImageManager.PlaceholderImage
-        ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { image in
-            //Make sure the cell hasn't been reused by the time the image is downloaded
-            guard listingCell.tag == indexPath.row else { return }
-            
-            guard let image = image else { return }
-            listingCell.photoImageView.image = image
+        if let localPhoto = listing.photo {
+            listingCell.photoImageView.image = localPhoto
+            delegate.didGet(listingImage: localPhoto)
+        } else {
+            listingCell.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { [weak self] image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard listingCell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                self?.delegate.didGet(listingImage: image)
+                listingCell.photoImageView.image = image
+            }
         }
     }
     
     fileprivate func configure(actionCell: ListingDetailsActionCell, forFieldType fieldType: FieldType) {
-        actionCell.fieldType = fieldType
-        actionCell.delegate = self
+        let listing = delegate.getConfiguration().listing
         
-        let title = actionString(forFieldType: fieldType)
+        actionCell.fieldType = fieldType
+        actionCell.delegate = delegate
+        
+        let title = actionString(forFieldType: fieldType, andListing: listing)
         actionCell.actionButton.setTitle(title, for: .normal)
+        
+        var backgroundColor = ThemeColors.listingDetailsActionBackground.color()
+        let textColor = ThemeColors.listingDetailsActionText.color()
+        
+        //Set the action button to be disabled for the contact seller button when the user already contacted them
+        if fieldType == .contactSeller && LocalUserManager.sharedInstance.localUser != nil && listing.isOwnerContactedBy(by: LocalUserManager.sharedInstance.localUser!.user) {
+            backgroundColor = ThemeColors.listingDetailsActionBackgroundDisabled.color()
+            actionCell.actionButton.isUserInteractionEnabled = false
+        }
+        
+        if fieldType == delegate.getConfiguration().firstActionFieldType() {
+            actionCell.actionButton.backgroundColor = backgroundColor
+            actionCell.actionButton.setTitleColor(textColor, for: UIControlState.normal)
+        } else {
+            //The buttons that aren't the first button get styled with the a background of the first button text color,
+            //and a border/text color of the first button's background color
+            styleBorderedRoundedButton(actionCell.actionButton, borderWidth: 2.0, borderAndTextColor: backgroundColor, backgroundColor: textColor)
+        }
+    }
+    
+    fileprivate func configure(listingDetailsListingDescriptionCell: ListingDetailsListingDescriptionCell) {
+        let listing = delegate.getConfiguration().listing
+        
+        let descriptionText = (listing.description != nil) ? listing.description! : Strings.ListingDetails.listingDesriptionNoDescription.rawValue
+        listingDetailsListingDescriptionCell.descriptionLabel.text = descriptionText
+        
+        listingDetailsListingDescriptionCell.bottomSeperator.isHidden = delegate.getConfiguration().isListingDescriptionLastField()
+    }
+    
+    fileprivate func configure(listingDetailsUserCell: ListingDetailsUserCell, atIndexPath indexPath: IndexPath) {
+        let listing = delegate.getConfiguration().listing
+        
+        listingDetailsUserCell.delegate = delegate
+        listingDetailsUserCell.setIconsAndButtons(with: ThemeColors.listingDetailsActionBackground.color())
+        
+        var isShowingSeller: Bool
+        switch delegate.getConfiguration().mode {
+        case .viewingOtherUsersListing, .viewingOtherUsersCompletedListing:
+            isShowingSeller = true
+        case .viewingThisUsersListing, .viewingThisUsersCompletedListing:
+            isShowingSeller = false
+        }
+        
+        var user: User!
+        if isShowingSeller {
+            user = listing.owner
+        } else {
+            user = listing.acceptedUser
+        }
+        
+        guard let listingUserToShow = user else { return }
+        
+        listingDetailsUserCell.userNameLabel.text = listingUserToShow.name
+        listingDetailsUserCell.userImageView.image = UIImage(named: "defaultProfilePhoto")
+        
+        let type: ListingDetailsUserCell.UserType = isShowingSeller ? .seller : .buyer
+        
+        var isUserContactInformationVisible: Bool
+        switch type {
+        case .buyer:
+            //The only times the buyer would be sowen would be when a user is viewing their completed listing,
+            //and in that case we always want to show the buyer
+            isUserContactInformationVisible = true
+        case .seller:
+            if let localUser = LocalUserManager.sharedInstance.localUser?.user {
+                isUserContactInformationVisible = listing.isUserContactInformationVisible(to: localUser)
+            } else {
+                //Guests can never see seller information
+                isUserContactInformationVisible = false
+            }
+        }
+        
+        listingDetailsUserCell.setup(with: user, andType: type, isUserContactInformationVisible: isUserContactInformationVisible)
+        
+        if let thumbnailPictureURL = listingUserToShow.thumbnailPictureURL {
+            listingDetailsUserCell.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: thumbnailPictureURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard listingDetailsUserCell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                listingDetailsUserCell.userImageView.image = image
+            }
+        }
+    }
+    
+    fileprivate func configure(listingDetailsInterestedBuyerCell: ListingDetailsInterestedBuyerCell, atIndexPath indexPath: IndexPath) {
+        let exchange = delegate.getConfiguration().exchange(forRow: indexPath.row)!
+        let interestedBuyer = exchange.buyer
+        
+        listingDetailsInterestedBuyerCell.delegate = delegate
+        listingDetailsInterestedBuyerCell.exchange = exchange
+        listingDetailsInterestedBuyerCell.buyerNameLabel.text = interestedBuyer.name
+        listingDetailsInterestedBuyerCell.buyerImageView.image = UIImage(named: "defaultProfilePhoto")
+        
+        //Opposite color styling from main action button
+        let buttonBackgroundColor = ThemeColors.listingDetailsActionText.color()
+        let buttonTextColor = ThemeColors.listingDetailsActionBackground.color()
+        styleBorderedRoundedButton(listingDetailsInterestedBuyerCell.acceptBuyerButton, borderWidth: 1.0, borderAndTextColor: buttonTextColor, backgroundColor: buttonBackgroundColor)
+        
+        if let ownerThumbnailPictureURL = interestedBuyer.thumbnailPictureURL {
+            listingDetailsInterestedBuyerCell.tag = indexPath.row
+            ImageManager.sharedInstance.downloadImage(url: ownerThumbnailPictureURL) { image in
+                //Make sure the cell hasn't been reused by the time the image is downloaded
+                guard listingDetailsInterestedBuyerCell.tag == indexPath.row else { return }
+                
+                guard let image = image else { return }
+                listingDetailsInterestedBuyerCell.buyerImageView.image = image
+            }
+        }
+    }
+    
+    fileprivate func configure(listingDetailsInterestedBuyersHeaderCell: ListingDetailsInterestedBuyersHeaderCell) {
+        let text = delegate.getConfiguration().noInterestedBuyersForInterestedBuyersHeader ? "Currently No Interested Buyers" : "Interested Buyers"
+        listingDetailsInterestedBuyersHeaderCell.headerLabel.text = text
     }
     
     //Returns a string for a button's text corresponding to the field type
-    fileprivate func actionString(forFieldType fieldType: FieldType) -> String {
+    fileprivate func actionString(forFieldType fieldType: FieldType, andListing listing: Listing) -> String {
+        
         switch fieldType {
-        case .addAnotherListing:
-            return Strings.ListingDetails.fieldTypeAddAnotherListingActionString.rawValue
         case .contactSeller:
-            return Strings.ListingDetails.fieldTypeContactSellerActionString.rawValue
-        case .deleteListing:
-            return Strings.ListingDetails.fieldTypeDeleteListingActionString.rawValue
-        case .editListing:
-            return Strings.ListingDetails.fieldTypeEditListingActionString.rawValue
+            var actionString = Strings.ListingDetails.fieldTypeContactSellerNoContactYetActionString.rawValue
+            if LocalUserManager.sharedInstance.localUser != nil && listing.isOwnerContactedBy(by: LocalUserManager.sharedInstance.localUser!.user) {
+                actionString = Strings.ListingDetails.fieldTypeContactSellerAlreadyContactedActionString.rawValue
+            }
+            return actionString
+            
         case .viewSellerProfile:
             return Strings.ListingDetails.fieldTypeViewSellerProfileActionString.rawValue
+            
+        case .endListing:
+            return Strings.ListingDetails.fieldTypeEndListingActionString.rawValue
+            
         default:
             return ""
         }
+    }
+    
+    private func styleBorderedRoundedButton(_ button: RoundedButton, borderWidth: CGFloat, borderAndTextColor: UIColor, backgroundColor: UIColor) {
+        button.backgroundColor = backgroundColor
+        button.setTitleColor(borderAndTextColor, for: UIControlState.normal)
+        button.borderWidth = borderWidth
+        button.borderColor = borderAndTextColor
     }
 }
 
@@ -146,9 +325,16 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
         
         if let listingCell = cell as? ListingDetailsListingCell {
             configure(listingCell: listingCell, atIndexPath: indexPath)
-        }
-        if let actionCell = cell as? ListingDetailsActionCell {
+        } else if let actionCell = cell as? ListingDetailsActionCell {
             configure(actionCell: actionCell, forFieldType: fieldTypeForRow)
+        } else if let listingDescriptionCell = cell as? ListingDetailsListingDescriptionCell {
+            configure(listingDetailsListingDescriptionCell: listingDescriptionCell)
+        } else if let listingUserCell = cell as? ListingDetailsUserCell {
+            configure(listingDetailsUserCell: listingUserCell, atIndexPath: indexPath)
+        } else if let interestedBuyerCell = cell as? ListingDetailsInterestedBuyerCell {
+            configure(listingDetailsInterestedBuyerCell: interestedBuyerCell, atIndexPath: indexPath)
+        } else if let interestedBuyersHeaderCell = cell as? ListingDetailsInterestedBuyersHeaderCell {
+            configure(listingDetailsInterestedBuyersHeaderCell: interestedBuyersHeaderCell)
         }
         
         return cell
@@ -157,11 +343,29 @@ extension ListingDetailsTableHandler: UITableViewDataSource {
 
 extension ListingDetailsTableHandler: UITableViewDelegate {
     
-}
-
-extension ListingDetailsTableHandler: ListingDetailsActionCellDelegate {
-    
-    func onActionButton(forFieldType fieldType: ListingDetailsViewController.Configuration.FieldType) {
-        print("received button action for field type: \(fieldType)")
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        let fieldType = self.fieldType(forIndexPath: indexPath)
+        let cellType = self.cellType(forFieldType: fieldType)
+        
+        switch cellType {
+            
+        case .listing:
+            return ListingDetailsListingCell.EstimatedHeight
+        
+        case .listingDescription:
+            return ListingDetailsListingDescriptionCell.EstimatedHeight
+            
+        case .action:
+            return ListingDetailsActionCell.EstimatedHeight
+            
+        case .aboutOtherUser:
+            return ListingDetailsUserCell.EstimatedHeight
+            
+        case .interestedBuyersHeader:
+            return ListingDetailsInterestedBuyersHeaderCell.EstimatedHeight
+            
+        case .interestedBuyer:
+            return ListingDetailsInterestedBuyerCell.EstimatedHeight
+        }
     }
 }

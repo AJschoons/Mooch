@@ -14,7 +14,7 @@ class UserTests: XCTestCase {
     
     func testDesignatedInit() {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
-        let user = User(id: 5, name: "test", contactInformation: contactInformation, currentRating: 4.5, ratingCount: 5, communityId:4 , pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        let user = User(id: 5, name: "test", contactInformation: contactInformation,  communityId:4 , pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
         
         //Test that all the variables are correctly initialized
         XCTAssert(user.id == 5)
@@ -27,17 +27,13 @@ class UserTests: XCTestCase {
     //Test that a User is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
         
-        let userJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.currentRating.rawValue : 4.5, User.JSONMapping.ratingCount.rawValue : 5, User.JSONMapping.communityId.rawValue : 4]
-    
+        let userJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.communityId.rawValue : 4]
         do {
             let user = try User(json: userJSON)
             
             //Test that all the variables are correctly initialized
             XCTAssert(user.id == 4132)
             XCTAssert(user.name == "Bob the User")
-            XCTAssert(user.currentRating == 4.5)
-            XCTAssert(user.ratingCount == 5)
-
             XCTAssert(user.contactInformation.email == "doge@example.com")
             XCTAssert(user.communityId == 4)
         } catch {
@@ -80,7 +76,7 @@ class UserTests: XCTestCase {
         do {
             let _ = try User(json: userJSON)
             XCTFail()
-        } catch User.JSONInitializationError.currentRating{
+        } catch User.JSONInitializationError.communityId{
             jsonErrorThrown_testEmail = true
         }
         catch{
@@ -88,36 +84,8 @@ class UserTests: XCTestCase {
         XCTAssert(jsonErrorThrown_testEmail)
     }
     
-    func testConvenienceInitErrorCurrentRating(){
-        let userJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Zhiming", User.JSONMapping.email.rawValue : "Zhiming@gmail.com",User.JSONMapping.currentRating.rawValue : 4.5]
-        var jsonErrorThrown_testCurrentRating = false
-        do {
-            let _ = try User(json: userJSON)
-            XCTFail()
-        } catch User.JSONInitializationError.ratingCount{
-            jsonErrorThrown_testCurrentRating = true
-        }
-        catch{
-        }
-        XCTAssert(jsonErrorThrown_testCurrentRating)
-    }
-    
-    func testConvenienceInitErrorRatingCount(){
-        let userJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Zhiming", User.JSONMapping.email.rawValue : "Zhiming@gmail.com",User.JSONMapping.currentRating.rawValue : 4.5,User.JSONMapping.ratingCount.rawValue : 4]
-        var jsonErrorThrown_testRatingCount = false
-        do {
-            let _ = try User(json: userJSON)
-            XCTFail()
-        } catch User.JSONInitializationError.communityId{
-            jsonErrorThrown_testRatingCount = true
-        }
-        catch{
-        }
-        XCTAssert(jsonErrorThrown_testRatingCount)
-    }
-    
     func testConvenienceInitErrorCommunityId(){
-        let userJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Zhiming", User.JSONMapping.email.rawValue : "Zhiming@gmail.com",User.JSONMapping.currentRating.rawValue : 4.5,User.JSONMapping.ratingCount.rawValue : 4]
+        let userJSON: JSON = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Zhiming", User.JSONMapping.email.rawValue : "Zhiming@gmail.com"]
         var jsonErrorThrown_testRatingCount = false
         do {
             let _ = try User(json: userJSON)
@@ -139,7 +107,7 @@ class UserTests: XCTestCase {
         
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
         
-        var user = User(id: 5, name: "test", contactInformation: contactInformation, currentRating: 4.5, ratingCount: 5, communityId: 7, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        var user = User(id: 5, name: "test", contactInformation: contactInformation, communityId: 7, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
         //Test getters
         
         

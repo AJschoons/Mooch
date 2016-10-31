@@ -15,48 +15,70 @@ class ListingsViewController: MoochViewController {
         case loaded
     }
     
+    enum Mode {
+        case independent    //When its being shown by itself; has to get its own listings
+        case nestedInSearch //When its being used by another view controller; given its listings
+    }
+    
+    
     // MARK: Public variables
     
-    @IBOutlet var tableHandler: ListingsTableHandler! {
+    @IBOutlet var collectionHandler: ListingsCollectionHandler! {
         didSet {
-            tableHandler.delegate = self
+            collectionHandler.delegate = self
         }
     }
     
-    var listings = [Listing]() {
-        didSet {
-            guard let tableHandler = tableHandler else { return }
-            tableHandler.updateUI()
+    //The context the view controller is being used in
+    var mode: Mode = .independent
+    
+    var listings: [Listing] {
+        get {
+            switch mode {
+            case .independent:
+                return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
+            case .nestedInSearch:
+                return _givenListings
+            }
+        }
+        set {
+            //Listings can't be set when not in .nestedInSearch mode
+            guard mode == .nestedInSearch else { return }
+            _givenListings = newValue
+            
+            if let collectionHandler = collectionHandler, collectionHandler.isCollectionViewSet {
+                collectionHandler.reloadData()
+            }
         }
     }
+    
     
     // MARK: Private variables
     
     static fileprivate let StoryboardName = "Listings"
     static fileprivate let Identifier = "ListingsViewController"
     
-    fileprivate var loginButton: UIBarButtonItem!
-    fileprivate var profileButton: UIBarButtonItem!
-    fileprivate var addListingButton: UIBarButtonItem!
-    
     fileprivate var state: State = .loading
+    
+    fileprivate var filterApplied: ListingFilter?
+    
+    fileprivate var filteredListings: [Listing] {
+        guard let filter = filterApplied else {
+            return [Listing]()
+        }
+        
+        return ListingProcessingHandler.filter(listings: listings, with: filter)
+    }
+    
+    //Used for the listings variable when in .nested mode
+    private var _givenListings = [Listing]()
+
+    //Allows us to ensure that loading takes at least a minimum duration; makes the UX smoother
+    private var finishLoadingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
     
     // MARK: Actions
     
-    func onLoginAction() {
-        guard state == .loaded else { return }
-        presentLoginViewController()
-    }
-    
-    func onProfileAction() {
-        guard state == .loaded else { return }
-        presentProfileViewController()
-    }
-    
-    func onAddListingAction() {
-        guard state == .loaded else { return }
-        presentEditListingViewController()
-    }
+
     
     // MARK: Public methods
     
@@ -65,137 +87,148 @@ class ListingsViewController: MoochViewController {
         return storyboard.instantiateViewController(withIdentifier: ListingsViewController.Identifier) as! ListingsViewController
     }
     
+    static func tabBarItem() -> UITabBarItem {
+        return UITabBarItem(title: Strings.TabBar.home.rawValue, image: nil, selectedImage: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //The data needs to be reloaded when in .nestedInSearch mode because _givenListings is initially mil
+        if mode == .nestedInSearch {
+            collectionHandler.reloadData()
+        }
+    }
+    
     override func setup() {
         super.setup()
         
-        loadListings(isRefreshing: false)
-        
-        setupNavigationBar()
+        if mode == .independent {
+            loadListings(isRefreshing: false)
+            tabBarItem = ListingsViewController.tabBarItem()
+            setupNavigationBar()
+        }
         
         updateUI()
     }
     
     override func updateUI() {
         super.updateUI()
-        
-        updateNavigationBar()
+    
     }
     
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
+        guard mode == .independent else { return }
         guard let nav = navigationController else { return }
         
         nav.navigationBar.isHidden = false
         
-        title = Strings.Listings.title.rawValue
+        nav.navigationBar.topItem?.title = Strings.Listings.navigationItemTitle.rawValue
         
-        loginButton = UIBarButtonItem(title: Strings.Listings.buttonTitleLogin.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onLoginAction))
-        profileButton = UIBarButtonItem(title: Strings.Listings.buttonTitleProfile.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onProfileAction))
-        addListingButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(onAddListingAction))
-    }
-    
-    fileprivate func updateNavigationBar() {
-        switch LocalUserManager.sharedInstance.state {
-        case .guest:
-            navigationItem.leftBarButtonItems = [loginButton]
-            navigationItem.rightBarButtonItems = nil
-        case .loggedIn:
-            navigationItem.leftBarButtonItems = [profileButton]
-            navigationItem.rightBarButtonItems = [addListingButton]
-        }
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func loadListings(isRefreshing: Bool) {
-        guard let userCommunityId = LocalUserManager.sharedInstance.userCommunityId else { return }
+        guard mode == .independent else { return }
         
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
         
-        if !isRefreshing {
-            showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
-        }
+        showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: true, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: isRefreshing)
         
-        MoochAPI.GETListings(communityId: userCommunityId) { listings, error in
-            guard let newListings = listings else {
+        finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+        
+        CommunityListingsManager.sharedInstance.loadListingsForCurrentCommunityAndUser() { [unowned self] success, error in
+            //The code inside this execute closure gets executed only after the minimum duration has passed
+            self.finishLoadingAfterMinimumDurationTimer!.execute { [unowned self] in
+                //DO NOT keep the timer around after it's been executed
+                self.finishLoadingAfterMinimumDurationTimer = nil
+                
+                guard success else {
+                    //If refreshing and the overlay isn't shown, this method does nothing
+                    self.hideLoadingOverlayView(animated: true)
+                    
+                    if self.collectionHandler.isRefreshing {
+                        self.collectionHandler.endRefreshingAndReloadData()
+                    } else {
+                        self.collectionHandler.reloadData()
+                    }
+                    
+                    self.presentSingleActionAlert(title: Strings.Listings.loadingListingsErrorAlertTitle.rawValue, message: Strings.Listings.loadingListingsErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                    self.state = .loaded
+                    return
+                }
+                
+                //
+                //Note: The new listings can be referenced by: CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+                //
+                
+                if self.collectionHandler.isRefreshing {
+                    self.collectionHandler.endRefreshingAndReloadData()
+                } else {
+                    self.collectionHandler.reloadData()
+                }
+                
                 //If refreshing and the overlay isn't shown, this method does nothing
                 self.hideLoadingOverlayView(animated: true)
                 
-                self.presentSingleActionAlert(title: Strings.Listings.loadingListingsErrorAlertTitle.rawValue, message: Strings.Listings.loadingListingsErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                 self.state = .loaded
-                return
             }
-            
-            //Filter to only show listings this user hasn't posted
-            var listingsNotPostedByThisUser = newListings
-            if let localUser = LocalUserManager.sharedInstance.localUser {
-                listingsNotPostedByThisUser = listingsNotPostedByThisUser.filter({$0.owner.id != localUser.user.id})
-            }
-            
-            self.tableHandler.endRefreshing()
-            
-            //Setting this causes the table to reload
-            self.listings = listingsNotPostedByThisUser
-            
-            //If refreshing and the overlay isn't shown, this method does nothing
-            self.hideLoadingOverlayView(animated: true)
-            
-            self.state = .loaded
         }
     }
     
+    
     fileprivate func pushListingDetailsViewController(withListing listing: Listing) {
         let vc = ListingDetailsViewController.instantiateFromStoryboard()
-        vc.listing = listing
-        vc.configuration = ListingDetailsViewController.DefaultViewingOtherUsersListingConfiguration
+        vc.configuration = ListingDetailsConfiguration.defaultConfiguration(for: .viewingOtherUsersListing, with: listing, isViewingSellerProfileNotAllowed: false)
 
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    fileprivate func presentLoginViewController() {
-        guard let navC = navigationController else { return }
-
-        let vc = LoginViewController.instantiateFromStoryboard()
-        vc.delegate = self
-        
-        navC.present(vc, animated: true, completion: nil)
-    }
-    
-    fileprivate func presentProfileViewController() {
-        guard let navC = navigationController else { return }
-        
-        let vc = ProfileViewController.instantiateFromStoryboard()
-        vc.delegate = self
-        let profileNavC = UINavigationController(rootViewController: vc)
-        
-        navC.present(profileNavC, animated: true, completion: nil)
-    }
-    
-    fileprivate func presentEditListingViewController() {
-        let vc = EditListingViewController.instantiateFromStoryboard()
-        vc.configuration = EditListingViewController.DefaultCreatingConfiguration
+    fileprivate func presentListingsFilterViewController() {
+        let vc = ListingsFilterViewController.instantiateFromStoryboard()
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
+        
+        //http://stackoverflow.com/questions/21760698/ios-modalview-with-background-transparent
+        vc.providesPresentationContextTransitionStyle = true
+        vc.definesPresentationContext = true
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .crossDissolve
+        navC.providesPresentationContextTransitionStyle = true
+        navC.definesPresentationContext = true
+        navC.modalPresentationStyle = .overFullScreen
+        navC.modalTransitionStyle = .crossDissolve
+        
+        if let filterApplied = filterApplied {
+            vc.filterApplied = filterApplied
+        }
+        
         present(navC, animated: true, completion: nil)
     }
     
-    fileprivate func presentListingCreatedAlert(forListingWithTitle listingTitle: String) {
-        let title = Strings.Listings.listingCreatedAlertTitle.rawValue
-        let message = "\(Strings.Listings.listingCreatedAlertMessageFirstPart.rawValue)\(listingTitle)\(Strings.Listings.listingCreatedAlertMessageSecondPart.rawValue)"
-        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
-        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
-    }
-    
-    fileprivate func add(listing: Listing) {
-        listings.insert(listing, at: 0)
+    //Completely resets the UI and state of the view controller
+    fileprivate func resetForStateChange() {
+        guard mode == .independent else { return }
+        guard let navC = navigationController else { return }
+        navC.popToRootViewController(animated: false)
+        filterApplied = nil
+        loadListings(isRefreshing: false)
     }
 }
 
-extension ListingsViewController: ListingsTableHandlerDelegate {
-    // MARK: ListingsTableHandlerDelegate
+extension ListingsViewController: ListingsCollectionHandlerDelegate {
     
+    //Returns the listings when a filter isn't applied, or returns the filtered listings when a filter is applied
     func getListings() -> [Listing] {
-        return listings
+        if filterApplied != nil {
+            return filteredListings
+        } else {
+            return listings
+        }
     }
     
     func didSelect(_ listing: Listing) {
@@ -205,27 +238,56 @@ extension ListingsViewController: ListingsTableHandlerDelegate {
     func refresh() {
         loadListings(isRefreshing: true)
     }
-}
-
-extension ListingsViewController: LoginViewControllerDelegate {
     
-    func loginViewControllerDidLogin(localUser: LocalUser) {
-        updateUI()
-        loadListings(isRefreshing: false)
+    func hasListingsButNoneMatchFilter() -> Bool {
+        guard filterApplied != nil else {
+            //We need to have a filter for this to be true
+            return false
+        }
+        
+        return filteredListings.count == 0 && listings.count > 0
+    }
+    
+    func shouldAllowPullToRefresh() -> Bool {
+        //Only allowed when not nested in search. This is to simplify
+        return mode == .independent
+    }
+    
+    func areListingsFromSearch() -> Bool {
+        return mode == .nestedInSearch
     }
 }
 
-extension ListingsViewController: EditListingViewControllerDelegate {
+extension ListingsViewController: ListingsCollectionHeaderViewDelegate {
     
-    func editListingViewControllerDidFinishEditing(withListingInformation editedListingInformation: EditedListingInformation) {
-        presentListingCreatedAlert(forListingWithTitle: editedListingInformation.title!)
+    func onFilterAction() {
+        presentListingsFilterViewController()
     }
 }
 
-extension ListingsViewController: ProfileViewControllerDelegate {
+extension ListingsViewController: ListingsFilterViewControllerDelegate {
     
-    func didLogOut() {
-        updateUI()
-        loadListings(isRefreshing: false)
+    func didApply(listingFilter: ListingFilter) {
+        filterApplied = listingFilter
+        collectionHandler.reloadData()
+    }
+    
+    func didClearFilters() {
+        filterApplied = nil
+        collectionHandler.reloadData()
+    }
+}
+
+extension ListingsViewController: LocalUserStateChangeListener {
+    
+    func localUserStateDidChange(to: LocalUserManager.LocalUserState) {
+        resetForStateChange()
+    }
+}
+
+extension ListingsViewController: CommunityChangeListener {
+    
+    func communityDidChange() {
+        resetForStateChange()
     }
 }

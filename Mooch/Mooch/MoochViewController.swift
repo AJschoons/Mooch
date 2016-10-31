@@ -124,7 +124,7 @@ class MoochViewController: UIViewController {
         return true
     }
     
-    func showLoadingOverlayView(withInformationText informationText: String?, overEntireWindow: Bool, withUserInteractionEnabled isUserInteractionEnabled: Bool, showingProgress showProgress: Bool) {
+    func showLoadingOverlayView(withInformationText informationText: String?, overEntireWindow: Bool, withUserInteractionEnabled isUserInteractionEnabled: Bool, showingProgress showProgress: Bool, withHiddenAlertView hideAlertView: Bool) {
         guard !isShowingLoadingOverlay else { print("can't show two loadingOverlayViews!"); return }
         
         isShowingLoadingOverlay = true
@@ -133,7 +133,7 @@ class MoochViewController: UIViewController {
         loadingOverlayViewBeingShown = loadingOverlayView
         loadingOverlayView.alpha = 0
         
-        loadingOverlayView.setup(withInformationText: informationText, isUserInteractionEnabled: isUserInteractionEnabled, isProgressBased: showProgress)
+        loadingOverlayView.setup(withInformationText: informationText, isUserInteractionEnabled: isUserInteractionEnabled, isProgressBased: showProgress, isAlertViewHidden: hideAlertView)
         
         if overEntireWindow {
             UIApplication.shared.keyWindow?.addSubview(loadingOverlayView)

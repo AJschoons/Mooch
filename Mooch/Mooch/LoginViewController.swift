@@ -10,6 +10,7 @@ import UIKit
 
 protocol LoginViewControllerDelegate: class {
     func loginViewControllerDidLogin(localUser: LocalUser)
+    func loginViewControllerDidCancel()
 }
 
 //View controller that handles logging in
@@ -60,7 +61,7 @@ class LoginViewController: MoochModalViewController {
         }
     }
     
-    weak var delegate: LoginViewControllerDelegate?
+    weak var delegate: LoginViewControllerDelegate!
     
     
     // MARK: Private variables
@@ -85,7 +86,7 @@ class LoginViewController: MoochModalViewController {
     // MARK: Actions
     
     @IBAction func onCancel() {
-        dismissSelf(completion: nil)
+        notifyDelegateDidCancelAndDismissSelf()
     }
     
     @IBAction func onLogin() {
@@ -120,6 +121,7 @@ class LoginViewController: MoochModalViewController {
     override func setup() {
         super.setup()
         
+        setupInitialColorsAndElements()
         setupTextFields()
         registerForKeyboardNotifacations()
         
@@ -137,17 +139,17 @@ class LoginViewController: MoochModalViewController {
         
         switch state {
         case .loginFieldsUnfilledOrInvalid:
-            loginButtonColor = UIColor.darkGray
+            loginButtonColor = ThemeColors.moochRedDisabled.color()
             loginButtonUserInteractionEnabled = false
             createAccountButtonUserInteractionEnabled = true
             textFieldUserInteractionEnabled = true
         case .loginFieldsFilledAndValid:
-            loginButtonColor = UIColor(red: 0.00, green: 0.76, blue: 0.00, alpha: 1.0)
+            loginButtonColor = ThemeColors.moochRed.color()
             loginButtonUserInteractionEnabled = true
             createAccountButtonUserInteractionEnabled = true
             textFieldUserInteractionEnabled = true
         case .loggingIn:
-            loginButtonColor = UIColor.darkGray
+            loginButtonColor = ThemeColors.moochRedDisabled.color()
             loginButtonUserInteractionEnabled = false
             createAccountButtonUserInteractionEnabled = false
             textFieldUserInteractionEnabled = false
@@ -186,27 +188,17 @@ class LoginViewController: MoochModalViewController {
         present(navC, animated: true, completion: nil)
     }
     
-    fileprivate func presentAccountCreatedAlert(forLocalUser localUser: LocalUser) {
-        let title = Strings.Login.accountCreatedAlertTitle.rawValue
-        let message = "\(Strings.Login.accountCreatedAlertMessageFirstPart)\(localUser.user.name)\(Strings.Login.accountCreatedAlertMessageSecondPart)"
-        let actionTitle = Strings.Alert.funGetMoochingSingleActionTitle.rawValue
-        
-        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle) { _ in
-            self.dismissSelfAndNotifyDelegateOfLogin(for: localUser)
-        }
-    }
-    
     //Makes an API call to login. Shows a loading overlay while waiting. On success logs that user in locally, else shows an alert on failure
     fileprivate func login(email: String, password: String) {
         state = .loggingIn
-        showLoadingOverlayView(withInformationText: Strings.Login.loginOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false)
+        showLoadingOverlayView(withInformationText: Strings.Login.loginOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: false)
         
         MoochAPI.POSTLogin(email: email, password: password) { [weak self] localUser, error in
             guard let strongSelf = self else { return }
             
             if let localUser = localUser {
                 LocalUserManager.sharedInstance.login(localUser: localUser)
-                strongSelf.dismissSelfAndNotifyDelegateOfLogin(for: localUser)
+                strongSelf.notifyDelegateDidLoginAndDismissSelf(with: localUser)
             } else {
                 strongSelf.state = .loginFieldsFilledAndValid
                 strongSelf.presentSingleActionAlert(title: Strings.Login.loginErrorAlertTitle.rawValue, message: Strings.Login.loginErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
@@ -215,10 +207,22 @@ class LoginViewController: MoochModalViewController {
         }
     }
     
-    //Use this method after login or account creation to dismiss this view controller and notify the delegate
-    fileprivate func dismissSelfAndNotifyDelegateOfLogin(for localUser: LocalUser) {
-        delegate?.loginViewControllerDidLogin(localUser: localUser)
-        dismissSelf(completion: nil)
+    private func setupInitialColorsAndElements() {
+        emailTextField.backgroundColor = UIColor.clear
+        emailTextField.borderColor = ThemeColors.moochGray.color()
+        emailTextField.borderWidth = 1.0
+        
+        passwordTextField.backgroundColor = UIColor.clear
+        passwordTextField.borderColor = ThemeColors.moochGray.color()
+        passwordTextField.borderWidth = 1.0
+        
+        exitButton.setImage(UIImage(named: "cancel")?.imageWithColor(color: ThemeColors.moochRed.color()), for: .normal)
+        
+        loginButton.backgroundColor = ThemeColors.moochRedDisabled.color()
+        loginButton.setTitleColor(ThemeColors.moochWhite.color(), for: .normal)
+        
+        createAccountButton.backgroundColor = UIColor.clear
+        createAccountButton.setTitleColor(ThemeColors.moochRed.color(), for: .normal)
     }
     
     private func setupTextFields() {
@@ -262,9 +266,20 @@ class LoginViewController: MoochModalViewController {
         scrollView.setContentOffset(offset, animated: true)
     }
     
-    fileprivate func dismissSelf(completion: (() -> Void)?) {
+    //Use this method after login or account creation to notify the delegate, which will then dismiss this view controller
+    fileprivate func notifyDelegateDidLoginAndDismissSelf(with localUser: LocalUser) {
+        //Need this so the keyboard listeners are unregistered
         isDismissingSelf = true
-        dismiss(animated: true, completion: completion)
+        
+        delegate.loginViewControllerDidLogin(localUser: localUser)
+    }
+    
+    //Use this method after cancelling to notify the delegate, which will then dismiss this view controller
+    fileprivate func notifyDelegateDidCancelAndDismissSelf() {
+        //Need this so the keyboard listeners are unregistered
+        isDismissingSelf = true
+        
+        delegate.loginViewControllerDidCancel()
     }
 }
 
@@ -273,7 +288,7 @@ extension LoginViewController: EditProfileViewControllerDelegate {
     func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
         if isNewProfile {
             LocalUserManager.sharedInstance.login(localUser: localUser)
-            presentAccountCreatedAlert(forLocalUser: localUser)
+            notifyDelegateDidLoginAndDismissSelf(with: localUser)
         }
     }
 }

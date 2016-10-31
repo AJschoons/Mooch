@@ -24,6 +24,7 @@ struct Listing {
         case thumbnailPictureURL
         case communityId
         case owner
+        case exchanges
     }
     
     enum JSONMapping: String {
@@ -42,6 +43,7 @@ struct Listing {
         case thumbnailPictureURL = "thumbnail_image_url"
         case communityId = "community_id"
         case owner = "user"
+        case exchanges = "exchanges"
     }
     
     let id: Int
@@ -59,13 +61,54 @@ struct Listing {
     var thumbnailPictureURL: String
     let communityId: Int
     let owner: User
+    var exchanges: [Exchange]
+    
+    private(set) var interestedBuyers = [User]()
     
     var priceString: String {
+        guard price > 0.009 else {
+            return "Free"
+        }
         return "$" + String(format: "%.2f", price)
     }
     
+    var daysSincePostedString: String {
+        let numberOfDaysSincePosted = daysFromTodaySince(previousDate: createdAt)
+        let daysText = numberOfDaysSincePosted > 1 ? "days" : "day"
+        return "\(numberOfDaysSincePosted) \(daysText) ago"
+    }
+    
+    var acceptedUser: User? {
+        guard let acceptedUserIndex = exchanges.index(where: {$0.sellerAccepted}) else { return nil }
+        return exchanges[acceptedUserIndex].buyer
+    }
+    
+    func isOwnerContactedBy(by userToCheck: User) -> Bool {
+        return interestedBuyers.contains(where: {$0.id == userToCheck.id})
+    }
+    
+    func isUserContactInformationVisible(to userToCheck: User) -> Bool {
+        return exchanges.contains(where: {$0.buyer.id == userToCheck.id && $0.sellerAccepted})
+    }
+    
+    //Returns true when a listing has been completed
+    func isCompleted() -> Bool {
+        return exchanges.contains(where: {$0.sellerAccepted})
+    }
+    
+    //Should only be used for temporary local changes
+    mutating func addInterestedBuyer(_ user: User) {
+        guard !interestedBuyers.contains(where: {$0.id == user.id}) else { return }
+        interestedBuyers.append(user)
+    }
+    
+    mutating func accept(exchange: Exchange) {
+        guard let acceptedExchangeIndex = exchanges.index(where: {$0.id == exchange.id}) else { return }
+        exchanges[acceptedExchangeIndex].sellerAccepted = true
+    }
+    
     //Designated initializer
-    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int) {
+    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int, exchanges: [Exchange]) {
         self.id = id
         self.photo = photo
         self.title = title
@@ -81,6 +124,9 @@ struct Listing {
         self.pictureURL = pictureURL
         self.thumbnailPictureURL = thumbnailPictureURL
         self.communityId = communityId
+        
+        self.exchanges = exchanges
+        self.interestedBuyers = self.exchanges.map({$0.buyer})
     }
     
     //Convenience JSON initializer
@@ -101,9 +147,11 @@ struct Listing {
         guard let pictureURL = json[JSONMapping.pictureURL.rawValue].string else { throw JSONInitializationError.pictureURL }
         guard let communityId = json[JSONMapping.communityId.rawValue].int else { throw JSONInitializationError.communityId }
         guard json[JSONMapping.owner.rawValue].exists() else { throw JSONInitializationError.owner }
+        guard let exchangesJSON = json[JSONMapping.exchanges.rawValue].array else { throw JSONInitializationError.exchanges }
         
         let createdAt = date(fromAPITimespamp: createdAtString)
         let owner = try User(json: JSON(json[JSONMapping.owner.rawValue].object))
+        let exchanges = try exchangesJSON.map({try Exchange(json: $0)})
         
         //If the thumbnail URL isn't present then default to the pictureURL
         var thumbnailPictureURL = pictureURL
@@ -116,7 +164,10 @@ struct Listing {
         //Optional variables
         //
         
-        let description = json[JSONMapping.description.rawValue].string
+        var description = json[JSONMapping.description.rawValue].string
+        if description != nil && description!.isEmpty {
+            description = nil
+        }
         
         var modifiedAt: Date?
         if let modifiedAtString = json[JSONMapping.modifiedAt.rawValue].string {
@@ -128,15 +179,15 @@ struct Listing {
         //Intialization
         //
 
-        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL, communityId: communityId)
+        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL, communityId: communityId, exchanges: exchanges)
     }
     
-    static func createDummy(fromNumber i: Int) -> Listing {
-        let photo = UIImage(named: "apples")
-        let description = "This is some text that describes what the listing is but that will hopefully be more useful than this decription specifically"
-        let price = Float(i % 100) * 1.68723
-        let owner = User.createDummy(fromNumber: i)
-        
-        return Listing(id: i, photo: photo, title: "Listing \(i)", description: description, price: price, isFree: false, quantity: i, categoryId: i, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: owner, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100", communityId: i)
-    }
+//    static func createDummy(fromNumber i: Int) -> Listing {
+//        let photo = UIImage(named: "apples")
+//        let description = "This is some text that describes what the listing is but that will hopefully be more useful than this decription specifically"
+//        let price = Float(i % 100) * 1.68723
+//        let owner = User.createDummy(fromNumber: i)
+//        
+//        return Listing(id: i, photo: photo, title: "Listing \(i)", description: description, price: price, isFree: false, quantity: i, categoryId: i, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: owner, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100", communityId: i)
+//    }
 }

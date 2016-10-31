@@ -20,7 +20,7 @@ struct Community {
         case id = "id"
         case address = "address"
         case name = "name"
-        case pictureURL = "picture"
+        case pictureURL = "image_url"
     }
     
     let id: Int
