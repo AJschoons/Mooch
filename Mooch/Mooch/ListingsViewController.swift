@@ -18,6 +18,7 @@ class ListingsViewController: MoochViewController {
     enum Mode {
         case independent    //When its being shown by itself; has to get its own listings
         case nestedInSearch //When its being used by another view controller; given its listings
+        case generalInSearch//When its being used by another view controller; given its listings; sending the search action
     }
     
     
@@ -39,6 +40,8 @@ class ListingsViewController: MoochViewController {
                 return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
             case .nestedInSearch:
                 return _givenListings
+            case .generalInSearch:
+                return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
             }
         }
         set {
@@ -52,11 +55,15 @@ class ListingsViewController: MoochViewController {
         }
     }
     
+    var searchListings: [Listing]?
     
     // MARK: Private variables
     
     static fileprivate let StoryboardName = "Listings"
     static fileprivate let Identifier = "ListingsViewController"
+    
+    fileprivate var isSearching = false
+    fileprivate var searchBar : UISearchBar!
     
     fileprivate var state: State = .loading
     
@@ -78,8 +85,6 @@ class ListingsViewController: MoochViewController {
     
     // MARK: Actions
     
-
-    
     // MARK: Public methods
     
     static func instantiateFromStoryboard() -> ListingsViewController {
@@ -97,6 +102,8 @@ class ListingsViewController: MoochViewController {
         //The data needs to be reloaded when in .nestedInSearch mode because _givenListings is initially mil
         if mode == .nestedInSearch {
             collectionHandler.reloadData()
+        } else if mode == .generalInSearch {
+            searchBar.becomeFirstResponder()
         }
     }
     
@@ -107,6 +114,10 @@ class ListingsViewController: MoochViewController {
             loadListings(isRefreshing: false)
             tabBarItem = ListingsViewController.tabBarItem()
             setupNavigationBar()
+        } else {
+            searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64))
+            searchBar.delegate = self.collectionHandler
+            self.navigationItem.titleView = searchBar
         }
         
         updateUI()
@@ -255,6 +266,22 @@ extension ListingsViewController: ListingsCollectionHandlerDelegate {
     
     func areListingsFromSearch() -> Bool {
         return mode == .nestedInSearch
+    }
+    
+    func isInSearchMode() -> Bool {
+        return isSearching
+    }
+    
+    func getSearcListings() -> [Listing] {
+        return searchListings ?? []
+    }
+    
+    func setSearchListings(listings : [Listing]?) {
+        searchListings = listings
+        
+        isSearching = searchListings != nil ? true : false
+        
+        collectionHandler.reloadData()
     }
 }
 

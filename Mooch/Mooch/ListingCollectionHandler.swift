@@ -56,6 +56,11 @@ extension ListingCollectionHandler: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { }
 }
 
+extension ListingCollectionHandler: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {}
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {}
+}
 
 extension ListingCollectionHandler: UICollectionViewDelegateFlowLayout {
     

@@ -146,6 +146,8 @@
 		81F21A1A1DB4153000D442F8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F21A191DB4153000D442F8 /* GradientView.swift */; };
 		81F4E92B1DCE925F00EFC24B /* AzoSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 81F4E92A1DCE925F00EFC24B /* AzoSans-Bold.otf */; };
 		81F4E92D1DCE926600EFC24B /* AzoSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 81F4E92C1DCE926600EFC24B /* AzoSans-Regular.otf */; };
+		B35A40821DBF51C000D6366D /* SearchViewFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35A40801DBF51C000D6366D /* SearchViewFilterCell.swift */; };
+		B35A40831DBF51C000D6366D /* SearchViewFilterCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B35A40811DBF51C000D6366D /* SearchViewFilterCell.xib */; };
 		B37368131DA31FF100014B25 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37368121DA31FF100014B25 /* ListingCategory.swift */; };
 		B37368191DA335DA00014B25 /* ListingCategoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37368181DA335DA00014B25 /* ListingCategoryTests.swift */; };
 		B373681A1DA3368500014B25 /* ListingCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37368121DA31FF100014B25 /* ListingCategory.swift */; };
@@ -323,6 +325,8 @@
 		AB2BD51098CDD71449F25532 /* Pods-MoochUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochUITests/Pods-MoochUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AEF64938926FA727DE0E963F /* Pods_MoochUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0E009C963A57DE569D9584C /* Pods_Mooch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mooch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B35A40801DBF51C000D6366D /* SearchViewFilterCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewFilterCell.swift; sourceTree = "<group>"; };
+		B35A40811DBF51C000D6366D /* SearchViewFilterCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewFilterCell.xib; sourceTree = "<group>"; };
 		B37368121DA31FF100014B25 /* ListingCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategory.swift; sourceTree = "<group>"; };
 		B37368181DA335DA00014B25 /* ListingCategoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingCategoryTests.swift; sourceTree = "<group>"; };
 		B38E8B1C1D8C7678002A9439 /* ListingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingTest.swift; sourceTree = "<group>"; };
@@ -725,6 +729,8 @@
 			children = (
 				818304E91DB0597100E74202 /* Search.storyboard */,
 				818304E71DB0595600E74202 /* SearchViewController.swift */,
+				B35A40801DBF51C000D6366D /* SearchViewFilterCell.swift */,
+				B35A40811DBF51C000D6366D /* SearchViewFilterCell.xib */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -861,7 +867,7 @@
 				TargetAttributes = {
 					810A822D1D7A11780086B40F = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 2ZW34Q8J6R;
+						DevelopmentTeam = 9ZQ9622GC6;
 						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -874,7 +880,7 @@
 					};
 					810A82411D7A11780086B40F = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 2ZW34Q8J6R;
+						DevelopmentTeam = 9ZQ9622GC6;
 						LastSwiftMigration = 0800;
 						TestTargetID = 810A822D1D7A11780086B40F;
 					};
@@ -934,6 +940,7 @@
 				8149E7D51D871A76000F0C37 /* EditProfile.storyboard in Resources */,
 				8149E7AF1D84977C000F0C37 /* InitialLoadingViewController.xib in Resources */,
 				817CA0901DA2BB4E00489374 /* Login.storyboard in Resources */,
+				B35A40831DBF51C000D6366D /* SearchViewFilterCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1129,6 +1136,7 @@
 				81E97F5C1DC01E6E00AA88E1 /* BottomBarDoubleSegmentedControl.swift in Sources */,
 				8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */,
 				8149E7B41D84B396000F0C37 /* ListingsViewController.swift in Sources */,
+				B35A40821DBF51C000D6366D /* SearchViewFilterCell.swift in Sources */,
 				812BBC4D1DB456E900FED998 /* RoundedView.swift in Sources */,
 				B37368131DA31FF100014B25 /* ListingCategory.swift in Sources */,
 				8149E7C21D8609BE000F0C37 /* ListingTableViewCell.swift in Sources */,
@@ -1368,7 +1376,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Mooch/Mooch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 2ZW34Q8J6R;
+				DEVELOPMENT_TEAM = 9ZQ9622GC6;
 				INFOPLIST_FILE = Mooch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1390,7 +1398,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Mooch/Mooch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 2ZW34Q8J6R;
+				DEVELOPMENT_TEAM = 9ZQ9622GC6;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Mooch/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1410,6 +1418,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 9ZQ9622GC6;
 				INFOPLIST_FILE = MoochTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.MoochTests;
@@ -1425,6 +1434,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 9ZQ9622GC6;
 				INFOPLIST_FILE = MoochTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498.MoochTests;

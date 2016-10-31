@@ -45,7 +45,9 @@ class ListingProcessingHandler {
         for itemInList in listings {
             let title = itemInList.title
             let description = itemInList.description
-            var titleAndDescrip = title+description!
+
+            
+            var titleAndDescrip = title+(description ?? "")
             titleAndDescrip = titleAndDescrip.removeWhitespace()
             titleAndDescrip = titleAndDescrip.lowercased()
             if titleAndDescrip.range(of:inputStringWithoutSpace) != nil {
