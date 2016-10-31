@@ -27,7 +27,7 @@ class EditListingTextHandler: NSObject {
     private let NumbersAllowedRightOfPriceDecimal = 2
     private let MaxTitleFieldCharacters = 30
     private let MaxDescriptionFieldCharacters = 200
-    private let MaxTagFieldCharacters = 12
+    private let MaxQuantityFieldCharacters = 3
     
     //These variables are used to check if the text view size height has changed
     fileprivate var lastEditedTextView: UITextView?
@@ -57,6 +57,8 @@ class EditListingTextHandler: NSObject {
             allowChanges = shouldAllowChangesForDescriptionField(withUpdatedText: updatedText)
         case .price:
             allowChanges = shouldAllowChangesForPriceField(withUpdatedText: updatedText)
+        case .quantity:
+            allowChanges = shouldAllowChangesForQuantityField(withUpdatedText: updatedText)
         default:
             allowChanges = false
         }
@@ -72,9 +74,25 @@ class EditListingTextHandler: NSObject {
         return updatedText.characters.count <= MaxDescriptionFieldCharacters
     }
     
+    //Only allow changes when all characters are numbers, and <= 3 characters (so in the range 0-999)
+    fileprivate func shouldAllowChangesForQuantityField(withUpdatedText updatedText: String) -> Bool {
+        let numbersSet = CharacterSet.decimalDigits
+        
+        for character in updatedText.unicodeScalars {
+            if !numbersSet.contains(character) {
+                return false
+            }
+        }
+        
+        return updatedText.characters.count <= MaxQuantityFieldCharacters
+    }
+
     
     //Only allows changes if it fits into the ###.## decimal format (3 numbers leading the decimal point and two following)
     fileprivate func shouldAllowChangesForPriceField(withUpdatedText updatedText: String) -> Bool {
+        //The first character has to be a dollar sign
+        guard updatedText.characters.count >= 1 && updatedText.characters.first! == "$" else { return false }
+        
         let numbersSet = CharacterSet.decimalDigits
         
         let decimalPointSet = CharacterSet(charactersIn: ".")
@@ -120,7 +138,8 @@ class EditListingTextHandler: NSObject {
             return true
         }
         
-        for character in updatedText.unicodeScalars {
+        let charactersPastCurrencySymbol = String(updatedText.characters.dropFirst())
+        for character in charactersPastCurrencySymbol.unicodeScalars {
             if isLeftOfDecimal {
                 if !isCharacterLeftOfDecimalLegal(character: character) { return false }
             } else {

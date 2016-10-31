@@ -13,6 +13,7 @@ protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDele
     
     func getConfiguration() -> Configuration
     func tabBarHeight() -> CGFloat
+    func didGet(listingImage: UIImage)
 }
 
 class ListingDetailsTableHandler: NSObject {
@@ -141,13 +142,15 @@ class ListingDetailsTableHandler: NSObject {
         
         if let localPhoto = listing.photo {
             listingCell.photoImageView.image = localPhoto
+            delegate.didGet(listingImage: localPhoto)
         } else {
             listingCell.tag = indexPath.row
-            ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { image in
+            ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { [weak self] image in
                 //Make sure the cell hasn't been reused by the time the image is downloaded
                 guard listingCell.tag == indexPath.row else { return }
                 
                 guard let image = image else { return }
+                self?.delegate.didGet(listingImage: image)
                 listingCell.photoImageView.image = image
             }
         }

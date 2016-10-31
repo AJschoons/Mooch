@@ -177,6 +177,24 @@ class MoochAPI {
             }
         }
     }
+    
+    //The completion Bool will be true on success, false on failure/error
+    static func PUTListing(listingId: Int, userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
+        
+        let route = MoochAPIRouter.putListing(listingId: listingId, userId: userId, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId)
+        
+        performMultipartFormUpload(forRoute: route, withImage: nil, imageFormParameterName: nil, imageFileName: nil) { uploadRequest, error in
+            guard let uploadRequest = uploadRequest else {
+                completion(false, nil, error)
+                return
+            }
+            
+            uploadRequest.uploadProgress(closure: uploadProgressHandler)
+            validate(dataRequestNotExpectingResponse: uploadRequest) { success, json, error in
+                completion(success, json, error)
+            }
+        }
+    }
 
     
     //
@@ -269,7 +287,7 @@ class MoochAPI {
     }
     
     //Takes the parameters from the route and the image and encodes them into an UploadRequest
-    fileprivate static func performMultipartFormUpload(forRoute route: MoochAPIRouter, withImage image: UIImage, imageFormParameterName: String, imageFileName: String, completion: @escaping UploadRequestCompletion) {
+    fileprivate static func performMultipartFormUpload(forRoute route: MoochAPIRouter, withImage image: UIImage?, imageFormParameterName: String?, imageFileName: String?, completion: @escaping UploadRequestCompletion) {
         let routingInformation = route.getRoutingInformation()
         
         var urlRequest: URLRequest!
@@ -284,12 +302,14 @@ class MoochAPI {
         Alamofire.upload(
             multipartFormData: { multipartFormData in
                 
-                //Add image
-                let aspectRatioRect = AVMakeRect(aspectRatio: image.size, insideRect: MaxImageSizeRect)
-                let resizedImage = image.af_imageAspectScaled(toFit: aspectRatioRect.size)
-                if let imageData = UIImageJPEGRepresentation(resizedImage, ImageCompressionFactor)
-                {
-                    multipartFormData.append(imageData, withName: imageFormParameterName, fileName: imageFileName, mimeType: "image/jpeg")
+                //Add image if it exists
+                if let image = image, let imageFormParameterName = imageFormParameterName, let imageFileName = imageFileName {
+                    let aspectRatioRect = AVMakeRect(aspectRatio: image.size, insideRect: MaxImageSizeRect)
+                    let resizedImage = image.af_imageAspectScaled(toFit: aspectRatioRect.size)
+                    if let imageData = UIImageJPEGRepresentation(resizedImage, ImageCompressionFactor)
+                    {
+                        multipartFormData.append(imageData, withName: imageFormParameterName, fileName: imageFileName, mimeType: "image/jpeg")
+                    }
                 }
                 
                 //Add the non-image parameters

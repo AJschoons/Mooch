@@ -103,8 +103,8 @@ class MoochTabBarController: UITabBarController {
         guard let cameraViewController = cameraViewControllerBeingShown else { return }
         
         let vc = EditListingViewController.instantiateFromStoryboard()
+        vc.configuration = EditListingConfiguration.defaultConfiguration(for: .creating)
         vc.setPhoto(photo: photo)
-        vc.configuration = EditListingViewController.DefaultCreatingConfiguration
         vc.delegate = self
         //let navC = UINavigationController(rootViewController: vc)
         
