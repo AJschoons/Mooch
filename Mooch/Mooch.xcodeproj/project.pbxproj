@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7F5191E13E1E0DBDDA1BF774 /* Pods_Mooch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0E009C963A57DE569D9584C /* Pods_Mooch.framework */; };
 		8101CF141DB54E1000CB4ED5 /* ListingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8101CF121DB54E1000CB4ED5 /* ListingCollectionViewCell.xib */; };
+		81021E361DC6E2E400FBE37B /* EditListingActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81021E351DC6E2E400FBE37B /* EditListingActionsCell.swift */; };
 		810A82321D7A11780086B40F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82311D7A11780086B40F /* AppDelegate.swift */; };
 		810A82391D7A11780086B40F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 810A82381D7A11780086B40F /* Assets.xcassets */; };
 		810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 810A823A1D7A11780086B40F /* LaunchScreen.storyboard */; };
@@ -61,7 +62,6 @@
 		814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */; };
 		814DB9C81D8F668E006F34E9 /* EditListingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9C71D8F668E006F34E9 /* EditListingTextCell.swift */; };
 		814DB9CC1D905463006F34E9 /* EditListingTableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9CB1D905463006F34E9 /* EditListingTableHandler.swift */; };
-		814DB9CE1D91DE1A006F34E9 /* EditListingQuantityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9CD1D91DE1A006F34E9 /* EditListingQuantityCell.swift */; };
 		814DB9D01D91DE90006F34E9 /* EditListingPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */; };
 		814DB9D21D91EB6C006F34E9 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9D11D91EB6C006F34E9 /* Protocols.swift */; };
 		814DB9D71D933B89006F34E9 /* ListingDetailsTableHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814DB9D61D933B89006F34E9 /* ListingDetailsTableHandler.swift */; };
@@ -174,6 +174,7 @@
 		7D77BF2B345F516CDE894771 /* Pods-MoochTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoochTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MoochTests/Pods-MoochTests.release.xcconfig"; sourceTree = "<group>"; };
 		8004E90930E057AA71F210F3 /* Pods_MoochTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoochTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8101CF121DB54E1000CB4ED5 /* ListingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListingCollectionViewCell.xib; sourceTree = "<group>"; };
+		81021E351DC6E2E400FBE37B /* EditListingActionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingActionsCell.swift; sourceTree = "<group>"; };
 		810A822E1D7A11780086B40F /* Mooch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mooch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		810A82311D7A11780086B40F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		810A82381D7A11780086B40F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -230,7 +231,6 @@
 		814DB9C51D8C9BB6006F34E9 /* EditListingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingViewController.swift; sourceTree = "<group>"; };
 		814DB9C71D8F668E006F34E9 /* EditListingTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTextCell.swift; sourceTree = "<group>"; };
 		814DB9CB1D905463006F34E9 /* EditListingTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingTableHandler.swift; sourceTree = "<group>"; };
-		814DB9CD1D91DE1A006F34E9 /* EditListingQuantityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingQuantityCell.swift; sourceTree = "<group>"; };
 		814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListingPhotoCell.swift; sourceTree = "<group>"; };
 		814DB9D11D91EB6C006F34E9 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		814DB9D61D933B89006F34E9 /* ListingDetailsTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetailsTableHandler.swift; sourceTree = "<group>"; };
@@ -664,8 +664,8 @@
 			children = (
 				816623A71DA058BA009AE72B /* EditListingCategoryCell.swift */,
 				814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */,
-				814DB9CD1D91DE1A006F34E9 /* EditListingQuantityCell.swift */,
 				814DB9C71D8F668E006F34E9 /* EditListingTextCell.swift */,
+				81021E351DC6E2E400FBE37B /* EditListingActionsCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1104,7 +1104,6 @@
 				814DB9DB1D933D85006F34E9 /* ListingDetailsActionCell.swift in Sources */,
 				8149E7BF1D85FC6C000F0C37 /* Listing.swift in Sources */,
 				81F0EA541D98D01D00C7AD09 /* EditListingTextHandler.swift in Sources */,
-				814DB9CE1D91DE1A006F34E9 /* EditListingQuantityCell.swift in Sources */,
 				817CA0941DA2C10D00489374 /* LoginTextField.swift in Sources */,
 				810A82831D7E5DA40086B40F /* Strings.swift in Sources */,
 				811967751DB9245F00D085C7 /* ListingsPriceFilterTableViewCell.swift in Sources */,
@@ -1116,6 +1115,7 @@
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,
 				818304E41DB02F9E00E74202 /* MoochTabBarController.swift in Sources */,
 				81CBF0C21DAB4EF50066DA75 /* EditedProfileInformation.swift in Sources */,
+				81021E361DC6E2E400FBE37B /* EditListingActionsCell.swift in Sources */,
 				8149E7CC1D8668D6000F0C37 /* LoginViewController.swift in Sources */,
 				8110259F1D94C45A00C3931C /* MoochAPIRouter.swift in Sources */,
 				B3BAF2261DBC2A5400ED10F0 /* Extensions.swift in Sources */,

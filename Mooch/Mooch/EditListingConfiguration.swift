@@ -12,33 +12,39 @@ struct EditListingConfiguration {
     //A mapping from a FieldType to a Bool that returns true if it conforms
     typealias FieldTypeConformanceMapping = (FieldType) -> Bool
     
-    var mode: Mode
-    
-    var title: String
-    var leftBarButtons: [BarButtonType]?
-    var rightBarButtons: [BarButtonType]?
-    
-    //The fields that should be shown
-    var fields: [FieldType]
-    
-    //The bar buttons that can be added
-    enum BarButtonType {
-        case cancel
-        case done
-    }
-    
     enum Mode {
         case creating
         case editing
     }
     
     enum FieldType {
+        //Informational fields
         case photo
         case title
-        case description
         case price
         case quantity
+        case description
         case category
+        
+        case actions
+    }
+    
+    var mode: Mode
+    
+    var title: String
+    
+    //The fields that should be shown
+    var fields: [FieldType]
+    
+    static func defaultConfiguration(for mode: Mode) -> EditListingConfiguration {
+        
+        switch mode {
+        case .creating:
+            return EditListingConfiguration(mode: .creating, title: Strings.EditListing.defaultCreatingTitle.rawValue, fields: [.photo, .title, .price, .quantity, .description, .category, .actions])
+            
+        case .editing:
+            return EditListingConfiguration(mode: .creating, title: Strings.EditListing.defaultEditingTitle.rawValue, fields: [.photo, .title, .price, .quantity, .description, .category, .actions])
+        }
     }
     
     func indexOfLastFieldType(conformingToMapping mapping: FieldTypeConformanceMapping) -> Int? {
@@ -61,6 +67,8 @@ struct EditListingConfiguration {
             return Strings.EditListing.fieldTypeQuantityTextDescription.rawValue
         case .category:
             return Strings.EditListing.fieldTypeCategoryTextDescription.rawValue
+        default:
+            return ""
         }
     }
 }

@@ -23,8 +23,8 @@ enum Strings {
     enum EditListing: String {
         case cancelButtonTitle = "Cancel"
         
-        case defaultCreatingTitle = "Create Listing"
-        case defaultEditingTitle = "Edit Listing"
+        case defaultCreatingTitle = "Sell Item"
+        case defaultEditingTitle = "Edit Item"
         
         case fieldTypePhotoTextDescription = "Photo"
         case fieldTypeTitleTextDescription = "Title"
@@ -36,6 +36,7 @@ enum Strings {
         case invalidCreationErrorAlertTitle = "Problem creating listing"
         case invalidCreationErrorAlertMessageFirstPart = "Please complete filling out the information for the "
         case invalidCreationErrorAlertMessageSecondPart = " field"
+        case invalidCreationErrorInvalidPriceAlertMessage = "The price cannot be greater than $200.00"
         
         case uploadingNewLoadingOverlay = "Uploading Listing"
         case uploadingNewErrorAlertTitle = "Problem Uploading Listing"

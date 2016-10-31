@@ -104,7 +104,7 @@ class MoochTabBarController: UITabBarController {
         
         let vc = EditListingViewController.instantiateFromStoryboard()
         vc.setPhoto(photo: photo)
-        vc.configuration = EditListingViewController.DefaultCreatingConfiguration
+        vc.configuration = EditListingConfiguration.defaultConfiguration(for: .creating)
         vc.delegate = self
         //let navC = UINavigationController(rootViewController: vc)
         

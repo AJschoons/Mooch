@@ -41,6 +41,8 @@ class LoadingOverlayView: UIView {
         Bundle.main.loadNibNamed("LoadingOverlayView", owner: self, options: nil)
         self.addSubview(view)
         view.frame = self.bounds
+        
+        initialSetup()
     }
     
     override init(frame: CGRect) {
@@ -49,6 +51,12 @@ class LoadingOverlayView: UIView {
         Bundle.main.loadNibNamed("LoadingOverlayView", owner: self, options: nil)
         self.addSubview(view)
         view.frame = frame
+        
+        initialSetup()
+    }
+    
+    private func initialSetup() {
+        progressView.tintColor = ThemeColors.moochRed.color()
     }
     
     //Allows touches to pass through the overlay. Returning false allows the touch to pass through

@@ -13,10 +13,15 @@ struct EditedListingInformation {
     
     var photo: UIImage?
     var title: String?
-    var description: String?
-    var categoryId: Int?
     var price: Float?
     var quantity: Int?
+    var description: String?
+    var categoryId: Int?
+    
+    var isPriceValid: Bool {
+        guard let price = price else { return false }
+        return price <= Float(200.0)
+    }
     
     var isAllInformationFilled: Bool {
         if photo == nil || title == nil || categoryId == nil || price == nil || quantity == nil {
@@ -24,6 +29,27 @@ struct EditedListingInformation {
         }
         
         return true
+    }
+    
+    func string(for fieldType: EditListingConfiguration.FieldType) -> String? {
+        switch fieldType {
+        case .title:
+            return title
+            
+        case .price:
+            guard let price = price else { return nil }
+            return "$" + String(format: "%.2f", price)
+            
+        case .quantity:
+            guard let quantity = quantity else { return nil }
+            return String(quantity)
+            
+        case .description:
+            return description
+            
+        default:
+            return nil
+        }
     }
     
     func firstUnfilledRequiredFieldType() -> EditListingConfiguration.FieldType? {

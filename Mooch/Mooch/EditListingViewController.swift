@@ -30,9 +30,6 @@ class EditListingViewController: MoochModalViewController {
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = EditListingConfiguration(mode: .creating, title: Strings.EditListing.defaultCreatingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
-    static let DefaultEditingConfiguration = EditListingConfiguration(mode: .creating, title: Strings.EditListing.defaultEditingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fields: [.photo, .title, .description, .price, .quantity, .category])
-    
     @IBOutlet var tableHandler: EditListingTableHandler! {
         didSet { tableHandler.delegate = self }
     }
@@ -63,13 +60,10 @@ class EditListingViewController: MoochModalViewController {
     fileprivate var cancelButton: UIBarButtonItem!
     
     //Used to track what Listing information has been edited
-    fileprivate var editedListingInformation = EditedListingInformation(photo: nil, title: nil, description: nil, categoryId: nil, price: nil, quantity: nil)
+    fileprivate var editedListingInformation = EditedListingInformation(photo: nil, title: nil, price: nil, quantity: nil, description: nil, categoryId: nil)
     
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
     fileprivate var isDismissingSelf = false
-    
-    //Tracks which photo adding view the camera is taking a picture for
-    fileprivate var currentPhotoAddingView: PhotoAddingView?
     
     fileprivate var state: State = .editing
     
@@ -100,11 +94,15 @@ class EditListingViewController: MoochModalViewController {
         super.setup()
         
         registerForKeyboardNotifacations()
+        
         setupNavigationBar()
         
         if configuration.mode == .creating {
             //Default the quantity to 1 for validation just in case the user doesn't change the quantity when creating a new listing
             editedListingInformation.quantity = 1
+            
+            //Default the price to 0.00 for validation just in case the user doesn't change the price when creating a new listing
+            editedListingInformation.price = 0.00
         }
         
         updateUI()
@@ -150,34 +148,12 @@ class EditListingViewController: MoochModalViewController {
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
-        doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onDoneAction))
-        cancelButton = UIBarButtonItem(title: Strings.EditListing.cancelButtonTitle.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
-        
         title = configuration.title
         
-        if let leftButtons = configuration.leftBarButtons {
-            navigationItem.leftBarButtonItems = barButtons(fromTypeList: leftButtons)
-        } else {
-            navigationItem.leftBarButtonItems = nil
-        }
-        
-        if let rightButtons = configuration.rightBarButtons {
-            navigationItem.rightBarButtonItems = barButtons(fromTypeList: rightButtons)
-        } else {
-            navigationItem.rightBarButtonItems = nil
-        }
-    }
-    
-    fileprivate func barButtons(fromTypeList typeList: [EditListingConfiguration.BarButtonType]) -> [UIBarButtonItem] {
-        return typeList.map({barButton(forType: $0)})
-    }
-    
-    fileprivate func barButton(forType type: EditListingConfiguration.BarButtonType) -> UIBarButtonItem {
-        switch type {
-        case .cancel:
-            return cancelButton
-        case .done:
-            return doneButton
+        //When creating, this is the child of the UINavigationController of the UIImagePicker
+        //We need to disable the back button
+        if configuration.mode == .creating {
+            navigationItem.hidesBackButton = true
         }
     }
     
@@ -259,22 +235,23 @@ class EditListingViewController: MoochModalViewController {
     }
     
     private func isValidListingCreation() -> Bool {
-        return editedListingInformation.isAllInformationFilled
+        return editedListingInformation.isAllInformationFilled && editedListingInformation.isPriceValid
     }
     
     private func presentInvalidListingCreationAlert() {
-        guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledRequiredFieldType() else { return }
-        let title = Strings.EditListing.invalidCreationErrorAlertTitle.rawValue
-        let message = "\(Strings.EditListing.invalidCreationErrorAlertMessageFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditListing.invalidCreationErrorAlertMessageSecondPart.rawValue)"
-        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
-        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
-    }
-    
-    fileprivate func presentCameraViewController(forPhotoAddingView photoAddingView: PhotoAddingView) {
-        currentPhotoAddingView = photoAddingView
-        let cameraViewController = CameraViewController()
-        cameraViewController.delegate = self
-        present(cameraViewController, animated: true, completion: nil)
+        if !editedListingInformation.isAllInformationFilled {
+            guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledRequiredFieldType() else { return }
+            let title = Strings.EditListing.invalidCreationErrorAlertTitle.rawValue
+            let message = "\(Strings.EditListing.invalidCreationErrorAlertMessageFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditListing.invalidCreationErrorAlertMessageSecondPart.rawValue)"
+            let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
+            presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
+        } else if !editedListingInformation.isPriceValid {
+            let title = Strings.EditListing.invalidCreationErrorAlertTitle.rawValue
+            let message = Strings.EditListing.invalidCreationErrorInvalidPriceAlertMessage.rawValue
+            let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
+            presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
+        }
+        
     }
     
     fileprivate func pushListingCategoryPickerViewController(withSelectedListingCategory selectedListingCategory: ListingCategory?) {
@@ -341,9 +318,22 @@ extension EditListingViewController: EditListingTextHandlerDelegate {
             
         case .price:
             if let updatedPrice = updatedText {
-                editedListingInformation.price = Float(updatedPrice)
+                //Remove the leading dollar sign
+                let priceString = String(updatedPrice.characters.dropFirst())
+                if priceString.characters.count > 0 {
+                    editedListingInformation.price = Float(priceString)
+                } else {
+                    editedListingInformation.price = nil
+                }
             } else {
                 editedListingInformation.price = nil
+            }
+            
+        case .quantity:
+            if let updatedQuantity = updatedText {
+                editedListingInformation.quantity = Int(updatedQuantity)
+            } else {
+                editedListingInformation.quantity = nil
             }
             
         default:
@@ -356,51 +346,6 @@ extension EditListingViewController: EditListingTextHandlerDelegate {
     }
 }
 
-extension EditListingViewController: EditListingQuantityCellDelegate {
-    
-    func quantityDidChange(toValue value: Int) {
-        editedListingInformation.quantity = value
-    }
-}
-
-extension EditListingViewController: PhotoAddingViewDelegate {
-    
-    func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
-        presentCameraViewController(forPhotoAddingView: photoAddingView)
-    }
-    
-    func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
-        editedListingInformation.photo = nil
-    }
-}
-
-extension EditListingViewController: UIImagePickerControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        guard let photo = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            currentPhotoAddingView = nil
-            return
-        }
-        
-        currentPhotoAddingView?.photo = photo
-        currentPhotoAddingView = nil
-        
-        editedListingInformation.photo = photo
-        
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        currentPhotoAddingView = nil
-        dismiss(animated: true, completion: nil)
-    }
-}
-
-//Required by UIImagePickerController delegate property
-extension EditListingViewController: UINavigationControllerDelegate {
-    
-}
-
 extension EditListingViewController: ListingCategoryPickerViewControllerDelegate {
     
     func didPick(listingCategory: ListingCategory) {
@@ -409,5 +354,16 @@ extension EditListingViewController: ListingCategoryPickerViewControllerDelegate
         
         guard let navC = navigationController else { return }
         navC.popViewController(animated: true)
+    }
+}
+
+extension EditListingViewController: EditListingActionsCellDelegate {
+    
+    func onDone() {
+        onDoneAction()
+    }
+    
+    func onCancel() {
+        onCancelAction()
     }
 }

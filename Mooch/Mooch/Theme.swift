@@ -34,7 +34,7 @@ enum ThemeColors {
         switch self {
         
         case .formSeperator:
-            return (200, 200, 200, 1.0)
+            return (230, 233, 237, 1.0)
             
             
         case .listingDetailsActionBackground:
