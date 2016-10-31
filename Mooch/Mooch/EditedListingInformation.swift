@@ -31,6 +31,15 @@ struct EditedListingInformation {
         return true
     }
     
+    func isEditedInformationChanged(from listing: Listing) -> Bool {
+        guard let title = title, let price = price, let quantity = quantity, let categoryId = categoryId else { return false }
+        
+        let hasRequiredVariableChanged = title != listing.title || price != listing.price || quantity != listing.quantity || categoryId != listing.categoryId
+        let hasDescriptionChanged = listing.description != description
+        
+        return hasRequiredVariableChanged || hasDescriptionChanged
+    }
+    
     func string(for fieldType: EditListingConfiguration.FieldType) -> String? {
         switch fieldType {
         case .title:

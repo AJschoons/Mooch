@@ -32,10 +32,13 @@ class ListingDetailsViewController: MoochViewController {
     
     fileprivate var editButton: UIBarButtonItem!
     
+    //This variable is needed so we can pass the listing image to the EditListingVC for editing
+    fileprivate var listingImage: UIImage?
+    
     // MARK: Actions
     
     func onEditAction() {
-        print("edit action")
+        editListing()
     }
     
     func onContactSellerAction() {
@@ -110,6 +113,15 @@ class ListingDetailsViewController: MoochViewController {
         }
     }
     
+    fileprivate func editListing() {
+        guard let listingImage = listingImage else {
+            presentSingleActionAlert(title: "Cannot Edit Listing", message: "Please wait for the listing's image to download, then try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+            return
+        }
+        
+        presentEditListingViewController(for: configuration.listing, withImage: listingImage)
+    }
+    
     fileprivate func contactSeller() {
         guard let localUser = LocalUserManager.sharedInstance.localUser else {
             presentSingleActionAlert(title: "Guests cannot contact sellers", message: "Please login or create an account, and then try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
@@ -176,6 +188,16 @@ class ListingDetailsViewController: MoochViewController {
         profileViewController.updateWith(user: configuration.listing.owner)
         
         navigationController?.pushViewController(profileViewController, animated: true)
+    }
+    
+    fileprivate func presentEditListingViewController(for listing: Listing, withImage image: UIImage) {
+        let vc = EditListingViewController.instantiateFromStoryboard()
+        vc.configuration = EditListingConfiguration.defaultConfiguration(for: .editing)
+        vc.setListing(listing, withPhoto: image)
+        vc.delegate = self
+        
+        let navC = UINavigationController(rootViewController: vc)
+        present(navC, animated: true, completion: nil)
     }
     
     fileprivate func presentPhoneNumberOptionsActionSheet() {
@@ -248,6 +270,10 @@ extension ListingDetailsViewController: ListingDetailsTableHandlerDelegate {
     func tabBarHeight() -> CGFloat {
         return (tabBarController != nil) ? tabBarController!.tabBar.frame.height : CGFloat(0.0)
     }
+    
+    func didGet(listingImage: UIImage) {
+        self.listingImage = listingImage
+    }
 }
 
 extension ListingDetailsViewController: ListingDetailsActionCellDelegate {
@@ -286,5 +312,23 @@ extension ListingDetailsViewController: ListingDetailsUserCellDelegate {
     
     func onEmail() {
         openMailApp(withEmail: configuration.listing.owner.contactInformation.email)
+    }
+}
+
+extension ListingDetailsViewController: EditListingViewControllerDelegate {
+    
+    func editListingViewControllerDidFinishEditing(with editedListing: Listing, isNew: Bool) {
+        //Creating a new listing from the listing details view controller is not allowed; they should only be edited
+        guard !isNew else { return }
+        
+        CommunityListingsManager.sharedInstance.updateInformation(for: editedListing)
+        configuration.listing = editedListing
+        tableHandler.reloadData()
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func editListingViewControllerDidCancel() {
+        dismiss(animated: true, completion: nil)
     }
 }

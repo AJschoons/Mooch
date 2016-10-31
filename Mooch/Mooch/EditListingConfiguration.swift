@@ -43,7 +43,7 @@ struct EditListingConfiguration {
             return EditListingConfiguration(mode: .creating, title: Strings.EditListing.defaultCreatingTitle.rawValue, fields: [.photo, .title, .price, .quantity, .description, .category, .actions])
             
         case .editing:
-            return EditListingConfiguration(mode: .creating, title: Strings.EditListing.defaultEditingTitle.rawValue, fields: [.photo, .title, .price, .quantity, .description, .category, .actions])
+            return EditListingConfiguration(mode: .editing, title: Strings.EditListing.defaultEditingTitle.rawValue, fields: [.photo, .title, .price, .quantity, .description, .category, .actions])
         }
     }
     

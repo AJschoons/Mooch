@@ -6,6 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
+import Alamofire
 import UIKit
 
 protocol EditListingField {
@@ -47,9 +48,6 @@ class EditListingViewController: MoochModalViewController {
         }
     }
     
-    //The listing being edited
-    var listing: Listing?
-    
     
     // MARK: Private variables
     
@@ -58,6 +56,9 @@ class EditListingViewController: MoochModalViewController {
     
     fileprivate var doneButton: UIBarButtonItem!
     fileprivate var cancelButton: UIBarButtonItem!
+    
+    //The listing being edited
+    fileprivate var listing: Listing?
     
     //Used to track what Listing information has been edited
     fileprivate var editedListingInformation = EditedListingInformation(photo: nil, title: nil, price: nil, quantity: nil, description: nil, categoryId: nil)
@@ -73,8 +74,9 @@ class EditListingViewController: MoochModalViewController {
     func onDoneAction() {
         guard state != .uploading else { return }
         
+        //isDoneValidated handles notifying user of form errors, too
         if isDoneValidated() {
-            uploadNewListing()
+            uploadListing()
         }
     }
     
@@ -85,8 +87,24 @@ class EditListingViewController: MoochModalViewController {
     
     // MARK: Public methods
     
+    //Used when instantiated to intialize the view controller with the listing being edited
+    func setListing(_ listing: Listing, withPhoto photo: UIImage) {
+        guard configuration != nil && configuration.mode == .editing else { return }
+        
+        self.listing = listing
+        
+        editedListingInformation.photo = photo
+        editedListingInformation.title = listing.title
+        editedListingInformation.price = listing.price
+        editedListingInformation.quantity = listing.quantity
+        editedListingInformation.description = listing.description
+        editedListingInformation.categoryId = listing.categoryId
+    }
+    
     //Used when instantiated to give a photo to show when creating a listing
     func setPhoto(photo: UIImage) {
+        guard configuration != nil && configuration.mode == .creating else { return }
+        
         editedListingInformation.photo = photo
     }
     
@@ -168,23 +186,29 @@ class EditListingViewController: MoochModalViewController {
     
     //Returns true if the Done action is validated, else handles notifying the user
     private func isDoneValidated() -> Bool {
-        //Editing not yet supported
-        if configuration.mode == .editing {
+        guard isEditedListingInformationValid() else {
+            presentInvalidEditedListingAlert()
             return false
-        } else if configuration.mode == .creating {
-            if isValidListingCreation() {
+        }
+        
+        switch configuration.mode {
+            
+        case .creating:
+            return true
+            
+        case .editing:
+            guard let listing = listing else { return false }
+            if editedListingInformation.isEditedInformationChanged(from: listing) {
                 return true
             } else {
-                presentInvalidListingCreationAlert()
+                presentNoInformationChangedAlert()
                 return false
             }
         }
-        
-        return false
     }
     
-    private func uploadNewListing() {
-        guard isValidListingCreation() else { return }
+    private func uploadListing() {
+        guard isEditedListingInformationValid() else { return }
         guard let localUser = LocalUserManager.sharedInstance.localUser?.user else { return }
         let eli = editedListingInformation
         guard let photo = eli.photo, let title = eli.title, let price = eli.price, let quantity = eli.quantity, let categoryId = eli.categoryId else { return }
@@ -194,13 +218,16 @@ class EditListingViewController: MoochModalViewController {
         
         showLoadingOverlayView(withInformationText: Strings.EditListing.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true, withHiddenAlertView: false)
         
-        MoochAPI.POSTListing(
+        let isNewListing = configuration.mode == .creating
+        let isFree = price <= 0.09
+        uploadListingInformationToAPI(
+            isNewListing: isNewListing,
             userId: localUser.id,
             photo: photo,
             title: title,
             description: eli.description,
             price: price,
-            isFree: false,
+            isFree: isFree,
             quantity: quantity,
             categoryId: categoryId,
             uploadProgressHandler: { [weak self] progress in
@@ -216,32 +243,60 @@ class EditListingViewController: MoochModalViewController {
                     return
                 }
                 
-                var createdListing: Listing!
+                var listing: Listing!
                 if let json = json {
                     do {
-                        createdListing = try Listing(json: json)
+                        listing = try Listing(json: json)
                     } catch let error {
                         print(error)
                     }
                 }
-                if createdListing == nil {
-                    let localListing = Listing(id: -1, photo: photo, title: title, description: eli.description, price: price, isFree: false, quantity: quantity, categoryId: categoryId, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: localUser, pictureURL: "", thumbnailPictureURL: "", communityId: localUser.communityId, exchanges: [])
-                    createdListing = localListing
+                if listing == nil {
+                    let localListing = Listing(id: -1, photo: photo, title: title, description: eli.description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: localUser, pictureURL: "", thumbnailPictureURL: "", communityId: localUser.communityId, exchanges: [])
+                    listing = localListing
                 }
                 
-                strongSelf.notifyDelegateDidFinishEditingAndDismissSelf(with: createdListing, isNew: true)
+                strongSelf.notifyDelegateDidFinishEditingAndDismissSelf(with: listing, isNew: isNewListing)
             }
         )
     }
     
-    private func isValidListingCreation() -> Bool {
+    private func uploadListingInformationToAPI(isNewListing: Bool, userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
+        
+        if isNewListing {
+            MoochAPI.POSTListing(
+                userId: userId,
+                photo: photo,
+                title: title,
+                description: description,
+                price: price,
+                isFree: isFree,
+                quantity: quantity,
+                categoryId: categoryId,
+                uploadProgressHandler: uploadProgressHandler,
+                completion: completion
+            )
+        } else {
+            guard var listing = listing else { return }
+            listing.title = title
+            listing.description = description
+            listing.price = price
+            listing.isFree = isFree
+            listing.quantity = quantity
+            listing.quantity = quantity
+            listing.categoryId = categoryId
+            notifyDelegateDidFinishEditingAndDismissSelf(with: listing, isNew: isNewListing)
+        }
+    }
+
+    private func isEditedListingInformationValid() -> Bool {
         return editedListingInformation.isAllInformationFilled && editedListingInformation.isPriceValid
     }
     
-    private func presentInvalidListingCreationAlert() {
+    private func presentInvalidEditedListingAlert() {
         if !editedListingInformation.isAllInformationFilled {
             guard let fieldToNotifyAbout = editedListingInformation.firstUnfilledRequiredFieldType() else { return }
-            let title = Strings.EditListing.invalidCreationErrorAlertTitle.rawValue
+            let title = configuration.mode == .creating ?  Strings.EditListing.invalidCreationErrorAlertTitle.rawValue : Strings.EditListing.invalidEditErrorAlertTitle.rawValue
             let message = "\(Strings.EditListing.invalidCreationErrorAlertMessageFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditListing.invalidCreationErrorAlertMessageSecondPart.rawValue)"
             let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
             presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
@@ -251,7 +306,15 @@ class EditListingViewController: MoochModalViewController {
             let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
             presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
         }
+    }
+    
+    private func presentNoInformationChangedAlert() {
+        guard configuration.mode == .editing else { return }
         
+        let title = Strings.EditListing.invalidEditErrorAlertTitle.rawValue
+        let message = Strings.EditListing.noInformationChangedAlertMessage.rawValue
+        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
+        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
     }
     
     fileprivate func pushListingCategoryPickerViewController(withSelectedListingCategory selectedListingCategory: ListingCategory?) {

@@ -33,10 +33,13 @@ enum Strings {
         case fieldTypeQuantityTextDescription = "Quantity"
         case fieldTypeCategoryTextDescription = "Category"
         
+        case invalidEditErrorAlertTitle = "Problem editing listing"
         case invalidCreationErrorAlertTitle = "Problem creating listing"
         case invalidCreationErrorAlertMessageFirstPart = "Please complete filling out the information for the "
         case invalidCreationErrorAlertMessageSecondPart = " field"
         case invalidCreationErrorInvalidPriceAlertMessage = "The price cannot be greater than $200.00"
+        
+        case noInformationChangedAlertMessage = "The listing information has not been changed"
         
         case uploadingNewLoadingOverlay = "Uploading Listing"
         case uploadingNewErrorAlertTitle = "Problem Uploading Listing"
@@ -59,7 +62,7 @@ enum Strings {
         case fieldTypePassword1TextDescription = "Password"
         case fieldTypePassword2TextDescription = "Confirm Password"
         
-        case invalidCreationErrorAlertTitle = "Problem creating listing"
+        case invalidCreationErrorAlertTitle = "Problem creating profile"
         case invalidCreationErrorAlertMessageUnfilledInfoFirstPart = "Please complete filling out the information for the "
         case invalidCreationErrorAlertMessageUnfilledInfoSecondPart = " field"
         case invalidCreationErrorAlertMessageEmail = "Please enter a valid email address"

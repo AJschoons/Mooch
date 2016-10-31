@@ -52,7 +52,7 @@
                                             <frame key="frameInset" width="375" height="40"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Wl-Vz-cbz">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Wl-Vz-cbz">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="qlv-am-iDG"/>
                                                     </constraints>
@@ -137,7 +137,7 @@
                                             <outlet property="categoryNameLabel" destination="sDW-ZE-GHQ" id="WmF-Kb-o2W"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EditListingActionsCell" rowHeight="146" id="acm-wI-DXK" customClass="EditListingActionsCell" customModule="Mooch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditListingActionsCell" rowHeight="146" id="acm-wI-DXK" customClass="EditListingActionsCell" customModule="Mooch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="328" width="375" height="146"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="acm-wI-DXK" id="3ce-B8-AWM">
