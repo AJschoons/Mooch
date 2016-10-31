@@ -41,7 +41,7 @@ class ListingsViewController: MoochViewController {
             case .nestedInSearch:
                 return _givenListings
             case .generalInSearch:
-                return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+                return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
             }
         }
         set {

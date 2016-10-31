@@ -17,7 +17,7 @@ class SearchViewController: MoochViewController {
     var listings : [Listing]
         {
         get {
-        return CommunityListingsManager.sharedInstance.listingsInCurrentCommunity
+        return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
         }
     }
     var ListingCategorys : [ListingCategory]
