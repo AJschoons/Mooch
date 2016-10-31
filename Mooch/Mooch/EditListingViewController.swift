@@ -85,6 +85,7 @@ class EditListingViewController: MoochModalViewController {
         notifyDelegateDidCancelAndDismissSelf()
     }
     
+    
     // MARK: Public methods
     
     //Used when instantiated to intialize the view controller with the listing being edited
@@ -209,19 +210,28 @@ class EditListingViewController: MoochModalViewController {
     
     private func uploadListing() {
         guard isEditedListingInformationValid() else { return }
+        
         guard let localUser = LocalUserManager.sharedInstance.localUser?.user else { return }
+        
         let eli = editedListingInformation
         guard let photo = eli.photo, let title = eli.title, let price = eli.price, let quantity = eli.quantity, let categoryId = eli.categoryId else { return }
+        
+        let isNewListing = configuration.mode == .creating
+        var listingId: Int?
+        if !isNewListing {
+            guard let listing = listing else { return }
+            listingId = listing.id
+        }
         
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
         
         showLoadingOverlayView(withInformationText: Strings.EditListing.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true, withHiddenAlertView: false)
         
-        let isNewListing = configuration.mode == .creating
         let isFree = price <= 0.09
         uploadListingInformationToAPI(
             isNewListing: isNewListing,
+            listingId: listingId,
             userId: localUser.id,
             photo: photo,
             title: title,
@@ -251,17 +261,13 @@ class EditListingViewController: MoochModalViewController {
                         print(error)
                     }
                 }
-                if listing == nil {
-                    let localListing = Listing(id: -1, photo: photo, title: title, description: eli.description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: localUser, pictureURL: "", thumbnailPictureURL: "", communityId: localUser.communityId, exchanges: [])
-                    listing = localListing
-                }
                 
                 strongSelf.notifyDelegateDidFinishEditingAndDismissSelf(with: listing, isNew: isNewListing)
             }
         )
     }
     
-    private func uploadListingInformationToAPI(isNewListing: Bool, userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
+    private func uploadListingInformationToAPI(isNewListing: Bool, listingId: Int?, userId: Int, photo: UIImage, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
         
         if isNewListing {
             MoochAPI.POSTListing(
@@ -277,15 +283,20 @@ class EditListingViewController: MoochModalViewController {
                 completion: completion
             )
         } else {
-            guard var listing = listing else { return }
-            listing.title = title
-            listing.description = description
-            listing.price = price
-            listing.isFree = isFree
-            listing.quantity = quantity
-            listing.quantity = quantity
-            listing.categoryId = categoryId
-            notifyDelegateDidFinishEditingAndDismissSelf(with: listing, isNew: isNewListing)
+            guard let listingId = listingId else { return }
+            
+            MoochAPI.PUTListing(
+                listingId: listingId,
+                userId: userId,
+                title: title,
+                description: description,
+                price: price,
+                isFree: isFree,
+                quantity: quantity,
+                categoryId: categoryId,
+                uploadProgressHandler: uploadProgressHandler,
+                completion: completion
+            )
         }
     }
 

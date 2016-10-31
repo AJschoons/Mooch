@@ -39,6 +39,8 @@ enum MoochAPIRouter: URLRequestConvertible {
     case postLogin(withEmail: String, andPassword: String)
     case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?)
     
+    case putListing(listingId: Int, userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
+    
     //The keys to pass in as parameters mapped to strings
     enum ParameterMapping {
         enum PostExchange: String {
@@ -145,6 +147,11 @@ enum MoochAPIRouter: URLRequestConvertible {
             var parameters: [String : Any] = [mapping.communityId.rawValue : communityId, mapping.name.rawValue : name, mapping.email.rawValue : email, mapping.phone.rawValue : phone, mapping.password.rawValue : password]
             if address != nil { parameters[mapping.address.rawValue] =  address! }
             return ("/users", .post, parameters, false)
+            
+        case .putListing(let listingId, let userId, let title, let description, let price, let isFree, let quantity, let categoryId):
+            //Much of the same routing information is shared with the POST Listing route
+            let postListingRoutingInformation = MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId).getRoutingInformation()
+            return ("\(postListingRoutingInformation.path)/\(listingId)", .put, postListingRoutingInformation.parameters, true)
         }
     }
 
