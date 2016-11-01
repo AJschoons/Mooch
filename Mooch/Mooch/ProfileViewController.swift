@@ -43,6 +43,9 @@ class ProfileViewController: MoochViewController {
     
     fileprivate var selectedControl: BottomBarDoubleSegmentedControl.Control = .first
     
+    //This variable is needed so we can pass the profile image to the EditProfileVC for editing
+    fileprivate var profileImage: UIImage?
+    
     // MARK: Actions
     
     func onSettingsAction() {
@@ -58,9 +61,7 @@ class ProfileViewController: MoochViewController {
     
     func updateWith(user: User?) {
         self.user = user
-        selectedControl = .first
-        collectionHandler.resetScrollPosition()
-        updateUI()
+        resetForNewUser()
     }
     
     override func setup() {
@@ -125,10 +126,12 @@ class ProfileViewController: MoochViewController {
     }
     
     fileprivate func presentSettingsActionSheet() {
+        guard let user = user else { return }
+
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
         let editProfileAction = UIAlertAction(title: "Edit Profile", style: .default) { _ in
-            //
+            self.presentEditProfileViewController(for: user, with: self.profileImage)
         }
         let changeCommunityAction = UIAlertAction(title: "Change Community", style: .default) { _ in
             self.presentCommunityPicker()
@@ -158,10 +161,27 @@ class ProfileViewController: MoochViewController {
         present(navC, animated: true, completion: nil)
     }
     
+    private func presentEditProfileViewController(for user: User, with photo: UIImage?) {
+        let vc = EditProfileViewController.instantiateFromStoryboard()
+        vc.configuration = EditProfileConfiguration.defaultConfiguration(for: .editing)
+        vc.delegate = self
+        vc.set(user: user, with: profileImage)
+        
+        let navC = UINavigationController(rootViewController: vc)
+        present(navC, animated: true, completion: nil)
+    }
+    
     fileprivate func pushListingDetailsViewController(with listing: Listing, in mode: ListingDetailsConfiguration.Mode, isViewingSellerProfileNotAllowed: Bool) {
         let vc = ListingDetailsViewController.instantiateFromStoryboard()
         vc.configuration = ListingDetailsConfiguration.defaultConfiguration(for: mode, with: listing, isViewingSellerProfileNotAllowed: isViewingSellerProfileNotAllowed)
         navigationController!.pushViewController(vc, animated: true)
+    }
+    
+    fileprivate func resetForNewUser() {
+        selectedControl = .first
+        profileImage = nil
+        collectionHandler.resetScrollPosition()
+        updateUI()
     }
     
     //Completely resets the UI and state of the view controller
@@ -208,6 +228,10 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
         return selectedControl
     }
     
+    func didGet(profileImage: UIImage) {
+        self.profileImage = profileImage
+    }
+    
     func didSelect(_ listing: Listing) {
         let isListingCompleted = listing.isCompleted()
         
@@ -242,6 +266,15 @@ extension ProfileViewController: BottomBarDoubleSegmentedControlDelegate {
     func didSelect(_ selectedControl: BottomBarDoubleSegmentedControl.Control) {
         self.selectedControl = selectedControl
         updateUI()
+    }
+}
+
+extension ProfileViewController: EditProfileViewControllerDelegate {
+    
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
+        guard !isNewProfile else { return }
+        
+        print(localUser)
     }
 }
 

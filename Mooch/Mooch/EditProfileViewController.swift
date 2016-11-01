@@ -49,9 +49,6 @@ class EditProfileViewController: MoochModalViewController {
         }
     }
     
-    //The user being edited
-    var localUser: LocalUser?
-    
     
     // MARK: Private variables
     
@@ -69,6 +66,8 @@ class EditProfileViewController: MoochModalViewController {
     
     fileprivate var state: State = .editing
     
+    //The user being edited
+    fileprivate var user: User?
     
     // MARK: Actions
     
@@ -87,6 +86,18 @@ class EditProfileViewController: MoochModalViewController {
     
     
     // MARK: Public methods
+    
+    //Used when instantiated to intialize the view controller with the listing being edited
+    func set(user: User, with photo: UIImage?) {
+        guard configuration != nil && configuration.mode == .editing else { return }
+        
+        self.user = user
+        
+        editedProfileInformation.photo = photo
+        editedProfileInformation.name = user.name
+        editedProfileInformation.phone = user.contactInformation.phone
+        editedProfileInformation.address = user.contactInformation.address
+    }
     
     override func setup() {
         super.setup()

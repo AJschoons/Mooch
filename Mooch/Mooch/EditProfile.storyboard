@@ -30,13 +30,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CiD-47-1vw" customClass="PhotoAddingView" customModule="Mooch" customModuleProvider="target">
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="CiD-47-1vw" secondAttribute="height" multiplier="1:1" id="3bp-ID-k5F"/>
-                                                        <constraint firstAttribute="height" constant="160" id="nwH-xr-OmB"/>
+                                                        <constraint firstAttribute="height" constant="126" id="nwH-xr-OmB"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gGi-6E-rnV">
+                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGi-6E-rnV">
+                                                    <frame key="frameInset" minY="-1" width="375" height="1"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="vEa-oi-u0y"/>
@@ -44,8 +45,8 @@
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYJ-pC-FKS">
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="32" id="eWr-PK-hX9"/>
-                                                        <constraint firstAttribute="height" constant="32" id="lOW-Wo-EYb"/>
+                                                        <constraint firstAttribute="width" constant="25" id="eWr-PK-hX9"/>
+                                                        <constraint firstAttribute="height" constant="25" id="lOW-Wo-EYb"/>
                                                     </constraints>
                                                     <connections>
                                                         <action selector="onEditPhotoButton" destination="Cpa-5l-28J" eventType="touchUpInside" id="ZYW-3O-SFK"/>
@@ -55,12 +56,12 @@
                                             <constraints>
                                                 <constraint firstItem="SYJ-pC-FKS" firstAttribute="trailing" secondItem="DUS-bu-wlC" secondAttribute="trailing" constant="-15" id="IwI-wB-v3g"/>
                                                 <constraint firstAttribute="trailing" secondItem="gGi-6E-rnV" secondAttribute="trailing" id="Msg-ue-N5a"/>
-                                                <constraint firstItem="CiD-47-1vw" firstAttribute="top" secondItem="DUS-bu-wlC" secondAttribute="top" constant="15" id="UTP-Xu-Llg"/>
+                                                <constraint firstItem="CiD-47-1vw" firstAttribute="top" secondItem="DUS-bu-wlC" secondAttribute="top" constant="32" id="UTP-Xu-Llg"/>
                                                 <constraint firstAttribute="bottom" secondItem="SYJ-pC-FKS" secondAttribute="bottom" constant="15" id="dG6-pT-pPt"/>
                                                 <constraint firstAttribute="bottom" secondItem="gGi-6E-rnV" secondAttribute="bottom" id="dgW-YK-wOg"/>
                                                 <constraint firstItem="CiD-47-1vw" firstAttribute="centerX" secondItem="DUS-bu-wlC" secondAttribute="centerX" id="jG4-nx-SEI"/>
                                                 <constraint firstItem="gGi-6E-rnV" firstAttribute="leading" secondItem="DUS-bu-wlC" secondAttribute="leading" id="nEi-TT-h6p"/>
-                                                <constraint firstAttribute="bottom" secondItem="CiD-47-1vw" secondAttribute="bottom" constant="15" id="v1h-j9-Kkl"/>
+                                                <constraint firstAttribute="bottom" secondItem="CiD-47-1vw" secondAttribute="bottom" constant="32" id="v1h-j9-Kkl"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

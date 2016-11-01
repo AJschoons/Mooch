@@ -141,6 +141,16 @@ struct EditedProfileInformation {
         }
     }
     
+    func string(for fieldType: FieldType) -> String? {
+        guard var string = variable(forFieldType: fieldType) as? String? else { return nil }
+        
+        if fieldType == .phone, let number = string {
+            string = PhoneNumberHandler.format(number: number)
+        }
+        
+        return string
+    }
+    
     func firstUnfilledRequiredFieldType() -> FieldType? {
         var unfilledFieldType: EditProfileConfiguration.FieldType? = nil
         
