@@ -41,6 +41,11 @@ class EditProfileViewController: MoochModalViewController {
         didSet {
             editedProfileInformation = EditedProfileInformation(fieldsShownToRequiredPairs: configuration.fieldsShownToRequiredPairs)
             tableHandler.indexOfLastTextfieldCell = configuration.indexOfLastFieldType(conformingToMapping: tableHandler.isTextField)
+            
+            //When creating a profile, default the community to the current one the guest is in
+            if configuration.mode == .creating, let communityId = LocalUserManager.sharedInstance.userCommunityId {
+                editedProfileInformation.communityId = communityId
+            }
         }
     }
     
@@ -133,6 +138,9 @@ class EditProfileViewController: MoochModalViewController {
     
     fileprivate func setupNavigationBar() {
         title = configuration.title
+        
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func registerForKeyboardNotifacations() {
@@ -164,8 +172,8 @@ class EditProfileViewController: MoochModalViewController {
     private func uploadProfile() {
         //Only creation is supported right now
         guard isValidProfileCreation() else { return }
-        guard let communityId = LocalUserManager.sharedInstance.userCommunityId, let epi = editedProfileInformation else { return }
-        guard let photo = epi.photo, let name = epi.name, let email = epi.email, let digitsOnlyPhone = epi.digitsOnlyPhone, let password = epi.password1 else { return }
+        guard let epi = editedProfileInformation, let deviceToken = PushNotificationsManager.sharedInstance.deviceToken else { return }
+        guard let photo = epi.photo, let name = epi.name, let email = epi.email, let digitsOnlyPhone = epi.digitsOnlyPhone, let password = epi.password1, let communityId = epi.communityId else { return }
         
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
@@ -180,6 +188,7 @@ class EditProfileViewController: MoochModalViewController {
             phone: digitsOnlyPhone,
             password: password,
             address: epi.address,
+            deviceToken: deviceToken,
             uploadProgressHandler: { [weak self] progress in
                 guard let strongSelf = self else { return }
                 strongSelf.loadingOverlayViewBeingShown?.update(withProgress: Float(progress.fractionCompleted))
@@ -232,6 +241,12 @@ class EditProfileViewController: MoochModalViewController {
         present(cameraViewController, animated: true, completion: nil)
     }
     
+    fileprivate func pushCommunityPicker() {
+        let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     fileprivate func dismissSelf(completion: (() -> Void)?) {
         isDismissingSelf = true
         dismiss(animated: true, completion: completion)
@@ -253,7 +268,7 @@ extension EditProfileViewController: EditProfileTableHandlerDelegate {
     }
     
     func didSelectCommunityCell() {
-        print("community cell")
+        pushCommunityPicker()
     }
 }
 
@@ -334,4 +349,14 @@ extension EditProfileViewController: UIImagePickerControllerDelegate {
 //Required by UIImagePickerController delegate property
 extension EditProfileViewController: UINavigationControllerDelegate {
     
+}
+
+extension EditProfileViewController: CommunityPickerViewControllerDelegate {
+    
+    func didPick(community: Community) {
+        
+        editedProfileInformation.communityId = community.id
+        tableHandler.reloadData()
+        navigationController?.popViewController(animated: true)
+    }
 }

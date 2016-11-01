@@ -157,9 +157,9 @@ class MoochAPI {
     }
     
     //The completion Bool will be true on success, false on failure/error
-    static func POSTUser(communityId: Int, photo: UIImage, name: String, email: String, phone: String, password: String, address: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
+    static func POSTUser(communityId: Int, photo: UIImage, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
         
-        let route = MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address)
+        let route = MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address, deviceToken: deviceToken)
         
         performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostUser.photo.rawValue, imageFileName: Strings.MoochAPI.userImageFilename.rawValue) { uploadRequest, error in
             
