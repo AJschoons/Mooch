@@ -16,7 +16,12 @@ struct EditedProfileInformation {
     private var fieldsShownToRequiredPairs: [(FieldType, Bool)]
     private var fieldsShownToRequiredMapping: [FieldType : Bool]
     
-    var photo: UIImage?
+    var photo: UIImage? {
+        didSet {
+            photoDidChange = true
+        }
+    }
+    
     var name: String?
     var email: String?
     var phone: String?
@@ -24,6 +29,8 @@ struct EditedProfileInformation {
     var password1: String?
     var password2: String?
     var communityId: Int?
+    
+    private(set) var photoDidChange = false
     
     init(fieldsShownToRequiredPairs: [(FieldType, Bool)]) {
         self.fieldsShownToRequiredPairs = fieldsShownToRequiredPairs
@@ -139,6 +146,15 @@ struct EditedProfileInformation {
             //If the community isn't required or present then it is valid
             return true
         }
+    }
+    
+    func isEditedInformationChanged(from user: User) -> Bool {
+        guard let name = name, let phone = phone else { return false }
+        
+        let hasRequiredVariableChanged = name != user.name || phone != user.contactInformation.phone
+        let hasAddressChanged = user.contactInformation.address != address
+        
+        return hasRequiredVariableChanged || hasAddressChanged || photoDidChange
     }
     
     func string(for fieldType: FieldType) -> String? {

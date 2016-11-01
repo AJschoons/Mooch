@@ -38,7 +38,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     case postExchange(listingOwnerId: Int, listingId: Int)
     case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
-    case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String)
+    case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String?)
     
     case putListing(listingId: Int, userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     case putUser(userId: Int, communityId: Int?, name: String?, phone: String?, password: String?, address: String?, deviceToken: String?)
@@ -149,8 +149,16 @@ enum MoochAPIRouter: URLRequestConvertible {
         
         case .postUser(let communityId, let name, let email, let phone, let password, let address, let deviceToken):
             typealias mapping = ParameterMapping.PostUser
+            
             var parameters: [String : Any] = [mapping.communityId.rawValue : communityId, mapping.name.rawValue : name, mapping.email.rawValue : email, mapping.phone.rawValue : phone, mapping.password.rawValue : password, mapping.deviceToken.rawValue : deviceToken, mapping.deviceType.rawValue : MoochAPIRouter.DeviceTypeValue]
+            
             if address != nil { parameters[mapping.address.rawValue] =  address! }
+            
+            if let deviceToken = deviceToken {
+                parameters[mapping.deviceToken.rawValue] = deviceToken
+                parameters[mapping.deviceType.rawValue] = MoochAPIRouter.DeviceTypeValue
+            }
+            
             return ("/users", .post, parameters, false)
             
         case .putListing(let listingId, let userId, let title, let description, let price, let isFree, let quantity, let categoryId):

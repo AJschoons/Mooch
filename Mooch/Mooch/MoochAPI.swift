@@ -157,7 +157,7 @@ class MoochAPI {
     }
     
     //The completion Bool will be true on success, false on failure/error
-    static func POSTUser(communityId: Int, photo: UIImage, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
+    static func POSTUser(communityId: Int, photo: UIImage?, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
         
         let route = MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address, deviceToken: deviceToken)
         
@@ -198,19 +198,23 @@ class MoochAPI {
     
     //The completion Bool will be true on success, false on failure/error
     //This route is meant for editing a User account, and the other PUTUser[...] routes are for updating single things
-    static func PUTUserEdited(userId: Int, photo: UIImage?, name: String?, phone: String?, address: String?, deviceToken: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (Bool, JSON?, Error?) -> Void) {
+    static func PUTUserEdited(userId: Int, photo: UIImage?, name: String, phone: String, address: String?, deviceToken: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
         
         let route = MoochAPIRouter.putUser(userId: userId, communityId: nil, name: name, phone: phone, password: nil, address: address, deviceToken: deviceToken)
         
         performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostUser.photo.rawValue, imageFileName: Strings.MoochAPI.userImageFilename.rawValue) { uploadRequest, error in
+            
             guard let uploadRequest = uploadRequest else {
-                completion(false, nil, error)
+                completion(nil, error)
                 return
             }
             
             uploadRequest.uploadProgress(closure: uploadProgressHandler)
-            validate(dataRequestNotExpectingResponse: uploadRequest) { success, json, error in
-                completion(success, json, error)
+            validate(dataRequestExpectingResponse: uploadRequest) { json, error in
+                let processedResult = processLocalUser(fromJSON: json, withError: error)
+                let localUser = processedResult.0
+                let error = processedResult.1
+                completion(localUser, error)
             }
         }
     }

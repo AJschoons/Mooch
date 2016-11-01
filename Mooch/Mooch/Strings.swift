@@ -63,12 +63,16 @@ enum Strings {
         case fieldTypePassword2TextDescription = "Confirm Password"
         
         case invalidCreationErrorAlertTitle = "Problem creating profile"
+        case invalidEditingErrorAlertTitle = "Problem editing profile"
         case invalidCreationErrorAlertMessageUnfilledInfoFirstPart = "Please complete filling out the information for the "
         case invalidCreationErrorAlertMessageUnfilledInfoSecondPart = " field"
         case invalidCreationErrorAlertMessageEmail = "Please enter a valid email address"
         case invalidCreationErrorAlertMessagePhone = "Please enter a valid phone number"
         case invalidCreationErrorAlertMessagePassword = "Please enter a valid password. Passwords must be 6-30 characters"
         case invalidCreationErrorAlertMessagePasswordMatch = "Please check that the passwords match"
+        case invalidCreationErrorAlertMessageCommunity = "Please select a community"
+        
+        case noInformationChangedAlertMessage = "The profile information has not been changed"
         
         case uploadingNewLoadingOverlay = "Uploading Profile"
         case uploadingNewErrorAlertTitle = "Problem Uploading Profile"

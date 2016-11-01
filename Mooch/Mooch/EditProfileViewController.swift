@@ -6,6 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
+import Alamofire
 import UIKit
 
 protocol EditProfileField {
@@ -93,10 +94,14 @@ class EditProfileViewController: MoochModalViewController {
         
         self.user = user
         
+        //The info we are editing
         editedProfileInformation.photo = photo
         editedProfileInformation.name = user.name
         editedProfileInformation.phone = user.contactInformation.phone
         editedProfileInformation.address = user.contactInformation.address
+        
+        //This info isn't being edited but is needed for sending to the API in the PUT
+        editedProfileInformation.email = user.contactInformation.email
     }
     
     override func setup() {
@@ -165,26 +170,39 @@ class EditProfileViewController: MoochModalViewController {
     
     //Returns true if the Done action is validated, else handles notifying the user
     private func isDoneValidated() -> Bool {
-        //Editing not yet supported
-        if configuration.mode == .editing {
+        guard isEditedProfileInformationValid() else {
+            presentInvalidEditedProfileAlert()
             return false
-        } else if configuration.mode == .creating {
-            if isValidProfileCreation() {
+        }
+        
+        switch configuration.mode {
+            
+        case .creating:
+            return true
+            
+        case .editing:
+            guard let user = user else { return false }
+            if editedProfileInformation.isEditedInformationChanged(from: user) {
                 return true
             } else {
-                presentInvalidProfileCreationAlert()
+                presentNoInformationChangedAlert()
                 return false
             }
         }
-        
-        return false
     }
     
     private func uploadProfile() {
-        //Only creation is supported right now
-        guard isValidProfileCreation() else { return }
-        guard let epi = editedProfileInformation, let deviceToken = PushNotificationsManager.sharedInstance.deviceToken else { return }
-        guard let photo = epi.photo, let name = epi.name, let email = epi.email, let digitsOnlyPhone = epi.digitsOnlyPhone, let password = epi.password1, let communityId = epi.communityId else { return }
+        guard isEditedProfileInformationValid() else { return }
+        guard let epi = editedProfileInformation else { return }
+        guard let name = epi.name, let email = epi.email, let digitsOnlyPhone = epi.digitsOnlyPhone else { return }
+        let deviceToken = PushNotificationsManager.sharedInstance.deviceToken
+        
+        let isNew = configuration.mode == .creating
+        var userId: Int?
+        if !isNew {
+            guard let user = user else { return }
+            userId = user.id
+        }
         
         //Make it so the keyboard doesn't show while uploading
         view.endEditing(true)
@@ -194,14 +212,16 @@ class EditProfileViewController: MoochModalViewController {
         
         showLoadingOverlayView(withInformationText: Strings.EditProfile.uploadingNewLoadingOverlay.rawValue, overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: true, withHiddenAlertView: false)
         
-        MoochAPI.POSTUser(
-            communityId: communityId,
-            photo: photo,
+        uploadProfileInformationToAPI(
+            isNew: isNew,
+            userId: userId,
+            photo: epi.photo,
             name: name,
             email: email,
-            phone: digitsOnlyPhone,
-            password: password,
+            digitsOnlyPhone: digitsOnlyPhone,
             address: epi.address,
+            password: epi.password1,
+            communityId: epi.communityId,
             deviceToken: deviceToken,
             uploadProgressHandler: { [weak self] progress in
                 guard let strongSelf = self else { return }
@@ -223,12 +243,45 @@ class EditProfileViewController: MoochModalViewController {
         )
     }
     
-    private func isValidProfileCreation() -> Bool {
+    private func uploadProfileInformationToAPI(isNew: Bool, userId: Int?, photo: UIImage?, name: String, email: String, digitsOnlyPhone: String, address: String?, password: String?, communityId: Int?, deviceToken: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
+        
+        if isNew {
+            guard let password = password, let communityId = communityId else { return }
+            
+            MoochAPI.POSTUser(
+                communityId: communityId,
+                photo: photo,
+                name: name,
+                email: email,
+                phone: digitsOnlyPhone,
+                password: password,
+                address: address,
+                deviceToken: deviceToken,
+                uploadProgressHandler: uploadProgressHandler,
+                completion: completion
+            )
+        } else {
+            guard let userId = userId else { return }
+            
+            MoochAPI.PUTUserEdited(
+                userId: userId,
+                photo: photo,
+                name: name,
+                phone: digitsOnlyPhone,
+                address: address,
+                deviceToken: deviceToken,
+                uploadProgressHandler: uploadProgressHandler,
+                completion: completion
+            )
+        }
+    }
+    
+    private func isEditedProfileInformationValid() -> Bool {
         return editedProfileInformation.isAllRequiredInformationFilledAndValid
     }
     
-    private func presentInvalidProfileCreationAlert() {
-        let title = Strings.EditProfile.invalidCreationErrorAlertTitle.rawValue
+    private func presentInvalidEditedProfileAlert() {
+        let title = configuration.mode == .creating ? Strings.EditProfile.invalidCreationErrorAlertTitle.rawValue : Strings.EditProfile.invalidEditingErrorAlertTitle.rawValue
         var message = ""
         let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
         
@@ -243,8 +296,18 @@ class EditProfileViewController: MoochModalViewController {
             message = Strings.EditProfile.invalidCreationErrorAlertMessagePassword.rawValue
         } else if !editedProfileInformation.isPasswordMatchValid {
             message = Strings.EditProfile.invalidCreationErrorAlertMessagePasswordMatch.rawValue
+        } else if !editedProfileInformation.isCommunityValid {
+            message = Strings.EditProfile.invalidCreationErrorAlertMessageCommunity.rawValue
         }
         
+        presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
+    }
+    
+    private func presentNoInformationChangedAlert() {
+        guard configuration.mode == .editing else { return }
+        let title = Strings.EditProfile.invalidEditingErrorAlertTitle.rawValue
+        let message = Strings.EditProfile.noInformationChangedAlertMessage.rawValue
+        let actionTitle = Strings.Alert.defaultSingleActionTitle.rawValue
         presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
     }
     
