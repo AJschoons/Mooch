@@ -21,7 +21,7 @@ class EditProfilePhotoCell: UITableViewCell, EditProfileField {
     }
     
     static let Identifier = "EditProfilePhotoCell"
-    static let EstimatedHeight: CGFloat = 220
+    static let EstimatedHeight: CGFloat = 190
     
     @IBOutlet private weak var photoAddingView: PhotoAddingView!
     @IBOutlet private weak var editPhotoButton: UIButton!

@@ -13,6 +13,8 @@ class EditProfileTextCell: UITableViewCell, EditProfileField {
     static let Identifier = "EditProfileTextCell"
     static let EstimatedHeight: CGFloat = 40
     
+    
+    @IBOutlet weak var topSpacingConstraint: NSLayoutConstraint!
     @IBOutlet weak var fieldLabel: UILabel!
     @IBOutlet weak var textField: EditProfileTextField!
     @IBOutlet weak var bottomSeperator: UIView!

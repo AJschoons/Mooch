@@ -22,18 +22,18 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pbG-vb-czt">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfilePhotoCell" rowHeight="220" id="Cpa-5l-28J" customClass="EditProfilePhotoCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="220"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfilePhotoCell" rowHeight="190" id="Cpa-5l-28J" customClass="EditProfilePhotoCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="190"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cpa-5l-28J" id="DUS-bu-wlC">
-                                            <frame key="frameInset" width="375" height="220"/>
+                                            <frame key="frameInset" width="375" height="190"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CiD-47-1vw" customClass="PhotoAddingView" customModule="Mooch" customModuleProvider="target">
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="CiD-47-1vw" secondAttribute="height" multiplier="1:1" id="3bp-ID-k5F"/>
-                                                        <constraint firstAttribute="height" constant="172" id="nwH-xr-OmB"/>
+                                                        <constraint firstAttribute="height" constant="160" id="nwH-xr-OmB"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gGi-6E-rnV">
@@ -55,12 +55,12 @@
                                             <constraints>
                                                 <constraint firstItem="SYJ-pC-FKS" firstAttribute="trailing" secondItem="DUS-bu-wlC" secondAttribute="trailing" constant="-15" id="IwI-wB-v3g"/>
                                                 <constraint firstAttribute="trailing" secondItem="gGi-6E-rnV" secondAttribute="trailing" id="Msg-ue-N5a"/>
-                                                <constraint firstItem="CiD-47-1vw" firstAttribute="top" secondItem="DUS-bu-wlC" secondAttribute="top" constant="24" id="UTP-Xu-Llg"/>
+                                                <constraint firstItem="CiD-47-1vw" firstAttribute="top" secondItem="DUS-bu-wlC" secondAttribute="top" constant="15" id="UTP-Xu-Llg"/>
                                                 <constraint firstAttribute="bottom" secondItem="SYJ-pC-FKS" secondAttribute="bottom" constant="15" id="dG6-pT-pPt"/>
                                                 <constraint firstAttribute="bottom" secondItem="gGi-6E-rnV" secondAttribute="bottom" id="dgW-YK-wOg"/>
                                                 <constraint firstItem="CiD-47-1vw" firstAttribute="centerX" secondItem="DUS-bu-wlC" secondAttribute="centerX" id="jG4-nx-SEI"/>
                                                 <constraint firstItem="gGi-6E-rnV" firstAttribute="leading" secondItem="DUS-bu-wlC" secondAttribute="leading" id="nEi-TT-h6p"/>
-                                                <constraint firstAttribute="bottom" secondItem="CiD-47-1vw" secondAttribute="bottom" constant="24" id="v1h-j9-Kkl"/>
+                                                <constraint firstAttribute="bottom" secondItem="CiD-47-1vw" secondAttribute="bottom" constant="15" id="v1h-j9-Kkl"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -70,7 +70,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfileTextCell" rowHeight="40" id="Srj-XL-zhP" customClass="EditProfileTextCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="248" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="218" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Srj-XL-zhP" id="5oo-pD-0dR">
                                             <frame key="frameInset" width="375" height="40"/>
@@ -113,10 +113,11 @@
                                             <outlet property="bottomSeperator" destination="hef-jv-2WT" id="2hL-xG-6ii"/>
                                             <outlet property="fieldLabel" destination="qqA-n9-bst" id="oLP-JP-uqO"/>
                                             <outlet property="textField" destination="KoQ-e4-FXc" id="i3W-42-VDq"/>
+                                            <outlet property="topSpacingConstraint" destination="VGz-Qa-WeG" id="zYg-S9-pmz"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="EditProfileCommunityCell" rowHeight="40" id="BhK-bd-X63" customClass="EditProfileCommunityCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="288" width="375" height="40"/>
+                                        <rect key="frame" x="0.0" y="258" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BhK-bd-X63" id="PyA-E5-smD">
                                             <frame key="frameInset" width="342" height="40"/>
@@ -162,7 +163,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfileActionsCell" rowHeight="138" id="087-8t-dec" customClass="EditProfileActionsCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="328" width="375" height="138"/>
+                                        <rect key="frame" x="0.0" y="298" width="375" height="138"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="087-8t-dec" id="aFY-nI-Wab">
                                             <frame key="frameInset" width="375" height="138"/>

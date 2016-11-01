@@ -156,6 +156,17 @@ class EditProfileTableHandler: NSObject {
         }
         
         lastTextViewConfigured = cell.textField
+        
+        
+        //
+        //Make the password fields "appear" to be the same cell ;)
+        //
+        if fieldType == .password1 {
+            cell.bottomSeperator.isHidden = true
+        } else if fieldType == .password2 {
+            cell.fieldLabel.text = "Confirm:"
+            cell.topSpacingConstraint.constant = 2
+        }
     }
     
     //Returns the field label text for fieldTypes that are used in the EditProfileText cells
