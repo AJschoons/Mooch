@@ -175,6 +175,9 @@ class EditProfileViewController: MoochModalViewController {
         guard let epi = editedProfileInformation, let deviceToken = PushNotificationsManager.sharedInstance.deviceToken else { return }
         guard let photo = epi.photo, let name = epi.name, let email = epi.email, let digitsOnlyPhone = epi.digitsOnlyPhone, let password = epi.password1, let communityId = epi.communityId else { return }
         
+        //Make it so the keyboard doesn't show while uploading
+        view.endEditing(true)
+        
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
         
