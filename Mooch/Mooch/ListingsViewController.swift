@@ -18,8 +18,8 @@ class ListingsViewController: MoochViewController {
     enum Mode {
         case independent    //When its being shown by itself; has to get its own listings
         case nestedInSearch //When its being used by another view controller; given its listings
-        case generalInSearch//When its being used by another view controller; given its listings; sending the search action
     }
+    
     
     
     // MARK: Public variables
@@ -39,9 +39,7 @@ class ListingsViewController: MoochViewController {
             case .independent:
                 return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
             case .nestedInSearch:
-                return _givenListings
-            case .generalInSearch:
-                return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
+                return isSearching ? searchListings! : _givenListings
             }
         }
         set {
@@ -56,7 +54,7 @@ class ListingsViewController: MoochViewController {
     }
     
     var searchListings: [Listing]?
-    
+    var isFromSearchBar = false
     // MARK: Private variables
     
     static fileprivate let StoryboardName = "Listings"
@@ -73,7 +71,10 @@ class ListingsViewController: MoochViewController {
         guard let filter = filterApplied else {
             return [Listing]()
         }
-        
+        if (isSearching) {
+            searchListings = ListingProcessingHandler.filter(listings: listings, with: filter)
+            return searchListings!
+        }
         return ListingProcessingHandler.filter(listings: listings, with: filter)
     }
     
@@ -102,7 +103,9 @@ class ListingsViewController: MoochViewController {
         //The data needs to be reloaded when in .nestedInSearch mode because _givenListings is initially mil
         if mode == .nestedInSearch {
             collectionHandler.reloadData()
-        } else if mode == .generalInSearch {
+        }
+        
+        if isFromSearchBar {
             searchBar.becomeFirstResponder()
         }
     }

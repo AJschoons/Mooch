@@ -70,7 +70,8 @@ class SearchViewController: MoochViewController {
     func pushListingsViewController(with listings: [Listing], isFromCell : Bool = true) {
         guard let navC = navigationController else { return }
         let vc = ListingsViewController.instantiateFromStoryboard()
-        vc.mode = isFromCell ? .nestedInSearch : .generalInSearch
+        vc.isFromSearchBar = !isFromCell
+        vc.mode = .nestedInSearch
         vc.listings = listings
         navC.pushViewController(vc, animated: isFromCell)
     }
