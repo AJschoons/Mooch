@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol EditProfileTableHandlerDelegate: class, PhotoAddingViewDelegate, EditProfileActionsCellDelegate {
+protocol EditProfileTableHandlerDelegate: class, EditProfilePhotoCellDelegate, EditProfileActionsCellDelegate {
     func getConfiguration() -> EditProfileConfiguration
     func getTextHandler() -> EditProfileTextHandler
     func getEditedProfileInformation() -> EditedProfileInformation
@@ -109,7 +109,7 @@ class EditProfileTableHandler: NSObject {
     
     //Configures an EditProfilePhotoCell
     fileprivate func configure(editProfilePhotoCell cell: EditProfilePhotoCell) {
-        cell.photoAddingView.delegate = delegate
+        cell.delegate = delegate
     }
     
     //Configures an EditProfileActionsCell

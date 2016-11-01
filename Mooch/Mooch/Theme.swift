@@ -15,6 +15,7 @@ class Theming {
 
 enum ThemeColors {
     
+    case border
     case formSeperator
     
     case listingDetailsActionBackground
@@ -33,6 +34,9 @@ enum ThemeColors {
     private func colorRGBA() -> (Int, Int, Int, Float) {
         switch self {
         
+        case .border:
+            return (170, 170, 170, 1.0) //Currently: "Light Gray Color"
+            
         case .formSeperator:
             return (230, 233, 237, 1.0)
             

@@ -64,8 +64,8 @@ class EditProfileViewController: MoochModalViewController {
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
     fileprivate var isDismissingSelf = false
     
-    //Tracks which photo adding view the camera is taking a picture for
-    fileprivate var currentPhotoAddingView: PhotoAddingView?
+    //Tracks which cell the camera is taking a picture for
+    fileprivate var currentEditProfilePhotoCell: EditProfilePhotoCell?
     
     fileprivate var state: State = .editing
     
@@ -234,8 +234,8 @@ class EditProfileViewController: MoochModalViewController {
         presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
     }
     
-    fileprivate func presentCameraViewController(forPhotoAddingView photoAddingView: PhotoAddingView) {
-        currentPhotoAddingView = photoAddingView
+    fileprivate func presentCameraViewController(for editProfilePhotoCell: EditProfilePhotoCell) {
+        currentEditProfilePhotoCell = editProfilePhotoCell
         let cameraViewController = CameraViewController()
         cameraViewController.delegate = self
         present(cameraViewController, animated: true, completion: nil)
@@ -302,14 +302,10 @@ extension EditProfileViewController: EditProfileTextHandlerDelegate {
     }
 }
 
-extension EditProfileViewController: PhotoAddingViewDelegate {
+extension EditProfileViewController: EditProfilePhotoCellDelegate {
     
-    func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
-        presentCameraViewController(forPhotoAddingView: photoAddingView)
-    }
-    
-    func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
-        editedProfileInformation.photo = nil
+    func editProfilePhotoCellDidReceiveEditAction(_ editProfilePhotoCell: EditProfilePhotoCell) {
+        presentCameraViewController(for: editProfilePhotoCell)
     }
 }
 
@@ -328,12 +324,12 @@ extension EditProfileViewController: UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         guard let photo = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            currentPhotoAddingView = nil
+            currentEditProfilePhotoCell = nil
             return
         }
         
-        currentPhotoAddingView?.photo = photo
-        currentPhotoAddingView = nil
+        currentEditProfilePhotoCell?.set(photo: photo)
+        currentEditProfilePhotoCell = nil
         
         editedProfileInformation.photo = photo
         
@@ -341,7 +337,7 @@ extension EditProfileViewController: UIImagePickerControllerDelegate {
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        currentPhotoAddingView = nil
+        currentEditProfilePhotoCell = nil
         dismiss(animated: true, completion: nil)
     }
 }
