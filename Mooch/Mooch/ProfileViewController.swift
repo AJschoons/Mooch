@@ -87,7 +87,7 @@ class ProfileViewController: MoochViewController {
     }
     
     static func tabBarItem() -> UITabBarItem {
-        return UITabBarItem(title: Strings.TabBar.myProfile.rawValue, image: nil, selectedImage: nil)
+        return UITabBarItem(title: Strings.TabBar.myProfile.rawValue, image: #imageLiteral(resourceName: "tabBarProfileUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarProfileSelected"))
     }
     
     // MARK: Private methods
