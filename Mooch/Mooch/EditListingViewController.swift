@@ -223,6 +223,9 @@ class EditListingViewController: MoochModalViewController {
             listingId = listing.id
         }
         
+        //Make it so the keyboard doesn't show while uploading
+        view.endEditing(true)
+        
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
         

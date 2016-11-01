@@ -97,6 +97,8 @@
 		818304E81DB0595600E74202 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818304E71DB0595600E74202 /* SearchViewController.swift */; };
 		818304EA1DB0597100E74202 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 818304E91DB0597100E74202 /* Search.storyboard */; };
 		818304EC1DB05BBA00E74202 /* DummySellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818304EB1DB05BBA00E74202 /* DummySellViewController.swift */; };
+		81A068F41DC7926E00883EAD /* EditProfileCommunityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A068F31DC7926E00883EAD /* EditProfileCommunityCell.swift */; };
+		81A068F61DC793DA00883EAD /* EditProfileActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A068F51DC793DA00883EAD /* EditProfileActionsCell.swift */; };
 		81A09FDA1D9B34DB0021D3FA /* PhotoAddingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */; };
 		81A09FDC1D9B350B0021D3FA /* PhotoAddingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */; };
 		81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */; };
@@ -262,6 +264,8 @@
 		818304E71DB0595600E74202 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		818304E91DB0597100E74202 /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		818304EB1DB05BBA00E74202 /* DummySellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummySellViewController.swift; sourceTree = "<group>"; };
+		81A068F31DC7926E00883EAD /* EditProfileCommunityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileCommunityCell.swift; sourceTree = "<group>"; };
+		81A068F51DC793DA00883EAD /* EditProfileActionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileActionsCell.swift; sourceTree = "<group>"; };
 		81A09FD91D9B34DB0021D3FA /* PhotoAddingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoAddingView.xib; sourceTree = "<group>"; };
 		81A09FDB1D9B350B0021D3FA /* PhotoAddingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAddingView.swift; sourceTree = "<group>"; };
 		81A09FDD1D9B36220021D3FA /* RoundedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
@@ -662,10 +666,10 @@
 		816623A91DA05FB4009AE72B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				81021E351DC6E2E400FBE37B /* EditListingActionsCell.swift */,
 				816623A71DA058BA009AE72B /* EditListingCategoryCell.swift */,
 				814DB9CF1D91DE90006F34E9 /* EditListingPhotoCell.swift */,
 				814DB9C71D8F668E006F34E9 /* EditListingTextCell.swift */,
-				81021E351DC6E2E400FBE37B /* EditListingActionsCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -722,6 +726,8 @@
 		81CBF0C71DAB57130066DA75 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				81A068F51DC793DA00883EAD /* EditProfileActionsCell.swift */,
+				81A068F31DC7926E00883EAD /* EditProfileCommunityCell.swift */,
 				81CBF0C81DAB57470066DA75 /* EditProfilePhotoCell.swift */,
 				81CBF0CA1DAB57C70066DA75 /* EditProfileTextCell.swift */,
 			);
@@ -1068,6 +1074,7 @@
 				817CA0961DA31C3B00489374 /* UserLoginInformationValidator.swift in Sources */,
 				81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */,
 				81CBF0C61DAB53010066DA75 /* EditProfileTextField.swift in Sources */,
+				81A068F61DC793DA00883EAD /* EditProfileActionsCell.swift in Sources */,
 				81CBF0C41DAB50090066DA75 /* EditProfileConfiguation.swift in Sources */,
 				81F0EA561D9978CF00C7AD09 /* EditListingConfiguration.swift in Sources */,
 				811967661DB7D7FC00D085C7 /* CommunityPickerCollectionHandler.swift in Sources */,
@@ -1110,6 +1117,7 @@
 				81F21A1A1DB4153000D442F8 /* GradientView.swift in Sources */,
 				81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */,
 				81E97F5A1DBFE87100AA88E1 /* ProfileCollectionHandler.swift in Sources */,
+				81A068F41DC7926E00883EAD /* EditProfileCommunityCell.swift in Sources */,
 				81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */,
 				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
 				815BCF071D7E78FD0022F806 /* Community.swift in Sources */,

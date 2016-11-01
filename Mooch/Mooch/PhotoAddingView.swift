@@ -10,7 +10,6 @@ import UIKit
 
 protocol PhotoAddingViewDelegate: class {
     func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView)
-    func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView)
 }
 
 //View for adding, changing, and displaying a photo
@@ -18,7 +17,7 @@ protocol PhotoAddingViewDelegate: class {
 //http://stackoverflow.com/questions/9251202/how-do-i-create-a-custom-ios-view-class-and-instantiate-multiple-copies-of-it-i
 class PhotoAddingView: UIView {
     
-    private enum State {
+    enum State {
         case noPhoto
         case hasPhoto
     }
@@ -27,6 +26,7 @@ class PhotoAddingView: UIView {
     
     weak var delegate: PhotoAddingViewDelegate!
     
+    //Use this variable to update and change the state
     var photo: UIImage? {
         didSet {
             photoImageView.image = photo
@@ -38,19 +38,19 @@ class PhotoAddingView: UIView {
         delegate.photoAddingViewReceivedAddPhotoAction(self)
     }
     
-    @IBAction func onDeletePhotoButton() {
-        photo = nil
-        delegate.photoAddingViewReceivedDeletePhotoAction(self)
-    }
-    
-    @IBOutlet private weak var photoImageView: RoundedImageView!
+    @IBOutlet private weak var photoImageView: CircleImageView!
     @IBOutlet private weak var addPhotoButton: RoundedButton!
-    @IBOutlet private weak var deletePhotoButton: UIButton!
     
     private var state: State {
         didSet {
             updateUI(forState: state)
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        addPhotoButton.cornerRadius = view.bounds.width / 2
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -61,19 +61,29 @@ class PhotoAddingView: UIView {
         self.addSubview(view)
         view.frame = self.bounds
         
+        setup()
+        
         updateUI(forState: .noPhoto)
+    }
+    
+    private func setup() {
+        photoImageView.borderColor = ThemeColors.border.color()
+        photoImageView.backgroundColor = ThemeColors.moochGray.color()
+        photoImageView.borderWidth = 1.0
+        
+        addPhotoButton.borderColor = ThemeColors.border.color()
+        addPhotoButton.borderWidth = 1.0
     }
     
     private func updateUI(forState state: State) {
         switch state {
         case .noPhoto:
-            photoImageView.isHidden = true
-            addPhotoButton.isHidden = false
-            deletePhotoButton.isHidden = true
-        case  .hasPhoto:
-            photoImageView.isHidden = false
-            addPhotoButton.isHidden = true
-            deletePhotoButton.isHidden = false
+            addPhotoButton.backgroundColor = ThemeColors.moochGray.color()
+            addPhotoButton.setImage(#imageLiteral(resourceName: "add").imageWithColor(color: ThemeColors.moochRed.color()), for: .normal)
+            
+        case .hasPhoto:
+            addPhotoButton.backgroundColor = UIColor.clear
+            addPhotoButton.setImage(nil, for: .normal)
         }
     }
 }

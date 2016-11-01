@@ -51,7 +51,7 @@ enum Strings {
     enum EditProfile: String {
         case cancelButtonTitle = "Cancel"
         
-        case defaultCreatingTitle = "Create Profile"
+        case defaultCreatingTitle = "Create Account"
         case defaultEditingTitle = "Edit Profile"
         
         case fieldTypePhotoTextDescription = "Photo"
@@ -74,7 +74,7 @@ enum Strings {
         case uploadingNewErrorAlertTitle = "Problem Uploading Profile"
         case uploadingNewErrorAlertMessage = "Please try uploading the profile again"
         
-        case unselectedCategory = "Unselected"
+        case unselectedCommunity = "Unselected"
     }
     
     enum InitialLoading: String {

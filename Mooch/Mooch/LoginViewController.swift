@@ -182,7 +182,7 @@ class LoginViewController: MoochModalViewController {
     
     fileprivate func presentEditProfileViewController() {
         let vc = EditProfileViewController.instantiateFromStoryboard()
-        vc.configuration = EditProfileViewController.DefaultCreatingConfiguration
+        vc.configuration = EditProfileConfiguration.defaultConfiguration(for: .creating)
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)

@@ -23,11 +23,12 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M64-eq-eao" userLabel="top">
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37M-6f-dTF">
+                                                    <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37M-6f-dTF">
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="30" id="iEt-71-fUg"/>
                                                             <constraint firstAttribute="width" constant="30" id="nXq-dW-zkz"/>
                                                         </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <state key="normal" image="cancel">
                                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
@@ -44,11 +45,11 @@
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstItem="r67-2t-Qw1" firstAttribute="top" secondItem="M64-eq-eao" secondAttribute="top" id="ILt-Tj-jG8"/>
-                                                    <constraint firstItem="37M-6f-dTF" firstAttribute="leading" secondItem="M64-eq-eao" secondAttribute="leading" constant="8" id="PMl-eq-3Qq"/>
+                                                    <constraint firstItem="37M-6f-dTF" firstAttribute="leading" secondItem="M64-eq-eao" secondAttribute="leading" constant="12" id="PMl-eq-3Qq"/>
                                                     <constraint firstAttribute="trailing" secondItem="r67-2t-Qw1" secondAttribute="trailing" id="nNp-8e-8Vx"/>
                                                     <constraint firstAttribute="bottom" secondItem="r67-2t-Qw1" secondAttribute="bottom" id="tg0-2y-fxP"/>
                                                     <constraint firstItem="r67-2t-Qw1" firstAttribute="leading" secondItem="M64-eq-eao" secondAttribute="leading" id="weR-As-DLn"/>
-                                                    <constraint firstItem="37M-6f-dTF" firstAttribute="top" secondItem="M64-eq-eao" secondAttribute="top" id="zhj-If-LWD"/>
+                                                    <constraint firstItem="37M-6f-dTF" firstAttribute="top" secondItem="M64-eq-eao" secondAttribute="top" constant="5" id="zhj-If-LWD"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I97-KW-kal" userLabel="middle">
@@ -167,6 +168,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cancel" width="32" height="32"/>
+        <image name="cancel" width="24" height="25"/>
     </resources>
 </document>

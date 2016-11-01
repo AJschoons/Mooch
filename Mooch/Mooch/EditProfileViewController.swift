@@ -26,9 +26,6 @@ class EditProfileViewController: MoochModalViewController {
     
     // MARK: Public variables
     
-    static let DefaultCreatingConfiguration = EditProfileConfiguration(mode: .creating, title: Strings.EditProfile.defaultCreatingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, true), (.name, true), (.email, true), (.phone, true), (.address, false), (.password1, true), (.password2, true)])
-    static let DefaultEditingConfiguration = EditProfileConfiguration(mode: .creating, title: Strings.EditProfile.defaultEditingTitle.rawValue, leftBarButtons: [.cancel], rightBarButtons: [.done], fieldsShownToRequiredPairs: [(.photo, false), (.name, false), (.email, false), (.phone, false), (.address, false), (.password1, false), (.password2, false)])
-    
     @IBOutlet var tableHandler: EditProfileTableHandler! {
         didSet { tableHandler.delegate = self }
     }
@@ -44,6 +41,11 @@ class EditProfileViewController: MoochModalViewController {
         didSet {
             editedProfileInformation = EditedProfileInformation(fieldsShownToRequiredPairs: configuration.fieldsShownToRequiredPairs)
             tableHandler.indexOfLastTextfieldCell = configuration.indexOfLastFieldType(conformingToMapping: tableHandler.isTextField)
+            
+            //When creating a profile, default the community to the current one the guest is in
+            if configuration.mode == .creating, let communityId = LocalUserManager.sharedInstance.userCommunityId {
+                editedProfileInformation.communityId = communityId
+            }
         }
     }
     
@@ -56,17 +58,14 @@ class EditProfileViewController: MoochModalViewController {
     static fileprivate let StoryboardName = "EditProfile"
     static fileprivate let Identifier = "EditProfileViewController"
     
-    fileprivate var doneButton: UIBarButtonItem!
-    fileprivate var cancelButton: UIBarButtonItem!
-    
     //Used to track what Profile information has been edited
     fileprivate var editedProfileInformation: EditedProfileInformation!
     
     //Used to differentiate view will/did disappear messages from when another view is being presented or pushed
     fileprivate var isDismissingSelf = false
     
-    //Tracks which photo adding view the camera is taking a picture for
-    fileprivate var currentPhotoAddingView: PhotoAddingView?
+    //Tracks which cell the camera is taking a picture for
+    fileprivate var currentEditProfilePhotoCell: EditProfilePhotoCell?
     
     fileprivate var state: State = .editing
     
@@ -85,6 +84,7 @@ class EditProfileViewController: MoochModalViewController {
         guard state != .uploading else { return }
         dismissSelf(completion: nil)
     }
+    
     
     // MARK: Public methods
     
@@ -137,35 +137,10 @@ class EditProfileViewController: MoochModalViewController {
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
-        doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onDoneAction))
-        cancelButton = UIBarButtonItem(title: Strings.EditProfile.cancelButtonTitle.rawValue, style: UIBarButtonItemStyle.plain, target: self, action: #selector(onCancelAction))
-        
         title = configuration.title
         
-        if let leftButtons = configuration.leftBarButtons {
-            navigationItem.leftBarButtonItems = barButtons(fromTypeList: leftButtons)
-        } else {
-            navigationItem.leftBarButtonItems = nil
-        }
-        
-        if let rightButtons = configuration.rightBarButtons {
-            navigationItem.rightBarButtonItems = barButtons(fromTypeList: rightButtons)
-        } else {
-            navigationItem.rightBarButtonItems = nil
-        }
-    }
-    
-    fileprivate func barButtons(fromTypeList typeList: [EditProfileConfiguration.BarButtonType]) -> [UIBarButtonItem] {
-        return typeList.map({barButton(forType: $0)})
-    }
-    
-    fileprivate func barButton(forType type: EditProfileConfiguration.BarButtonType) -> UIBarButtonItem {
-        switch type {
-        case .cancel:
-            return cancelButton
-        case .done:
-            return doneButton
-        }
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func registerForKeyboardNotifacations() {
@@ -197,8 +172,11 @@ class EditProfileViewController: MoochModalViewController {
     private func uploadProfile() {
         //Only creation is supported right now
         guard isValidProfileCreation() else { return }
-        guard let communityId = LocalUserManager.sharedInstance.userCommunityId, let epi = editedProfileInformation else { return }
-        guard let photo = epi.photo, let name = epi.name, let email = epi.email, let digitsOnlyPhone = epi.digitsOnlyPhone, let password = epi.password1 else { return }
+        guard let epi = editedProfileInformation, let deviceToken = PushNotificationsManager.sharedInstance.deviceToken else { return }
+        guard let photo = epi.photo, let name = epi.name, let email = epi.email, let digitsOnlyPhone = epi.digitsOnlyPhone, let password = epi.password1, let communityId = epi.communityId else { return }
+        
+        //Make it so the keyboard doesn't show while uploading
+        view.endEditing(true)
         
         //This allows the view controller to disable buttons/actions while loading
         state = .uploading
@@ -213,6 +191,7 @@ class EditProfileViewController: MoochModalViewController {
             phone: digitsOnlyPhone,
             password: password,
             address: epi.address,
+            deviceToken: deviceToken,
             uploadProgressHandler: { [weak self] progress in
                 guard let strongSelf = self else { return }
                 strongSelf.loadingOverlayViewBeingShown?.update(withProgress: Float(progress.fractionCompleted))
@@ -244,7 +223,7 @@ class EditProfileViewController: MoochModalViewController {
         
         if !editedProfileInformation.isRequiredInformationFilled {
             guard let fieldToNotifyAbout = editedProfileInformation.firstUnfilledRequiredFieldType() else { return }
-            message = "\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoSecondPart.rawValue))"
+            message = "\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoFirstPart.rawValue)\(configuration.textDescription(forFieldType: fieldToNotifyAbout))\(Strings.EditProfile.invalidCreationErrorAlertMessageUnfilledInfoSecondPart.rawValue)"
         } else if !editedProfileInformation.isEmailValid {
             message = Strings.EditProfile.invalidCreationErrorAlertMessageEmail.rawValue
         } else if !editedProfileInformation.isPhoneValid {
@@ -258,11 +237,17 @@ class EditProfileViewController: MoochModalViewController {
         presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
     }
     
-    fileprivate func presentCameraViewController(forPhotoAddingView photoAddingView: PhotoAddingView) {
-        currentPhotoAddingView = photoAddingView
+    fileprivate func presentCameraViewController(for editProfilePhotoCell: EditProfilePhotoCell) {
+        currentEditProfilePhotoCell = editProfilePhotoCell
         let cameraViewController = CameraViewController()
         cameraViewController.delegate = self
         present(cameraViewController, animated: true, completion: nil)
+    }
+    
+    fileprivate func pushCommunityPicker() {
+        let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     fileprivate func dismissSelf(completion: (() -> Void)?) {
@@ -283,6 +268,10 @@ extension EditProfileViewController: EditProfileTableHandlerDelegate {
     
     func getEditedProfileInformation() -> EditedProfileInformation {
         return editedProfileInformation
+    }
+    
+    func didSelectCommunityCell() {
+        pushCommunityPicker()
     }
 }
 
@@ -316,15 +305,21 @@ extension EditProfileViewController: EditProfileTextHandlerDelegate {
     }
 }
 
-
-extension EditProfileViewController: PhotoAddingViewDelegate {
+extension EditProfileViewController: EditProfilePhotoCellDelegate {
     
-    func photoAddingViewReceivedAddPhotoAction(_ photoAddingView: PhotoAddingView) {
-        presentCameraViewController(forPhotoAddingView: photoAddingView)
+    func editProfilePhotoCellDidReceiveEditAction(_ editProfilePhotoCell: EditProfilePhotoCell) {
+        presentCameraViewController(for: editProfilePhotoCell)
+    }
+}
+
+extension EditProfileViewController: EditListingActionsCellDelegate {
+    
+    func onDone() {
+        onDoneAction()
     }
     
-    func photoAddingViewReceivedDeletePhotoAction(_ photoAddingView: PhotoAddingView) {
-        editedProfileInformation.photo = nil
+    func onCancel() {
+        onCancelAction()
     }
 }
 
@@ -332,12 +327,12 @@ extension EditProfileViewController: UIImagePickerControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         guard let photo = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-            currentPhotoAddingView = nil
+            currentEditProfilePhotoCell = nil
             return
         }
         
-        currentPhotoAddingView?.photo = photo
-        currentPhotoAddingView = nil
+        currentEditProfilePhotoCell?.set(photo: photo)
+        currentEditProfilePhotoCell = nil
         
         editedProfileInformation.photo = photo
         
@@ -345,7 +340,7 @@ extension EditProfileViewController: UIImagePickerControllerDelegate {
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        currentPhotoAddingView = nil
+        currentEditProfilePhotoCell = nil
         dismiss(animated: true, completion: nil)
     }
 }
@@ -353,4 +348,14 @@ extension EditProfileViewController: UIImagePickerControllerDelegate {
 //Required by UIImagePickerController delegate property
 extension EditProfileViewController: UINavigationControllerDelegate {
     
+}
+
+extension EditProfileViewController: CommunityPickerViewControllerDelegate {
+    
+    func didPick(community: Community) {
+        
+        editedProfileInformation.communityId = community.id
+        tableHandler.reloadData()
+        navigationController?.popViewController(animated: true)
+    }
 }

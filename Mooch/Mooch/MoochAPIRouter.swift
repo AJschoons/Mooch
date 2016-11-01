@@ -23,6 +23,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     static fileprivate let NoParametersDictionary = [String : AnyObject]()
     
     static private let AuthorizationHeaderKey = "Authorization"
+    static private let DeviceTypeValue = "iOS"
     
     case deleteListing(ownerId: Int, listingId: Int)
     
@@ -37,7 +38,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     case postExchange(listingOwnerId: Int, listingId: Int)
     case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
-    case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?)
+    case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String)
     
     case putListing(listingId: Int, userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     
@@ -70,6 +71,9 @@ enum MoochAPIRouter: URLRequestConvertible {
             case email = "email"
             case phone = "phone"
             case password = "password"
+            
+            case deviceType = "device_type"
+            case deviceToken = "destination_token"
             
             //Optional
             case address = "address"
@@ -142,9 +146,9 @@ enum MoochAPIRouter: URLRequestConvertible {
             let parameters = [ParameterMapping.PostLogin.email.rawValue : email, ParameterMapping.PostLogin.password.rawValue : password]
             return ("/sessions", .post, parameters, false)
         
-        case .postUser(let communityId, let name, let email, let phone, let password, let address):
+        case .postUser(let communityId, let name, let email, let phone, let password, let address, let deviceToken):
             typealias mapping = ParameterMapping.PostUser
-            var parameters: [String : Any] = [mapping.communityId.rawValue : communityId, mapping.name.rawValue : name, mapping.email.rawValue : email, mapping.phone.rawValue : phone, mapping.password.rawValue : password]
+            var parameters: [String : Any] = [mapping.communityId.rawValue : communityId, mapping.name.rawValue : name, mapping.email.rawValue : email, mapping.phone.rawValue : phone, mapping.password.rawValue : password, mapping.deviceToken.rawValue : deviceToken, mapping.deviceType.rawValue : MoochAPIRouter.DeviceTypeValue]
             if address != nil { parameters[mapping.address.rawValue] =  address! }
             return ("/users", .post, parameters, false)
             
