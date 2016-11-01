@@ -41,6 +41,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String)
     
     case putListing(listingId: Int, userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
+    case putUser(userId: Int, communityId: Int?, name: String?, phone: String?, password: String?, address: String?, deviceToken: String?)
     
     //The keys to pass in as parameters mapped to strings
     enum ParameterMapping {
@@ -156,6 +157,25 @@ enum MoochAPIRouter: URLRequestConvertible {
             //Much of the same routing information is shared with the POST Listing route
             let postListingRoutingInformation = MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId).getRoutingInformation()
             return ("\(postListingRoutingInformation.path)/\(listingId)", .put, postListingRoutingInformation.parameters, true)
+            
+        case .putUser(let userId, let communityId, let name, let phone, let password, let address, let deviceToken):
+            typealias mapping = ParameterMapping.PostUser
+            
+            var parameters = [String : Any]()
+            
+            //Add the parameters if they exist
+            if let communityId = communityId { parameters[mapping.communityId.rawValue] = communityId }
+            if let name = name { parameters[mapping.name.rawValue] = name }
+            if let phone = phone { parameters[mapping.phone.rawValue] = phone }
+            if let password = password { parameters[mapping.password.rawValue] = password }
+            if let address = address { parameters[mapping.address.rawValue] = address }
+            
+            if let deviceToken = deviceToken {
+                parameters[mapping.deviceToken.rawValue] = deviceToken
+                parameters[mapping.deviceType.rawValue] = MoochAPIRouter.DeviceTypeValue
+            }
+            
+            return ("/users/\(userId)", .put, parameters, true)
         }
     }
 

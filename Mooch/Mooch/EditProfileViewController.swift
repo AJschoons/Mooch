@@ -364,9 +364,9 @@ extension EditProfileViewController: UINavigationControllerDelegate {
 extension EditProfileViewController: CommunityPickerViewControllerDelegate {
     
     func didPick(community: Community) {
-        
+        guard let navC = navigationController else { return }
         editedProfileInformation.communityId = community.id
         tableHandler.reloadData()
-        navigationController?.popViewController(animated: true)
+        navC.popViewController(animated: true)
     }
 }
