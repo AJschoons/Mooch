@@ -189,7 +189,7 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != "" {
             
-            let searchListings = ListingProcessingHandler.search(listings: listings, for: searchText)            
+            let searchListings = ListingProcessingHandler.search(listings: listings, for: searchText)
             listingsViewController.mode = .nestedInSearch
             listingsViewController.listings = listings
             listingsViewController.searchListings = searchListings
