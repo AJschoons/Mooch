@@ -31,12 +31,8 @@ class SearchViewController: MoochViewController {
     static fileprivate let Identifier = "SearchViewController"
 
     lazy var listingsViewController: ListingsViewController = {
-        
 //        // Load Storyboard
         let vc = ListingsViewController.instantiateFromStoryboard()
-//        vc.isFromSearchBar = !isFromCell
-//        vc.mode = .nestedInSearch
-//        vc.listings = listings
         self.addViewControllerAsChildViewController(vc)
         return vc
     }()
@@ -81,15 +77,7 @@ class SearchViewController: MoochViewController {
     }
     
     // MARK: Private methods
-
-//    func displayListingsViewController(with listings: [Listing], isFromCell : Bool = true) {
-//        guard let navC = navigationController else { return }
-//        let vc = ListingsViewController.instantiateFromStoryboard()
-//        vc.isFromSearchBar = !isFromCell
-//        vc.mode = .nestedInSearch
-//        vc.listings = listings
-//    }
-//    
+    
     func pushListingsViewController(with listings: [Listing], isFromCell : Bool = true) {
         guard let navC = navigationController else { return }
         let vc = ListingsViewController.instantiateFromStoryboard()
@@ -201,9 +189,7 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != "" {
             
-            let searchListings = ListingProcessingHandler.search(listings: listings, for: searchText)
-            //delegate.setSearchListings(listings: lists)
-            
+            let searchListings = ListingProcessingHandler.search(listings: listings, for: searchText)            
             listingsViewController.mode = .nestedInSearch
             listingsViewController.listings = listings
             listingsViewController.searchListings = searchListings
