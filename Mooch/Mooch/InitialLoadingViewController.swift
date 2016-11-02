@@ -154,6 +154,7 @@ class InitialLoadingViewController: MoochModalViewController {
     
     private func presentCommunityPicker() {
         let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.configuration = CommunityPickerViewController.Configuration(pickingMode: .forced, shouldUploadToAPIForLocalUser: false)
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         
@@ -188,9 +189,13 @@ class InitialLoadingViewController: MoochModalViewController {
 
 extension InitialLoadingViewController: CommunityPickerViewControllerDelegate {
     
-    func didPick(community: Community) {
+    func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
         transitionToMainApp()
+    }
+    
+    func communityPickerViewControllerDidCancel(_ : CommunityPickerViewController) {
+        //The CommunityPickerViewController is setup so it can't cancel; don't need to do anything
     }
 }
 

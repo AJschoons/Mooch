@@ -320,6 +320,7 @@ class EditProfileViewController: MoochModalViewController {
     
     fileprivate func pushCommunityPicker() {
         let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.configuration = CommunityPickerViewController.Configuration(pickingMode: .forced, shouldUploadToAPIForLocalUser: false)
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -426,10 +427,14 @@ extension EditProfileViewController: UINavigationControllerDelegate {
 
 extension EditProfileViewController: CommunityPickerViewControllerDelegate {
     
-    func didPick(community: Community) {
+    func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         guard let navC = navigationController else { return }
         editedProfileInformation.communityId = community.id
         tableHandler.reloadData()
         navC.popViewController(animated: true)
+    }
+    
+    func communityPickerViewControllerDidCancel(_ : CommunityPickerViewController) {
+        //The CommunityPickerViewController is setup so it can't cancel; don't need to do anything
     }
 }

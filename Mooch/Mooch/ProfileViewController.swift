@@ -156,6 +156,7 @@ class ProfileViewController: MoochViewController {
     
     fileprivate func presentCommunityPicker() {
         let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.configuration = CommunityPickerViewController.Configuration(pickingMode: .optional, shouldUploadToAPIForLocalUser: true)
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)
@@ -280,7 +281,7 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
 
 extension ProfileViewController: CommunityPickerViewControllerDelegate {
     
-    func didPick(community: Community) {
+    func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         guard var localUser = LocalUserManager.sharedInstance.localUser?.user else { return }
         
         //Update the user's community id
@@ -288,6 +289,10 @@ extension ProfileViewController: CommunityPickerViewControllerDelegate {
         LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: localUser)
         
         delegate?.profileViewControllerDidChangeCommunity(self)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func communityPickerViewControllerDidCancel(_ : CommunityPickerViewController) {
         dismiss(animated: true, completion: nil)
     }
 }

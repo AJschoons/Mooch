@@ -6,13 +6,27 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
+import AlamofireImage
 import UIKit
 
 protocol CommunityPickerViewControllerDelegate: class {
-    func didPick(community: Community)
+    func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community)
+    func communityPickerViewControllerDidCancel(_ : CommunityPickerViewController)
 }
 
 class CommunityPickerViewController: MoochViewController {
+    
+    struct Configuration {
+        
+        //Whether or not we allow the user to cancel picking the community
+        enum PickingMode {
+            case forced
+            case optional
+        }
+        
+        var pickingMode: PickingMode
+        var shouldUploadToAPIForLocalUser: Bool
+    }
     
     // MARK: Public variables
     
@@ -26,8 +40,7 @@ class CommunityPickerViewController: MoochViewController {
     
     weak var delegate: CommunityPickerViewControllerDelegate!
     
-    //The currently selected community will appear as selected
-    var selectedCommunity: Community?
+    var configuration: Configuration!
     
     // MARK: Private variables
     
@@ -36,6 +49,10 @@ class CommunityPickerViewController: MoochViewController {
     
     
     // MARK: Actions
+    
+    func onCancel() {
+        delegate.communityPickerViewControllerDidCancel(self)
+    }
     
     // MARK: Public methods
     
@@ -61,6 +78,12 @@ class CommunityPickerViewController: MoochViewController {
     
     fileprivate func setupNavigationBar() {
         title = Strings.CommunityPicker.title.rawValue
+        
+        if configuration.pickingMode == .optional {
+            let cancelImage = #imageLiteral(resourceName: "cancel").af_imageAspectScaled(toFit: CGSize(width: 22, height: 22))
+            let cancelBarButtonItem = UIBarButtonItem(image: cancelImage, style: .plain, target: self, action: #selector(onCancel))
+            navigationItem.leftBarButtonItems = [cancelBarButtonItem]
+        }
     }
 }
 
@@ -71,6 +94,6 @@ extension CommunityPickerViewController: CommunityPickerCollectionHandlerDelegat
     }
     
     func didSelect(_ community: Community) {
-        delegate.didPick(community: community)
+        delegate.communityPickerViewController(self, didPick: community)
     }
 }
