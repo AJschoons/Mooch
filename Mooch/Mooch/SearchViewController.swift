@@ -33,6 +33,7 @@ class SearchViewController: MoochViewController {
     lazy var listingsViewController: ListingsViewController = {
 //        // Load Storyboard
         let vc = ListingsViewController.instantiateFromStoryboard()
+        vc.mode = .nestedInSearch
         self.addViewControllerAsChildViewController(vc)
         return vc
     }()
@@ -190,7 +191,6 @@ extension SearchViewController: UISearchBarDelegate {
         if searchText != "" {
             
             let searchListings = ListingProcessingHandler.search(listings: listings, for: searchText)
-            listingsViewController.mode = .nestedInSearch
             listingsViewController.listings = listings
             listingsViewController.searchListings = searchListings
             listingsViewController.isSearching = true
