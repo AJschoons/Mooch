@@ -30,7 +30,20 @@ class SearchViewController: MoochViewController {
     static fileprivate let StoryboardName = "Search"
     static fileprivate let Identifier = "SearchViewController"
 
+    lazy var listingsViewController: ListingsViewController = {
+        
+//        // Load Storyboard
+        let vc = ListingsViewController.instantiateFromStoryboard()
+//        vc.isFromSearchBar = !isFromCell
+//        vc.mode = .nestedInSearch
+//        vc.listings = listings
+        self.addViewControllerAsChildViewController(vc)
+        return vc
+    }()
+    
     override func viewDidLoad() {
+        
+
         super.viewDidLoad()
         let nibName = UINib(nibName: "SearchViewFilterCell", bundle:nil)
         definesPresentationContext = true
@@ -44,6 +57,8 @@ class SearchViewController: MoochViewController {
         tableView.frame = view.frame
         tableView.register(nibName, forCellReuseIdentifier: CellReuseIdentifier)
         self.view.addSubview(self.tableView)
+        
+        listingsViewController.view.isHidden = true
     }
     
     override func setup() {
@@ -67,10 +82,18 @@ class SearchViewController: MoochViewController {
     
     // MARK: Private methods
 
+//    func displayListingsViewController(with listings: [Listing], isFromCell : Bool = true) {
+//        guard let navC = navigationController else { return }
+//        let vc = ListingsViewController.instantiateFromStoryboard()
+//        vc.isFromSearchBar = !isFromCell
+//        vc.mode = .nestedInSearch
+//        vc.listings = listings
+//    }
+//    
     func pushListingsViewController(with listings: [Listing], isFromCell : Bool = true) {
         guard let navC = navigationController else { return }
         let vc = ListingsViewController.instantiateFromStoryboard()
-        vc.isFromSearchBar = !isFromCell
+        //vc.isFromSearchBar = !isFromCell
         vc.mode = .nestedInSearch
         vc.listings = listings
         navC.pushViewController(vc, animated: isFromCell)
@@ -88,6 +111,34 @@ class SearchViewController: MoochViewController {
         guard let navC = navigationController else { return }
         navC.popToRootViewController(animated: false)
     }
+    
+    fileprivate func addViewControllerAsChildViewController(_ viewController: UIViewController) {
+        // Add Child View Controller
+        self.addChildViewController(viewController)
+        
+        // Add Child View as Subview
+        view.addSubview(viewController.view)
+        
+        // Configure Child View
+        viewController.view.backgroundColor = UIColor.red
+        viewController.view.frame = CGRect(x: 0, y: 64, width: self.view.frame.width, height: self.view.frame.height - 64 - 40)
+        viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        // Notify Child View Controller
+        viewController.didMove(toParentViewController: self)
+    }
+    
+    fileprivate func removeViewControllerAsChildViewController(_ viewController: UIViewController) {
+        // Notify Child View Controller
+        viewController.willMove(toParentViewController: nil)
+        
+        // Remove Child View From Superview
+        viewController.view.removeFromSuperview()
+        
+        // Notify Child View Controller
+        viewController.removeFromParentViewController()
+    }
+    
 }
 
 extension SearchViewController: LocalUserStateChangeListener {
@@ -136,8 +187,34 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.resignFirstResponder()
-        self.pushListingsViewController(with:listings, isFromCell: false)
+        //self.pushListingsViewController(with:listings, isFromCell: false)
+        //need active the container view
         
-        return false
+    
+        return true
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText != "" {
+            
+            let searchListings = ListingProcessingHandler.search(listings: listings, for: searchText)
+            //delegate.setSearchListings(listings: lists)
+            
+            listingsViewController.mode = .nestedInSearch
+            listingsViewController.listings = listings
+            listingsViewController.searchListings = searchListings
+            listingsViewController.isSearching = true
+            
+            listingsViewController.view.isHidden = false
+            
+        } else {
+            listingsViewController.view.isHidden = true
+        }
     }
 }
+
+

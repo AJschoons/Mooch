@@ -53,14 +53,16 @@ class ListingsViewController: MoochViewController {
         }
     }
     
+    var isSearching = false
+    
     var searchListings: [Listing]?
-    var isFromSearchBar = false
+    
     // MARK: Private variables
     
     static fileprivate let StoryboardName = "Listings"
     static fileprivate let Identifier = "ListingsViewController"
     
-    fileprivate var isSearching = false
+    
     fileprivate var searchBar : UISearchBar!
     
     fileprivate var state: State = .loading
@@ -105,9 +107,6 @@ class ListingsViewController: MoochViewController {
             collectionHandler.reloadData()
         }
         
-        if isFromSearchBar {
-            searchBar.becomeFirstResponder()
-        }
     }
     
     override func setup() {
