@@ -167,6 +167,7 @@ class MoochTabBarController: UITabBarController {
     
     fileprivate func presentCommunityPicker() {
         let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.configuration = CommunityPickerViewController.Configuration(pickingMode: .optional, shouldUploadToAPIForLocalUser: false)
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)
@@ -249,10 +250,14 @@ extension MoochTabBarController: ProfileViewControllerDelegate {
 
 extension MoochTabBarController: CommunityPickerViewControllerDelegate {
     
-    func didPick(community: Community) {
+    func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
         notifyTabViewControllersOfCommunityChange()
         selectedIndex = Tab.home.index
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func communityPickerViewControllerDidCancel(_ : CommunityPickerViewController) {
         dismiss(animated: true, completion: nil)
     }
 }

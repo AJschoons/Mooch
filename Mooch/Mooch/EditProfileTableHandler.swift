@@ -51,6 +51,8 @@ class EditProfileTableHandler: NSObject {
     // MARK: Public methods
     
     func reloadData() {
+        guard let tableView = tableView else { return }
+        
         tableView.reloadData()
     }
     
@@ -78,7 +80,7 @@ class EditProfileTableHandler: NSObject {
     //Returns true if a field type maps to a EditProfileTextFieldCell
     func isTextField(forFieldType fieldType: EditProfileConfiguration.FieldType) -> Bool {
         switch fieldType {
-        case .photo:
+        case .photo, .community, .actions:
             return false
         default:
             return true
@@ -110,6 +112,8 @@ class EditProfileTableHandler: NSObject {
     //Configures an EditProfilePhotoCell
     fileprivate func configure(editProfilePhotoCell cell: EditProfilePhotoCell) {
         cell.delegate = delegate
+        
+        cell.set(photo: delegate.getEditedProfileInformation().photo)
     }
     
     //Configures an EditProfileActionsCell
@@ -138,6 +142,10 @@ class EditProfileTableHandler: NSObject {
         cell.textField.fieldType = fieldType
         cell.textField.isSecureTextEntry = isSecureEntry(forTextFieldFieldType: fieldType)
         cell.textField.delegate = self
+        
+        if let text = delegate.getEditedProfileInformation().string(for: fieldType) {
+            cell.textField.text = text
+        }
         
         //Make the last cell have done key instead of next
         var returnKeyType: UIReturnKeyType!

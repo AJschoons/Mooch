@@ -53,6 +53,8 @@ class EditListingTableHandler: NSObject {
     // MARK: Public methods
     
     func reloadData() {
+        guard let tableView = tableView else { return }
+        
         tableView.reloadData()
     }
     

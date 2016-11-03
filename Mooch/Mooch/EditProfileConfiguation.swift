@@ -44,10 +44,10 @@ struct EditProfileConfiguration {
         
         switch mode {
         case .creating:
-            return EditProfileConfiguration(mode: .creating, title: Strings.EditProfile.defaultCreatingTitle.rawValue, fieldsShownToRequiredPairs: [(.photo, true), (.name, true), (.email, true), (.phone, true), (.address, false), (.password1, true), (.password2, true), (.community, true), (.actions, false)])
+            return EditProfileConfiguration(mode: .creating, title: Strings.EditProfile.defaultCreatingTitle.rawValue, fieldsShownToRequiredPairs: [(.photo, false), (.name, true), (.email, true), (.phone, true), (.address, false), (.password1, true), (.password2, true), (.community, true), (.actions, false)])
             
         case .editing:
-            return EditProfileConfiguration(mode: .editing, title: Strings.EditProfile.defaultEditingTitle.rawValue, fieldsShownToRequiredPairs: [(.photo, false), (.name, false), (.email, false), (.phone, false), (.address, false), (.password1, false), (.password2, false), (.actions, false)])
+            return EditProfileConfiguration(mode: .editing, title: Strings.EditProfile.defaultEditingTitle.rawValue, fieldsShownToRequiredPairs: [(.photo, false), (.name, true), (.phone, true), (.address, false), (.actions, false)])
         }
     }
     

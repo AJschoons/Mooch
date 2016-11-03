@@ -24,7 +24,7 @@ class InitialLoadingViewController: MoochModalViewController {
     
     
     //Allows us to ensure that loading takes at least a minimim duration; makes the UX smoother
-    private var finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+    private var finishLoadingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer!
     
     // MARK: Actions
     
@@ -84,6 +84,7 @@ class InitialLoadingViewController: MoochModalViewController {
     
     //Kicks off the string of API requests we need to load and launch the app
     fileprivate func getDataInitiallyNeededFromAPI() {
+        finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
         getListingCategories()
     }
     
@@ -111,8 +112,8 @@ class InitialLoadingViewController: MoochModalViewController {
         }
     }
     
-    //The last API call we make
-    //If a saved user exists, download their info and log them in. Else continue with a guest
+    //The third API call we make
+    //If a saved user exists, download their info and log them in and update their device token. Else continue with a guest
     private func loginSavedUser() {
         guard let savedUserInformation = LocalUserManager.sharedInstance.getSavedInformationFromUserDefaults() else {
             continueWithGuest()
@@ -130,13 +131,26 @@ class InitialLoadingViewController: MoochModalViewController {
             }
             
             let savedLocalUser = LocalUser(user: user, authenticationToken: savedUserInformation.authenticationToken)
-            self.finishLoading(with: savedLocalUser)
+            LocalUserManager.sharedInstance.login(localUser: savedLocalUser)
+            
+            self.updateLocalUserDeviceToken()
+        }
+    }
+    
+    //The last API call we make. Not a huge deal if it fails so we allow loading to finish whether it succeeds or fails
+    private func updateLocalUserDeviceToken() {
+        guard let localUser = LocalUserManager.sharedInstance.localUser, let deviceToken = PushNotificationsManager.sharedInstance.deviceToken else {
+            continueWithLocalUser()
+            return
+        }
+        
+        MoochAPI.PUTUserDeviceToken(userId: localUser.user.id, deviceToken: deviceToken) { success, error in
+            self.continueWithLocalUser()
         }
     }
     
     //Handles what should be done when there IS a saved user we downloaded
-    private func finishLoading(with localUser: LocalUser) {
-        LocalUserManager.sharedInstance.login(localUser: localUser)
+    private func continueWithLocalUser() {
         onFinishedLoading(willShowCommunityPicker: false)
     }
     
@@ -154,6 +168,7 @@ class InitialLoadingViewController: MoochModalViewController {
     
     private func presentCommunityPicker() {
         let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.configuration = CommunityPickerViewController.Configuration(pickingMode: .forced, shouldUploadToAPIForLocalUser: false)
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         
@@ -188,20 +203,19 @@ class InitialLoadingViewController: MoochModalViewController {
 
 extension InitialLoadingViewController: CommunityPickerViewControllerDelegate {
     
-    func didPick(community: Community) {
+    func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
         transitionToMainApp()
+    }
+    
+    func communityPickerViewControllerDidCancel(_ : CommunityPickerViewController) {
+        //The CommunityPickerViewController is setup so it can't cancel; don't need to do anything
     }
 }
 
 extension InitialLoadingViewController: PushNotificationsManagerRegistrationDelegate {
     
     func pushNotificationsDidRegister(success: Bool) {
-        if success || Platform.isSimulator {
-            set(state: .loading)
-            getDataInitiallyNeededFromAPI()
-        } else {
-            set(state: .failedPushNotifcationRegistration)
-        }
+        getDataInitiallyNeededFromAPI()
     }
 }

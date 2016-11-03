@@ -43,6 +43,9 @@ class ProfileViewController: MoochViewController {
     
     fileprivate var selectedControl: BottomBarDoubleSegmentedControl.Control = .first
     
+    //This variable is needed so we can pass the profile image to the EditProfileVC for editing
+    fileprivate var profileImage: UIImage?
+    
     // MARK: Actions
     
     func onSettingsAction() {
@@ -57,10 +60,7 @@ class ProfileViewController: MoochViewController {
     }
     
     func updateWith(user: User?) {
-        self.user = user
-        selectedControl = .first
-        collectionHandler.resetScrollPosition()
-        updateUI()
+        resetFor(newUser: user)
     }
     
     override func setup() {
@@ -125,10 +125,12 @@ class ProfileViewController: MoochViewController {
     }
     
     fileprivate func presentSettingsActionSheet() {
+        guard let user = user else { return }
+
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
         let editProfileAction = UIAlertAction(title: "Edit Profile", style: .default) { _ in
-            //
+            self.presentEditProfileViewController(for: user, with: self.profileImage)
         }
         let changeCommunityAction = UIAlertAction(title: "Change Community", style: .default) { _ in
             self.presentCommunityPicker()
@@ -153,7 +155,18 @@ class ProfileViewController: MoochViewController {
     
     fileprivate func presentCommunityPicker() {
         let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.configuration = CommunityPickerViewController.Configuration(pickingMode: .optional, shouldUploadToAPIForLocalUser: true)
         vc.delegate = self
+        let navC = UINavigationController(rootViewController: vc)
+        present(navC, animated: true, completion: nil)
+    }
+    
+    private func presentEditProfileViewController(for user: User, with photo: UIImage?) {
+        let vc = EditProfileViewController.instantiateFromStoryboard()
+        vc.configuration = EditProfileConfiguration.defaultConfiguration(for: .editing)
+        vc.delegate = self
+        vc.set(user: user, with: profileImage)
+        
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)
     }
@@ -162,6 +175,22 @@ class ProfileViewController: MoochViewController {
         let vc = ListingDetailsViewController.instantiateFromStoryboard()
         vc.configuration = ListingDetailsConfiguration.defaultConfiguration(for: mode, with: listing, isViewingSellerProfileNotAllowed: isViewingSellerProfileNotAllowed)
         navigationController!.pushViewController(vc, animated: true)
+    }
+    
+    fileprivate func resetFor(newUser: User?) {
+        user = newUser
+        
+        selectedControl = .first
+        profileImage = nil
+        collectionHandler.resetScrollPosition()
+        updateUI()
+    }
+    
+    fileprivate func resetFor(editedUser: User) {
+        user = editedUser
+        
+        profileImage = nil
+        updateUI()
     }
     
     //Completely resets the UI and state of the view controller
@@ -208,6 +237,10 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
         return selectedControl
     }
     
+    func didGet(profileImage: UIImage) {
+        self.profileImage = profileImage
+    }
+    
     func didSelect(_ listing: Listing) {
         let isListingCompleted = listing.isCompleted()
         
@@ -245,9 +278,18 @@ extension ProfileViewController: BottomBarDoubleSegmentedControlDelegate {
     }
 }
 
+extension ProfileViewController: EditProfileViewControllerDelegate {
+    
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
+        guard !isNewProfile else { return }
+        
+        updateWith(user: localUser.user)
+    }
+}
+
 extension ProfileViewController: CommunityPickerViewControllerDelegate {
     
-    func didPick(community: Community) {
+    func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         guard var localUser = LocalUserManager.sharedInstance.localUser?.user else { return }
         
         //Update the user's community id
@@ -255,6 +297,10 @@ extension ProfileViewController: CommunityPickerViewControllerDelegate {
         LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: localUser)
         
         delegate?.profileViewControllerDidChangeCommunity(self)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func communityPickerViewControllerDidCancel(_ : CommunityPickerViewController) {
         dismiss(animated: true, completion: nil)
     }
 }

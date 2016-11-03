@@ -17,6 +17,7 @@ protocol ProfileCollectionHandlerDelegate: class, BottomBarDoubleSegmentedContro
     func getListings() -> [Listing]
     func getConfiguration() -> Configuration
     func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control
+    func didGet(profileImage: UIImage)
     func didSelect(_ listing: Listing)
 }
 
@@ -95,6 +96,7 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         if let profilePhotoURL = profileUser.pictureURL {
             ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { [weak self] image in
                 guard let image = image else { return }
+                self?.delegate.didGet(profileImage: image)
                 self?.headerView.userImageView.image = image
             }
         }
