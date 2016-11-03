@@ -60,8 +60,7 @@ class ProfileViewController: MoochViewController {
     }
     
     func updateWith(user: User?) {
-        self.user = user
-        resetForNewUser()
+        resetFor(newUser: user)
     }
     
     override func setup() {
@@ -178,10 +177,19 @@ class ProfileViewController: MoochViewController {
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    fileprivate func resetForNewUser() {
+    fileprivate func resetFor(newUser: User?) {
+        user = newUser
+        
         selectedControl = .first
         profileImage = nil
         collectionHandler.resetScrollPosition()
+        updateUI()
+    }
+    
+    fileprivate func resetFor(editedUser: User) {
+        user = editedUser
+        
+        profileImage = nil
         updateUI()
     }
     
@@ -275,7 +283,7 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
     func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
         guard !isNewProfile else { return }
         
-        print(localUser)
+        updateWith(user: localUser.user)
     }
 }
 

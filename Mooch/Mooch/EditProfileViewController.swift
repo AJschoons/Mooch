@@ -237,7 +237,7 @@ class EditProfileViewController: MoochModalViewController {
                 }
                 
                 strongSelf.dismissSelf() {
-                    strongSelf.delegate.editProfileViewControllerDidFinishEditing(localUser: localUser, isNewProfile: true)
+                    strongSelf.delegate.editProfileViewControllerDidFinishEditing(localUser: localUser, isNewProfile: isNew)
                 }
             }
         )
