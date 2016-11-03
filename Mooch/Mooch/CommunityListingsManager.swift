@@ -81,7 +81,7 @@ class CommunityListingsManager {
         updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
     }
     
-    func updateOrAddPushedListing(_ pushedListing: Listing) {
+    func updateOrAdd(pushedListing: Listing) {
         if let indexOfListingToUpdate = _allListingsInCurrentCommunity.index(where: {$0.id == pushedListing.id}) {
             _allListingsInCurrentCommunity[indexOfListingToUpdate] = pushedListing
         } else {

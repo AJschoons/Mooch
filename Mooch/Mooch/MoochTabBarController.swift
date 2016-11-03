@@ -27,7 +27,7 @@ class MoochTabBarController: UITabBarController {
     fileprivate var selectedSellTabWhenNotLoggedIn = false
     
     fileprivate var hasLoadedListingsAfterLaunch = false
-    fileprivate var pushReceivedWhenAppClosed: PushNotificationsManager.ListingPushType?
+    fileprivate var pushReceivedWhenAppClosed: PushNotificationsManager.ListingPush?
     
     fileprivate var cameraViewControllerBeingShown: CameraViewController?
     
@@ -187,31 +187,39 @@ class MoochTabBarController: UITabBarController {
         present(navC, animated: true, completion: nil)
     }
     
-    fileprivate func handle(push: PushNotificationsManager.ListingPushType, wasAppClosed: Bool) {
-        //TODO: update/add the listing in the Community Listings Manager
+    fileprivate func handle(listingPush: PushNotificationsManager.ListingPush, wasAppClosed: Bool) {
         
-        switch push {
-        case .buyerRequestedExchange:
-            if let exampleListing = CommunityListingsManager.sharedInstance.listingsOwnedByCurrentUser.first(where: {$0.interestedBuyers.count > 0}) {
-                if wasAppClosed {
-                    presentListingDetailsViewController(with: exampleListing, in: .viewingThisUsersListing, isViewingSellerProfileNotAllowed: false)
-                } else {
-                    presentCancellableViewPushAlert(title: "Buyer Requested Exchange", message: "A buyer has requested to contact you about one of your listings") { action in
-                        self.presentListingDetailsViewController(with: exampleListing, in: .viewingThisUsersListing, isViewingSellerProfileNotAllowed: false)
-                    }
-                }
-            }
+        MoochAPI.GETListing(withId: listingPush.listingId) { [weak self] listing, error in
+            guard let pushedListing = listing else { return }
             
-        case .sellerApprovedExchange:
-            guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
-            if let exampleListing = CommunityListingsManager.sharedInstance.listingsCurrentUserHasContacted.first(where: {$0.isUserContactInformationVisible(to: localUser.user)}) {
-                if wasAppClosed {
-                    presentListingDetailsViewController(with: exampleListing, in: .viewingOtherUsersCompletedListing, isViewingSellerProfileNotAllowed: false)
-                } else {
-                    presentCancellableViewPushAlert(title: "Seller Approved Exchange", message: "A seller has accepted your request to complete an exchange with their listing") { action in
-                        self.presentListingDetailsViewController(with: exampleListing, in: .viewingOtherUsersCompletedListing, isViewingSellerProfileNotAllowed: false)
-                    }
-                }
+            CommunityListingsManager.sharedInstance.updateOrAdd(pushedListing: pushedListing)
+            
+            switch listingPush.exchangeType {
+            case .buyerRequested:
+                self?.handleBuyerRequestedListingPush(for: pushedListing, wasAppClosed: wasAppClosed)
+                
+            case .sellerApproved:
+                self?.handleSellerApprovedListingPush(for: pushedListing, wasAppClosed: wasAppClosed)
+            }
+        }
+    }
+    
+    fileprivate func handleBuyerRequestedListingPush(for listing: Listing, wasAppClosed: Bool) {
+        if wasAppClosed {
+            presentListingDetailsViewController(with: listing, in: .viewingThisUsersListing, isViewingSellerProfileNotAllowed: false)
+        } else {
+            presentCancellableViewPushAlert(title: "Buyer Requested Exchange", message: "A buyer has requested to contact you about one of your listings") { action in
+                self.presentListingDetailsViewController(with: listing, in: .viewingThisUsersListing, isViewingSellerProfileNotAllowed: false)
+            }
+        }
+    }
+    
+    fileprivate func handleSellerApprovedListingPush(for listing: Listing, wasAppClosed: Bool) {
+        if wasAppClosed {
+            presentListingDetailsViewController(with: listing, in: .viewingOtherUsersCompletedListing, isViewingSellerProfileNotAllowed: false)
+        } else {
+            presentCancellableViewPushAlert(title: "Seller Approved Exchange", message: "A seller has accepted your request to complete an exchange with their listing") { action in
+                self.presentListingDetailsViewController(with: listing, in: .viewingOtherUsersCompletedListing, isViewingSellerProfileNotAllowed: false)
             }
         }
     }
@@ -355,14 +363,14 @@ extension MoochTabBarController: EditListingViewControllerDelegate {
 
 extension MoochTabBarController: PushNotificationsManagerNotificationsDelegate {
     
-    func onDidReceive(listingPushType: PushNotificationsManager.ListingPushType, whenAppClosed wasAppClosed: Bool) {
-        print("didReceive \(listingPushType)... when app closed: \(wasAppClosed)")
+    func onDidReceive(listingPush: PushNotificationsManager.ListingPush, whenAppClosed wasAppClosed: Bool) {
+        print("didReceive \(listingPush)... when app closed: \(wasAppClosed)")
         guard hasLoadedListingsAfterLaunch else {
-            pushReceivedWhenAppClosed = listingPushType
+            pushReceivedWhenAppClosed = listingPush
             return
         }
         
-        handle(push: listingPushType, wasAppClosed: wasAppClosed)
+        handle(listingPush: listingPush, wasAppClosed: wasAppClosed)
     }
 }
 
@@ -373,8 +381,8 @@ extension MoochTabBarController: CommunityListingsManagerDelegate {
         
         //Once the Listings have loaded for the first time, show the push.
         if let push = pushReceivedWhenAppClosed {
-            handle(push: push, wasAppClosed: true)
             pushReceivedWhenAppClosed = nil
+            handle(listingPush: push, wasAppClosed: true)
         }
     }
 }

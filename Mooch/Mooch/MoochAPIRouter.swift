@@ -29,6 +29,7 @@ enum MoochAPIRouter: URLRequestConvertible {
     
     case getCommunities
     case getExchangeAccept(listingOwnerId: Int, listingId: Int, exchangeId: Int)
+    case getListing(id: Int)
     case getListingCategories
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
@@ -114,6 +115,9 @@ enum MoochAPIRouter: URLRequestConvertible {
             
         case .getExchangeAccept(let listingOwnerId, let listingId, let exchangeId):
             return ("/users/\(listingOwnerId)/listings/\(listingId)/exchanges/\(exchangeId)/accept", .get, nil, true)
+            
+        case .getListing(let id):
+            return ("/listings/\(id)", .get, nil, false)
             
         case .getListingCategories:
             return ("/categories", .get, nil, false)

@@ -15,15 +15,21 @@ protocol PushNotificationsManagerRegistrationDelegate: class {
 
 protocol PushNotificationsManagerNotificationsDelegate: class {
     
-    func onDidReceive(listingPushType: PushNotificationsManager.ListingPushType, whenAppClosed wasAppClosed: Bool)
+    func onDidReceive(listingPush: PushNotificationsManager.ListingPush, whenAppClosed wasAppClosed: Bool)
 }
 
 //Singleton for managing all things with push notifications
 class PushNotificationsManager {
     
-    enum ListingPushType {
-        case sellerApprovedExchange
-        case buyerRequestedExchange
+    struct ListingPush {
+        
+        enum ExchangeType {
+            case sellerApproved
+            case buyerRequested
+        }
+        
+        let exchangeType: ExchangeType
+        let listingId: Int
     }
     
     //The variable to access this class through
@@ -114,12 +120,16 @@ class PushNotificationsManager {
         let notificationJSON = JSON(userInfo)
         guard notificationJSON["aps"].exists() else { return }
         let notificationJSONData = notificationJSON["aps"]
-        guard let category = notificationJSONData["category"].string else { return }
+        guard let category = notificationJSONData["category"].string, let listingId = notificationJSONData["listing_id"].int else { return }
+        
+        
         
         if category == SellerApprovedCategoryIdentifier {
-            notificationsDelegate?.onDidReceive(listingPushType: .sellerApprovedExchange, whenAppClosed: receivedWhenAppClosed)
+            let push = ListingPush(exchangeType: .sellerApproved, listingId: listingId)
+            notificationsDelegate?.onDidReceive(listingPush: push, whenAppClosed: receivedWhenAppClosed)
         } else if category == ExchangeRequestCategoryIdentifier {
-            notificationsDelegate?.onDidReceive(listingPushType: .buyerRequestedExchange, whenAppClosed: receivedWhenAppClosed)
+            let push = ListingPush(exchangeType: .buyerRequested, listingId: listingId)
+            notificationsDelegate?.onDidReceive(listingPush: push, whenAppClosed: receivedWhenAppClosed)
         }
     }
 }
