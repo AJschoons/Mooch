@@ -47,6 +47,8 @@ class CommunityPickerViewController: MoochViewController {
     static fileprivate let StoryboardName = "CommunityPicker"
     static fileprivate let Identifier = "CommunityPickerViewController"
     
+    private var finishSendingToAPIAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
+    
     
     // MARK: Actions
     
@@ -76,6 +78,39 @@ class CommunityPickerViewController: MoochViewController {
     
     // MARK: Private methods
     
+    fileprivate func onDidSelect(_ community: Community) {
+        if configuration.shouldUploadToAPIForLocalUser {
+            sendNewCommunityToAPI(community)
+        } else {
+            delegate.communityPickerViewController(self, didPick: community)
+        }
+    }
+    
+    fileprivate func sendNewCommunityToAPI(_ community: Community) {
+        guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
+        
+        showLoadingOverlayView(withInformationText: "Changing Community", overEntireWindow: true, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: false)
+        
+        finishSendingToAPIAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+        
+        MoochAPI.PUTUserCommunity(userId: localUser.user.id, communityId: community.id) { success, error in
+            //The code inside this execute closure gets executed only after the minimum duration has passed
+            self.finishSendingToAPIAfterMinimumDurationTimer!.execute { [unowned self] in
+                //DO NOT keep the timer around after it's been executed
+                self.finishSendingToAPIAfterMinimumDurationTimer = nil
+                
+                self.hideLoadingOverlayView(animated: true)
+                
+                guard success else {
+                    self.presentSingleActionAlert(title: "Problem changing community", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                    return
+                }
+                
+                self.delegate.communityPickerViewController(self, didPick: community)
+            }
+        }
+    }
+    
     fileprivate func setupNavigationBar() {
         title = Strings.CommunityPicker.title.rawValue
         
@@ -94,6 +129,6 @@ extension CommunityPickerViewController: CommunityPickerCollectionHandlerDelegat
     }
     
     func didSelect(_ community: Community) {
-        delegate.communityPickerViewController(self, didPick: community)
+        onDidSelect(community)
     }
 }
