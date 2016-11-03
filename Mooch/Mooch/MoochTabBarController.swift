@@ -26,6 +26,9 @@ class MoochTabBarController: UITabBarController {
     fileprivate var selectedMyProfileTabWhenNotLoggedIn = false
     fileprivate var selectedSellTabWhenNotLoggedIn = false
     
+    fileprivate var hasLoadedListingsAfterLaunch = false
+    fileprivate var pushReceivedWhenAppClosed: PushNotificationsManager.ListingPushType?
+    
     fileprivate var cameraViewControllerBeingShown: CameraViewController?
     
     static func instantiate() -> MoochTabBarController {
@@ -171,6 +174,56 @@ class MoochTabBarController: UITabBarController {
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)
     }
+    
+    fileprivate func presentListingDetailsViewController(with listing: Listing, in mode: ListingDetailsConfiguration.Mode, isViewingSellerProfileNotAllowed: Bool) {
+        let vc = ListingDetailsViewController.instantiateFromStoryboard()
+        
+        //Since we're presenting the view controller, we have to add a cancel button
+        var configuration = ListingDetailsConfiguration.defaultConfiguration(for: mode, with: listing, isViewingSellerProfileNotAllowed: isViewingSellerProfileNotAllowed)
+        configuration.leftBarButtons = [.cancel]
+        vc.configuration = configuration
+        
+        let navC = UINavigationController(rootViewController: vc)
+        present(navC, animated: true, completion: nil)
+    }
+    
+    fileprivate func handle(push: PushNotificationsManager.ListingPushType, wasAppClosed: Bool) {
+        //TODO: update/add the listing in the Community Listings Manager
+        
+        switch push {
+        case .buyerRequestedExchange:
+            if let exampleListing = CommunityListingsManager.sharedInstance.listingsOwnedByCurrentUser.first(where: {$0.interestedBuyers.count > 0}) {
+                if wasAppClosed {
+                    presentListingDetailsViewController(with: exampleListing, in: .viewingThisUsersListing, isViewingSellerProfileNotAllowed: false)
+                } else {
+                    presentCancellableViewPushAlert(title: "Buyer Requested Exchange", message: "A buyer has requested to contact you about one of your listings") { action in
+                        self.presentListingDetailsViewController(with: exampleListing, in: .viewingThisUsersListing, isViewingSellerProfileNotAllowed: false)
+                    }
+                }
+            }
+            
+        case .sellerApprovedExchange:
+            guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
+            if let exampleListing = CommunityListingsManager.sharedInstance.listingsCurrentUserHasContacted.first(where: {$0.isUserContactInformationVisible(to: localUser.user)}) {
+                if wasAppClosed {
+                    presentListingDetailsViewController(with: exampleListing, in: .viewingOtherUsersCompletedListing, isViewingSellerProfileNotAllowed: false)
+                } else {
+                    presentCancellableViewPushAlert(title: "Seller Approved Exchange", message: "A seller has accepted your request to complete an exchange with their listing") { action in
+                        self.presentListingDetailsViewController(with: exampleListing, in: .viewingOtherUsersCompletedListing, isViewingSellerProfileNotAllowed: false)
+                    }
+                }
+            }
+        }
+    }
+    
+    fileprivate func presentCancellableViewPushAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "View Now", style: .default, handler: handler)
+        let cancel = UIAlertAction(title: "View Later", style: .cancel, handler: nil)
+        alert.addAction(cancel)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 extension MoochTabBarController: UITabBarControllerDelegate {
@@ -302,11 +355,26 @@ extension MoochTabBarController: EditListingViewControllerDelegate {
 
 extension MoochTabBarController: PushNotificationsManagerNotificationsDelegate {
     
-    func onBuyerExchangeRequest(receivedWhenAppClosed: Bool) {
-        print("onBuyerExchangeRequest... when app closed: \(receivedWhenAppClosed)")
+    func onDidReceive(listingPushType: PushNotificationsManager.ListingPushType, whenAppClosed wasAppClosed: Bool) {
+        print("didReceive \(listingPushType)... when app closed: \(wasAppClosed)")
+        guard hasLoadedListingsAfterLaunch else {
+            pushReceivedWhenAppClosed = listingPushType
+            return
+        }
+        
+        handle(push: listingPushType, wasAppClosed: wasAppClosed)
     }
+}
+
+extension MoochTabBarController: CommunityListingsManagerDelegate {
     
-    func onSellerApprovedExchange(receivedWhenAppClosed: Bool) {
-        print("onSellerApprovedExchange... when app closed: \(receivedWhenAppClosed)")
+    func communityListingsManagerDidReloadListings() {
+        hasLoadedListingsAfterLaunch = true
+        
+        //Once the Listings have loaded for the first time, show the push.
+        if let push = pushReceivedWhenAppClosed {
+            handle(push: push, wasAppClosed: true)
+            pushReceivedWhenAppClosed = nil
+        }
     }
 }

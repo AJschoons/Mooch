@@ -18,6 +18,7 @@ struct ListingDetailsConfiguration {
     
     //The bar buttons that can be added
     enum BarButtonType {
+        case cancel
         case edit
     }
     
@@ -44,8 +45,8 @@ struct ListingDetailsConfiguration {
     let mode: Mode
     
     let title: String
-    let leftBarButtons: [BarButtonType]?
-    let rightBarButtons: [BarButtonType]?
+    var leftBarButtons: [BarButtonType]?
+    var rightBarButtons: [BarButtonType]?
     
     //The fields that should be shown
     private(set) var fields: [FieldType]

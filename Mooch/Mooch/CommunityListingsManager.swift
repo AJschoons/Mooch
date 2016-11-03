@@ -6,7 +6,12 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
-//Singleton for managing all the listings within a community
+protocol CommunityListingsManagerDelegate: class {
+    
+    func communityListingsManagerDidReloadListings()
+}
+
+//Singleton for downloading and managing all the listings within a community
 class CommunityListingsManager {
     
     enum CommunityListingsManagerError: Error {
@@ -15,6 +20,8 @@ class CommunityListingsManager {
     
     //The variable to access this class through
     static let sharedInstance = CommunityListingsManager()
+    
+    weak var delegate: CommunityListingsManagerDelegate?
     
     //These variables are calculated each time all the listings change; saves us from doing work every time they are accessed
     var listingsVisibleToCurrentUserInCurrentCommunity: [Listing] { get { return _listingsVisibleToCurrentUserInCurrentCommunity} }
@@ -43,6 +50,8 @@ class CommunityListingsManager {
             
             self.updateAllListingsInCurrentCommunity(with: newListings)
             
+            self.delegate?.communityListingsManagerDidReloadListings()
+            
             completion(true, nil)
         }
     }
@@ -68,6 +77,16 @@ class CommunityListingsManager {
         }
         
         _allListingsInCurrentCommunity.remove(at: indexOfListingToDelete)
+        
+        updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
+    }
+    
+    func updateOrAddPushedListing(_ pushedListing: Listing) {
+        if let indexOfListingToUpdate = _allListingsInCurrentCommunity.index(where: {$0.id == pushedListing.id}) {
+            _allListingsInCurrentCommunity[indexOfListingToUpdate] = pushedListing
+        } else {
+            _allListingsInCurrentCommunity.insert(pushedListing, at: 0)
+        }
         
         updateAllListingsInCurrentCommunity(with: _allListingsInCurrentCommunity)
     }
@@ -101,8 +120,8 @@ class CommunityListingsManager {
             //Filter to only show listings this user has posted
             listingsOwnedByCurrentUser = allListingsOwned(by: localUser.user)
             
-            //Filter to only show listings this user has contacted, and sort them so the earliest created are at the start of the array
-            listingsCurrentUserHasContacted = newListings.filter({$0.isOwnerContactedBy(by: localUser.user)}).sorted(by: {$0.createdAt < $1.createdAt})
+            //Filter to only show listings this user has contacted, and sort them so the most recently created are at the start of the array
+            listingsCurrentUserHasContacted = newListings.filter({$0.isOwnerContactedBy(by: localUser.user)}).sorted(by: {$0.createdAt > $1.createdAt})
         }
         
         

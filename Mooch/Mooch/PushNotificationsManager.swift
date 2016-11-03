@@ -15,12 +15,16 @@ protocol PushNotificationsManagerRegistrationDelegate: class {
 
 protocol PushNotificationsManagerNotificationsDelegate: class {
     
-    func onSellerApprovedExchange(receivedWhenAppClosed: Bool)
-    func onBuyerExchangeRequest(receivedWhenAppClosed: Bool)
+    func onDidReceive(listingPushType: PushNotificationsManager.ListingPushType, whenAppClosed wasAppClosed: Bool)
 }
 
 //Singleton for managing all things with push notifications
 class PushNotificationsManager {
+    
+    enum ListingPushType {
+        case sellerApprovedExchange
+        case buyerRequestedExchange
+    }
     
     //The variable to access this class through
     static let sharedInstance = PushNotificationsManager()
@@ -113,9 +117,9 @@ class PushNotificationsManager {
         guard let category = notificationJSONData["category"].string else { return }
         
         if category == SellerApprovedCategoryIdentifier {
-            notificationsDelegate?.onSellerApprovedExchange(receivedWhenAppClosed: receivedWhenAppClosed)
+            notificationsDelegate?.onDidReceive(listingPushType: .sellerApprovedExchange, whenAppClosed: receivedWhenAppClosed)
         } else if category == ExchangeRequestCategoryIdentifier {
-            notificationsDelegate?.onBuyerExchangeRequest(receivedWhenAppClosed: receivedWhenAppClosed)
+            notificationsDelegate?.onDidReceive(listingPushType: .buyerRequestedExchange, whenAppClosed: receivedWhenAppClosed)
         }
     }
 }

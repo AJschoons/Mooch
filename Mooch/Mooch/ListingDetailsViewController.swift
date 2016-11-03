@@ -31,11 +31,16 @@ class ListingDetailsViewController: MoochViewController {
     static fileprivate let Identifier = "ListingDetailsViewController"
     
     fileprivate var editButton: UIBarButtonItem!
+    fileprivate var cancelButton: UIBarButtonItem!
     
     //This variable is needed so we can pass the listing image to the EditListingVC for editing
     fileprivate var listingImage: UIImage?
     
     // MARK: Actions
+    
+    func onCancelAction() {
+        dismiss(animated: true, completion: nil)
+    }
     
     func onEditAction() {
         editListing()
@@ -84,6 +89,10 @@ class ListingDetailsViewController: MoochViewController {
     fileprivate func setupNavigationBar() {
         editButton = UIBarButtonItem(image: UIImage(named: "settings"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onEditAction))
         
+        let cancelImage = #imageLiteral(resourceName: "cancel").af_imageAspectScaled(toFit: CGSize(width: 22, height: 22))
+        cancelButton = UIBarButtonItem(image: cancelImage, style: .plain, target: self, action: #selector(onCancelAction))
+
+        
         title = configuration.title
         
         if let leftButtons = configuration.leftBarButtons {
@@ -108,6 +117,8 @@ class ListingDetailsViewController: MoochViewController {
     
     fileprivate func barButton(forType type: Configuration.BarButtonType) -> UIBarButtonItem {
         switch type {
+        case .cancel:
+            return cancelButton
         case .edit:
             return editButton
         }

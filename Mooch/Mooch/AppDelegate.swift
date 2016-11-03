@@ -31,9 +31,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PushNotificationsManager.sharedInstance.registrationDelegate = initialLoadingViewController
         
         moochTabBarController = MoochTabBarController.instantiate()
+        CommunityListingsManager.sharedInstance.delegate = moochTabBarController
         PushNotificationsManager.sharedInstance.notificationsDelegate = moochTabBarController
         
-        //Must be called after the delegates are setup
+        //Must be called after the delegates of the PushNotificationsManager are setup
         PushNotificationsManager.sharedInstance.handlePushNotificationLaunchOptions(launchOptions: launchOptions)
         
         registerForPushNotifications(application)
