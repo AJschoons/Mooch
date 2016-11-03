@@ -80,7 +80,7 @@ class EditProfileTableHandler: NSObject {
     //Returns true if a field type maps to a EditProfileTextFieldCell
     func isTextField(forFieldType fieldType: EditProfileConfiguration.FieldType) -> Bool {
         switch fieldType {
-        case .photo:
+        case .photo, .community, .actions:
             return false
         default:
             return true
