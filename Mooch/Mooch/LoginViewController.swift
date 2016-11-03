@@ -198,12 +198,25 @@ class LoginViewController: MoochModalViewController {
             
             if let localUser = localUser {
                 LocalUserManager.sharedInstance.login(localUser: localUser)
-                strongSelf.notifyDelegateDidLoginAndDismissSelf(with: localUser)
+                
+                strongSelf.updateDeviceToken(for: localUser)
             } else {
                 strongSelf.state = .loginFieldsFilledAndValid
                 strongSelf.presentSingleActionAlert(title: Strings.Login.loginErrorAlertTitle.rawValue, message: Strings.Login.loginErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                 strongSelf.hideLoadingOverlayView(animated: true)
             }
+        }
+    }
+    
+    private func updateDeviceToken(for localUser: LocalUser) {
+        guard let deviceToken = PushNotificationsManager.sharedInstance.deviceToken else {
+            notifyDelegateDidLoginAndDismissSelf(with: localUser)
+            return
+        }
+        
+        //Not a huge deal if it fails or succeeds but we want to at least try to update the device token when logging in
+        MoochAPI.PUTUserDeviceToken(userId: localUser.user.id, deviceToken: deviceToken) { [weak self] success, error in
+            self?.notifyDelegateDidLoginAndDismissSelf(with: localUser)
         }
     }
     
