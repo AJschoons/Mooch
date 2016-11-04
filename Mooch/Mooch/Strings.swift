@@ -123,7 +123,7 @@ enum Strings {
         case loadingListingsErrorAlertTitle = "Problem Loading Listings"
         case loadingListingsErrorAlertMessage = "Please try pulling to refresh to reload the listings"
         
-        case navigationItemTitle = "Mooch"
+        case navigationItemTitle = "MOOCH"
         
         case noListingsInCommunityLabelText = "There are currently no listings in this community"
         case noListingsInCommunityMatchingSearchLabelText = "There are currently no listings in this community matching this search"
