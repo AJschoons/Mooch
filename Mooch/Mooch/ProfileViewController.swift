@@ -87,7 +87,7 @@ class ProfileViewController: MoochViewController {
     }
     
     static func tabBarItem() -> UITabBarItem {
-        return UITabBarItem(title: Strings.TabBar.myProfile.rawValue, image: #imageLiteral(resourceName: "tabBarProfileUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarProfileSelected"))
+        return UITabBarItem(title: "", image: #imageLiteral(resourceName: "tabBarProfileUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarProfileSelected"))
     }
     
     // MARK: Private methods
@@ -95,7 +95,7 @@ class ProfileViewController: MoochViewController {
     fileprivate func setupNavigationBar() {
         settingsButton = UIBarButtonItem(image: UIImage(named: "settings"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onSettingsAction))
         
-        title = configuration.title
+        navigationController?.navigationBar.topItem?.title = configuration.title
         
         if let leftButtons = configuration.leftBarButtons {
             navigationItem.leftBarButtonItems = barButtons(fromTypeList: leftButtons)
