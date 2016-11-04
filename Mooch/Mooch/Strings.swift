@@ -101,7 +101,7 @@ enum Strings {
     }
     
     enum ListingCategoryPicker: String {
-        case title = "Categories"
+        case title = "CATEGORIES"
     }
     
     enum ListingDetails: String {
