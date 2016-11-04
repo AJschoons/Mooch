@@ -56,6 +56,7 @@ extension UIImage {
 
 extension UITabBarController {
     
+    //http://stackoverflow.com/questions/6325457/getting-the-frame-of-a-particular-tab-bar-item
     func frameForTab(in tabBar: UITabBar, withIndex index: Int) -> CGRect {
         
         var frames = tabBar.subviews.flatMap { (subview: UIView) -> CGRect? in

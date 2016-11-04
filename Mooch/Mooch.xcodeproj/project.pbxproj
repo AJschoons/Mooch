@@ -109,6 +109,7 @@
 		81A1E1A71DBB42A400041A78 /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A1E1A61DBB42A400041A78 /* PushNotificationsManager.swift */; };
 		81A24FFF1DCC3AC6003049EF /* AzoSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 81A24FFD1DCC3AA9003049EF /* AzoSans-Bold.otf */; };
 		81A250001DCC3AC9003049EF /* AzoSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 81A24FFE1DCC3AC2003049EF /* AzoSans-Regular.otf */; };
+		81A250041DCC4FE9003049EF /* UIFont+CustomFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 81A250031DCC4FE9003049EF /* UIFont+CustomFonts.m */; };
 		81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81CBF0BE1DA750C70066DA75 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0BD1DA750C70066DA75 /* ImageManager.swift */; };
@@ -279,6 +280,9 @@
 		81A1E1A61DBB42A400041A78 /* PushNotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationsManager.swift; sourceTree = "<group>"; };
 		81A24FFD1DCC3AA9003049EF /* AzoSans-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AzoSans-Bold.otf"; path = "../../../../../Downloads/Azo.Sans.OTF/Azo Sans/Azo Sans/AzoSans-Bold.otf"; sourceTree = "<group>"; };
 		81A24FFE1DCC3AC2003049EF /* AzoSans-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AzoSans-Regular.otf"; path = "../../../../../Downloads/Azo.Sans.OTF/Azo Sans/Azo Sans/AzoSans-Regular.otf"; sourceTree = "<group>"; };
+		81A250011DCC4FE9003049EF /* Mooch-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mooch-Bridging-Header.h"; sourceTree = "<group>"; };
+		81A250021DCC4FE9003049EF /* UIFont+CustomFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+CustomFonts.h"; sourceTree = "<group>"; };
+		81A250031DCC4FE9003049EF /* UIFont+CustomFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+CustomFonts.m"; sourceTree = "<group>"; };
 		81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		81CBF0BD1DA750C70066DA75 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		81CBF0BF1DAB4D220066DA75 /* EditProfileTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableHandler.swift; sourceTree = "<group>"; };
@@ -508,6 +512,8 @@
 				81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */,
 				814DB9D11D91EB6C006F34E9 /* Protocols.swift */,
 				81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */,
+				81A250021DCC4FE9003049EF /* UIFont+CustomFonts.h */,
+				81A250031DCC4FE9003049EF /* UIFont+CustomFonts.m */,
 				817CA0951DA31C3B00489374 /* UserLoginInformationValidator.swift */,
 			);
 			name = Utility;
@@ -517,6 +523,7 @@
 			isa = PBXGroup;
 			children = (
 				810A823D1D7A11780086B40F /* Info.plist */,
+				81A250011DCC4FE9003049EF /* Mooch-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1125,6 +1132,7 @@
 				81F21A1A1DB4153000D442F8 /* GradientView.swift in Sources */,
 				81A09FDE1D9B36220021D3FA /* RoundedImageView.swift in Sources */,
 				81E97F5A1DBFE87100AA88E1 /* ProfileCollectionHandler.swift in Sources */,
+				81A250041DCC4FE9003049EF /* UIFont+CustomFonts.m in Sources */,
 				81A068F41DC7926E00883EAD /* EditProfileCommunityCell.swift in Sources */,
 				81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */,
 				814DB9C61D8C9BB6006F34E9 /* EditListingViewController.swift in Sources */,
@@ -1337,6 +1345,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Mooch/Mooch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2ZW34Q8J6R;
@@ -1345,6 +1354,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498capstone.Mooch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Mooch/Mooch-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1356,6 +1367,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Mooch/Mooch.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 2ZW34Q8J6R;
@@ -1365,6 +1377,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cse498capstone.Mooch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Mooch/Mooch-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
