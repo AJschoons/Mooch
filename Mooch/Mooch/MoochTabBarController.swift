@@ -31,6 +31,8 @@ class MoochTabBarController: UITabBarController {
     
     fileprivate var cameraViewControllerBeingShown: CameraViewController?
     
+    fileprivate var selectedTabBottomBar: UIView!
+    
     static func instantiate() -> MoochTabBarController {
         let mtbc = MoochTabBarController()
         mtbc.delegate = mtbc
@@ -87,6 +89,51 @@ class MoochTabBarController: UITabBarController {
         mtbc.tabBar.items![Tab.myProfile.index].selectedImage = profileTabBarItem.selectedImage
         
         return mtbc
+    }
+    
+    override func viewDidLoad() {
+        addSelectedTabBottomBar()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        updateSelectedTabBottomBarPosition(animated: false)
+    }
+    
+    func addSelectedTabBottomBar() {
+        selectedTabBottomBar = UIView()
+        selectedTabBottomBar.backgroundColor = ThemeColors.moochRed.color()
+        tabBar.addSubview(selectedTabBottomBar)
+    }
+    
+    func updateSelectedTabBottomBarPosition(animated: Bool) {
+        guard animated else {
+            selectedTabBottomBar.frame = rectForSelectedTabBottomBar()
+            return
+        }
+        
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseOut,
+            animations: {
+                self.selectedTabBottomBar.frame = self.rectForSelectedTabBottomBar()
+            },
+            completion: nil
+        )
+    }
+    
+    func rectForSelectedTabBottomBar() -> CGRect {
+        let selectedTabFrame = frameForTab(in: tabBar, withIndex: selectedIndex)
+        let tabBarHeight = tabBar.bounds.height
+        
+        let bottomBarWidth: CGFloat = 60
+        let bottomBarHeight: CGFloat = 5
+        let bottomBarY = tabBarHeight - bottomBarHeight
+        let bottomBarX = (selectedTabFrame.origin.x + selectedTabFrame.width / 2) - (bottomBarWidth / 2)
+        
+        return CGRect(x: bottomBarX, y: bottomBarY, width: bottomBarWidth, height: bottomBarHeight)
     }
     
     fileprivate func presentLoginViewController() {
@@ -266,6 +313,10 @@ extension MoochTabBarController: UITabBarControllerDelegate {
         }
         
         return true
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        updateSelectedTabBottomBarPosition(animated: true)
     }
 }
 
