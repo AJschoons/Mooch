@@ -100,6 +100,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Change how title looks
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : ThemeColors.moochRed.color()]
+        
+        UITableView.appearance().tintColor = ThemeColors.moochBlack.color()
     }
     
     
