@@ -99,13 +99,19 @@ class MoochTabBarController: UITabBarController {
         updateSelectedTabBottomBarPosition(animated: false)
     }
     
-    func addSelectedTabBottomBar() {
+    private func addSelectedTabBottomBar() {
         selectedTabBottomBar = UIView()
         selectedTabBottomBar.backgroundColor = ThemeColors.moochRed.color()
         tabBar.addSubview(selectedTabBottomBar)
     }
     
-    func updateSelectedTabBottomBarPosition(animated: Bool) {
+    //This function must be used to programatically change the selectedIndex so that the bottom bar state is correct
+    func setSelected(index: Int) {
+        selectedIndex = index
+        updateSelectedTabBottomBarPosition(animated: false)
+    }
+    
+    fileprivate func updateSelectedTabBottomBarPosition(animated: Bool) {
         guard animated else {
             selectedTabBottomBar.frame = rectForSelectedTabBottomBar()
             return
@@ -124,7 +130,7 @@ class MoochTabBarController: UITabBarController {
         )
     }
     
-    func rectForSelectedTabBottomBar() -> CGRect {
+    private func rectForSelectedTabBottomBar() -> CGRect {
         let selectedTabFrame = frameForTab(in: tabBar, withIndex: selectedIndex)
         let tabBarHeight = tabBar.bounds.height
         
@@ -326,7 +332,7 @@ extension MoochTabBarController: LoginViewControllerDelegate {
         notifyTabViewControllers(ofLocalUserStateChange: .loggedIn)
         
         if selectedMyProfileTabWhenNotLoggedIn {
-            selectedIndex = Tab.home.index
+            setSelected(index: Tab.home.index)
         }
         
         //Reset these now that the user logged in
@@ -349,14 +355,14 @@ extension MoochTabBarController: ProfileViewControllerDelegate {
     
     func profileViewControllerDidLogOutUser(_ profileViewController: ProfileViewController) {
         notifyTabViewControllers(ofLocalUserStateChange: .guest)
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
         
         profileViewController.updateWith(user: nil)
     }
     
     func profileViewControllerDidChangeCommunity(_ profileViewController: ProfileViewController) {
         notifyTabViewControllersOfCommunityChange()
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
     }
 }
 
@@ -365,7 +371,7 @@ extension MoochTabBarController: CommunityPickerViewControllerDelegate {
     func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
         notifyTabViewControllersOfCommunityChange()
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
         dismiss(animated: true, completion: nil)
     }
     
