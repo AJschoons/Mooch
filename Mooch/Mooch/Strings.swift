@@ -108,7 +108,7 @@ enum Strings {
         case alertBannerLabelListingSold = "LISTING SOLD"
         case alertBannerLabelListingEnded = "LISTING ENDED"
         
-        case title = "View Listing"
+        case title = "VIEW LISTING"
         
         case fieldTypeContactSellerNoContactYetActionString = "Contact Seller"
         case fieldTypeContactSellerAlreadyContactedActionString = "Contacted Seller"

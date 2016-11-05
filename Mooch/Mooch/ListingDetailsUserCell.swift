@@ -21,7 +21,7 @@ class ListingDetailsUserCell: UITableViewCell {
     }
     
     static let Identifier = "ListingDetailsUserCell"
-    static let EstimatedHeight: CGFloat = 203
+    static let EstimatedHeight: CGFloat = 208
     
     @IBOutlet weak var userImageView: CircleImageView!
     @IBOutlet weak var userNameLabel: UILabel!
