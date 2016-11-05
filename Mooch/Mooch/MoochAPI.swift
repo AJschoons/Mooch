@@ -62,6 +62,23 @@ class MoochAPI {
         }
     }
     
+    static func GETListing(withId id: Int, completion: @escaping (Listing?, Error?) -> Void) {
+        perform(requestExpectingResponse: MoochAPIRouter.getListing(id: id)) { json, error in
+            guard let json = json else {
+                completion(nil, error)
+                return
+            }
+            
+            do {
+                let listing = try Listing(json: json)
+                return completion(listing, nil)
+            } catch let error {
+                print("couldn't create listing with JSON: \(json)")
+                return completion(nil, error)
+            }
+        }
+    }
+    
     static func GETListingCategories(completion: @escaping ([ListingCategory]?, Error?) -> Void) {
         perform(requestExpectingResponse: MoochAPIRouter.getListingCategories) { json, error in
             guard let listingCategoriesJSON = json?.array else {
