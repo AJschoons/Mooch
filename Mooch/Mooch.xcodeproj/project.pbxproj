@@ -107,9 +107,9 @@
 		81A1E1A11DBAF98600041A78 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A1E1A01DBAF98600041A78 /* CircleImageView.swift */; };
 		81A1E1A41DBAFDF800041A78 /* ListingDetailsUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A1E1A31DBAFDF800041A78 /* ListingDetailsUserCell.swift */; };
 		81A1E1A71DBB42A400041A78 /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A1E1A61DBB42A400041A78 /* PushNotificationsManager.swift */; };
-		81A24FFF1DCC3AC6003049EF /* AzoSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 81A24FFD1DCC3AA9003049EF /* AzoSans-Bold.otf */; };
-		81A250001DCC3AC9003049EF /* AzoSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 81A24FFE1DCC3AC2003049EF /* AzoSans-Regular.otf */; };
 		81A250041DCC4FE9003049EF /* UIFont+CustomFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 81A250031DCC4FE9003049EF /* UIFont+CustomFonts.m */; };
+		81A250081DCD700A003049EF /* AzoSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 81A250071DCD700A003049EF /* AzoSans-Bold.otf */; };
+		81A2500A1DCD7014003049EF /* AzoSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 81A250091DCD7014003049EF /* AzoSans-Regular.otf */; };
 		81BE0D3C1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81BE0D3D1D89014D004BEDE6 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */; };
 		81CBF0BE1DA750C70066DA75 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0BD1DA750C70066DA75 /* ImageManager.swift */; };
@@ -278,11 +278,11 @@
 		81A1E1A31DBAFDF800041A78 /* ListingDetailsUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetailsUserCell.swift; sourceTree = "<group>"; };
 		81A1E1A51DBB365200041A78 /* Mooch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mooch.entitlements; sourceTree = "<group>"; };
 		81A1E1A61DBB42A400041A78 /* PushNotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationsManager.swift; sourceTree = "<group>"; };
-		81A24FFD1DCC3AA9003049EF /* AzoSans-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AzoSans-Bold.otf"; path = "../../../../../Downloads/Azo.Sans.OTF/Azo Sans/Azo Sans/AzoSans-Bold.otf"; sourceTree = "<group>"; };
-		81A24FFE1DCC3AC2003049EF /* AzoSans-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AzoSans-Regular.otf"; path = "../../../../../Downloads/Azo.Sans.OTF/Azo Sans/Azo Sans/AzoSans-Regular.otf"; sourceTree = "<group>"; };
 		81A250011DCC4FE9003049EF /* Mooch-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mooch-Bridging-Header.h"; sourceTree = "<group>"; };
 		81A250021DCC4FE9003049EF /* UIFont+CustomFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+CustomFonts.h"; sourceTree = "<group>"; };
 		81A250031DCC4FE9003049EF /* UIFont+CustomFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+CustomFonts.m"; sourceTree = "<group>"; };
+		81A250071DCD700A003049EF /* AzoSans-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AzoSans-Bold.otf"; sourceTree = "<group>"; };
+		81A250091DCD7014003049EF /* AzoSans-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AzoSans-Regular.otf"; sourceTree = "<group>"; };
 		81BE0D3B1D89014D004BEDE6 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		81CBF0BD1DA750C70066DA75 /* ImageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		81CBF0BF1DAB4D220066DA75 /* EditProfileTableHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableHandler.swift; sourceTree = "<group>"; };
@@ -541,10 +541,10 @@
 			isa = PBXGroup;
 			children = (
 				810A82381D7A11780086B40F /* Assets.xcassets */,
+				81A250071DCD700A003049EF /* AzoSans-Bold.otf */,
+				81A250091DCD7014003049EF /* AzoSans-Regular.otf */,
 				810A82821D7E5DA40086B40F /* Strings.swift */,
 				8119677A1DBAA47900D085C7 /* Theme.swift */,
-				81A24FFD1DCC3AA9003049EF /* AzoSans-Bold.otf */,
-				81A24FFE1DCC3AC2003049EF /* AzoSans-Regular.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -899,13 +899,13 @@
 				81E97F601DC10D6100AA88E1 /* ProfileCollectionHeaderView.xib in Resources */,
 				81A09FE01D9E1D3A0021D3FA /* Listings.storyboard in Resources */,
 				811967641DB7D62D00D085C7 /* CommunityCollectionViewCell.xib in Resources */,
-				81A250001DCC3AC9003049EF /* AzoSans-Regular.otf in Resources */,
+				81A2500A1DCD7014003049EF /* AzoSans-Regular.otf in Resources */,
 				816623AC1DA06202009AE72B /* ListingCategoryPicker.storyboard in Resources */,
 				8149E7C61D865E2D000F0C37 /* ListingDetails.storyboard in Resources */,
 				81E97F5E1DC01E9700AA88E1 /* BottomBarDoubleSegmentedControl.xib in Resources */,
 				811967601DB7C6F500D085C7 /* CommunityPicker.storyboard in Resources */,
 				818304EA1DB0597100E74202 /* Search.storyboard in Resources */,
-				81A24FFF1DCC3AC6003049EF /* AzoSans-Bold.otf in Resources */,
+				81A250081DCD700A003049EF /* AzoSans-Bold.otf in Resources */,
 				8119676D1DB8776300D085C7 /* ListingsFilter.storyboard in Resources */,
 				810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */,
 				8101CF141DB54E1000CB4ED5 /* ListingCollectionViewCell.xib in Resources */,
