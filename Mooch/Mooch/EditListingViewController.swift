@@ -174,6 +174,9 @@ class EditListingViewController: MoochModalViewController {
         if configuration.mode == .creating {
             navigationItem.hidesBackButton = true
         }
+        
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func registerForKeyboardNotifacations() {

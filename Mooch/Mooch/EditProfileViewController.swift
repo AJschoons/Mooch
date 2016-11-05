@@ -108,6 +108,7 @@ class EditProfileViewController: MoochModalViewController {
         super.setup()
         
         registerForKeyboardNotifacations()
+        
         setupNavigationBar()
         
         updateUI()

@@ -23,8 +23,8 @@ enum Strings {
     enum EditListing: String {
         case cancelButtonTitle = "Cancel"
         
-        case defaultCreatingTitle = "Sell Item"
-        case defaultEditingTitle = "Edit Item"
+        case defaultCreatingTitle = "SELL ITEM"
+        case defaultEditingTitle = "EDIT ITEM"
         
         case fieldTypePhotoTextDescription = "Photo"
         case fieldTypeTitleTextDescription = "Title"
@@ -141,8 +141,8 @@ enum Strings {
     }
     
     enum Profile: String {
-        case titleLocalUser = "My Profile"
-        case titleSellerProfile = "Seller Profile"
+        case titleLocalUser = "MY PROFILE"
+        case titleSellerProfile = "SELLER PROFILE"
         
         case noListings = "There are currently no listings to show"
 
