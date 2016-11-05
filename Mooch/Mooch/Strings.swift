@@ -17,7 +17,7 @@ enum Strings {
     }
     
     enum CommunityPicker: String {
-        case title = "Choose Community"
+        case title = "CHOOSE A COMMUNITY"
     }
     
     enum EditListing: String {
