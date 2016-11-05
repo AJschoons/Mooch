@@ -51,8 +51,8 @@ enum Strings {
     enum EditProfile: String {
         case cancelButtonTitle = "Cancel"
         
-        case defaultCreatingTitle = "Create Account"
-        case defaultEditingTitle = "Edit Profile"
+        case defaultCreatingTitle = "CREATE ACCOUNT"
+        case defaultEditingTitle = "EDIT ACCOUNT"
         
         case fieldTypePhotoTextDescription = "Photo"
         case fieldTypeNameTextDescription = "Name"

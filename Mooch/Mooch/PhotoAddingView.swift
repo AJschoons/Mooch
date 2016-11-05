@@ -71,7 +71,7 @@ class PhotoAddingView: UIView {
         photoImageView.backgroundColor = ThemeColors.moochGray.color()
         photoImageView.borderWidth = 1.0
         
-        addPhotoButton.borderColor = ThemeColors.border.color()
+        addPhotoButton.borderColor = ThemeColors.moochGray.color()
         addPhotoButton.borderWidth = 1.0
     }
     

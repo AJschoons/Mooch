@@ -54,7 +54,7 @@ class EditProfilePhotoCell: UITableViewCell, EditProfileField {
         
         bottomSeperator.backgroundColor = ThemeColors.formSeperator.color()
         
-        editPhotoButton.setImage(#imageLiteral(resourceName: "editFile").imageWithColor(color: ThemeColors.moochRed.color()), for: .normal)
+        editPhotoButton.setImage(#imageLiteral(resourceName: "editFile").imageWithColor(color: ThemeColors.moochBlack.color()), for: .normal)
         
         updateUI(forState: .noPhoto)
     }

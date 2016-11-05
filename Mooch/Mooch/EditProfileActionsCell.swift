@@ -37,12 +37,12 @@ class EditProfileActionsCell: UITableViewCell, EditProfileField {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        doneButton.backgroundColor = ThemeColors.moochRed.color()
-        doneButton.setTitleColor(ThemeColors.moochWhite.color(), for: .normal)
+        doneButton.backgroundColor = ThemeColors.moochYellow.color()
+        doneButton.setTitleColor(ThemeColors.moochBlack.color(), for: .normal)
         
         cancelButton.backgroundColor = ThemeColors.moochWhite.color()
-        cancelButton.setTitleColor(ThemeColors.moochRed.color(), for: .normal)
-        cancelButton.borderWidth = 2.0
-        cancelButton.borderColor = ThemeColors.moochRed.color()
+        cancelButton.setTitleColor(ThemeColors.moochBlack.color(), for: .normal)
+        cancelButton.borderWidth = 1.5
+        cancelButton.borderColor = ThemeColors.moochGray.color()
     }
 }

@@ -53,7 +53,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="LmE-cg-Cor"/>
                                                         <constraint firstItem="Khq-Ps-FzU" firstAttribute="centerX" secondItem="NMW-S7-bEo" secondAttribute="centerX" id="Wpi-jS-gv9"/>
-                                                        <constraint firstItem="Khq-Ps-FzU" firstAttribute="centerY" secondItem="NMW-S7-bEo" secondAttribute="centerY" constant="2" id="ovy-TZ-rnK"/>
+                                                        <constraint firstItem="Khq-Ps-FzU" firstAttribute="centerY" secondItem="NMW-S7-bEo" secondAttribute="centerY" id="ovy-TZ-rnK"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mO7-SG-vXV">
