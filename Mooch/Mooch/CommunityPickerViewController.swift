@@ -7,6 +7,7 @@
 //
 
 import AlamofireImage
+import INTULocationManager
 import UIKit
 
 protocol CommunityPickerViewControllerDelegate: class {
@@ -28,6 +29,7 @@ class CommunityPickerViewController: MoochViewController {
         var shouldUploadToAPIForLocalUser: Bool
     }
     
+    
     // MARK: Public variables
     
     @IBOutlet var collectionHandler: CommunityPickerCollectionHandler! {
@@ -47,7 +49,20 @@ class CommunityPickerViewController: MoochViewController {
     static fileprivate let StoryboardName = "CommunityPicker"
     static fileprivate let Identifier = "CommunityPickerViewController"
     
+    static fileprivate let LocationTimeout: Double = 10.0
+    
     private var finishSendingToAPIAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
+    private var finishGettingLocationAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
+    
+    fileprivate var selectedControl: BottomBarDoubleSegmentedControl.Control = .first
+    fileprivate var isGettingLocation = false
+    
+    //Used to get location permissions
+    fileprivate var locationManager: CLLocationManager!
+    
+    fileprivate var isGettingLocationAuthorized = false
+    
+    fileprivate var currentLocation: CLLocation?
     
     
     // MARK: Actions
@@ -68,15 +83,91 @@ class CommunityPickerViewController: MoochViewController {
         
         setupNavigationBar()
         
+        setupLocationManager()
+        getLocationPermissions()
+        
         updateUI()
     }
     
     override func updateUI() {
         super.updateUI()
         
+        collectionHandler.reloadData()
     }
     
+    
     // MARK: Private methods
+    
+    fileprivate func onDidSelectControl(_ control: BottomBarDoubleSegmentedControl.Control) {
+        selectedControl = control
+        
+        switch control {
+        case .first:
+            if isGettingLocation {
+                //When the user was waiting for the location and selected the other tab...
+                isGettingLocation = false
+                hideLoadingOverlayView(animated: true)
+            }
+            collectionHandler.resetScroll()
+            updateUI()
+            
+        case .second:
+            guard isGettingLocationAuthorized else {
+                selectedControl = .first
+                updateUI()
+                presentSingleActionAlert(title: "Location Services Unauthorized", message: "Location Serives must be authorized to find the closest communities. Please enable Location Services by going to Settings > Mooch > Location, and try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                return
+            }
+            
+            isGettingLocation = true
+            updateUI()
+            
+            showLoadingOverlayView(withInformationText: "Getting Location", overEntireWindow: false, withUserInteractionEnabled: true, showingProgress: false, withHiddenAlertView: false)
+            
+            getLocation()
+        }
+    }
+    
+    fileprivate func getLocationPermissions() {
+        if CLLocationManager.authorizationStatus() == .authorizedAlways || CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            isGettingLocationAuthorized = true
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+        }
+    }
+    
+    fileprivate func getLocation() {
+        let locationManager = INTULocationManager.sharedInstance()
+        let timeout = CommunityPickerViewController.LocationTimeout
+        
+        finishGettingLocationAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+        
+        currentLocation = nil
+        locationManager.requestLocation(withDesiredAccuracy: .city, timeout: timeout, delayUntilAuthorized: true, block: { currentLocation, accuracy, status in
+            DispatchQueue.main.async { [weak self] in
+                guard let minimumDurationTimer = self?.finishGettingLocationAfterMinimumDurationTimer else { return }
+                
+                minimumDurationTimer.execute { [weak self] in
+                    guard let strongSelf = self else { return }
+                    
+                    //Make sure a different tab was not selected
+                    guard strongSelf.isGettingLocation else { return }
+                    
+                    strongSelf.isGettingLocation = false
+                    strongSelf.hideLoadingOverlayView(animated: true)
+                    
+                    guard status == .success, let currentLocation = currentLocation else {
+                        strongSelf.presentSingleActionAlert(title: "Problem Getting Location", message: "We were not able to find the location in the current conditions. Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                        return
+                    }
+                    
+                    strongSelf.currentLocation = currentLocation
+                    
+                    strongSelf.updateUI()
+                }
+            }
+        })
+    }
     
     fileprivate func onDidSelect(_ community: Community) {
         if configuration.shouldUploadToAPIForLocalUser {
@@ -111,6 +202,11 @@ class CommunityPickerViewController: MoochViewController {
         }
     }
     
+    fileprivate func setupLocationManager() {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+    }
+    
     fileprivate func setupNavigationBar() {
         title = Strings.CommunityPicker.title.rawValue
         
@@ -125,10 +221,51 @@ class CommunityPickerViewController: MoochViewController {
 extension CommunityPickerViewController: CommunityPickerCollectionHandlerDelegate {
     
     func getCommunities() -> [Community] {
-        return communities
+        switch selectedControl {
+        case .first:
+            return communities.sorted(by: {$0.name < $1.name})
+            
+        case .second:
+            if isGettingLocation {
+                return []
+            } else {
+                guard let currentLocation = currentLocation else { return [] }
+                
+                var communitiesWithUpdatedDistances = [Community]()
+                for var community in communities {
+                    community.updateAndCalculateDistance(fromUserLocation: currentLocation)
+                    communitiesWithUpdatedDistances.append(community)
+                }
+                
+                return communitiesWithUpdatedDistances.sorted(by: { $0.distanceFromUser < $1.distanceFromUser })
+            }
+        }
+    }
+    
+    func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control {
+        return selectedControl
     }
     
     func didSelect(_ community: Community) {
         onDidSelect(community)
+    }
+}
+
+extension CommunityPickerViewController: BottomBarDoubleSegmentedControlDelegate {
+    //Part of ProfileCollectionHandlerDelegate
+    
+    func didSelect(_ selectedControl: BottomBarDoubleSegmentedControl.Control) {
+        onDidSelectControl(selectedControl)
+    }
+}
+
+extension CommunityPickerViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedAlways || status == .authorizedWhenInUse {
+            isGettingLocationAuthorized = true
+        } else {
+            isGettingLocationAuthorized = false
+        }
     }
 }

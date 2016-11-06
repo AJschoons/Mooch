@@ -3,6 +3,7 @@ PODS:
   - AlamofireImage (3.1.0):
     - Alamofire (~> 4.0)
   - GSKStretchyHeaderView (0.12.2)
+  - INTULocationManager (4.2.0)
   - OHHTTPStubs (5.2.2):
     - OHHTTPStubs/Default (= 5.2.2)
   - OHHTTPStubs/Core (5.2.2)
@@ -30,6 +31,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.0)
   - AlamofireImage (~> 3.0)
   - GSKStretchyHeaderView
+  - INTULocationManager
   - OHHTTPStubs
   - OHHTTPStubs/Swift
   - PhoneNumberKit (~> 1.0)
@@ -39,10 +41,11 @@ SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   AlamofireImage: bb8c8351c51cb1633bb6be69b6dbbaff37ce65b7
   GSKStretchyHeaderView: affdd9f3ae6d6f3cea31dccf604367c617d037ad
+  INTULocationManager: 73f8254b3d05c897c56bb13c190e5b7c648c0998
   OHHTTPStubs: 34d9d0994e64fcf8552dbfade5ce82ada913ee31
   PhoneNumberKit: 0b5ea9a5454d201656db766343e9d768f8542496
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
-PODFILE CHECKSUM: bb2a86f113dc69656a961ac3c53e125aa82e1e2f
+PODFILE CHECKSUM: 6c6d2e84260a94c04fcc9f2112fed283b12bf96c
 
 COCOAPODS: 1.1.0.rc.2

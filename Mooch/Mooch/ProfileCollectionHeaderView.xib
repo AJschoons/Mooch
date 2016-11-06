@@ -210,7 +210,7 @@
                         <constraint firstAttribute="trailing" secondItem="9Q2-UZ-32f" secondAttribute="trailing" id="uPz-fc-JCl"/>
                     </constraints>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileDropShadow" translatesAutoresizingMaskIntoConstraints="NO" id="h7E-jP-ReN">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropShadow" translatesAutoresizingMaskIntoConstraints="NO" id="h7E-jP-ReN">
                     <constraints>
                         <constraint firstAttribute="height" constant="3" id="NGC-Uy-3PZ"/>
                     </constraints>
@@ -237,6 +237,6 @@
         </view>
     </objects>
     <resources>
-        <image name="profileDropShadow" width="15" height="3"/>
+        <image name="dropShadow" width="15" height="3"/>
     </resources>
 </document>

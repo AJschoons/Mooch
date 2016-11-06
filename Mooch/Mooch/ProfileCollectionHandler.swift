@@ -74,6 +74,7 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         headerView.bottomBarDoubleSegmentedControl.delegate = delegate
         headerView.bottomBarDoubleSegmentedControl.set(title: "My Listings", for: .first)
         headerView.bottomBarDoubleSegmentedControl.set(title: "Contact History", for: .second)
+        
         headerView.setup(for: delegate.getConfiguration().mode)
     }
     
