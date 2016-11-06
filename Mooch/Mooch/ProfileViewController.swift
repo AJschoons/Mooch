@@ -46,11 +46,13 @@ class ProfileViewController: MoochViewController {
     //This variable is needed so we can pass the profile image to the EditProfileVC for editing
     fileprivate var profileImage: UIImage?
     
+    
     // MARK: Actions
     
     func onSettingsAction() {
         presentSettingsActionSheet()
     }
+    
     
     // MARK: Public methods
     
@@ -90,12 +92,19 @@ class ProfileViewController: MoochViewController {
         return UITabBarItem(title: "", image: #imageLiteral(resourceName: "tabBarProfileUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarProfileSelected"))
     }
     
+    
     // MARK: Private methods
     
     fileprivate func setupNavigationBar() {
         settingsButton = UIBarButtonItem(image: UIImage(named: "settings"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(onSettingsAction))
         
-        navigationController?.navigationBar.topItem?.title = configuration.title
+        if configuration.mode == .localUser {
+            //We need to set the navigation controller's title because we don't want the tab for this view controller to have a title
+            navigationController?.navigationBar.topItem?.title = configuration.title
+        } else {
+            //Otherwise we can just normally set the title
+            title = configuration.title
+        }
         
         if let leftButtons = configuration.leftBarButtons {
             navigationItem.leftBarButtonItems = barButtons(fromTypeList: leftButtons)
