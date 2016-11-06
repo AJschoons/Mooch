@@ -295,10 +295,12 @@ class LoginViewController: MoochModalViewController {
 
 extension LoginViewController: EditProfileViewControllerDelegate {
     
-    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
-        if isNewProfile {
-            LocalUserManager.sharedInstance.login(localUser: localUser)
-            notifyDelegateDidLoginAndDismissSelf(with: localUser)
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, withProfileImage profileImage: UIImage?, isNewProfile: Bool) {
+        dismiss(animated: true) {
+            if isNewProfile {
+                LocalUserManager.sharedInstance.login(localUser: localUser)
+                self.notifyDelegateDidLoginAndDismissSelf(with: localUser)
+            }
         }
     }
 }

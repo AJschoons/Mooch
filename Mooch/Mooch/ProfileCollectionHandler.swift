@@ -17,6 +17,7 @@ protocol ProfileCollectionHandlerDelegate: class, BottomBarDoubleSegmentedContro
     func getListings() -> [Listing]
     func getConfiguration() -> Configuration
     func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control
+    func getProfileImage() -> UIImage?
     func didGet(profileImage: UIImage)
     func didSelect(_ listing: Listing)
 }
@@ -91,13 +92,17 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         }
         headerView.userCommunityLabel.text = communityText
         
-        headerView.userImageView.image = UIImage(named: "defaultProfilePhoto")
-        
-        if let profilePhotoURL = profileUser.pictureURL {
-            ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { [weak self] image in
-                guard let image = image else { return }
-                self?.delegate.didGet(profileImage: image)
-                self?.headerView.userImageView.image = image
+        if let storedProfileImage = delegate.getProfileImage() {
+            headerView.userImageView.image = storedProfileImage
+        } else {
+            headerView.userImageView.image = UIImage(named: "defaultProfilePhoto")
+            
+            if let profilePhotoURL = profileUser.pictureURL {
+                ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { [weak self] image in
+                    guard let image = image else { return }
+                    self?.delegate.didGet(profileImage: image)
+                    self?.headerView.userImageView.image = image
+                }
             }
         }
         

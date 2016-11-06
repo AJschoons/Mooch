@@ -195,10 +195,10 @@ class ProfileViewController: MoochViewController {
         updateUI()
     }
     
-    fileprivate func resetFor(editedUser: User) {
+    fileprivate func resetFor(editedUser: User, profileImage: UIImage?) {
         user = editedUser
         
-        profileImage = nil
+        self.profileImage = profileImage
         updateUI()
     }
     
@@ -246,6 +246,10 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
         return selectedControl
     }
     
+    func getProfileImage() -> UIImage? {
+        return profileImage
+    }
+    
     func didGet(profileImage: UIImage) {
         self.profileImage = profileImage
     }
@@ -289,10 +293,22 @@ extension ProfileViewController: BottomBarDoubleSegmentedControlDelegate {
 
 extension ProfileViewController: EditProfileViewControllerDelegate {
     
-    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, withProfileImage profileImage: UIImage?, isNewProfile: Bool) {
         guard !isNewProfile else { return }
         
-        updateWith(user: localUser.user)
+        if let pictureURL = localUser.user.pictureURL {
+            ImageManager.sharedInstance.removeFromCache(imageURLString: pictureURL)
+        }
+        
+        if let thumbnailPictureURL = localUser.user.thumbnailPictureURL {
+            ImageManager.sharedInstance.removeFromCache(imageURLString: thumbnailPictureURL)
+        }
+        
+        LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: localUser.user)
+        
+        resetFor(editedUser: localUser.user, profileImage: profileImage)
+        
+        dismiss(animated: true, completion: nil)
     }
 }
 

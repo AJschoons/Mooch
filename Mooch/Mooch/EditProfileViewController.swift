@@ -15,7 +15,7 @@ protocol EditProfileField {
 
 protocol EditProfileViewControllerDelegate: class {
     
-    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool)
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, withProfileImage profileImage: UIImage?, isNewProfile: Bool)
 }
 
 class EditProfileViewController: MoochModalViewController {
@@ -99,8 +99,6 @@ class EditProfileViewController: MoochModalViewController {
         editedProfileInformation.name = user.name
         editedProfileInformation.phone = user.contactInformation.phone
         editedProfileInformation.address = user.contactInformation.address
-        
-        //This info isn't being edited but is needed for sending to the API in the PUT
         editedProfileInformation.email = user.contactInformation.email
     }
     
@@ -237,9 +235,7 @@ class EditProfileViewController: MoochModalViewController {
                     return
                 }
                 
-                strongSelf.dismissSelf() {
-                    strongSelf.delegate.editProfileViewControllerDidFinishEditing(localUser: localUser, isNewProfile: isNew)
-                }
+                strongSelf.delegate.editProfileViewControllerDidFinishEditing(localUser: localUser, withProfileImage: epi.photo, isNewProfile: isNew)
             }
         )
     }
@@ -268,6 +264,7 @@ class EditProfileViewController: MoochModalViewController {
                 userId: userId,
                 photo: photo,
                 name: name,
+                email: email,
                 phone: digitsOnlyPhone,
                 address: address,
                 deviceToken: deviceToken,
