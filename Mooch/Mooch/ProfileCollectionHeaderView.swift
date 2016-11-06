@@ -12,7 +12,7 @@ import UIKit
 class ProfileCollectionHeaderView: GSKStretchyHeaderView {
     
     static let Identifier = "ProfileCollectionHeaderView"
-    static let EstimatedHeight: CGFloat = 335
+    static let EstimatedHeight: CGFloat = 338
 
     @IBOutlet var view: UIView!
     
@@ -50,6 +50,8 @@ class ProfileCollectionHeaderView: GSKStretchyHeaderView {
         Bundle.main.loadNibNamed("ProfileCollectionHeaderView", owner: self, options: nil)
         self.addSubview(view)
         view.frame = self.bounds
+        
+        setup()
     }
     
     override init(frame: CGRect) {
@@ -58,5 +60,12 @@ class ProfileCollectionHeaderView: GSKStretchyHeaderView {
         Bundle.main.loadNibNamed("ProfileCollectionHeaderView", owner: self, options: nil)
         self.addSubview(view)
         view.frame = frame
+        
+        setup()
+    }
+    
+    private func setup() {
+        userImageView.borderWidth = 1.0
+        userImageView.borderColor = ThemeColors.moochGray.color()
     }
 }

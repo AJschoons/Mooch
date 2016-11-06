@@ -88,7 +88,7 @@ class ListingsViewController: MoochViewController {
     }
     
     static func tabBarItem() -> UITabBarItem {
-        return UITabBarItem(title: Strings.TabBar.home.rawValue, image: #imageLiteral(resourceName: "tabBarHomeUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarHomeSelected"))
+        return UITabBarItem(title: "", image: #imageLiteral(resourceName: "tabBarHomeUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarHomeSelected"))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -114,7 +114,7 @@ class ListingsViewController: MoochViewController {
     
     override func updateUI() {
         super.updateUI()
-    
+        
     }
     
     // MARK: Private methods

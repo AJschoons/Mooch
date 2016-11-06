@@ -35,7 +35,7 @@ class ListingsFilterViewController: MoochViewController {
     static fileprivate let StoryboardName = "ListingsFilter"
     static fileprivate let Identifier = "ListingsFilterViewController"
     
-    fileprivate let HeaderHeight: CGFloat = 36
+    fileprivate let HeaderHeight: CGFloat = 32
     
     fileprivate let DisclosureCellIdentifier = "DisclosureCell"
     fileprivate let DisclosureCellHeight: CGFloat = 44
@@ -80,6 +80,9 @@ class ListingsFilterViewController: MoochViewController {
         let numberOfDisclosureCells: CGFloat = showCategoryFilter ? 3 : 2
         let tableHeight = HeaderHeight + numberOfDisclosureCells * DisclosureCellHeight + PriceRangeCellHeight
         tableHeightConstraint.constant = tableHeight
+        
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         updateUI()
     }

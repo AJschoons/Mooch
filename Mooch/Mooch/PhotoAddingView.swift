@@ -71,7 +71,7 @@ class PhotoAddingView: UIView {
         photoImageView.backgroundColor = ThemeColors.moochGray.color()
         photoImageView.borderWidth = 1.0
         
-        addPhotoButton.borderColor = ThemeColors.border.color()
+        addPhotoButton.borderColor = ThemeColors.moochGray.color()
         addPhotoButton.borderWidth = 1.0
     }
     
@@ -79,7 +79,7 @@ class PhotoAddingView: UIView {
         switch state {
         case .noPhoto:
             addPhotoButton.backgroundColor = ThemeColors.moochGray.color()
-            addPhotoButton.setImage(#imageLiteral(resourceName: "add").imageWithColor(color: ThemeColors.moochRed.color()), for: .normal)
+            addPhotoButton.setImage(#imageLiteral(resourceName: "add").imageWithColor(color: ThemeColors.moochYellow.color()), for: .normal)
             
         case .hasPhoto:
             addPhotoButton.backgroundColor = UIColor.clear

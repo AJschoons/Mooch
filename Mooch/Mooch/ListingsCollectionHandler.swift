@@ -19,7 +19,7 @@ protocol ListingsCollectionHandlerDelegate: class, ListingsCollectionHeaderViewD
 
 class ListingsCollectionHandler: ListingCollectionHandler {
     
-    fileprivate let HeightForHeader: CGFloat = 40
+    fileprivate let HeightForHeader: CGFloat = 32
     
     private var refreshControl: UIRefreshControl!
     

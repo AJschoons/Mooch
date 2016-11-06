@@ -47,7 +47,7 @@ class SearchViewController: MoochViewController {
     }
     
     static func tabBarItem() -> UITabBarItem {
-        return UITabBarItem(title: Strings.TabBar.search.rawValue, image: #imageLiteral(resourceName: "tabBarSearchUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarSearchSelected"))
+        return UITabBarItem(title: "", image: #imageLiteral(resourceName: "tabBarSearchUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarSearchSelected"))
     }
     
     // MARK: Private methods

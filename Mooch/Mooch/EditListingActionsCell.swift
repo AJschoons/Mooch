@@ -17,7 +17,7 @@ protocol EditListingActionsCellDelegate: class {
 class EditListingActionsCell: UITableViewCell, EditListingField {
     
     static let Identifier = "EditListingActionsCell"
-    static let EstimatedHeight: CGFloat = 146
+    static let EstimatedHeight: CGFloat = 143
     
     @IBOutlet weak var doneButton: RoundedButton!
     @IBOutlet weak var cancelButton: RoundedButton!
@@ -37,13 +37,13 @@ class EditListingActionsCell: UITableViewCell, EditListingField {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        doneButton.backgroundColor = ThemeColors.moochRed.color()
-        doneButton.setTitleColor(ThemeColors.moochWhite.color(), for: .normal)
+        doneButton.backgroundColor = ThemeColors.moochYellow.color()
+        doneButton.setTitleColor(ThemeColors.moochBlack.color(), for: .normal)
         
         cancelButton.backgroundColor = ThemeColors.moochWhite.color()
-        cancelButton.setTitleColor(ThemeColors.moochRed.color(), for: .normal)
-        cancelButton.borderWidth = 2.0
-        cancelButton.borderColor = ThemeColors.moochRed.color()
+        cancelButton.setTitleColor(ThemeColors.moochBlack.color(), for: .normal)
+        cancelButton.borderWidth = 1.5
+        cancelButton.borderColor = ThemeColors.moochGray.color()
     }
 }
 

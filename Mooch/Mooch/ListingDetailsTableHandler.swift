@@ -165,12 +165,12 @@ class ListingDetailsTableHandler: NSObject {
         let title = actionString(forFieldType: fieldType, andListing: listing)
         actionCell.actionButton.setTitle(title, for: .normal)
         
-        var backgroundColor = ThemeColors.listingDetailsActionBackground.color()
-        let textColor = ThemeColors.listingDetailsActionText.color()
+        var backgroundColor = ThemeColors.moochYellow.color()
+        let textColor = ThemeColors.moochBlack.color()
         
         //Set the action button to be disabled for the contact seller button when the user already contacted them
         if fieldType == .contactSeller && LocalUserManager.sharedInstance.localUser != nil && listing.isOwnerContactedBy(by: LocalUserManager.sharedInstance.localUser!.user) {
-            backgroundColor = ThemeColors.listingDetailsActionBackgroundDisabled.color()
+            backgroundColor = ThemeColors.moochYellowDisabled.color()
             actionCell.actionButton.isUserInteractionEnabled = false
         }
         
@@ -178,9 +178,8 @@ class ListingDetailsTableHandler: NSObject {
             actionCell.actionButton.backgroundColor = backgroundColor
             actionCell.actionButton.setTitleColor(textColor, for: UIControlState.normal)
         } else {
-            //The buttons that aren't the first button get styled with the a background of the first button text color,
-            //and a border/text color of the first button's background color
-            styleBorderedRoundedButton(actionCell.actionButton, borderWidth: 2.0, borderAndTextColor: backgroundColor, backgroundColor: textColor)
+            //The buttons that aren't the first button get styled with the a white background and a gray border
+            styleBorderedRoundedButton(actionCell.actionButton, borderWidth: 1.5, borderColor: ThemeColors.moochGray.color(), textColor: textColor, backgroundColor: ThemeColors.moochWhite.color())
         }
     }
     
@@ -197,7 +196,7 @@ class ListingDetailsTableHandler: NSObject {
         let listing = delegate.getConfiguration().listing
         
         listingDetailsUserCell.delegate = delegate
-        listingDetailsUserCell.setIconsAndButtons(with: ThemeColors.listingDetailsActionBackground.color())
+        listingDetailsUserCell.setIconsAndButtons(with: ThemeColors.moochBlack.color())
         
         var isShowingSeller: Bool
         switch delegate.getConfiguration().mode {
@@ -218,6 +217,8 @@ class ListingDetailsTableHandler: NSObject {
         
         listingDetailsUserCell.userNameLabel.text = listingUserToShow.name
         listingDetailsUserCell.userImageView.image = UIImage(named: "defaultProfilePhoto")
+        listingDetailsUserCell.userImageView.borderWidth = 1.0
+        listingDetailsUserCell.userImageView.borderColor = ThemeColors.moochGray.color()
         
         let type: ListingDetailsUserCell.UserType = isShowingSeller ? .seller : .buyer
         
@@ -258,11 +259,13 @@ class ListingDetailsTableHandler: NSObject {
         listingDetailsInterestedBuyerCell.exchange = exchange
         listingDetailsInterestedBuyerCell.buyerNameLabel.text = interestedBuyer.name
         listingDetailsInterestedBuyerCell.buyerImageView.image = UIImage(named: "defaultProfilePhoto")
+        listingDetailsInterestedBuyerCell.buyerImageView.borderWidth = 1.0
+        listingDetailsInterestedBuyerCell.buyerImageView.borderColor = ThemeColors.moochGray.color()
         
-        //Opposite color styling from main action button
-        let buttonBackgroundColor = ThemeColors.listingDetailsActionText.color()
-        let buttonTextColor = ThemeColors.listingDetailsActionBackground.color()
-        styleBorderedRoundedButton(listingDetailsInterestedBuyerCell.acceptBuyerButton, borderWidth: 1.0, borderAndTextColor: buttonTextColor, backgroundColor: buttonBackgroundColor)
+        let buttonBackgroundColor = ThemeColors.moochWhite.color()
+        let buttonTextColor = ThemeColors.moochBlack.color()
+        let buttonBorderColor = ThemeColors.moochGray.color()
+        styleBorderedRoundedButton(listingDetailsInterestedBuyerCell.acceptBuyerButton, borderWidth: 1.0, borderColor: buttonBorderColor, textColor: buttonTextColor, backgroundColor: buttonBackgroundColor)
         
         if let ownerThumbnailPictureURL = interestedBuyer.thumbnailPictureURL {
             listingDetailsInterestedBuyerCell.tag = indexPath.row
@@ -303,11 +306,11 @@ class ListingDetailsTableHandler: NSObject {
         }
     }
     
-    private func styleBorderedRoundedButton(_ button: RoundedButton, borderWidth: CGFloat, borderAndTextColor: UIColor, backgroundColor: UIColor) {
+    private func styleBorderedRoundedButton(_ button: RoundedButton, borderWidth: CGFloat, borderColor: UIColor, textColor: UIColor, backgroundColor: UIColor) {
         button.backgroundColor = backgroundColor
-        button.setTitleColor(borderAndTextColor, for: UIControlState.normal)
+        button.setTitleColor(textColor, for: UIControlState.normal)
         button.borderWidth = borderWidth
-        button.borderColor = borderAndTextColor
+        button.borderColor = borderColor
     }
 }
 

@@ -31,6 +31,8 @@ class MoochTabBarController: UITabBarController {
     
     fileprivate var cameraViewControllerBeingShown: CameraViewController?
     
+    fileprivate var selectedTabBottomBar: UIView!
+    
     static func instantiate() -> MoochTabBarController {
         let mtbc = MoochTabBarController()
         mtbc.delegate = mtbc
@@ -87,6 +89,57 @@ class MoochTabBarController: UITabBarController {
         mtbc.tabBar.items![Tab.myProfile.index].selectedImage = profileTabBarItem.selectedImage
         
         return mtbc
+    }
+    
+    override func viewDidLoad() {
+        addSelectedTabBottomBar()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        updateSelectedTabBottomBarPosition(animated: false)
+    }
+    
+    private func addSelectedTabBottomBar() {
+        selectedTabBottomBar = UIView()
+        selectedTabBottomBar.backgroundColor = ThemeColors.moochRed.color()
+        tabBar.addSubview(selectedTabBottomBar)
+    }
+    
+    //This function must be used to programatically change the selectedIndex so that the bottom bar state is correct
+    func setSelected(index: Int) {
+        selectedIndex = index
+        updateSelectedTabBottomBarPosition(animated: false)
+    }
+    
+    fileprivate func updateSelectedTabBottomBarPosition(animated: Bool) {
+        guard animated else {
+            selectedTabBottomBar.frame = rectForSelectedTabBottomBar()
+            return
+        }
+        
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseOut,
+            animations: {
+                self.selectedTabBottomBar.frame = self.rectForSelectedTabBottomBar()
+            },
+            completion: nil
+        )
+    }
+    
+    private func rectForSelectedTabBottomBar() -> CGRect {
+        let selectedTabFrame = frameForTab(in: tabBar, withIndex: selectedIndex)
+        let tabBarHeight = tabBar.bounds.height
+        
+        let bottomBarWidth: CGFloat = 60
+        let bottomBarHeight: CGFloat = 5
+        let bottomBarY = tabBarHeight - bottomBarHeight
+        let bottomBarX = (selectedTabFrame.origin.x + selectedTabFrame.width / 2) - (bottomBarWidth / 2)
+        
+        return CGRect(x: bottomBarX, y: bottomBarY, width: bottomBarWidth, height: bottomBarHeight)
     }
     
     fileprivate func presentLoginViewController() {
@@ -267,6 +320,10 @@ extension MoochTabBarController: UITabBarControllerDelegate {
         
         return true
     }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        updateSelectedTabBottomBarPosition(animated: true)
+    }
 }
 
 extension MoochTabBarController: LoginViewControllerDelegate {
@@ -275,7 +332,7 @@ extension MoochTabBarController: LoginViewControllerDelegate {
         notifyTabViewControllers(ofLocalUserStateChange: .loggedIn)
         
         if selectedMyProfileTabWhenNotLoggedIn {
-            selectedIndex = Tab.home.index
+            setSelected(index: Tab.home.index)
         }
         
         //Reset these now that the user logged in
@@ -298,14 +355,14 @@ extension MoochTabBarController: ProfileViewControllerDelegate {
     
     func profileViewControllerDidLogOutUser(_ profileViewController: ProfileViewController) {
         notifyTabViewControllers(ofLocalUserStateChange: .guest)
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
         
         profileViewController.updateWith(user: nil)
     }
     
     func profileViewControllerDidChangeCommunity(_ profileViewController: ProfileViewController) {
         notifyTabViewControllersOfCommunityChange()
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
     }
 }
 
@@ -314,7 +371,7 @@ extension MoochTabBarController: CommunityPickerViewControllerDelegate {
     func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
         notifyTabViewControllersOfCommunityChange()
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
         dismiss(animated: true, completion: nil)
     }
     

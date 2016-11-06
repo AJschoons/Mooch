@@ -6,6 +6,11 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="AzoSans-Bold.otf">
+            <string>AzoSans-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Edit Profile View Controller-->
         <scene sceneID="lRv-Tf-bzu">
@@ -81,13 +86,13 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="faf-s8-OJh"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KoQ-e4-FXc" customClass="EditProfileTextField" customModule="Mooch" customModuleProvider="target">
                                                     <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hef-jv-2WT">
@@ -100,7 +105,7 @@
                                             <constraints>
                                                 <constraint firstItem="KoQ-e4-FXc" firstAttribute="bottom" secondItem="qqA-n9-bst" secondAttribute="bottom" id="Bfn-4N-qpg"/>
                                                 <constraint firstAttribute="trailing" secondItem="KoQ-e4-FXc" secondAttribute="trailing" constant="15" id="Cwy-Nm-HOM"/>
-                                                <constraint firstItem="KoQ-e4-FXc" firstAttribute="leading" secondItem="qqA-n9-bst" secondAttribute="trailing" constant="10" id="QEn-ox-DJG"/>
+                                                <constraint firstItem="KoQ-e4-FXc" firstAttribute="leading" secondItem="qqA-n9-bst" secondAttribute="trailing" constant="8" id="QEn-ox-DJG"/>
                                                 <constraint firstItem="qqA-n9-bst" firstAttribute="top" secondItem="5oo-pD-0dR" secondAttribute="top" constant="10" id="VGz-Qa-WeG"/>
                                                 <constraint firstAttribute="trailing" secondItem="hef-jv-2WT" secondAttribute="trailing" id="cdv-Ew-TfE"/>
                                                 <constraint firstAttribute="bottom" secondItem="qqA-n9-bst" secondAttribute="bottom" constant="10" id="gGd-h7-Mbg"/>
@@ -129,12 +134,12 @@
                                                         <constraint firstAttribute="height" constant="20" id="5q6-UW-I16"/>
                                                         <constraint firstAttribute="width" constant="105" id="CAY-u7-LTh"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Community Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oAQ-2p-IQp">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -148,12 +153,12 @@
                                             <constraints>
                                                 <constraint firstItem="y8T-b9-SLY" firstAttribute="leading" secondItem="PyA-E5-smD" secondAttribute="leading" constant="15" id="4I9-Vq-nQ9"/>
                                                 <constraint firstAttribute="bottom" secondItem="y8T-b9-SLY" secondAttribute="bottom" constant="10" id="6Rg-RN-XKf"/>
-                                                <constraint firstAttribute="trailing" secondItem="oAQ-2p-IQp" secondAttribute="trailing" constant="10" id="F6s-xZ-teD"/>
+                                                <constraint firstAttribute="trailing" secondItem="oAQ-2p-IQp" secondAttribute="trailing" constant="8" id="F6s-xZ-teD"/>
                                                 <constraint firstAttribute="bottom" secondItem="qzb-hw-tLV" secondAttribute="bottom" id="FQi-Q6-0O4"/>
                                                 <constraint firstItem="y8T-b9-SLY" firstAttribute="top" secondItem="PyA-E5-smD" secondAttribute="top" constant="10" id="Raz-eS-5ht"/>
                                                 <constraint firstItem="oAQ-2p-IQp" firstAttribute="bottom" secondItem="y8T-b9-SLY" secondAttribute="bottom" id="VoW-Js-wGl"/>
                                                 <constraint firstItem="oAQ-2p-IQp" firstAttribute="top" secondItem="y8T-b9-SLY" secondAttribute="top" id="hhx-0k-4To"/>
-                                                <constraint firstItem="oAQ-2p-IQp" firstAttribute="leading" secondItem="y8T-b9-SLY" secondAttribute="trailing" constant="10" id="ncw-NU-0Xp"/>
+                                                <constraint firstItem="oAQ-2p-IQp" firstAttribute="leading" secondItem="y8T-b9-SLY" secondAttribute="trailing" constant="8" id="ncw-NU-0Xp"/>
                                                 <constraint firstAttribute="trailing" secondItem="qzb-hw-tLV" secondAttribute="trailing" constant="-33" id="qVU-Js-45d"/>
                                                 <constraint firstItem="qzb-hw-tLV" firstAttribute="leading" secondItem="PyA-E5-smD" secondAttribute="leading" id="x4e-oB-ifJ"/>
                                             </constraints>
@@ -174,7 +179,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="MYJ-yZ-oUW"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="16"/>
                                                     <state key="normal" title="Complete"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -186,7 +191,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HAO-NL-zNq" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                    <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="16"/>
                                                     <state key="normal" title="Cancel"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">

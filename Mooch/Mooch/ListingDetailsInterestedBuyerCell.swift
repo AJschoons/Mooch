@@ -16,7 +16,7 @@ protocol ListingDetailsInterestedBuyerCellDelegate: class {
 class ListingDetailsInterestedBuyerCell: UITableViewCell {
     
     static let Identifier = "ListingDetailsInterestedBuyerCell"
-    static let EstimatedHeight: CGFloat = 70
+    static let EstimatedHeight: CGFloat = 80
     
     @IBOutlet weak var buyerImageView: CircleImageView!
     @IBOutlet weak var buyerNameLabel: UILabel!

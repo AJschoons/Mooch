@@ -11,7 +11,7 @@ import UIKit
 class ListingDetailsListingDescriptionCell: UITableViewCell {
     
     static let Identifier = "ListingDetailsListingDescriptionCell"
-    static let EstimatedHeight: CGFloat = 82
+    static let EstimatedHeight: CGFloat = 98
     
     @IBOutlet weak var topSeperator: UIView!
     @IBOutlet weak var descriptionLabel: UILabel!

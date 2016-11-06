@@ -34,9 +34,9 @@ class BottomBarDoubleSegmentedControl: UIView {
     
     private(set) var selectedControl: Control = .first
     
-    private var textColor: UIColor = .black
+    private var textColor: UIColor = ThemeColors.moochRed.color()
     private var controlBackgroundColor: UIColor = .clear
-    private var fontSize: CGFloat = 12
+    private var fontSize: CGFloat = 13
     
     private let HeightForBottomBar: CGFloat = 3
     

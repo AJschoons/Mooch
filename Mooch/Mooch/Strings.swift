@@ -17,14 +17,14 @@ enum Strings {
     }
     
     enum CommunityPicker: String {
-        case title = "Choose Community"
+        case title = "CHOOSE A COMMUNITY"
     }
     
     enum EditListing: String {
         case cancelButtonTitle = "Cancel"
         
-        case defaultCreatingTitle = "Sell Item"
-        case defaultEditingTitle = "Edit Item"
+        case defaultCreatingTitle = "SELL ITEM"
+        case defaultEditingTitle = "EDIT ITEM"
         
         case fieldTypePhotoTextDescription = "Photo"
         case fieldTypeTitleTextDescription = "Title"
@@ -51,8 +51,8 @@ enum Strings {
     enum EditProfile: String {
         case cancelButtonTitle = "Cancel"
         
-        case defaultCreatingTitle = "Create Account"
-        case defaultEditingTitle = "Edit Profile"
+        case defaultCreatingTitle = "CREATE ACCOUNT"
+        case defaultEditingTitle = "EDIT ACCOUNT"
         
         case fieldTypePhotoTextDescription = "Photo"
         case fieldTypeNameTextDescription = "Name"
@@ -101,14 +101,14 @@ enum Strings {
     }
     
     enum ListingCategoryPicker: String {
-        case title = "Categories"
+        case title = "CATEGORIES"
     }
     
     enum ListingDetails: String {
         case alertBannerLabelListingSold = "LISTING SOLD"
         case alertBannerLabelListingEnded = "LISTING ENDED"
         
-        case title = "View Listing"
+        case title = "VIEW LISTING"
         
         case fieldTypeContactSellerNoContactYetActionString = "Contact Seller"
         case fieldTypeContactSellerAlreadyContactedActionString = "Contacted Seller"
@@ -123,7 +123,7 @@ enum Strings {
         case loadingListingsErrorAlertTitle = "Problem Loading Listings"
         case loadingListingsErrorAlertMessage = "Please try pulling to refresh to reload the listings"
         
-        case navigationItemTitle = "Mooch"
+        case navigationItemTitle = "MOOCH"
         
         case noListingsInCommunityLabelText = "There are currently no listings in this community"
         case noListingsInCommunityMatchingSearchLabelText = "There are currently no listings in this community matching this search"
@@ -141,8 +141,8 @@ enum Strings {
     }
     
     enum Profile: String {
-        case titleLocalUser = "My Profile"
-        case titleSellerProfile = "Seller Profile"
+        case titleLocalUser = "MY PROFILE"
+        case titleSellerProfile = "SELLER PROFILE"
         
         case noListings = "There are currently no listings to show"
 

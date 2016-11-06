@@ -6,6 +6,11 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="AzoSans-Bold.otf">
+            <string>AzoSans-Bold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileCollectionHeaderView" customModule="Mooch" customModuleProvider="target">
             <connections>
@@ -22,7 +27,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="335"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="338"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UB7-or-w26" userLabel="User Profile Stuff">
@@ -90,7 +95,7 @@
                             <blurEffect style="extraLight"/>
                         </visualEffectView>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="IeS-Fi-zdI" firstAttribute="top" secondItem="UB7-or-w26" secondAttribute="top" id="K9r-VK-dbe"/>
                         <constraint firstAttribute="trailing" secondItem="IeS-Fi-zdI" secondAttribute="trailing" id="cC5-kp-Nq2"/>
@@ -113,7 +118,7 @@
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </view>
                                                 </subviews>
-                                                <color key="backgroundColor" white="0.66666666669999997" alpha="0.49655172409999998" colorSpace="calibratedWhite"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="f3q-jA-im1" secondAttribute="trailing" id="1qs-Dc-EbJ"/>
                                                     <constraint firstItem="f3q-jA-im1" firstAttribute="leading" secondItem="7zD-kS-0d8" secondAttribute="leading" id="a3e-ep-DAc"/>
@@ -131,7 +136,7 @@
                                         </constraints>
                                     </view>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <blurEffect style="light"/>
+                                    <blurEffect style="extraLight"/>
                                 </visualEffectView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -152,18 +157,24 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q0s-7A-YIa" userLabel="Header">
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All Listings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnx-Pf-tIj">
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="14" id="hrX-NH-EFm"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="13"/>
+                                                        <color key="textColor" red="0.98823529409999999" green="0.3803921569" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NHc-Hg-JtD">
+                                                        <color key="backgroundColor" red="0.98823529409999999" green="0.3803921569" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="3" id="0M6-TX-r4J"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstItem="Fnx-Pf-tIj" firstAttribute="centerY" secondItem="Q0s-7A-YIa" secondAttribute="centerY" id="DQ0-Ys-6gu"/>
-                                                    <constraint firstItem="Fnx-Pf-tIj" firstAttribute="leading" secondItem="Q0s-7A-YIa" secondAttribute="leading" constant="15" id="sec-ge-8Dy"/>
+                                                    <constraint firstAttribute="bottom" secondItem="NHc-Hg-JtD" secondAttribute="bottom" id="9wg-Ap-wER"/>
+                                                    <constraint firstAttribute="trailing" secondItem="NHc-Hg-JtD" secondAttribute="trailing" id="BcS-ZK-r7a"/>
+                                                    <constraint firstItem="Fnx-Pf-tIj" firstAttribute="centerY" secondItem="Q0s-7A-YIa" secondAttribute="centerY" constant="-1" id="DQ0-Ys-6gu"/>
+                                                    <constraint firstItem="Fnx-Pf-tIj" firstAttribute="centerX" secondItem="Q0s-7A-YIa" secondAttribute="centerX" id="WsT-gs-gkr"/>
+                                                    <constraint firstItem="NHc-Hg-JtD" firstAttribute="leading" secondItem="Q0s-7A-YIa" secondAttribute="leading" id="kjd-dy-ZVu"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -174,7 +185,7 @@
                                             <constraint firstAttribute="trailing" secondItem="Q0s-7A-YIa" secondAttribute="trailing" id="RSK-7l-xLh"/>
                                         </constraints>
                                     </view>
-                                    <blurEffect style="dark"/>
+                                    <blurEffect style="extraLight"/>
                                 </visualEffectView>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -199,22 +210,33 @@
                         <constraint firstAttribute="trailing" secondItem="9Q2-UZ-32f" secondAttribute="trailing" id="uPz-fc-JCl"/>
                     </constraints>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profileDropShadow" translatesAutoresizingMaskIntoConstraints="NO" id="h7E-jP-ReN">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="3" id="NGC-Uy-3PZ"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="UB7-or-w26" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="4qx-2Y-eiM"/>
                 <constraint firstItem="UB7-or-w26" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="64" id="93Q-Iu-g1P"/>
-                <constraint firstAttribute="bottom" secondItem="qg7-tM-N1w" secondAttribute="bottom" id="LDf-BQ-L4S"/>
+                <constraint firstAttribute="bottom" secondItem="h7E-jP-ReN" secondAttribute="bottom" id="WJ9-XV-o0b"/>
+                <constraint firstAttribute="trailing" secondItem="h7E-jP-ReN" secondAttribute="trailing" id="WSg-sb-ftI"/>
                 <constraint firstItem="qg7-tM-N1w" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bep-aW-lQ1"/>
+                <constraint firstItem="h7E-jP-ReN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dWy-1L-jn8"/>
                 <constraint firstAttribute="trailing" secondItem="UB7-or-w26" secondAttribute="trailing" id="muc-QD-cBs"/>
                 <constraint firstAttribute="trailing" secondItem="qg7-tM-N1w" secondAttribute="trailing" id="nZF-bB-3Nb"/>
                 <constraint firstItem="qg7-tM-N1w" firstAttribute="top" secondItem="UB7-or-w26" secondAttribute="bottom" id="sDo-Cw-ZZM"/>
+                <constraint firstItem="h7E-jP-ReN" firstAttribute="top" secondItem="qg7-tM-N1w" secondAttribute="bottom" id="x6R-VL-dfE"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-11" y="55"/>
+            <point key="canvasLocation" x="-11.5" y="54.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="profileDropShadow" width="15" height="3"/>
+    </resources>
 </document>

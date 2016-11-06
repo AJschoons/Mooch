@@ -11,7 +11,7 @@ import UIKit
 class EditListingTextCell: UITableViewCell, EditListingField {
 
     static let Identifier = "EditListingTextCell"
-    static let EstimatedHeight: CGFloat = 40
+    static let EstimatedHeight: CGFloat = 44
     
     @IBOutlet weak var fieldLabel: UILabel!
     

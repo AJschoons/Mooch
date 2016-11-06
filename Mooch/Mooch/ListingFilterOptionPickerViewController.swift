@@ -45,7 +45,7 @@ class ListingFilterOptionPickerViewController: MoochViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
         view.addSubview(tableView)
         
-        title = optionPickingMode.rawValue
+        title = optionPickingMode.rawValue.uppercased()
     }
     
     
