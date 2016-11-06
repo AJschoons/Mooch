@@ -97,11 +97,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Sets the colors of the bar buttons
         UINavigationBar.appearance().tintColor = ThemeColors.moochBlack.color()
-        
         //Change how title looks
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : ThemeColors.moochRed.color()]
         
-        UITableView.appearance().tintColor = ThemeColors.moochBlack.color()
+        
+        
+        //Changes the checkmarks and other elements on the right of cells to be the color below
+        UITableView.appearance().tintColor = ThemeColors.moochYellow.color()
     }
     
     
