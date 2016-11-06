@@ -9,7 +9,12 @@
 import UIKit
 
 class ListingsViewController: MoochViewController {
-    
+    var tap: UITapGestureRecognizer?
+    var keyboardShow : Bool = false {
+        didSet {
+            tap?.isEnabled = keyboardShow
+        }
+    }
     enum State {
         case loading
         case loaded
@@ -90,6 +95,15 @@ class ListingsViewController: MoochViewController {
     
     // MARK: Public methods
     
+    func keyboardDidShow(_ notif: Notification) {
+        keyboardShow = true
+    }
+    
+    func keyboardDidHide(_ notif: Notification) {
+        keyboardShow = false
+    }
+    
+    
     static func instantiateFromStoryboard() -> ListingsViewController {
         let storyboard = UIStoryboard(name: ListingsViewController.StoryboardName, bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: ListingsViewController.Identifier) as! ListingsViewController
@@ -102,11 +116,26 @@ class ListingsViewController: MoochViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
+        
+        self.hideKeyboardWhenTappedAround()
+        
         //The data needs to be reloaded when in .nestedInSearch mode because _givenListings is initially mil
         if mode == .nestedInSearch {
             collectionHandler.reloadData()
         }
         
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+        
+        if let tap = tap { view.removeGestureRecognizer(tap) }
     }
     
     override func setup() {
@@ -119,6 +148,8 @@ class ListingsViewController: MoochViewController {
         } else {
             searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64))
             searchBar.delegate = self.collectionHandler
+            searchBar.placeholder = "What are you hungry for?"
+
             self.navigationItem.titleView = searchBar
         }
         
@@ -318,5 +349,19 @@ extension ListingsViewController: CommunityChangeListener {
     
     func communityDidChange() {
         resetForStateChange()
+    }
+}
+
+extension ListingsViewController {
+    func hideKeyboardWhenTappedAround() {
+        tap = UITapGestureRecognizer(target: self, action: #selector(ListingsViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap!)
+        
+    }
+    
+    func dismissKeyboard() {
+        if (keyboardShow){
+            searchBar?.resignFirstResponder()
+        }
     }
 }

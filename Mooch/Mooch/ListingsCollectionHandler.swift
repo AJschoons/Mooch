@@ -185,6 +185,7 @@ extension ListingsCollectionHandler {
             let lists = ListingProcessingHandler.search(listings: delegate.getListings(), for: searchText)
             delegate.setSearchListings(listings: lists)
         } else {
+            searchBar.perform(#selector(searchBar.resignFirstResponder), with: nil, afterDelay: 0.1)
             delegate.setSearchListings(listings: nil)
         }
     }
