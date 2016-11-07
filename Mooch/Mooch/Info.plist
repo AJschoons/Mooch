@@ -29,6 +29,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Used to take pictures for the profile and to add a listing</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is used to help find the closest communities</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Used to get pictures for the profile and to add a listing</string>
 	<key>UIAppFonts</key>

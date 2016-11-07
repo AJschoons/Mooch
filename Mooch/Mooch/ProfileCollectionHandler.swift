@@ -74,6 +74,7 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         headerView.bottomBarDoubleSegmentedControl.delegate = delegate
         headerView.bottomBarDoubleSegmentedControl.set(title: "My Listings", for: .first)
         headerView.bottomBarDoubleSegmentedControl.set(title: "Contact History", for: .second)
+        
         headerView.setup(for: delegate.getConfiguration().mode)
     }
     
@@ -162,15 +163,17 @@ extension ProfileCollectionHandler {
         
         cell.tag = indexPath.row
         
+        cell.set(photo: nil, withBackgroundColor: listing.dominantColor, animated: false)
+        
         if let localPhoto = listing.photo {
-            cell.set(photo: localPhoto)
+            cell.set(photo: localPhoto, withBackgroundColor: listing.dominantColor, animated: false)
         } else {
             ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
                 //Make sure the cell hasn't been reused by the time the image is downloaded
                 guard cell.tag == indexPath.row else { return }
                 
                 guard let image = image else { return }
-                cell.set(photo: image)
+                cell.set(photo: image, withBackgroundColor: listing.dominantColor, animated: false)
             }
         }
         

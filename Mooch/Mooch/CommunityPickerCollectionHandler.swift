@@ -8,8 +8,9 @@
 
 import UIKit
 
-protocol CommunityPickerCollectionHandlerDelegate: class {
+protocol CommunityPickerCollectionHandlerDelegate: class, BottomBarDoubleSegmentedControlDelegate {
     func getCommunities() -> [Community]
+    func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control
     func didSelect(_ community: Community)
 }
 
@@ -33,10 +34,25 @@ class CommunityPickerCollectionHandler: NSObject {
     //The sizes for all the items, calculated upfront. Needed so we can ensure that everything in a row is the same height
     fileprivate var sizesForItems = [CGSize]()
     
+    func reloadData() {
+        guard let collectionView = collectionView else { return }
+        collectionView.reloadData()
+    }
+    
+    func resetScroll() {
+        guard let collectionView = collectionView else { return }
+        //The -64 is to account for the navigation and status bars
+        collectionView.setContentOffset(CGPoint(x: 0, y: -64), animated: true)
+    }
+    
     func onDidSet(collectionView: UICollectionView) {
         //Register the cell
         let nib = UINib(nibName: CommunityCollectionViewCell.Identifier, bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: CommunityCollectionViewCell.Identifier)
+        
+        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.sectionHeadersPinToVisibleBounds = true
+        }
     }
     
     fileprivate func textForCell(at indexPath: IndexPath) -> String {
@@ -108,6 +124,20 @@ extension CommunityPickerCollectionHandler: UICollectionViewDataSource {
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: CommunityCollectionHeaderView.Identifier, for: indexPath) as! CommunityCollectionHeaderView
+        
+        headerView.bottomBarDoubleSegmentedControl.delegate = delegate
+        headerView.bottomBarDoubleSegmentedControl.set(title: "Alphabetically", for: .first)
+        headerView.bottomBarDoubleSegmentedControl.set(title: "Closest To Me", for: .second)
+        
+        let selectedControl = delegate.getSelectedControl()
+        headerView.bottomBarDoubleSegmentedControl.update(selectedControl: selectedControl, animated: false)
+        
+        return headerView
+    }
 }
 
 extension CommunityPickerCollectionHandler: UICollectionViewDelegate {
@@ -162,5 +192,9 @@ extension CommunityPickerCollectionHandler: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return ListingCollectionHandler.SectionInsets.left
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: CommunityCollectionHeaderView.EstimatedHeight)
     }
 }

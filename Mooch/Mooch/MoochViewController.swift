@@ -50,6 +50,9 @@ class MoochViewController: UIViewController {
     //Allows subclasses to know if the overlay is being shown
     var isShowingLoadingOverlay = false
     
+    //Allows subclasses to know if the success alert is being shown
+    var isShowingSuccessAlert = false
+    
     
     // MARK: Private variables
     
@@ -68,6 +71,8 @@ class MoochViewController: UIViewController {
     fileprivate var statusBarStyleBeforeChanging: UIStatusBarStyle?
     
     private(set) var loadingOverlayViewBeingShown: LoadingOverlayView?
+    
+    private(set) var successAlertBeingShown: SuccessAlertView?
     
     
     // MARK: Actions
@@ -122,6 +127,49 @@ class MoochViewController: UIViewController {
     //Override this function to change status bar animation behavior
     func shouldAnimateStatusBarChange() -> Bool {
         return true
+    }
+    
+    func presentSuccessAlert(withInformationText informationText: String) {
+        guard !isShowingSuccessAlert else { print("can't show two success views!"); return }
+        
+        isShowingSuccessAlert = true
+        
+        let successAlert = SuccessAlertView(frame: view.frame)
+        successAlertBeingShown = successAlert
+        
+        //loadingOverlayViewBeingShown = loadingOverlayView
+        successAlert.alpha = 0
+        
+        successAlert.setup(withInformationText: informationText) {
+            self.hideSuccessAlert(animated: true)
+        }
+        
+        UIApplication.shared.keyWindow?.addSubview(successAlert)
+        
+        UIView.animate(withDuration: 0.3) {
+            successAlert.alpha = 1
+        }
+        
+        successAlert.animateAlertOnScreen()
+    }
+    
+    func hideSuccessAlert(animated: Bool) {
+        guard let successAlert = successAlertBeingShown, isShowingSuccessAlert else { return }
+        
+        if animated {
+            UIView.animate(withDuration: LoadingOverlayAnimationDuration, animations: { successAlert.alpha = 0 }, completion: { _ in
+                self.hideSuccessAlert()
+            })
+        } else {
+            hideSuccessAlert()
+        }
+    }
+    
+    private func hideSuccessAlert() {
+        guard let successAlert = successAlertBeingShown else { return }
+        successAlert.removeFromSuperview()
+        isShowingSuccessAlert = false
+        successAlertBeingShown = nil
     }
     
     func showLoadingOverlayView(withInformationText informationText: String?, overEntireWindow: Bool, withUserInteractionEnabled isUserInteractionEnabled: Bool, showingProgress showProgress: Bool, withHiddenAlertView hideAlertView: Bool) {

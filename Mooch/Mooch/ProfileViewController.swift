@@ -149,6 +149,13 @@ class ProfileViewController: MoochViewController {
         }
         let cancelAction = UIAlertAction(title: Strings.TabBar.loggedOutMyProfileTabActionSheetActionTitleCancel.rawValue, style: .cancel, handler: nil)
         
+        if Platform.isInDeveloperMode {
+            let clearCacheAction = UIAlertAction(title: "Clear Image Cache", style: .default) { _ in
+                ImageManager.sharedInstance.clearCache()
+            }
+            actionSheet.addAction(clearCacheAction)
+        }
+        
         actionSheet.addAction(editProfileAction)
         actionSheet.addAction(changeCommunityAction)
         actionSheet.addAction(logoutAction)
@@ -315,13 +322,18 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
 extension ProfileViewController: CommunityPickerViewControllerDelegate {
     
     func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
-        guard var localUser = LocalUserManager.sharedInstance.localUser?.user else { return }
+        guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
         
-        //Update the user's community id
-        localUser.communityId = community.id
-        LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: localUser)
+        var updatedUser = localUser.user
+        updatedUser.changeCommunityId(to: community.id)
+        
+        LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: updatedUser)
+        
+        //Need this to reflect the community change
+        resetFor(editedUser: localUser.user, profileImage: profileImage)
         
         delegate?.profileViewControllerDidChangeCommunity(self)
+        
         dismiss(animated: true, completion: nil)
     }
     

@@ -40,8 +40,4 @@ struct ListingCategory {
         
         self.init(id: id, name: name)
     }
-    
-    static func createDummy(fromNumber i: Int) -> ListingCategory {
-        return ListingCategory(id: i, name: "Category\(i)")
-    }
 }

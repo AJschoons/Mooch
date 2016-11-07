@@ -48,6 +48,8 @@ class ListingsCollectionHandler: ListingCollectionHandler {
         }
     }
     
+    private var animatedCells = Set<Int>()
+    
     func reloadData() {
         collectionView.reloadData()
         
@@ -119,13 +121,16 @@ extension ListingsCollectionHandler {
         cell.set(bottomLabelText: listing.priceString)
         
         cell.tag = indexPath.row
+        
         //cell.photo.image = ImageManager.PlaceholderImage
+        cell.set(photo: nil, withBackgroundColor: listing.dominantColor, animated: false)
+        
         ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
             //Make sure the cell hasn't been reused by the time the image is downloaded
             guard cell.tag == indexPath.row else { return }
             
             guard let image = image else { return }
-            cell.set(photo: image)
+            cell.set(photo: image, withBackgroundColor: listing.dominantColor, animated: false)
         }
         
         return cell

@@ -25,6 +25,7 @@ struct Listing {
         case communityId
         case owner
         case exchanges
+        case dominantColor
     }
     
     enum JSONMapping: String {
@@ -44,6 +45,7 @@ struct Listing {
         case communityId = "community_id"
         case owner = "user"
         case exchanges = "exchanges"
+        case dominantColor = "dominant_color"
     }
     
     let id: Int
@@ -62,6 +64,7 @@ struct Listing {
     let communityId: Int
     let owner: User
     var exchanges: [Exchange]
+    var dominantColor: UIColor
     
     private(set) var interestedBuyers = [User]()
     
@@ -108,7 +111,7 @@ struct Listing {
     }
     
     //Designated initializer
-    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int, exchanges: [Exchange]) {
+    init(id: Int, photo: UIImage?, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int, isAvailable: Bool, createdAt: Date, modifiedAt: Date?, owner: User, pictureURL: String, thumbnailPictureURL: String, communityId: Int, exchanges: [Exchange], dominantColor: UIColor) {
         self.id = id
         self.photo = photo
         self.title = title
@@ -124,6 +127,7 @@ struct Listing {
         self.pictureURL = pictureURL
         self.thumbnailPictureURL = thumbnailPictureURL
         self.communityId = communityId
+        self.dominantColor = dominantColor
         
         self.exchanges = exchanges
         self.interestedBuyers = self.exchanges.map({$0.buyer})
@@ -146,6 +150,7 @@ struct Listing {
         guard let createdAtString = json[JSONMapping.createdAt.rawValue].string else { throw JSONInitializationError.createdAt }
         guard let pictureURL = json[JSONMapping.pictureURL.rawValue].string else { throw JSONInitializationError.pictureURL }
         guard let communityId = json[JSONMapping.communityId.rawValue].int else { throw JSONInitializationError.communityId }
+        guard let dominantColorString = json[JSONMapping.dominantColor.rawValue].string else { throw JSONInitializationError.dominantColor }
         guard json[JSONMapping.owner.rawValue].exists() else { throw JSONInitializationError.owner }
         guard let exchangesJSON = json[JSONMapping.exchanges.rawValue].array else { throw JSONInitializationError.exchanges }
         
@@ -179,15 +184,6 @@ struct Listing {
         //Intialization
         //
 
-        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL, communityId: communityId, exchanges: exchanges)
+        self.init(id: id, photo: nil, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId, isAvailable: isAvailable, createdAt: createdAt, modifiedAt: modifiedAt, owner: owner, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL, communityId: communityId, exchanges: exchanges, dominantColor: dominantColorString.hexColor)
     }
-    
-//    static func createDummy(fromNumber i: Int) -> Listing {
-//        let photo = UIImage(named: "apples")
-//        let description = "This is some text that describes what the listing is but that will hopefully be more useful than this decription specifically"
-//        let price = Float(i % 100) * 1.68723
-//        let owner = User.createDummy(fromNumber: i)
-//        
-//        return Listing(id: i, photo: photo, title: "Listing \(i)", description: description, price: price, isFree: false, quantity: i, categoryId: i, isAvailable: true, createdAt: Date(), modifiedAt: nil, owner: owner, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100", communityId: i)
-//    }
 }

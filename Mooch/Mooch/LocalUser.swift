@@ -7,7 +7,7 @@
 //
 
 
-struct LocalUser {
+class LocalUser {
     
     //The required data for JSON initialization
     enum JSONInitializationError: Error {
@@ -18,8 +18,12 @@ struct LocalUser {
         case authenticationToken = "authentication_token"
     }
     
-    var user: User
+    private(set) var user: User
     let authenticationToken: String
+    
+    func changeUser(to user: User) {
+        self.user = user
+    }
     
     //Designated initializer
     init(user: User, authenticationToken: String) {
@@ -28,7 +32,7 @@ struct LocalUser {
     }
     
     //Convenience JSON initializer
-    init(json: JSON) throws {
+    convenience init(json: JSON) throws {
         guard let authenticationToken = json[JSONMapping.authenticationToken.rawValue].string else {
             throw JSONInitializationError.token
         }
