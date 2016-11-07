@@ -36,6 +36,9 @@ class ListingDetailsViewController: MoochViewController {
     //This variable is needed so we can pass the listing image to the EditListingVC for editing
     fileprivate var listingImage: UIImage?
     
+    fileprivate var finishAPIActionAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
+    fileprivate let apiActionMinimumDuration: Double = 1.0
+    
     // MARK: Actions
     
     func onCancelAction() {
@@ -139,57 +142,81 @@ class ListingDetailsViewController: MoochViewController {
             return
         }
         
+        showLoadingOverlayView(withInformationText: "Contacting Seller", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: false)
+        
+        finishAPIActionAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: apiActionMinimumDuration)
+        
         MoochAPI.POSTExchange(listingOwnerId: configuration.listing.owner.id, listingId: configuration.listing.id) { success, error in
-            guard success else {
-                self.presentSingleActionAlert(title: "Problem Contacting Seller", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
-                return
+            self.finishAPIActionAfterMinimumDurationTimer!.execute {
+                self.hideLoadingOverlayView(animated: true)
+                
+                guard success else {
+                    self.presentSingleActionAlert(title: "Problem Contacting Seller", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                    return
+                }
+                
+                //Update the listing for this view controller, AND make sure it's updated
+                //with the CommunityListingsManager so the change persists after leaving this view controller
+                self.configuration.listing.addInterestedBuyer(localUser.user)
+                CommunityListingsManager.sharedInstance.updateInformation(for: self.configuration.listing)
+                
+                guard let contactSellerRow = self.configuration.firstIndex(of: .contactSeller) else {
+                    return
+                }
+                self.tableHandler.reloadRow(at: IndexPath(row: contactSellerRow, section: 0))
             }
-            
-            //Update the listing for this view controller, AND make sure it's updated
-            //with the CommunityListingsManager so the change persists after leaving this view controller
-            self.configuration.listing.addInterestedBuyer(localUser.user)
-            CommunityListingsManager.sharedInstance.updateInformation(for: self.configuration.listing)
-            
-            guard let contactSellerRow = self.configuration.firstIndex(of: .contactSeller) else {
-                return
-            }
-            self.tableHandler.reloadRow(at: IndexPath(row: contactSellerRow, section: 0))
         }
     }
     
     fileprivate func deleteListing() {
         guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
         
+        showLoadingOverlayView(withInformationText: "Ending Listing", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: false)
+        
+        finishAPIActionAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: apiActionMinimumDuration)
+        
         MoochAPI.DELETEListing(ownerId: localUser.user.id, listingId: configuration.listing.id) { success, error in
-            guard success else {
-                self.presentSingleActionAlert(title: "Problem Ending Listing", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
-                return
-            }
-            
-            //Make sure the change is updated locally in the CommunityListingsManager so the change persists after leaving this view controller
-            CommunityListingsManager.sharedInstance.delete(self.configuration.listing)
-            
-            if let navigationController = self.navigationController {
-                navigationController.popViewController(animated: true)
+            self.finishAPIActionAfterMinimumDurationTimer!.execute {
+                self.hideLoadingOverlayView(animated: true)
+                
+                guard success else {
+                    self.presentSingleActionAlert(title: "Problem Ending Listing", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                    return
+                }
+                
+                //Make sure the change is updated locally in the CommunityListingsManager so the change persists after leaving this view controller
+                CommunityListingsManager.sharedInstance.delete(self.configuration.listing)
+                
+                if let navigationController = self.navigationController {
+                    navigationController.popViewController(animated: true)
+                }
             }
         }
     }
     
     fileprivate func accept(exchange: Exchange) {
         
+        showLoadingOverlayView(withInformationText: "Ending Listing", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: false)
+        
+        finishAPIActionAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: apiActionMinimumDuration)
+        
         MoochAPI.GETExchangeAccept(listingOwnerId: exchange.sellerUserId, listingId: exchange.listingId, exchangeId: exchange.id) { success, error in
-            guard success else {
-                self.presentSingleActionAlert(title: "Problem Accepting Exchange", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
-                return
+            self.finishAPIActionAfterMinimumDurationTimer!.execute {
+                self.hideLoadingOverlayView(animated: true)
+                
+                guard success else {
+                    self.presentSingleActionAlert(title: "Problem Accepting Exchange", message: "Please try again", actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
+                    return
+                }
+                
+                //Update the listing for this view controller, AND make sure it's updated locally
+                //with the CommunityListingsManager so the change persists after leaving this view controller
+                self.configuration.listing.accept(exchange: exchange)
+                CommunityListingsManager.sharedInstance.updateInformation(for: self.configuration.listing)
+                
+                self.configuration = ListingDetailsConfiguration.defaultConfiguration(for: .viewingThisUsersCompletedListing, with: self.configuration.listing, isViewingSellerProfileNotAllowed: true)
+                self.tableHandler.reloadData()
             }
-            
-            //Update the listing for this view controller, AND make sure it's updated locally
-            //with the CommunityListingsManager so the change persists after leaving this view controller
-            self.configuration.listing.accept(exchange: exchange)
-            CommunityListingsManager.sharedInstance.updateInformation(for: self.configuration.listing)
-            
-            self.configuration = ListingDetailsConfiguration.defaultConfiguration(for: .viewingThisUsersCompletedListing, with: self.configuration.listing, isViewingSellerProfileNotAllowed: true)
-            self.tableHandler.reloadData()
         }
     }
     
