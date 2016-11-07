@@ -21,18 +21,24 @@ class ListingCollectionViewCell: UICollectionViewCell {
         bottomLabel.text = bottomLabelText
     }
     
-    func set(photo: UIImage?) {
+    func set(photo: UIImage?, withBackgroundColor backgroundColor: UIColor, animated: Bool) {
         guard let photo = photo else {
             gradientView.isHidden = true
             imageView.image = nil
+            imageView.alpha = 0.0
+            roundedView.backgroundColor = backgroundColor
             return
         }
+        
         gradientView.isHidden = false
         imageView.image = photo
-    }
-    
-    override func prepareForReuse() {
-        set(photo: nil)
-        set(bottomLabelText: nil)
+        
+        if animated {
+            UIView.animate(withDuration: 0.3) {
+                self.imageView.alpha = 1.0
+            }
+        } else {
+            self.imageView.alpha = 1.0
+        }
     }
 }

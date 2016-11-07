@@ -27,6 +27,11 @@ class ImageManager {
         imageCache.removeImage(for: imageRequest, withIdentifier: nil)
     }
     
+    func clearCache() {
+        guard let imageCache = imageDownloader.imageCache else { return }
+        imageCache.removeAllImages()
+    }
+    
     func downloadImage(url: String, completion: @escaping ((Image?) -> ())) {
         guard let imageURL = URL(string: url) else {
             completion(nil)

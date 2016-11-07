@@ -149,6 +149,13 @@ class ProfileViewController: MoochViewController {
         }
         let cancelAction = UIAlertAction(title: Strings.TabBar.loggedOutMyProfileTabActionSheetActionTitleCancel.rawValue, style: .cancel, handler: nil)
         
+        if Platform.isInDeveloperMode {
+            let clearCacheAction = UIAlertAction(title: "Clear Image Cache", style: .default) { _ in
+                ImageManager.sharedInstance.clearCache()
+            }
+            actionSheet.addAction(clearCacheAction)
+        }
+        
         actionSheet.addAction(editProfileAction)
         actionSheet.addAction(changeCommunityAction)
         actionSheet.addAction(logoutAction)
