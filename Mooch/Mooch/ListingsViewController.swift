@@ -44,7 +44,7 @@ class ListingsViewController: MoochViewController {
             case .independent:
                 return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
             case .nestedInSearch:
-                return isSearching ? searchListings! : _givenListings
+                return isSearching ? searchListings ?? [] : _givenListings
             }
         }
         set {
@@ -60,20 +60,24 @@ class ListingsViewController: MoochViewController {
     
     var isSearching = false
     
-    var searchListings: [Listing]?
-    
+    var searchListings: [Listing]? {
+        willSet {
+            oldSearchListings = searchListings
+        }
+    }
+    var oldSearchListings: [Listing]?
     // MARK: Private variables
-    
     static fileprivate let StoryboardName = "Listings"
     static fileprivate let Identifier = "ListingsViewController"
-    
-    
     fileprivate var searchBar : UISearchBar!
-    
     fileprivate var state: State = .loading
-    
-    fileprivate var filterApplied: ListingFilter?
-    
+    fileprivate var filterApplied: ListingFilter? {
+        didSet {
+            if filterApplied == nil && isSearching {
+                searchListings = oldSearchListings
+            }
+        }
+    }
     fileprivate var filteredListings: [Listing] {
         guard let filter = filterApplied else {
             return [Listing]()
@@ -166,25 +170,18 @@ class ListingsViewController: MoochViewController {
     fileprivate func setupNavigationBar() {
         guard mode == .independent else { return }
         guard let nav = navigationController else { return }
-        
         nav.navigationBar.isHidden = false
-        
         nav.navigationBar.topItem?.title = Strings.Listings.navigationItemTitle.rawValue
-        
         //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func loadListings(isRefreshing: Bool) {
         guard mode == .independent else { return }
-        
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
-        
         showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: true, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: isRefreshing)
-        
         finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
-        
         CommunityListingsManager.sharedInstance.loadListingsForCurrentCommunityAndUser() { [unowned self] success, error in
             //The code inside this execute closure gets executed only after the minimum duration has passed
             self.finishLoadingAfterMinimumDurationTimer!.execute { [unowned self] in
@@ -333,6 +330,7 @@ extension ListingsViewController: ListingsFilterViewControllerDelegate {
     }
     
     func didClearFilters() {
+        
         filterApplied = nil
         collectionHandler.reloadData()
     }

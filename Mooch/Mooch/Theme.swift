@@ -25,7 +25,7 @@ enum ThemeColors {
     case moochWhite
     case moochYellow
     case moochYellowDisabled
-    
+    case moochSeperatorBlack
     
     //Returns the Red, Green, Blue ints that should get divided by 255. Also the alpha, from 0.0-1.0
     private func colorRGBA() -> (Int, Int, Int, Float) {
@@ -59,6 +59,8 @@ enum ThemeColors {
         case .moochYellowDisabled:
             return (252, 232, 184, 1.0)
             
+        case .moochSeperatorBlack:
+            return (200, 199, 204, 1.0)
         }
     }
     

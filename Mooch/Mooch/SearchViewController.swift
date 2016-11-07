@@ -54,12 +54,22 @@ class SearchViewController: MoochViewController {
         definesPresentationContext = true
         searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64))
         searchBar!.placeholder = "What are you hungry for?"
+        
+// furture feature. not implementing yet
+       // var textField : UITextField
+//        let subviews = searchBar?.subviews.last!
+//        for subview in (searchBar?.subviews)! {
+//            if subview is UITextField {
+//                textField = subview as! UITextField
+//                textField.layer.borderWidth = 1
+//                textField.layer.borderColor = UIColor.black.cgColor
+//            }
+//        }
         searchBar!.delegate = self
-
         self.navigationItem.titleView = searchBar
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorColor = UIColor.black;
+        tableView.separatorColor = ThemeColors.moochSeperatorBlack.color();
 
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
@@ -85,7 +95,6 @@ class SearchViewController: MoochViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
         
@@ -228,8 +237,9 @@ extension SearchViewController: UITableViewDataSource {
         view.backgroundColor = ThemeColors.moochRed.color()
         //view.backgroundColor = UIColor.orange
         let label = UILabel()
-        label.text = "All Category"
+        label.text = "All Categories"
         label.frame = CGRect(x: 14, y: 5,width: 157, height:17)
+        label.font = label.font.withSize(13)
         label.textAlignment = .left
         view.addSubview(label)
         
@@ -239,7 +249,7 @@ extension SearchViewController: UITableViewDataSource {
         let rect = CGRect(x: 0, y:lineY , width: screenWidth, height: 1) // CGFloat, Double, Int
         let lineView = UIView(frame: rect)
         lineView.layer.borderWidth = 1.0
-        lineView.layer.borderColor = UIColor.black.cgColor
+        lineView.layer.borderColor = ThemeColors.moochSeperatorBlack.color().cgColor
         view.addSubview(lineView)
         return view
         
@@ -292,6 +302,19 @@ extension SearchViewController {
 }
 
 
+//extension UISearchBar {
+//    var textField: UITextField? {
+//        for subview in subviews {
+//            if let textField = subview as? UITextField {
+//                textField.layer.borderWidth = 1
+//                textField.backgroundColor = UIColor.black
+//                textField.layer.borderColor = UIColor.black.cgColor
+//                return textField
+//            }
+//        }
+//        return nil
+//    }
+//}
 
 
 
