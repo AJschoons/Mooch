@@ -29,34 +29,14 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="818-T8-8ef">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsListingCell" rowHeight="375" id="TPf-a3-e2h" customClass="ListingDetailsListingCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="375"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsListingCell" rowHeight="125" id="TPf-a3-e2h" customClass="ListingDetailsListingCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TPf-a3-e2h" id="90g-AV-8Vf">
-                                            <frame key="frameInset" width="375" height="375"/>
+                                            <frame key="frameInset" width="375" height="125"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v4q-VH-sbz">
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="250" id="GD7-r7-fgJ"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NMW-S7-bEo" userLabel="Alert Banner">
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LISTING SOLD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Khq-Ps-FzU">
-                                                            <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="18"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" red="0.98823529409999999" green="0.3803921569" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="32" id="LmE-cg-Cor"/>
-                                                        <constraint firstItem="Khq-Ps-FzU" firstAttribute="centerX" secondItem="NMW-S7-bEo" secondAttribute="centerX" id="Wpi-jS-gv9"/>
-                                                        <constraint firstItem="Khq-Ps-FzU" firstAttribute="centerY" secondItem="NMW-S7-bEo" secondAttribute="centerY" id="ovy-TZ-rnK"/>
-                                                    </constraints>
-                                                </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mO7-SG-vXV">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mO7-SG-vXV" userLabel="Listing Information">
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="012345678901234567890123456789" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="we0-HM-Htd">
                                                             <constraints>
@@ -184,20 +164,11 @@
                                             <constraints>
                                                 <constraint firstItem="mO7-SG-vXV" firstAttribute="leading" secondItem="90g-AV-8Vf" secondAttribute="leading" id="3mY-JY-Dt1"/>
                                                 <constraint firstAttribute="bottom" secondItem="mO7-SG-vXV" secondAttribute="bottom" id="6dM-ct-inO"/>
-                                                <constraint firstItem="v4q-VH-sbz" firstAttribute="top" secondItem="90g-AV-8Vf" secondAttribute="top" id="6ge-wA-5zY"/>
                                                 <constraint firstAttribute="trailing" secondItem="mO7-SG-vXV" secondAttribute="trailing" id="6lL-s9-OMR"/>
-                                                <constraint firstItem="NMW-S7-bEo" firstAttribute="trailing" secondItem="v4q-VH-sbz" secondAttribute="trailing" id="XoY-JX-2wU"/>
-                                                <constraint firstAttribute="trailing" secondItem="v4q-VH-sbz" secondAttribute="trailing" id="aB7-gS-GEP"/>
-                                                <constraint firstItem="v4q-VH-sbz" firstAttribute="leading" secondItem="90g-AV-8Vf" secondAttribute="leading" id="b7N-uO-EKg"/>
-                                                <constraint firstItem="mO7-SG-vXV" firstAttribute="top" secondItem="v4q-VH-sbz" secondAttribute="bottom" id="brI-wf-P5Q"/>
-                                                <constraint firstItem="NMW-S7-bEo" firstAttribute="leading" secondItem="v4q-VH-sbz" secondAttribute="leading" id="n3T-KP-SIo"/>
-                                                <constraint firstItem="NMW-S7-bEo" firstAttribute="bottom" secondItem="v4q-VH-sbz" secondAttribute="bottom" id="qJK-Ys-xfc"/>
+                                                <constraint firstItem="mO7-SG-vXV" firstAttribute="top" secondItem="90g-AV-8Vf" secondAttribute="top" id="gdV-cF-Fpy"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="alertBannerLabel" destination="Khq-Ps-FzU" id="VZg-Ym-Jcm"/>
-                                            <outlet property="alertBannerView" destination="NMW-S7-bEo" id="vFQ-OG-sEh"/>
-                                            <outlet property="photoImageView" destination="v4q-VH-sbz" id="bmC-8l-Zjn"/>
                                             <outlet property="postedLabel" destination="5T7-hD-INQ" id="Tc1-BI-9li"/>
                                             <outlet property="priceLabel" destination="pmr-XL-aG3" id="cZj-EQ-02y"/>
                                             <outlet property="quantityLabel" destination="WPS-nU-1wf" id="4ek-3K-dvW"/>
@@ -205,7 +176,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsActionCell" rowHeight="58" id="u4h-PX-O38" customClass="ListingDetailsActionCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="403" width="375" height="58"/>
+                                        <rect key="frame" x="0.0" y="153" width="375" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="u4h-PX-O38" id="v7T-b6-EuJ">
                                             <frame key="frameInset" width="375" height="58"/>
@@ -242,7 +213,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsListingDescriptionCell" rowHeight="98" id="Onu-LA-G5W" customClass="ListingDetailsListingDescriptionCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="461" width="375" height="98"/>
+                                        <rect key="frame" x="0.0" y="211" width="375" height="98"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Onu-LA-G5W" id="KoL-KP-UJ2">
                                             <frame key="frameInset" width="375" height="98"/>
@@ -300,7 +271,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsUserCell" rowHeight="208" id="IpA-Vw-aPe" customClass="ListingDetailsUserCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="559" width="375" height="208"/>
+                                        <rect key="frame" x="0.0" y="309" width="375" height="208"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IpA-Vw-aPe" id="Fqy-hf-qBu">
                                             <frame key="frameInset" width="375" height="208"/>
@@ -314,7 +285,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wNT-kp-rN4" customClass="CircleImageView" customModule="Mooch" customModuleProvider="target">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wNT-kp-rN4" customClass="CircleImageView" customModule="Mooch" customModuleProvider="target">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="LSP-Gy-LKT"/>
                                                         <constraint firstAttribute="width" constant="60" id="O1g-4t-KWA"/>
@@ -464,7 +435,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsInterestedBuyersHeaderCell" rowHeight="42" id="3eu-9W-Ax9" customClass="ListingDetailsInterestedBuyersHeaderCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="767" width="375" height="42"/>
+                                        <rect key="frame" x="0.0" y="517" width="375" height="42"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3eu-9W-Ax9" id="KhB-hN-Qfw">
                                             <frame key="frameInset" width="375" height="42"/>
@@ -491,13 +462,13 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListingDetailsInterestedBuyerCell" rowHeight="80" id="77c-hC-chr" customClass="ListingDetailsInterestedBuyerCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="809" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="559" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="77c-hC-chr" id="E3z-cB-Wpf">
                                             <frame key="frameInset" width="375" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HRt-bA-Ahy" customClass="CircleImageView" customModule="Mooch" customModuleProvider="target">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HRt-bA-Ahy" customClass="CircleImageView" customModule="Mooch" customModuleProvider="target">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="67y-Id-fVt"/>
                                                         <constraint firstAttribute="width" constant="60" id="i25-rl-17a"/>
@@ -580,8 +551,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="email" width="32" height="22"/>
-        <image name="home" width="32" height="31"/>
-        <image name="phone" width="20" height="32"/>
+        <image name="email" width="32" height="24"/>
+        <image name="home" width="24" height="32"/>
+        <image name="phone" width="24" height="34"/>
     </resources>
 </document>

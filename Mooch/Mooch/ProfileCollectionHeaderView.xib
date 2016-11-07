@@ -39,7 +39,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KOr-yC-p2l" userLabel="User Profile">
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uff-Ut-xyO" customClass="CircleImageView" customModule="Mooch" customModuleProvider="target">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uff-Ut-xyO" customClass="CircleImageView" customModule="Mooch" customModuleProvider="target">
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="Edv-dy-DGE"/>
                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="200" id="ZNb-hT-MfS"/>

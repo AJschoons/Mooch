@@ -43,6 +43,8 @@
 		8134AA061DBC7DC6004239C5 /* ListingDetailsInterestedBuyerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134AA051DBC7DC6004239C5 /* ListingDetailsInterestedBuyerCell.swift */; };
 		8134AA081DBC828A004239C5 /* ListingDetailsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8134AA071DBC828A004239C5 /* ListingDetailsConfiguration.swift */; };
 		813EBD031DCFC98700B504F3 /* CommunityCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EBD021DCFC98700B504F3 /* CommunityCollectionHeaderView.swift */; };
+		813EBD051DD014BB00B504F3 /* ListingDetailsCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EBD041DD014BB00B504F3 /* ListingDetailsCollectionHeaderView.swift */; };
+		813EBD071DD014D900B504F3 /* ListingDetailsCollectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 813EBD061DD014D900B504F3 /* ListingDetailsCollectionHeaderView.xib */; };
 		813F650E1D87A18100DEECF0 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F650D1D87A18100DEECF0 /* ProfileViewController.swift */; };
 		813F65101D87A19400DEECF0 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 813F650F1D87A19400DEECF0 /* Profile.storyboard */; };
 		8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */; };
@@ -218,6 +220,8 @@
 		8134AA051DBC7DC6004239C5 /* ListingDetailsInterestedBuyerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetailsInterestedBuyerCell.swift; sourceTree = "<group>"; };
 		8134AA071DBC828A004239C5 /* ListingDetailsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetailsConfiguration.swift; sourceTree = "<group>"; };
 		813EBD021DCFC98700B504F3 /* CommunityCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityCollectionHeaderView.swift; sourceTree = "<group>"; };
+		813EBD041DD014BB00B504F3 /* ListingDetailsCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListingDetailsCollectionHeaderView.swift; sourceTree = "<group>"; };
+		813EBD061DD014D900B504F3 /* ListingDetailsCollectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListingDetailsCollectionHeaderView.xib; sourceTree = "<group>"; };
 		813F650D1D87A18100DEECF0 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		813F650F1D87A19400DEECF0 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		8149E7AC1D84977C000F0C37 /* InitialLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialLoadingViewController.swift; sourceTree = "<group>"; };
@@ -614,6 +618,8 @@
 				8149E7C51D865E2D000F0C37 /* ListingDetails.storyboard */,
 				814DB9D61D933B89006F34E9 /* ListingDetailsTableHandler.swift */,
 				8149E7C71D865E5A000F0C37 /* ListingDetailsViewController.swift */,
+				813EBD041DD014BB00B504F3 /* ListingDetailsCollectionHeaderView.swift */,
+				813EBD061DD014D900B504F3 /* ListingDetailsCollectionHeaderView.xib */,
 			);
 			name = "Listing Details";
 			sourceTree = "<group>";
@@ -908,6 +914,7 @@
 				81E97F5E1DC01E9700AA88E1 /* BottomBarDoubleSegmentedControl.xib in Resources */,
 				811967601DB7C6F500D085C7 /* CommunityPicker.storyboard in Resources */,
 				818304EA1DB0597100E74202 /* Search.storyboard in Resources */,
+				813EBD071DD014D900B504F3 /* ListingDetailsCollectionHeaderView.xib in Resources */,
 				81F4E92B1DCE925F00EFC24B /* AzoSans-Bold.otf in Resources */,
 				8119676D1DB8776300D085C7 /* ListingsFilter.storyboard in Resources */,
 				810A823C1D7A11780086B40F /* LaunchScreen.storyboard in Resources */,
@@ -1100,6 +1107,7 @@
 				814DB9D71D933B89006F34E9 /* ListingDetailsTableHandler.swift in Sources */,
 				8149E7AE1D84977C000F0C37 /* InitialLoadingViewController.swift in Sources */,
 				814DB9C81D8F668E006F34E9 /* EditListingTextCell.swift in Sources */,
+				813EBD051DD014BB00B504F3 /* ListingDetailsCollectionHeaderView.swift in Sources */,
 				811967631DB7D62D00D085C7 /* CommunityCollectionViewCell.swift in Sources */,
 				8119675E1DB7C53A00D085C7 /* CommunityPickerViewController.swift in Sources */,
 				81E97F581DBFD4E000AA88E1 /* ProfileConfiguration.swift in Sources */,

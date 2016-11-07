@@ -322,8 +322,6 @@ extension ProfileViewController: CommunityPickerViewControllerDelegate {
         
         LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: updatedUser)
         
-        resetFor(newUser: updatedUser)
-        
         delegate?.profileViewControllerDidChangeCommunity(self)
         
         dismiss(animated: true, completion: nil)

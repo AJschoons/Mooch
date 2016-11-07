@@ -11,11 +11,8 @@ import UIKit
 class ListingDetailsListingCell: UITableViewCell {
 
     static let Identifier = "ListingDetailsListingCell"
-    static let EstimatedHeight: CGFloat = 375
+    static let EstimatedHeight: CGFloat = 125
     
-    @IBOutlet weak var photoImageView: UIImageView!
-    @IBOutlet weak var alertBannerView: UIView!
-    @IBOutlet weak var alertBannerLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var postedLabel: UILabel!
     @IBOutlet weak var quantityLabel: UILabel!

@@ -6,6 +6,7 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
+import GSKStretchyHeaderView
 import UIKit
 
 protocol ListingDetailsTableHandlerDelegate: class, ListingDetailsActionCellDelegate, ListingDetailsInterestedBuyerCellDelegate, ListingDetailsUserCellDelegate {
@@ -31,6 +32,9 @@ class ListingDetailsTableHandler: NSObject {
     
     // MARK: Public variables
     
+    weak var delegate: ListingDetailsTableHandlerDelegate!
+    
+    
     // MARK: Private variables
     
     @IBOutlet weak fileprivate var tableView: UITableView! {
@@ -42,10 +46,16 @@ class ListingDetailsTableHandler: NSObject {
             let navBarHeight: CGFloat = 64.0
             tableView.contentInset = UIEdgeInsets(top: navBarHeight, left: 0, bottom: delegate.tabBarHeight(), right: 0)
             tableView.scrollIndicatorInsets = UIEdgeInsets(top: navBarHeight, left: 0, bottom: delegate.tabBarHeight(), right: 0)
+            
+            setupHeaderView(in: tableView)
+            reloadHeaderView()
+            resetScrollPosition()
         }
     }
     
-    weak var delegate: ListingDetailsTableHandlerDelegate!
+    private let ZeroScrollContentOffset = CGPoint(x: 0, y: -ListingDetailsCollectionHeaderView.EstimatedHeight)
+    
+    private(set) var headerView: ListingDetailsCollectionHeaderView!
     
     // MARK: Actions
     
@@ -56,11 +66,71 @@ class ListingDetailsTableHandler: NSObject {
     }
     
     func reloadData() {
+        reloadHeaderView()
         tableView.reloadData()
+    }
+    
+    func resetScrollPosition() {
+        guard let tableView = tableView else { return }
+        tableView.setContentOffset(ZeroScrollContentOffset, animated: false)
     }
     
     
     // MARK: Private methods
+    
+    fileprivate func setupHeaderView(in tableView: UITableView) {
+        tableView.layoutIfNeeded()
+        
+        let height = ListingDetailsCollectionHeaderView.EstimatedHeight// + 64 //Subtracted by tab bar height because this stretchy header library just adds that in for some reason
+        let headerSize = CGSize(width: tableView.frame.width, height: height)
+        headerView = ListingDetailsCollectionHeaderView(frame: CGRect(x: 0, y: 0, width: headerSize.width, height: headerSize.height))
+        headerView.contentAnchor = GSKStretchyHeaderViewContentAnchor.bottom
+        headerView.contentShrinks = true
+        headerView.contentExpands = true
+        tableView.addSubview(headerView)
+    }
+    
+    fileprivate func reloadHeaderView() {
+        let configuration = delegate.getConfiguration()
+        let currentMode = configuration.mode
+        let listing = configuration.listing
+        
+        let showAlertBanner = currentMode == .viewingOtherUsersCompletedListing || currentMode == .viewingThisUsersCompletedListing
+        headerView.alertBannerView.isHidden = !showAlertBanner
+        if showAlertBanner {
+            if currentMode == .viewingThisUsersCompletedListing {
+                headerView.alertBannerLabel.text = Strings.ListingDetails.alertBannerLabelListingSold.rawValue
+            } else if currentMode == .viewingOtherUsersCompletedListing {
+                headerView.alertBannerLabel.text = Strings.ListingDetails.alertBannerLabelListingEnded.rawValue
+            }
+        }
+        
+        if let localPhoto = listing.photo {
+            headerView.listingImageView.image = localPhoto
+            updateHeaderViewMaximumSize(for: localPhoto)
+            delegate.didGet(listingImage: localPhoto)
+        } else {
+            ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { [weak self] image in
+                guard let image = image else { return }
+                self?.delegate.didGet(listingImage: image)
+                self?.headerView.listingImageView.image = image
+                
+                self?.updateHeaderViewMaximumSize(for: image)
+            }
+        }
+        
+        headerView.layoutIfNeeded()
+    }
+    
+    //Lets the stretchy header grow to the size of the image, capped at the size of the table view
+    fileprivate func updateHeaderViewMaximumSize(for image: UIImage) {
+        guard let tableView = tableView, let headerView = headerView else { return }
+        
+        //We don't want to let the header view grow larger than the table view
+        let maxSize = min(tableView.bounds.height, image.size.height)
+        
+        headerView.maximumContentHeight = maxSize
+    }
     
     //Returns the field type that a row is displaying
     fileprivate func fieldType(forIndexPath indexPath: IndexPath) -> FieldType {
@@ -122,38 +192,12 @@ class ListingDetailsTableHandler: NSObject {
     
     fileprivate func configure(listingCell: ListingDetailsListingCell, atIndexPath indexPath: IndexPath) {
         let configuration = delegate.getConfiguration()
-        let currentMode = configuration.mode
         let listing = configuration.listing
         
         listingCell.titleLabel.text = listing.title
         listingCell.postedLabel.text = listing.daysSincePostedString
         listingCell.quantityLabel.text = String(listing.quantity)
         listingCell.priceLabel.text = listing.priceString
-        
-        let showAlertBanner = currentMode == .viewingOtherUsersCompletedListing || currentMode == .viewingThisUsersCompletedListing
-        listingCell.alertBannerView.isHidden = !showAlertBanner
-        if showAlertBanner {
-            if currentMode == .viewingThisUsersCompletedListing {
-                listingCell.alertBannerLabel.text = Strings.ListingDetails.alertBannerLabelListingSold.rawValue
-            } else if currentMode == .viewingOtherUsersCompletedListing {
-                listingCell.alertBannerLabel.text = Strings.ListingDetails.alertBannerLabelListingEnded.rawValue
-            }
-        }
-        
-        if let localPhoto = listing.photo {
-            listingCell.photoImageView.image = localPhoto
-            delegate.didGet(listingImage: localPhoto)
-        } else {
-            listingCell.tag = indexPath.row
-            ImageManager.sharedInstance.downloadImage(url: listing.pictureURL) { [weak self] image in
-                //Make sure the cell hasn't been reused by the time the image is downloaded
-                guard listingCell.tag == indexPath.row else { return }
-                
-                guard let image = image else { return }
-                self?.delegate.didGet(listingImage: image)
-                listingCell.photoImageView.image = image
-            }
-        }
     }
     
     fileprivate func configure(actionCell: ListingDetailsActionCell, forFieldType fieldType: FieldType) {
