@@ -36,11 +36,15 @@ struct User {
     let id: Int
     var name: String
     var contactInformation: ContactInformation
-    var communityId: Int
+    private(set) var communityId: Int
     
     //Optional
     var pictureURL: String?
     var thumbnailPictureURL: String?
+    
+    mutating func changeCommunityId(to id: Int) {
+        self.communityId = id
+    }
     
     //Designated initializer
     init(id: Int, name: String, contactInformation: ContactInformation, communityId: Int, pictureURL: String?, thumbnailPictureURL: String?) {

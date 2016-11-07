@@ -38,8 +38,6 @@ class CommunityPickerViewController: MoochViewController {
         }
     }
     
-    let communities = CommunityManager.sharedInstance.communities
-    
     weak var delegate: CommunityPickerViewControllerDelegate!
     
     var configuration: Configuration!
@@ -50,6 +48,34 @@ class CommunityPickerViewController: MoochViewController {
     static fileprivate let Identifier = "CommunityPickerViewController"
     
     static fileprivate let LocationTimeout: Double = 10.0
+    
+    fileprivate let _allCommunities = CommunityManager.sharedInstance.communities
+    
+    fileprivate var communities: [Community] {
+        get {
+            switch selectedControl {
+            //Alphabetical order
+            case .first:
+                return _allCommunities.sorted(by: {$0.name < $1.name})
+            
+            //Closest distance order
+            case .second:
+                if isGettingLocation {
+                    return []
+                } else {
+                    guard let currentLocation = currentLocation else { return [] }
+                    
+                    var communitiesWithUpdatedDistances = [Community]()
+                    for var community in _allCommunities {
+                        community.updateAndCalculateDistance(fromUserLocation: currentLocation)
+                        communitiesWithUpdatedDistances.append(community)
+                    }
+                    
+                    return communitiesWithUpdatedDistances.sorted(by: { $0.distanceFromUser < $1.distanceFromUser })
+                }
+            }
+        }
+    }
     
     private var finishSendingToAPIAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
     private var finishGettingLocationAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
@@ -221,25 +247,7 @@ class CommunityPickerViewController: MoochViewController {
 extension CommunityPickerViewController: CommunityPickerCollectionHandlerDelegate {
     
     func getCommunities() -> [Community] {
-        switch selectedControl {
-        case .first:
-            return communities.sorted(by: {$0.name < $1.name})
-            
-        case .second:
-            if isGettingLocation {
-                return []
-            } else {
-                guard let currentLocation = currentLocation else { return [] }
-                
-                var communitiesWithUpdatedDistances = [Community]()
-                for var community in communities {
-                    community.updateAndCalculateDistance(fromUserLocation: currentLocation)
-                    communitiesWithUpdatedDistances.append(community)
-                }
-                
-                return communitiesWithUpdatedDistances.sorted(by: { $0.distanceFromUser < $1.distanceFromUser })
-            }
-        }
+        return communities
     }
     
     func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control {

@@ -315,13 +315,17 @@ extension ProfileViewController: EditProfileViewControllerDelegate {
 extension ProfileViewController: CommunityPickerViewControllerDelegate {
     
     func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
-        guard var localUser = LocalUserManager.sharedInstance.localUser?.user else { return }
+        guard let localUser = LocalUserManager.sharedInstance.localUser else { return }
         
-        //Update the user's community id
-        localUser.communityId = community.id
-        LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: localUser)
+        var updatedUser = localUser.user
+        updatedUser.changeCommunityId(to: community.id)
+        
+        LocalUserManager.sharedInstance.updateLocalUserWithInformation(from: updatedUser)
+        
+        resetFor(newUser: updatedUser)
         
         delegate?.profileViewControllerDidChangeCommunity(self)
+        
         dismiss(animated: true, completion: nil)
     }
     
