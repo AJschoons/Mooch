@@ -35,6 +35,9 @@ class ListingsViewController: MoochViewController {
         }
     }
     
+    var shouldCreateSearchBar = true
+    var searchBar : UISearchBar!
+    
     //The context the view controller is being used in
     var mode: Mode = .independent
     
@@ -69,12 +72,14 @@ class ListingsViewController: MoochViewController {
     // MARK: Private variables
     static fileprivate let StoryboardName = "Listings"
     static fileprivate let Identifier = "ListingsViewController"
-    fileprivate var searchBar : UISearchBar!
+    
     fileprivate var state: State = .loading
     fileprivate var filterApplied: ListingFilter? {
         didSet {
             if filterApplied == nil && isSearching {
-                searchListings = oldSearchListings
+                guard let currentSearchBar = searchBar else { return }
+                let temporalSearchListings = ListingProcessingHandler.search(listings: _givenListings, for: currentSearchBar.text!)
+                searchListings = temporalSearchListings
             }
         }
     }
@@ -129,7 +134,7 @@ class ListingsViewController: MoochViewController {
         if mode == .nestedInSearch {
             collectionHandler.reloadData()
         }
-        
+        keyboardShow = isSearching
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -150,11 +155,21 @@ class ListingsViewController: MoochViewController {
             tabBarItem = ListingsViewController.tabBarItem()
             setupNavigationBar()
         } else {
-            searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64))
-            searchBar.delegate = self.collectionHandler
-            searchBar.placeholder = "What are you hungry for?"
-
-            self.navigationItem.titleView = searchBar
+            if shouldCreateSearchBar {
+                searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64))
+                searchBar.delegate = self.collectionHandler
+                searchBar.placeholder = "What are you hungry for?"
+                
+                self.navigationItem.titleView = searchBar
+                
+                for subview in (searchBar?.subviews.first?.subviews)! {
+                    if let textField = subview as? UITextField {
+                        textField.layer.borderWidth = 1
+                        textField.layer.borderColor = ThemeColors.moochRed.color().cgColor
+                        textField.layer.cornerRadius = 5
+                    }
+                }
+            }
         }
         
         updateUI()

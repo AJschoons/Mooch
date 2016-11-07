@@ -39,6 +39,7 @@ class SearchViewController: MoochViewController {
     lazy var listingsViewController: ListingsViewController = {
         let vc = ListingsViewController.instantiateFromStoryboard()
         vc.mode = .nestedInSearch
+        vc.shouldCreateSearchBar = false
         self.addViewControllerAsChildViewController(vc)
         return vc
     }()
@@ -56,15 +57,13 @@ class SearchViewController: MoochViewController {
         searchBar!.placeholder = "What are you hungry for?"
         
 // furture feature. not implementing yet
-       // var textField : UITextField
-//        let subviews = searchBar?.subviews.last!
-//        for subview in (searchBar?.subviews)! {
-//            if subview is UITextField {
-//                textField = subview as! UITextField
-//                textField.layer.borderWidth = 1
-//                textField.layer.borderColor = UIColor.black.cgColor
-//            }
-//        }
+        for subview in (searchBar?.subviews.first?.subviews)! {
+            if let textField = subview as? UITextField {
+                textField.layer.borderWidth = 1
+                textField.layer.borderColor = ThemeColors.moochRed.color().cgColor
+                textField.layer.cornerRadius = 5
+            }
+        }
         searchBar!.delegate = self
         self.navigationItem.titleView = searchBar
         tableView.dataSource = self
@@ -273,11 +272,12 @@ extension SearchViewController: UISearchBarDelegate {
         if searchText != "" {
             
             let searchListings = ListingProcessingHandler.search(listings: listings, for: searchText)
-            listingsViewController.listings = listings
+            listingsViewController.listings = searchListings
             listingsViewController.searchListings = searchListings
             listingsViewController.isSearching = true
             listingsViewController.view.isHidden = false
             
+            listingsViewController.searchBar = self.searchBar
         } else {
             searchBar.perform(#selector(self.resignFirstResponder), with: nil, afterDelay: 0.1)
             listingsViewController.view.isHidden = true
@@ -300,22 +300,6 @@ extension SearchViewController {
         }
     }
 }
-
-
-//extension UISearchBar {
-//    var textField: UITextField? {
-//        for subview in subviews {
-//            if let textField = subview as? UITextField {
-//                textField.layer.borderWidth = 1
-//                textField.backgroundColor = UIColor.black
-//                textField.layer.borderColor = UIColor.black.cgColor
-//                return textField
-//            }
-//        }
-//        return nil
-//    }
-//}
-
 
 
 
