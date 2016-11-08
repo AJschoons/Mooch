@@ -196,7 +196,7 @@ class ListingDetailsViewController: MoochViewController {
     
     fileprivate func accept(exchange: Exchange) {
         
-        showLoadingOverlayView(withInformationText: "Ending Listing", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: false)
+        showLoadingOverlayView(withInformationText: "Accepting Buyer", overEntireWindow: false, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: false)
         
         finishAPIActionAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: apiActionMinimumDuration)
         
