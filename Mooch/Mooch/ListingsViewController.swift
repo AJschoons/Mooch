@@ -14,6 +14,8 @@ class ListingsViewController: MoochViewController {
         didSet {
             tap?.isEnabled = keyboardShow
         }
+        
+        
     }
     enum State {
         case loading
@@ -24,9 +26,7 @@ class ListingsViewController: MoochViewController {
         case independent    //When its being shown by itself; has to get its own listings
         case nestedInSearch //When its being used by another view controller; given its listings
     }
-    
-    
-    
+
     // MARK: Public variables
     
     @IBOutlet var collectionHandler: ListingsCollectionHandler! {
@@ -63,12 +63,9 @@ class ListingsViewController: MoochViewController {
     
     var isSearching = false
     
-    var searchListings: [Listing]? {
-        willSet {
-            oldSearchListings = searchListings
-        }
-    }
-    var oldSearchListings: [Listing]?
+    var searchListings: [Listing]? 
+    //var oldSearchListings: [Listing]?
+    
     // MARK: Private variables
     static fileprivate let StoryboardName = "Listings"
     static fileprivate let Identifier = "ListingsViewController"
@@ -131,12 +128,17 @@ class ListingsViewController: MoochViewController {
         self.hideKeyboardWhenTappedAround()
         
         //The data needs to be reloaded when in .nestedInSearch mode because _givenListings is initially mil
-        if mode == .nestedInSearch {
+        
+        if listings.count == 0 {
             collectionHandler.reloadData()
         }
-        keyboardShow = isSearching
+        if let searchBar = searchBar {
+            keyboardShow = searchBar.isFirstResponder
+        }
+        
+        //keyboardShow = isSearching
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
@@ -144,6 +146,7 @@ class ListingsViewController: MoochViewController {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
         
+        //isSearching = false
         if let tap = tap { view.removeGestureRecognizer(tap) }
     }
     

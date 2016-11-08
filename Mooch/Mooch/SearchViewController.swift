@@ -278,6 +278,8 @@ extension SearchViewController: UISearchBarDelegate {
             listingsViewController.view.isHidden = false
             
             listingsViewController.searchBar = self.searchBar
+            
+            listingsViewController.collectionHandler.reloadData()
         } else {
             searchBar.perform(#selector(self.resignFirstResponder), with: nil, afterDelay: 0.1)
             listingsViewController.view.isHidden = true
