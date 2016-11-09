@@ -237,7 +237,7 @@ extension SearchViewController: UITableViewDataSource {
         //view.backgroundColor = UIColor.orange
         let label = UILabel()
         label.text = "All Categories"
-        label.frame = CGRect(x: 14, y: 5,width: 157, height:17)
+        label.frame = CGRect(x: 14, y: 7.5,width: 157, height:17)
         label.font = label.font.withSize(13)
         label.textAlignment = .left
         view.addSubview(label)
@@ -276,9 +276,7 @@ extension SearchViewController: UISearchBarDelegate {
             listingsViewController.searchListings = searchListings
             listingsViewController.isSearching = true
             listingsViewController.view.isHidden = false
-            
             listingsViewController.searchBar = self.searchBar
-            
             listingsViewController.collectionHandler.reloadData()
         } else {
             searchBar.perform(#selector(self.resignFirstResponder), with: nil, afterDelay: 0.1)

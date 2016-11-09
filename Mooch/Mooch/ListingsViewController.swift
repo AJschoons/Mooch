@@ -11,6 +11,7 @@ import UIKit
 class ListingsViewController: MoochViewController {
     var tap: UITapGestureRecognizer?
     var keyboardShow : Bool = false {
+        
         didSet {
             tap?.isEnabled = keyboardShow
         }
@@ -48,6 +49,7 @@ class ListingsViewController: MoochViewController {
                 return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
             case .nestedInSearch:
                 return isSearching ? searchListings ?? [] : _givenListings
+                //return _givenListings
             }
         }
         set {
@@ -65,6 +67,7 @@ class ListingsViewController: MoochViewController {
     
     var searchListings: [Listing]? 
     //var oldSearchListings: [Listing]?
+    
     
     // MARK: Private variables
     static fileprivate let StoryboardName = "Listings"
@@ -92,7 +95,7 @@ class ListingsViewController: MoochViewController {
     }
     
     //Used for the listings variable when in .nested mode
-    private var _givenListings = [Listing]()
+    var _givenListings = [Listing]()
 
     //Allows us to ensure that loading takes at least a minimum duration; makes the UX smoother
     private var finishLoadingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
@@ -324,11 +327,14 @@ extension ListingsViewController: ListingsCollectionHandlerDelegate {
         return searchListings ?? []
     }
     
+    
+    func getGivenListings() -> [Listing] {
+        return _givenListings
+    }
+    
     func setSearchListings(listings : [Listing]?) {
         searchListings = listings
-        
         isSearching = searchListings != nil ? true : false
-        
         collectionHandler.reloadData()
     }
 }
@@ -370,8 +376,16 @@ extension ListingsViewController: CommunityChangeListener {
 
 extension ListingsViewController {
     func hideKeyboardWhenTappedAround() {
+        
+//        tap = UITapGestureRecognizer(target: self, action: #selector(ListingsViewController.dismissKeyboard))
+//        view.addGestureRecognizer(tap!)
+        
         tap = UITapGestureRecognizer(target: self, action: #selector(ListingsViewController.dismissKeyboard))
+        tap!.cancelsTouchesInView = false
         view.addGestureRecognizer(tap!)
+
+
+        
         
     }
     
