@@ -88,15 +88,22 @@ class ListingsViewController: MoochViewController {
             return [Listing]()
         }
         if (isSearching) {
-            searchListings = ListingProcessingHandler.filter(listings: listings, with: filter)
+            //let listts = ListingProcessingHandler.search(listings:getGivenListings(), for: searchText)
+            var tmpSearchLitings = _givenListings
+            if let searchBar = searchBar {
+                tmpSearchLitings
+                    = ListingProcessingHandler.search(listings: _givenListings, for: searchBar.text!)
+            }
+            searchListings = ListingProcessingHandler.filter(listings: tmpSearchLitings, with: filter)
             return searchListings!
+            
         }
         return ListingProcessingHandler.filter(listings: listings, with: filter)
     }
     
     //Used for the listings variable when in .nested mode
     var _givenListings = [Listing]()
-
+    
     //Allows us to ensure that loading takes at least a minimum duration; makes the UX smoother
     private var finishLoadingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
     
@@ -326,8 +333,8 @@ extension ListingsViewController: ListingsCollectionHandlerDelegate {
     func getSearcListings() -> [Listing] {
         return searchListings ?? []
     }
-    
-    
+    //
+    //
     func getGivenListings() -> [Listing] {
         return _givenListings
     }
@@ -384,9 +391,6 @@ extension ListingsViewController {
         tap!.cancelsTouchesInView = false
         view.addGestureRecognizer(tap!)
 
-
-        
-        
     }
     
     func dismissKeyboard() {
