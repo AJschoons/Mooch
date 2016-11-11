@@ -19,8 +19,7 @@ class ListingsViewController: MoochViewController {
         case independent    //When its being shown by itself; has to get its own listings
         case nestedInSearch //When its being used by another view controller; given its listings
     }
-    
-    
+
     // MARK: Public variables
     
     @IBOutlet var collectionHandler: ListingsCollectionHandler! {
@@ -28,6 +27,17 @@ class ListingsViewController: MoochViewController {
             collectionHandler.delegate = self
         }
     }
+    
+    var tap: UITapGestureRecognizer?
+    
+    var keyboardShow : Bool = false {
+        didSet {
+            tap?.isEnabled = keyboardShow
+        }
+    }
+    
+    var shouldCreateSearchBar = true
+    var searchBar : UISearchBar!
     
     //The context the view controller is being used in
     var mode: Mode = .independent
@@ -38,7 +48,7 @@ class ListingsViewController: MoochViewController {
             case .independent:
                 return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
             case .nestedInSearch:
-                return _givenListings
+                return isSearching ? searchListings ?? [] : _givenListings
             }
         }
         set {
@@ -52,6 +62,10 @@ class ListingsViewController: MoochViewController {
         }
     }
     
+    var isSearching = false
+    
+    var searchListings: [Listing]?
+    
     
     // MARK: Private variables
     
@@ -59,26 +73,41 @@ class ListingsViewController: MoochViewController {
     static fileprivate let Identifier = "ListingsViewController"
     
     fileprivate var state: State = .loading
-    
-    fileprivate var filterApplied: ListingFilter?
+    fileprivate var filterApplied: ListingFilter? {
+        didSet {
+            if filterApplied == nil && isSearching {
+                guard let currentSearchBar = searchBar else { return }
+                let temporalSearchListings = ListingProcessingHandler.search(listings: _givenListings, for: currentSearchBar.text!)
+                searchListings = temporalSearchListings
+            }
+        }
+    }
     
     fileprivate var filteredListings: [Listing] {
         guard let filter = filterApplied else {
             return [Listing]()
         }
-        
+        if (isSearching) {
+            var tmpSearchLitings = _givenListings
+            if let searchBar = searchBar {
+                tmpSearchLitings
+                    = ListingProcessingHandler.search(listings: _givenListings, for: searchBar.text!)
+            }
+            searchListings = ListingProcessingHandler.filter(listings: tmpSearchLitings, with: filter)
+            return searchListings!
+            
+        }
         return ListingProcessingHandler.filter(listings: listings, with: filter)
     }
     
     //Used for the listings variable when in .nested mode
-    private var _givenListings = [Listing]()
-
+    var _givenListings = [Listing]()
+    
     //Allows us to ensure that loading takes at least a minimum duration; makes the UX smoother
     private var finishLoadingAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
     
-    // MARK: Actions
     
-
+    // MARK: Actions
     
     // MARK: Public methods
     
@@ -91,13 +120,53 @@ class ListingsViewController: MoochViewController {
         return UITabBarItem(title: "", image: #imageLiteral(resourceName: "tabBarHomeUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarHomeSelected"))
     }
     
+    //Completely resets the UI and state of the view controller
+    func resetForStateChange() {
+        guard let navC = navigationController else { return }
+        navC.popToRootViewController(animated: false)
+        filterApplied = nil
+        
+        if mode == .independent {
+            loadListings(isRefreshing: false)
+        } else {
+            collectionHandler.reloadData()
+        }
+    }
+    
+    func keyboardDidShow(_ notif: Notification) {
+        keyboardShow = true
+    }
+    
+    func keyboardDidHide(_ notif: Notification) {
+        keyboardShow = false
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
+        
+        self.hideKeyboardWhenTappedAround()
+        
         //The data needs to be reloaded when in .nestedInSearch mode because _givenListings is initially mil
-        if mode == .nestedInSearch {
+        
+        if listings.count == 0 {
             collectionHandler.reloadData()
         }
+        if let searchBar = searchBar {
+            keyboardShow = searchBar.isFirstResponder
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        
+        super.viewDidAppear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+        
+        if let tap = tap { view.removeGestureRecognizer(tap) }
     }
     
     override func setup() {
@@ -107,6 +176,22 @@ class ListingsViewController: MoochViewController {
             loadListings(isRefreshing: false)
             tabBarItem = ListingsViewController.tabBarItem()
             setupNavigationBar()
+        } else {
+            if shouldCreateSearchBar {
+                searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64))
+                searchBar.delegate = self.collectionHandler
+                searchBar.placeholder = "What are you hungry for?"
+                
+                self.navigationItem.titleView = searchBar
+                
+                for subview in (searchBar?.subviews.first?.subviews)! {
+                    if let textField = subview as? UITextField {
+                        textField.layer.borderWidth = 1
+                        textField.layer.borderColor = ThemeColors.moochRed.color().cgColor
+                        textField.layer.cornerRadius = 5
+                    }
+                }
+            }
         }
         
         updateUI()
@@ -114,7 +199,6 @@ class ListingsViewController: MoochViewController {
     
     override func updateUI() {
         super.updateUI()
-        
     }
     
     // MARK: Private methods
@@ -122,25 +206,18 @@ class ListingsViewController: MoochViewController {
     fileprivate func setupNavigationBar() {
         guard mode == .independent else { return }
         guard let nav = navigationController else { return }
-        
         nav.navigationBar.isHidden = false
-        
         nav.navigationBar.topItem?.title = Strings.Listings.navigationItemTitle.rawValue
-        
         //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     fileprivate func loadListings(isRefreshing: Bool) {
         guard mode == .independent else { return }
-        
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
-        
         showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: true, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: isRefreshing)
-        
         finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
-        
         CommunityListingsManager.sharedInstance.loadListingsForCurrentCommunityAndUser() { [unowned self] success, error in
             //The code inside this execute closure gets executed only after the minimum duration has passed
             self.finishLoadingAfterMinimumDurationTimer!.execute { [unowned self] in
@@ -209,15 +286,6 @@ class ListingsViewController: MoochViewController {
         
         present(navC, animated: true, completion: nil)
     }
-    
-    //Completely resets the UI and state of the view controller
-    fileprivate func resetForStateChange() {
-        guard mode == .independent else { return }
-        guard let navC = navigationController else { return }
-        navC.popToRootViewController(animated: false)
-        filterApplied = nil
-        loadListings(isRefreshing: false)
-    }
 }
 
 extension ListingsViewController: ListingsCollectionHandlerDelegate {
@@ -256,6 +324,24 @@ extension ListingsViewController: ListingsCollectionHandlerDelegate {
     func areListingsFromSearch() -> Bool {
         return mode == .nestedInSearch
     }
+    
+    func isInSearchMode() -> Bool {
+        return isSearching
+    }
+    
+    func getSearcListings() -> [Listing] {
+        return searchListings ?? []
+    }
+
+    func getGivenListings() -> [Listing] {
+        return _givenListings
+    }
+    
+    func setSearchListings(listings : [Listing]?) {
+        searchListings = listings
+        isSearching = searchListings != nil ? true : false
+        collectionHandler.reloadData()
+    }
 }
 
 extension ListingsViewController: ListingsCollectionHeaderViewDelegate {
@@ -289,5 +375,21 @@ extension ListingsViewController: CommunityChangeListener {
     
     func communityDidChange() {
         resetForStateChange()
+    }
+}
+
+extension ListingsViewController {
+    func hideKeyboardWhenTappedAround() {
+        
+        tap = UITapGestureRecognizer(target: self, action: #selector(ListingsViewController.dismissKeyboard))
+        tap!.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap!)
+
+    }
+    
+    func dismissKeyboard() {
+        if (keyboardShow){
+            searchBar?.resignFirstResponder()
+        }
     }
 }
