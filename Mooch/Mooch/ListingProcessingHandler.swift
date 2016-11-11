@@ -2,7 +2,7 @@
 //  ListingProcessingHandler.swift
 //  Mooch
 //
-//  Created by adam on 10/20/16.
+//  Created by Zhiming Jiang on 10/20/16.
 //  Copyright © 2016 cse498. All rights reserved.
 //
 import UIKit

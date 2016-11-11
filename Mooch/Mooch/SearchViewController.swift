@@ -2,40 +2,48 @@
 //  SearchViewController.swift
 //  Mooch
 //
-//  Created by adam on 10/13/16.
+//  Created by Zhiming Jiang on 10/13/16.
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
 import UIKit
 
 class SearchViewController: MoochViewController {
+    
     // MARK: Public variables
-    fileprivate let CellReuseIdentifier = "searchFilterCell"
+    
     var tap: UITapGestureRecognizer?
+    
     var keyboardShow : Bool = false {
         didSet {
             tap?.isEnabled = keyboardShow
         }
     }
-    let searchController = UISearchController(searchResultsController: nil)
+    
     var tableView: UITableView = UITableView()
+    
     weak var delegate: ListingCategoryPickerTableHandlerDelegate!
+    
     var searchBar : UISearchBar? = nil
-    var listings : [Listing]
-        {
+    
+    var listings : [Listing] {
         get {
-        return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
+            return CommunityListingsManager.sharedInstance.listingsVisibleToCurrentUserInCurrentCommunity
         }
     }
-    var ListingCategorys : [ListingCategory]
-        {
+    
+    var ListingCategorys : [ListingCategory] {
         get {
             return  ListingCategoryManager.sharedInstance.listingCategories
         }
     }
-    // MARK: Private variables let me check i want to see shareinstance do you have any data in listing caterog?
+    
+    // MARK: Private variables
+    
     static fileprivate let StoryboardName = "Search"
     static fileprivate let Identifier = "SearchViewController"
+    fileprivate let CellReuseIdentifier = "searchFilterCell"
+    
     lazy var listingsViewController: ListingsViewController = {
         let vc = ListingsViewController.instantiateFromStoryboard()
         vc.mode = .nestedInSearch
@@ -43,6 +51,7 @@ class SearchViewController: MoochViewController {
         self.addViewControllerAsChildViewController(vc)
         return vc
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -56,7 +65,6 @@ class SearchViewController: MoochViewController {
         searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 64))
         searchBar!.placeholder = "What are you hungry for?"
         
-// furture feature. not implementing yet
         for subview in (searchBar?.subviews.first?.subviews)! {
             if let textField = subview as? UITextField {
                 textField.layer.borderWidth = 1
@@ -64,6 +72,7 @@ class SearchViewController: MoochViewController {
                 textField.layer.cornerRadius = 5
             }
         }
+        
         searchBar!.delegate = self
         self.navigationItem.titleView = searchBar
         tableView.dataSource = self
@@ -77,6 +86,7 @@ class SearchViewController: MoochViewController {
         self.view.addSubview(self.tableView)
         listingsViewController.view.isHidden = true
     }
+    
     func keyboardDidShow(_ notif: Notification) {
         keyboardShow = true
     }
@@ -85,12 +95,10 @@ class SearchViewController: MoochViewController {
         keyboardShow = false
     }
     
-    
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         searchBar?.resignFirstResponder()
-   }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -107,13 +115,19 @@ class SearchViewController: MoochViewController {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
         
-        if let tap = tap { view.removeGestureRecognizer(tap) }
+        if let tap = tap {
+            view.removeGestureRecognizer(tap)
+        }
     }
 
-    
     override func setup() {
         super.setup()
+        
         tabBarItem = SearchViewController.tabBarItem()
+        
+        //Remove the text from the nav bar back button so that is doesn't show in view controllers pushed from this view controller
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         updateUI()
     }
     
@@ -130,12 +144,12 @@ class SearchViewController: MoochViewController {
         return UITabBarItem(title: "", image: #imageLiteral(resourceName: "tabBarSearchUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarSearchSelected"))
     }
     
+    
     // MARK: Private methods
     
     func pushListingsViewController(with listings: [Listing], isFromCell : Bool = true) {
         guard let navC = navigationController else { return }
         let vc = ListingsViewController.instantiateFromStoryboard()
-        //vc.isFromSearchBar = !isFromCell
         vc.mode = .nestedInSearch
         vc.listings = listings
         navC.pushViewController(vc, animated: isFromCell)
@@ -152,6 +166,9 @@ class SearchViewController: MoochViewController {
     fileprivate func resetForStateChange() {
         guard let navC = navigationController else { return }
         navC.popToRootViewController(animated: false)
+        
+        listingsViewController.resetForStateChange()
+        listingsViewController.view.isHidden = true
     }
     
     fileprivate func addViewControllerAsChildViewController(_ viewController: UIViewController) {
@@ -201,25 +218,22 @@ extension SearchViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let listingCategory = ListingCategorys[indexPath.row]
-        var cell = tableView.dequeueReusableCell(withIdentifier: CellReuseIdentifier, for: indexPath) as! SearchViewFilterCell
-        if (cell == nil) {
-            cell = UITableViewCell(style: UITableViewCellStyle.value2, reuseIdentifier: CellReuseIdentifier) as! SearchViewFilterCell
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: CellReuseIdentifier, for: indexPath) as! SearchViewFilterCell
         cell.myLabel.text = listingCategory.name
         return cell
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ListingCategorys.count
     }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
-
-    
 }
 
  extension SearchViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !keyboardShow else { return }
         var sortList : [Listing] = []
@@ -234,7 +248,6 @@ extension SearchViewController: UITableViewDataSource {
         let view = UIView()
 
         view.backgroundColor = ThemeColors.moochRed.color()
-        //view.backgroundColor = UIColor.orange
         let label = UILabel()
         label.text = "All Categories"
         label.frame = CGRect(x: 14, y: 7.5,width: 157, height:17)
@@ -250,15 +263,17 @@ extension SearchViewController: UITableViewDataSource {
         lineView.layer.borderWidth = 1.0
         lineView.layer.borderColor = ThemeColors.moochSeperatorBlack.color().cgColor
         view.addSubview(lineView)
-        return view
         
+        return view
     }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 32
     }
 }
 
 extension SearchViewController: UISearchBarDelegate {
+    
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.resignFirstResponder()
         return true
@@ -270,7 +285,6 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText != "" {
-            
             let searchListings = ListingProcessingHandler.search(listings: listings, for: searchText)
             listingsViewController.listings = searchListings
             listingsViewController.searchListings = searchListings
@@ -286,11 +300,11 @@ extension SearchViewController: UISearchBarDelegate {
 }
 
 extension SearchViewController {
+    
     func hideKeyboardWhenTappedAround() {
-            tap = UITapGestureRecognizer(target: self, action: #selector(SearchViewController.dismissKeyboard))
-            tap?.isEnabled = false
-            view.addGestureRecognizer(tap!)
-        
+        tap = UITapGestureRecognizer(target: self, action: #selector(SearchViewController.dismissKeyboard))
+        tap?.isEnabled = false
+        view.addGestureRecognizer(tap!)
     }
     
     func dismissKeyboard() {
@@ -300,7 +314,3 @@ extension SearchViewController {
         }
     }
 }
-
-
-
-
