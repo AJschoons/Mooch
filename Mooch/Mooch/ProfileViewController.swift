@@ -46,6 +46,8 @@ class ProfileViewController: MoochViewController {
     //This variable is needed so we can pass the profile image to the EditProfileVC for editing
     fileprivate var profileImage: UIImage?
     
+    fileprivate var hasLaidOutSubviews = false
+    
     
     // MARK: Actions
     
@@ -59,6 +61,18 @@ class ProfileViewController: MoochViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         collectionHandler.reloadData()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        //This fixes the "There are currently no listings to show" label
+        //getting messed up the first time the view appears from the collection
+        //view not being laid out yet
+        if !hasLaidOutSubviews {
+            hasLaidOutSubviews = true
+            collectionHandler.reloadData()
+        }
     }
     
     func updateWith(user: User?) {
