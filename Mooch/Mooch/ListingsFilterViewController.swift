@@ -155,7 +155,7 @@ extension ListingsFilterViewController: UITableViewDataSource {
             } else if cellType == .category {
                 disclosureCellText = filterApplied.category != nil ? "\(CellType.category.rawValue): \(filterApplied.category!.name)" : "\(CellType.category.rawValue)"
             } else if cellType == .postedWithin {
-                disclosureCellText = filterApplied.datePostedWithinOption != nil ? "\(CellType.postedWithin.rawValue): \(filterApplied.datePostedWithinOption!.rawValue)" : "\(CellType.postedWithin.rawValue)"
+                disclosureCellText = filterApplied.datePostedWithinOption != nil ? "\(CellType.postedWithin.rawValue): \(filterApplied.datePostedWithinOption.rawValue)" : "\(CellType.postedWithin.rawValue)"
             }
             
             cell.textLabel?.text = disclosureCellText

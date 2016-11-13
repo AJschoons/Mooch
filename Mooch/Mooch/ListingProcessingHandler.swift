@@ -96,12 +96,9 @@ class ListingProcessingHandler {
     
     static func sortExpireDay (listings: [Listing], with filter: ListingFilter)->[Listing]{
         //if user does select expire day. means he does't care and whatever how long he will take
-        if (filter.datePostedWithinOption == nil){
-            return listings
-        }
         
         var day : Int = 0
-        switch filter.datePostedWithinOption! {
+        switch filter.datePostedWithinOption {
         case .oneDay:
             day = 1
         case .twoDays:

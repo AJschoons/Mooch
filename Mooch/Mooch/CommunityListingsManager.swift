@@ -6,6 +6,8 @@
 //  Copyright © 2016 cse498. All rights reserved.
 //
 
+import Foundation
+
 protocol CommunityListingsManagerDelegate: class {
     
     func communityListingsManagerDidReloadListings()
@@ -115,7 +117,8 @@ class CommunityListingsManager {
         
         if let localUser = LocalUserManager.sharedInstance.localUser {
             //Filter to only show listings this user hasn't posted
-            listingsVisibleToCurrentUserInCurrentCommunity = newListings.filter({$0.owner.id != localUser.user.id && !$0.isCompleted()})
+            let today = Date()
+            listingsVisibleToCurrentUserInCurrentCommunity = newListings.filter({$0.owner.id != localUser.user.id && !$0.isCompleted() && $0.isExpired(since: today)})
             
             //Filter to only show listings this user has posted
             listingsOwnedByCurrentUser = allListingsOwned(by: localUser.user)

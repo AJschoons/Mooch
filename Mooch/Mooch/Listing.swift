@@ -103,6 +103,12 @@ struct Listing {
         return exchanges.contains(where: {$0.sellerAccepted})
     }
     
+    //Returns true if >= two weeks have passed since the date provided  
+    func isExpired(since dateToCheckAgainst: Date) -> Bool {
+        let twoWeeksAfterCreated = createdAt.addDays(daysToAdd: 14)
+        return dateToCheckAgainst.isLessThanDate(dateToCompare: twoWeeksAfterCreated)
+    }
+    
     //Should only be used for temporary local changes
     mutating func addInterestedBuyer(_ user: User) {
         guard !interestedBuyers.contains(where: {$0.id == user.id}) else { return }
