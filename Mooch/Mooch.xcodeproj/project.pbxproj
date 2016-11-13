@@ -125,6 +125,8 @@
 		81CBF0CD1DAB5A150066DA75 /* EditProfileTextHander.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */; };
 		81CBF0CF1DAC034D0066DA75 /* PhoneNumberHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */; };
 		81CBF0D01DACA3B50066DA75 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A82821D7E5DA40086B40F /* Strings.swift */; };
+		81CC79BD1DD7FF4300393B18 /* Secret.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81CC79BC1DD7FF4300393B18 /* Secret.storyboard */; };
+		81CC79BF1DD7FFCB00393B18 /* SecretViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CC79BE1DD7FFCB00393B18 /* SecretViewController.swift */; };
 		81D2A0A71DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D2A0A61DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift */; };
 		81D2A0AA1DB7C10400800747 /* CommunityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D2A0A91DB7C10400800747 /* CommunityManager.swift */; };
 		81E97F561DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E97F551DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift */; };
@@ -303,6 +305,8 @@
 		81CBF0CA1DAB57C70066DA75 /* EditProfileTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTextCell.swift; sourceTree = "<group>"; };
 		81CBF0CC1DAB5A150066DA75 /* EditProfileTextHander.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTextHander.swift; sourceTree = "<group>"; };
 		81CBF0CE1DAC034D0066DA75 /* PhoneNumberHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneNumberHandler.swift; sourceTree = "<group>"; };
+		81CC79BC1DD7FF4300393B18 /* Secret.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Secret.storyboard; sourceTree = "<group>"; };
+		81CC79BE1DD7FFCB00393B18 /* SecretViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretViewController.swift; sourceTree = "<group>"; };
 		81D2A0A61DB5953E00800747 /* ExecuteActionAfterMinimumDurationTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecuteActionAfterMinimumDurationTimer.swift; sourceTree = "<group>"; };
 		81D2A0A91DB7C10400800747 /* CommunityManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityManager.swift; sourceTree = "<group>"; };
 		81E97F551DBFCE1500AA88E1 /* ProfileCollectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCollectionHeaderView.swift; sourceTree = "<group>"; };
@@ -584,6 +588,8 @@
 				81E97F5F1DC10D6100AA88E1 /* ProfileCollectionHeaderView.xib */,
 				81E97F571DBFD4E000AA88E1 /* ProfileConfiguration.swift */,
 				813F650D1D87A18100DEECF0 /* ProfileViewController.swift */,
+				81CC79BC1DD7FF4300393B18 /* Secret.storyboard */,
+				81CC79BE1DD7FFCB00393B18 /* SecretViewController.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -920,6 +926,7 @@
 				813EBD0D1DD066CE00B504F3 /* SuccessAlertView.xib in Resources */,
 				81E97F601DC10D6100AA88E1 /* ProfileCollectionHeaderView.xib in Resources */,
 				81A09FE01D9E1D3A0021D3FA /* Listings.storyboard in Resources */,
+				81CC79BD1DD7FF4300393B18 /* Secret.storyboard in Resources */,
 				811967641DB7D62D00D085C7 /* CommunityCollectionViewCell.xib in Resources */,
 				81F4E92D1DCE926600EFC24B /* AzoSans-Regular.otf in Resources */,
 				816623AC1DA06202009AE72B /* ListingCategoryPicker.storyboard in Resources */,
@@ -1134,6 +1141,7 @@
 				814DB9D01D91DE90006F34E9 /* EditListingPhotoCell.swift in Sources */,
 				815BCF011D7E77D80022F806 /* Helpers.swift in Sources */,
 				81E97F5C1DC01E6E00AA88E1 /* BottomBarDoubleSegmentedControl.swift in Sources */,
+				81CC79BF1DD7FFCB00393B18 /* SecretViewController.swift in Sources */,
 				8149E7BD1D84CC93000F0C37 /* LocalUserManager.swift in Sources */,
 				8149E7B41D84B396000F0C37 /* ListingsViewController.swift in Sources */,
 				B35A40821DBF51C000D6366D /* SearchViewFilterCell.swift in Sources */,

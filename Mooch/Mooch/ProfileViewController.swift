@@ -48,6 +48,8 @@ class ProfileViewController: MoochViewController {
     
     fileprivate var hasLaidOutSubviews = false
     
+    fileprivate var secretViewController: SecretViewController?
+    
     
     // MARK: Actions
     
@@ -201,6 +203,14 @@ class ProfileViewController: MoochViewController {
         present(navC, animated: true, completion: nil)
     }
     
+    fileprivate func presentSecretViewController() {
+        guard secretViewController == nil else { return }
+        
+        secretViewController = SecretViewController.instantiateFromStoryboard()
+        secretViewController!.delegate = self
+        present(secretViewController!, animated: true, completion: nil)
+    }
+    
     fileprivate func pushListingDetailsViewController(with listing: Listing, in mode: ListingDetailsConfiguration.Mode, isViewingSellerProfileNotAllowed: Bool) {
         let vc = ListingDetailsViewController.instantiateFromStoryboard()
         vc.configuration = ListingDetailsConfiguration.defaultConfiguration(for: mode, with: listing, isViewingSellerProfileNotAllowed: isViewingSellerProfileNotAllowed)
@@ -301,6 +311,10 @@ extension ProfileViewController: ProfileCollectionHandlerDelegate {
     func getInsetForTabBar() -> CGFloat {
         return (tabBarController != nil) ? tabBarController!.tabBar.frame.height : CGFloat(0.0)
     }
+    
+    func onSecretView() {
+        presentSecretViewController()
+    }
 }
 
 extension ProfileViewController: BottomBarDoubleSegmentedControlDelegate {
@@ -370,3 +384,10 @@ extension ProfileViewController: CommunityChangeListener {
     }
 }
 
+extension ProfileViewController: SecretViewControllerDelegate {
+    
+    func onSecretAction() {
+        secretViewController = nil
+        dismiss(animated: true, completion: nil)
+    }
+}
