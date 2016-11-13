@@ -14,7 +14,7 @@ struct Platform {
         return TARGET_OS_SIMULATOR != 0
     }
     
-    static var isInDeveloperMode = true
+    static var isInDeveloperMode = false
 }
 
 @UIApplicationMain
