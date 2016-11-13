@@ -214,9 +214,12 @@ class ListingsViewController: MoochViewController {
     
     fileprivate func loadListings(isRefreshing: Bool) {
         guard mode == .independent else { return }
+        
         //This allows the view controller to disable buttons/actions while loading
         state = .loading
+        
         showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: true, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: isRefreshing)
+        
         finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
         CommunityListingsManager.sharedInstance.loadListingsForCurrentCommunityAndUser() { [unowned self] success, error in
             //The code inside this execute closure gets executed only after the minimum duration has passed

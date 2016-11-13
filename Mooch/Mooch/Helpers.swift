@@ -31,13 +31,13 @@ func daysFromTodaySince(previousDate: Date) -> Int {
     let previousDay = calendar.startOfDay(for: previousDate)
     
     let dayComponentSet = Set<Calendar.Component>([Calendar.Component.day])
-    let compenents = calendar.dateComponents(dayComponentSet, from: now, to: previousDay)
+    let compenents = calendar.dateComponents(dayComponentSet, from: previousDay, to: now)
     
     guard let numberOfDays = compenents.day else {
         return 1
     }
     
-    return max(numberOfDays, 1)
+    return max(numberOfDays, 0)
 }
 
 // Get the largest square portion of an image from the center

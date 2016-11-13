@@ -77,6 +77,10 @@ struct Listing {
     
     var daysSincePostedString: String {
         let numberOfDaysSincePosted = daysFromTodaySince(previousDate: createdAt)
+        guard numberOfDaysSincePosted > 0 else {
+            return "Today"
+        }
+        
         let daysText = numberOfDaysSincePosted > 1 ? "days" : "day"
         return "\(numberOfDaysSincePosted) \(daysText) ago"
     }
