@@ -162,7 +162,6 @@ class MoochTabBarController: UITabBarController {
         vc.configuration = EditListingConfiguration.defaultConfiguration(for: .creating)
         vc.setPhoto(photo: photo)
         vc.delegate = self
-        //let navC = UINavigationController(rootViewController: vc)
         
         let transtion = CATransition()
         transtion.duration = 0.3

@@ -309,9 +309,29 @@ class EditProfileViewController: MoochModalViewController {
         presentSingleActionAlert(title: title, message: message, actionTitle: actionTitle)
     }
     
-    fileprivate func presentCameraViewController(for editProfilePhotoCell: EditProfilePhotoCell) {
+    fileprivate func presentCameraViewControllerModeActionSheet(for editProfilePhotoCell: EditProfilePhotoCell) {
+        let actionSheet = UIAlertController(title: "Choose an image source", message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { _ in
+            self.presentCameraViewController(for: editProfilePhotoCell, in: .camera)
+        }
+        let photoLibraryAction = UIAlertAction(title: "Photo Library", style: .default) { _ in
+            self.presentCameraViewController(for: editProfilePhotoCell, in: .photoLibrary)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        
+        actionSheet.addAction(cameraAction)
+        actionSheet.addAction(photoLibraryAction)
+        actionSheet.addAction(cancelAction)
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    fileprivate func presentCameraViewController(for editProfilePhotoCell: EditProfilePhotoCell, in mode: CameraViewController.Mode) {
         currentEditProfilePhotoCell = editProfilePhotoCell
         let cameraViewController = CameraViewController()
+        cameraViewController.mode = mode
         cameraViewController.delegate = self
         present(cameraViewController, animated: true, completion: nil)
     }
@@ -381,7 +401,7 @@ extension EditProfileViewController: EditProfileTextHandlerDelegate {
 extension EditProfileViewController: EditProfilePhotoCellDelegate {
     
     func editProfilePhotoCellDidReceiveEditAction(_ editProfilePhotoCell: EditProfilePhotoCell) {
-        presentCameraViewController(for: editProfilePhotoCell)
+        presentCameraViewControllerModeActionSheet(for: editProfilePhotoCell)
     }
 }
 
