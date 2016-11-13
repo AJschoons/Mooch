@@ -36,11 +36,15 @@ struct User {
     let id: Int
     var name: String
     var contactInformation: ContactInformation
-    var communityId: Int
+    private(set) var communityId: Int
     
     //Optional
     var pictureURL: String?
     var thumbnailPictureURL: String?
+    
+    mutating func changeCommunityId(to id: Int) {
+        self.communityId = id
+    }
     
     //Designated initializer
     init(id: Int, name: String, contactInformation: ContactInformation, communityId: Int, pictureURL: String?, thumbnailPictureURL: String?) {
@@ -115,11 +119,5 @@ struct User {
         //
         
         self.init(id: id, name: name, contactInformation: contactInformation, communityId: communityId, pictureURL: pictureURL, thumbnailPictureURL: thumbnailPictureURL)
-    }
-    
-    static func createDummy(fromNumber i: Int) -> User {
-        let phoneString = "555-555-5555"
-        let contactInformation = ContactInformation(address: "Apt #\(i)", email: "\(i)@example.com", phone: phoneString)
-        return User(id: i, name: "User \(i)", contactInformation: contactInformation, communityId: i, pictureURL: "http://placehold.it/500x500", thumbnailPictureURL: "http://placehold.it/100x100")
     }
 }

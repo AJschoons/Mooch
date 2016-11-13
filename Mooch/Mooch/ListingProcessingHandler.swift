@@ -2,7 +2,7 @@
 //  ListingProcessingHandler.swift
 //  Mooch
 //
-//  Created by adam on 10/20/16.
+//  Created by Zhiming Jiang on 10/20/16.
 //  Copyright © 2016 cse498. All rights reserved.
 //
 import UIKit
@@ -45,7 +45,9 @@ class ListingProcessingHandler {
         for itemInList in listings {
             let title = itemInList.title
             let description = itemInList.description
-            var titleAndDescrip = title+description!
+
+            
+            var titleAndDescrip = title+(description ?? "")
             titleAndDescrip = titleAndDescrip.removeWhitespace()
             titleAndDescrip = titleAndDescrip.lowercased()
             if titleAndDescrip.range(of:inputStringWithoutSpace) != nil {
@@ -94,12 +96,9 @@ class ListingProcessingHandler {
     
     static func sortExpireDay (listings: [Listing], with filter: ListingFilter)->[Listing]{
         //if user does select expire day. means he does't care and whatever how long he will take
-        if (filter.datePostedWithinOption == nil){
-            return listings
-        }
         
         var day : Int = 0
-        switch filter.datePostedWithinOption! {
+        switch filter.datePostedWithinOption {
         case .oneDay:
             day = 1
         case .twoDays:

@@ -56,7 +56,7 @@ class LoadingOverlayView: UIView {
     }
     
     private func initialSetup() {
-        progressView.tintColor = ThemeColors.moochRed.color()
+        progressView.tintColor = ThemeColors.moochYellow.color()
     }
     
     //Allows touches to pass through the overlay. Returning false allows the touch to pass through

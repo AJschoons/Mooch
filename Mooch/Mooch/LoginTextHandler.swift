@@ -10,6 +10,7 @@ import UIKit
 
 protocol LoginTextHandlerDelegate: class {
     func updated(text: String, forFieldType: LoginViewController.FieldType)
+    func onDone()
 }
 
 class LoginTextHandler: NSObject {
@@ -33,6 +34,7 @@ class LoginTextHandler: NSObject {
             next.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
+            delegate.onDone()
         }
     }
     

@@ -13,6 +13,8 @@ struct Platform {
     static var isSimulator: Bool {
         return TARGET_OS_SIMULATOR != 0
     }
+    
+    static var isInDeveloperMode = false
 }
 
 @UIApplicationMain
@@ -27,13 +29,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         
+        customizeAppearences()
+        
         let initialLoadingViewController = InitialLoadingViewController()
         PushNotificationsManager.sharedInstance.registrationDelegate = initialLoadingViewController
         
         moochTabBarController = MoochTabBarController.instantiate()
+        CommunityListingsManager.sharedInstance.delegate = moochTabBarController
         PushNotificationsManager.sharedInstance.notificationsDelegate = moochTabBarController
         
-        //Must be called after the delegates are setup
+        //Must be called after the delegates of the PushNotificationsManager are setup
         PushNotificationsManager.sharedInstance.handlePushNotificationLaunchOptions(launchOptions: launchOptions)
         
         registerForPushNotifications(application)
@@ -80,7 +85,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    
+    //
+    //Appearences
+    //
 
+    func customizeAppearences() {
+        
+        //
+        //Nav bar
+        //
+        
+        //Sets the colors of the bar buttons
+        UINavigationBar.appearance().tintColor = ThemeColors.moochBlack.color()
+        //Change how title looks
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : ThemeColors.moochRed.color()]
+        
+        
+        
+        //Changes the checkmarks and other elements on the right of cells to be the color below
+        UITableView.appearance().tintColor = ThemeColors.moochYellow.color()
+    }
+    
     
     //
     //Push notification stuff

@@ -11,7 +11,7 @@ import UIKit
 class ListingDetailsInterestedBuyersHeaderCell: UITableViewCell {
     
     static let Identifier = "ListingDetailsInterestedBuyersHeaderCell"
-    static let EstimatedHeight: CGFloat = 34
+    static let EstimatedHeight: CGFloat = 42
 
     @IBOutlet weak var headerLabel: UILabel!
 }

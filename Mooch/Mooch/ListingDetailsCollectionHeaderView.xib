@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="AzoSans-Bold.otf">
+            <string>AzoSans-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListingDetailsCollectionHeaderView" customModule="Mooch" customModuleProvider="target">
+            <connections>
+                <outlet property="alertBannerLabel" destination="gje-NF-s5g" id="AV5-ls-9hr"/>
+                <outlet property="alertBannerView" destination="PXf-HA-exg" id="eyi-Em-QNX"/>
+                <outlet property="listingImageView" destination="N4v-5X-RE5" id="fp6-h3-q9W"/>
+                <outlet property="view" destination="iN0-l3-epB" id="vk9-Pa-biU"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="314"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N4v-5X-RE5">
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="250" id="mKR-ZM-Onp"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PXf-HA-exg" userLabel="Alert Banner">
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LISTING SOLD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gje-NF-s5g">
+                            <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.98823529409999999" green="0.3803921569" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="4oQ-g5-IHs"/>
+                        <constraint firstItem="gje-NF-s5g" firstAttribute="centerY" secondItem="PXf-HA-exg" secondAttribute="centerY" id="U3N-QB-rRH"/>
+                        <constraint firstItem="gje-NF-s5g" firstAttribute="centerX" secondItem="PXf-HA-exg" secondAttribute="centerX" id="v8m-ah-Plj"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="N4v-5X-RE5" secondAttribute="trailing" id="9Na-ZV-Lzz"/>
+                <constraint firstItem="PXf-HA-exg" firstAttribute="bottom" secondItem="N4v-5X-RE5" secondAttribute="bottom" id="BM5-SE-gQ1"/>
+                <constraint firstItem="N4v-5X-RE5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="999" constant="64" id="PkD-ut-Qya"/>
+                <constraint firstItem="PXf-HA-exg" firstAttribute="leading" secondItem="N4v-5X-RE5" secondAttribute="leading" id="TXx-ah-UuF"/>
+                <constraint firstAttribute="bottom" secondItem="N4v-5X-RE5" secondAttribute="bottom" id="afX-NC-gub"/>
+                <constraint firstItem="N4v-5X-RE5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bHg-Zh-ky3"/>
+                <constraint firstItem="PXf-HA-exg" firstAttribute="trailing" secondItem="N4v-5X-RE5" secondAttribute="trailing" id="fPk-5X-m3b"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

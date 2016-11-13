@@ -15,11 +15,8 @@ class Theming {
 
 enum ThemeColors {
     
+    case border
     case formSeperator
-    
-    case listingDetailsActionBackground
-    case listingDetailsActionBackgroundDisabled
-    case listingDetailsActionText
     
     case moochBlack
     case moochGray
@@ -27,24 +24,18 @@ enum ThemeColors {
     case moochRedDisabled
     case moochWhite
     case moochYellow
-    
+    case moochYellowDisabled
+    case moochSeperatorBlack
     
     //Returns the Red, Green, Blue ints that should get divided by 255. Also the alpha, from 0.0-1.0
     private func colorRGBA() -> (Int, Int, Int, Float) {
         switch self {
         
+        case .border:
+            return ThemeColors.moochGray.colorRGBA()
+            
         case .formSeperator:
             return (230, 233, 237, 1.0)
-            
-            
-        case .listingDetailsActionBackground:
-            return (85, 85, 85, 1.0) //Currently: "Dark Gray Color"
-        
-        case .listingDetailsActionBackgroundDisabled:
-            return (170, 170, 170, 1.0) //Currently: "Light Gray Color"
-            
-        case .listingDetailsActionText:
-            return (255, 255, 255, 1.0) //Currently: White
             
             
         case .moochBlack:
@@ -65,6 +56,11 @@ enum ThemeColors {
         case .moochYellow:
             return (252, 194, 58, 1.0)
             
+        case .moochYellowDisabled:
+            return (252, 232, 184, 1.0)
+            
+        case .moochSeperatorBlack:
+            return (200, 199, 204, 1.0)
         }
     }
     

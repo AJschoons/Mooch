@@ -139,17 +139,17 @@ class LoginViewController: MoochModalViewController {
         
         switch state {
         case .loginFieldsUnfilledOrInvalid:
-            loginButtonColor = ThemeColors.moochRedDisabled.color()
+            loginButtonColor = ThemeColors.moochYellowDisabled.color()
             loginButtonUserInteractionEnabled = false
             createAccountButtonUserInteractionEnabled = true
             textFieldUserInteractionEnabled = true
         case .loginFieldsFilledAndValid:
-            loginButtonColor = ThemeColors.moochRed.color()
+            loginButtonColor = ThemeColors.moochYellow.color()
             loginButtonUserInteractionEnabled = true
             createAccountButtonUserInteractionEnabled = true
             textFieldUserInteractionEnabled = true
         case .loggingIn:
-            loginButtonColor = ThemeColors.moochRedDisabled.color()
+            loginButtonColor = ThemeColors.moochYellowDisabled.color()
             loginButtonUserInteractionEnabled = false
             createAccountButtonUserInteractionEnabled = false
             textFieldUserInteractionEnabled = false
@@ -182,7 +182,7 @@ class LoginViewController: MoochModalViewController {
     
     fileprivate func presentEditProfileViewController() {
         let vc = EditProfileViewController.instantiateFromStoryboard()
-        vc.configuration = EditProfileViewController.DefaultCreatingConfiguration
+        vc.configuration = EditProfileConfiguration.defaultConfiguration(for: .creating)
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)
@@ -198,12 +198,25 @@ class LoginViewController: MoochModalViewController {
             
             if let localUser = localUser {
                 LocalUserManager.sharedInstance.login(localUser: localUser)
-                strongSelf.notifyDelegateDidLoginAndDismissSelf(with: localUser)
+                
+                strongSelf.updateDeviceToken(for: localUser)
             } else {
                 strongSelf.state = .loginFieldsFilledAndValid
                 strongSelf.presentSingleActionAlert(title: Strings.Login.loginErrorAlertTitle.rawValue, message: Strings.Login.loginErrorAlertMessage.rawValue, actionTitle: Strings.Alert.defaultSingleActionTitle.rawValue)
                 strongSelf.hideLoadingOverlayView(animated: true)
             }
+        }
+    }
+    
+    private func updateDeviceToken(for localUser: LocalUser) {
+        guard let deviceToken = PushNotificationsManager.sharedInstance.deviceToken else {
+            notifyDelegateDidLoginAndDismissSelf(with: localUser)
+            return
+        }
+        
+        //Not a huge deal if it fails or succeeds but we want to at least try to update the device token when logging in
+        MoochAPI.PUTUserDeviceToken(userId: localUser.user.id, deviceToken: deviceToken) { [weak self] success, error in
+            self?.notifyDelegateDidLoginAndDismissSelf(with: localUser)
         }
     }
     
@@ -216,13 +229,10 @@ class LoginViewController: MoochModalViewController {
         passwordTextField.borderColor = ThemeColors.moochGray.color()
         passwordTextField.borderWidth = 1.0
         
-        exitButton.setImage(UIImage(named: "cancel")?.imageWithColor(color: ThemeColors.moochRed.color()), for: .normal)
+        exitButton.setImage(UIImage(named: "cancel")?.imageWithColor(color: ThemeColors.moochBlack.color()), for: .normal)
         
-        loginButton.backgroundColor = ThemeColors.moochRedDisabled.color()
-        loginButton.setTitleColor(ThemeColors.moochWhite.color(), for: .normal)
-        
-        createAccountButton.backgroundColor = UIColor.clear
-        createAccountButton.setTitleColor(ThemeColors.moochRed.color(), for: .normal)
+        loginButton.backgroundColor = ThemeColors.moochYellowDisabled.color()
+        loginButton.setTitleColor(ThemeColors.moochBlack.color(), for: .normal)
     }
     
     private func setupTextFields() {
@@ -285,15 +295,22 @@ class LoginViewController: MoochModalViewController {
 
 extension LoginViewController: EditProfileViewControllerDelegate {
     
-    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, isNewProfile: Bool) {
-        if isNewProfile {
-            LocalUserManager.sharedInstance.login(localUser: localUser)
-            notifyDelegateDidLoginAndDismissSelf(with: localUser)
+    func editProfileViewControllerDidFinishEditing(localUser: LocalUser, withProfileImage profileImage: UIImage?, isNewProfile: Bool) {
+        dismiss(animated: true) {
+            if isNewProfile {
+                LocalUserManager.sharedInstance.login(localUser: localUser)
+                self.notifyDelegateDidLoginAndDismissSelf(with: localUser)
+            }
         }
     }
 }
 
 extension LoginViewController: LoginTextHandlerDelegate {
+    
+    func onDone() {
+        //Only logs the user in if the information is valid
+        onLogin()
+    }
     
     func updated(text: String, forFieldType fieldType: LoginViewController.FieldType) {
         let isEmpty = text == ""

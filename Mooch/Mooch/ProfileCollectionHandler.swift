@@ -17,7 +17,10 @@ protocol ProfileCollectionHandlerDelegate: class, BottomBarDoubleSegmentedContro
     func getListings() -> [Listing]
     func getConfiguration() -> Configuration
     func getSelectedControl() -> BottomBarDoubleSegmentedControl.Control
+    func getProfileImage() -> UIImage?
+    func didGet(profileImage: UIImage)
     func didSelect(_ listing: Listing)
+    func onSecretView()
 }
 
 class ProfileCollectionHandler: ListingCollectionHandler {
@@ -26,6 +29,8 @@ class ProfileCollectionHandler: ListingCollectionHandler {
     
     private(set) var headerView: ProfileCollectionHeaderView!
     
+    private(set) var secretView: UIButton!
+    
     let ZeroScrollContentOffset = CGPoint(x: 0, y: -ProfileCollectionHeaderView.EstimatedHeight)
     
     override func onDidSet(collectionView: UICollectionView) {
@@ -33,6 +38,8 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         
         setupHeaderView(in: collectionView)
         reloadHeaderView()
+        
+        setupSecretView(in: collectionView)
     }
     
     func reloadData() {
@@ -49,11 +56,28 @@ class ProfileCollectionHandler: ListingCollectionHandler {
             collectionView.isScrollEnabled = true
             collectionView.backgroundView = nil
         }
+        
+        updateSecretViewFrame()
     }
     
     func resetScrollPosition() {
         guard let collectionView = collectionView else { return }
         collectionView.setContentOffset(ZeroScrollContentOffset, animated: false)
+    }
+    
+    fileprivate func setupSecretView(in collectionView: UICollectionView) {
+        secretView = UIButton()
+        secretView.setImage(#imageLiteral(resourceName: "westworld").imageWithColor(color: ThemeColors.moochYellow.color()), for: .normal)
+        collectionView.addSubview(secretView)
+    }
+    
+    fileprivate func updateSecretViewFrame() {
+        let width = collectionView.bounds.width
+        let secretSize: CGFloat = 200.0
+        let x = width / 2.0 - secretSize / 2.0
+        let y: CGFloat = -(ProfileCollectionHeaderView.EstimatedHeight + secretSize + collectionView.bounds.height / 2.0)
+        let secretFrame = CGRect(x: x, y: y, width: secretSize, height: secretSize)
+        secretView.frame = secretFrame
     }
     
     fileprivate func setupHeaderView(in collectionView: UICollectionView) {
@@ -64,14 +88,13 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         headerView = ProfileCollectionHeaderView(frame: CGRect(x: 0, y: 0, width: headerSize.width, height: headerSize.height))
         headerView.contentAnchor = GSKStretchyHeaderViewContentAnchor.bottom
         headerView.minimumContentHeight = 64 + 35 //Nav bar plus height of header control
-        //headerView.maximumContentHeight = ProfileCollectionHeaderView.EstimatedHeight + 50
         headerView.contentExpands = false
-        //headerView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 44, right: 0)
         collectionView.addSubview(headerView)
         
         headerView.bottomBarDoubleSegmentedControl.delegate = delegate
         headerView.bottomBarDoubleSegmentedControl.set(title: "My Listings", for: .first)
         headerView.bottomBarDoubleSegmentedControl.set(title: "Contact History", for: .second)
+        
         headerView.setup(for: delegate.getConfiguration().mode)
     }
     
@@ -90,12 +113,17 @@ class ProfileCollectionHandler: ListingCollectionHandler {
         }
         headerView.userCommunityLabel.text = communityText
         
-        headerView.userImageView.image = UIImage(named: "defaultProfilePhoto")
-        
-        if let profilePhotoURL = profileUser.pictureURL {
-            ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { [weak self] image in
-                guard let image = image else { return }
-                self?.headerView.userImageView.image = image
+        if let storedProfileImage = delegate.getProfileImage() {
+            headerView.userImageView.image = storedProfileImage
+        } else {
+            headerView.userImageView.image = UIImage(named: "defaultProfilePhoto")
+            
+            if let profilePhotoURL = profileUser.pictureURL {
+                ImageManager.sharedInstance.downloadImage(url: profilePhotoURL) { [weak self] image in
+                    guard let image = image else { return }
+                    self?.delegate.didGet(profileImage: image)
+                    self?.headerView.userImageView.image = image
+                }
             }
         }
         
@@ -155,15 +183,17 @@ extension ProfileCollectionHandler {
         
         cell.tag = indexPath.row
         
+        cell.set(photo: nil, withBackgroundColor: listing.dominantColor, animated: false)
+        
         if let localPhoto = listing.photo {
-            cell.set(photo: localPhoto)
+            cell.set(photo: localPhoto, withBackgroundColor: listing.dominantColor, animated: false)
         } else {
             ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
                 //Make sure the cell hasn't been reused by the time the image is downloaded
                 guard cell.tag == indexPath.row else { return }
                 
                 guard let image = image else { return }
-                cell.set(photo: image)
+                cell.set(photo: image, withBackgroundColor: listing.dominantColor, animated: false)
             }
         }
         
@@ -184,4 +214,16 @@ extension ProfileCollectionHandler {
 //MARK: UICollectionViewDelegateFlowLayout
 extension ProfileCollectionHandler {
     
+}
+
+//MARK: UIScrollViewDelegate
+extension ProfileCollectionHandler {
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        super.scrollViewDidScroll(scrollView)
+        
+        if scrollView.contentOffset.y <= secretView.frame.origin.y {
+            delegate.onSecretView()
+        }
+    }
 }

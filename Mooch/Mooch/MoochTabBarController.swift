@@ -26,7 +26,12 @@ class MoochTabBarController: UITabBarController {
     fileprivate var selectedMyProfileTabWhenNotLoggedIn = false
     fileprivate var selectedSellTabWhenNotLoggedIn = false
     
+    fileprivate var hasLoadedListingsAfterLaunch = false
+    fileprivate var pushReceivedWhenAppClosed: PushNotificationsManager.ListingPush?
+    
     fileprivate var cameraViewControllerBeingShown: CameraViewController?
+    
+    fileprivate var selectedTabBottomBar: UIView!
     
     static func instantiate() -> MoochTabBarController {
         let mtbc = MoochTabBarController()
@@ -86,6 +91,57 @@ class MoochTabBarController: UITabBarController {
         return mtbc
     }
     
+    override func viewDidLoad() {
+        addSelectedTabBottomBar()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        updateSelectedTabBottomBarPosition(animated: false)
+    }
+    
+    private func addSelectedTabBottomBar() {
+        selectedTabBottomBar = UIView()
+        selectedTabBottomBar.backgroundColor = ThemeColors.moochRed.color()
+        tabBar.addSubview(selectedTabBottomBar)
+    }
+    
+    //This function must be used to programatically change the selectedIndex so that the bottom bar state is correct
+    func setSelected(index: Int) {
+        selectedIndex = index
+        updateSelectedTabBottomBarPosition(animated: false)
+    }
+    
+    fileprivate func updateSelectedTabBottomBarPosition(animated: Bool) {
+        guard animated else {
+            selectedTabBottomBar.frame = rectForSelectedTabBottomBar()
+            return
+        }
+        
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            usingSpringWithDamping: 0.7,
+            initialSpringVelocity: 0.7,
+            options: .curveEaseOut,
+            animations: {
+                self.selectedTabBottomBar.frame = self.rectForSelectedTabBottomBar()
+            },
+            completion: nil
+        )
+    }
+    
+    private func rectForSelectedTabBottomBar() -> CGRect {
+        let selectedTabFrame = frameForTab(in: tabBar, withIndex: selectedIndex)
+        let tabBarHeight = tabBar.bounds.height
+        
+        let bottomBarWidth: CGFloat = 60
+        let bottomBarHeight: CGFloat = 5
+        let bottomBarY = tabBarHeight - bottomBarHeight
+        let bottomBarX = (selectedTabFrame.origin.x + selectedTabFrame.width / 2) - (bottomBarWidth / 2)
+        
+        return CGRect(x: bottomBarX, y: bottomBarY, width: bottomBarWidth, height: bottomBarHeight)
+    }
+    
     fileprivate func presentLoginViewController() {
         let lvc = LoginViewController.instantiateFromStoryboard()
         lvc.delegate = self
@@ -106,7 +162,6 @@ class MoochTabBarController: UITabBarController {
         vc.configuration = EditListingConfiguration.defaultConfiguration(for: .creating)
         vc.setPhoto(photo: photo)
         vc.delegate = self
-        //let navC = UINavigationController(rootViewController: vc)
         
         let transtion = CATransition()
         transtion.duration = 0.3
@@ -167,9 +222,68 @@ class MoochTabBarController: UITabBarController {
     
     fileprivate func presentCommunityPicker() {
         let vc = CommunityPickerViewController.instantiateFromStoryboard()
+        vc.configuration = CommunityPickerViewController.Configuration(pickingMode: .optional, shouldUploadToAPIForLocalUser: false)
         vc.delegate = self
         let navC = UINavigationController(rootViewController: vc)
         present(navC, animated: true, completion: nil)
+    }
+    
+    fileprivate func presentListingDetailsViewController(with listing: Listing, in mode: ListingDetailsConfiguration.Mode, isViewingSellerProfileNotAllowed: Bool) {
+        let vc = ListingDetailsViewController.instantiateFromStoryboard()
+        
+        //Since we're presenting the view controller, we have to add a cancel button
+        var configuration = ListingDetailsConfiguration.defaultConfiguration(for: mode, with: listing, isViewingSellerProfileNotAllowed: isViewingSellerProfileNotAllowed)
+        configuration.leftBarButtons = [.cancel]
+        vc.configuration = configuration
+        
+        let navC = UINavigationController(rootViewController: vc)
+        present(navC, animated: true, completion: nil)
+    }
+    
+    fileprivate func handle(listingPush: PushNotificationsManager.ListingPush, wasAppClosed: Bool) {
+        
+        MoochAPI.GETListing(withId: listingPush.listingId) { [weak self] listing, error in
+            guard let pushedListing = listing else { return }
+            
+            CommunityListingsManager.sharedInstance.updateOrAdd(pushedListing: pushedListing)
+            
+            switch listingPush.exchangeType {
+            case .buyerRequested:
+                self?.handleBuyerRequestedListingPush(for: pushedListing, wasAppClosed: wasAppClosed)
+                
+            case .sellerApproved:
+                self?.handleSellerApprovedListingPush(for: pushedListing, wasAppClosed: wasAppClosed)
+            }
+        }
+    }
+    
+    fileprivate func handleBuyerRequestedListingPush(for listing: Listing, wasAppClosed: Bool) {
+        if wasAppClosed {
+            presentListingDetailsViewController(with: listing, in: .viewingThisUsersListing, isViewingSellerProfileNotAllowed: false)
+        } else {
+            presentCancellableViewPushAlert(title: "Buyer Requested Exchange", message: "A buyer has requested to contact you about one of your listings") { action in
+                self.presentListingDetailsViewController(with: listing, in: .viewingThisUsersListing, isViewingSellerProfileNotAllowed: false)
+            }
+        }
+    }
+    
+    fileprivate func handleSellerApprovedListingPush(for listing: Listing, wasAppClosed: Bool) {
+        if wasAppClosed {
+            presentListingDetailsViewController(with: listing, in: .viewingOtherUsersCompletedListing, isViewingSellerProfileNotAllowed: false)
+        } else {
+            presentCancellableViewPushAlert(title: "Seller Approved Exchange", message: "A seller has accepted your request to complete an exchange with their listing") { action in
+                self.presentListingDetailsViewController(with: listing, in: .viewingOtherUsersCompletedListing, isViewingSellerProfileNotAllowed: false)
+            }
+        }
+    }
+    
+    fileprivate func presentCancellableViewPushAlert(title: String, message: String, handler: ((UIAlertAction) -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "View Now", style: .default, handler: handler)
+        let cancel = UIAlertAction(title: "View Later", style: .cancel, handler: nil)
+        alert.addAction(cancel)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
 }
 
@@ -205,6 +319,10 @@ extension MoochTabBarController: UITabBarControllerDelegate {
         
         return true
     }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        updateSelectedTabBottomBarPosition(animated: true)
+    }
 }
 
 extension MoochTabBarController: LoginViewControllerDelegate {
@@ -213,7 +331,7 @@ extension MoochTabBarController: LoginViewControllerDelegate {
         notifyTabViewControllers(ofLocalUserStateChange: .loggedIn)
         
         if selectedMyProfileTabWhenNotLoggedIn {
-            selectedIndex = Tab.home.index
+            setSelected(index: Tab.home.index)
         }
         
         //Reset these now that the user logged in
@@ -236,23 +354,27 @@ extension MoochTabBarController: ProfileViewControllerDelegate {
     
     func profileViewControllerDidLogOutUser(_ profileViewController: ProfileViewController) {
         notifyTabViewControllers(ofLocalUserStateChange: .guest)
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
         
         profileViewController.updateWith(user: nil)
     }
     
     func profileViewControllerDidChangeCommunity(_ profileViewController: ProfileViewController) {
         notifyTabViewControllersOfCommunityChange()
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
     }
 }
 
 extension MoochTabBarController: CommunityPickerViewControllerDelegate {
     
-    func didPick(community: Community) {
+    func communityPickerViewController(_ : CommunityPickerViewController, didPick community: Community) {
         LocalUserManager.sharedInstance.updateGuest(communityId: community.id)
         notifyTabViewControllersOfCommunityChange()
-        selectedIndex = Tab.home.index
+        setSelected(index: Tab.home.index)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func communityPickerViewControllerDidCancel(_ : CommunityPickerViewController) {
         dismiss(animated: true, completion: nil)
     }
 }
@@ -302,11 +424,26 @@ extension MoochTabBarController: EditListingViewControllerDelegate {
 
 extension MoochTabBarController: PushNotificationsManagerNotificationsDelegate {
     
-    func onBuyerExchangeRequest(receivedWhenAppClosed: Bool) {
-        print("onBuyerExchangeRequest... when app closed: \(receivedWhenAppClosed)")
+    func onDidReceive(listingPush: PushNotificationsManager.ListingPush, whenAppClosed wasAppClosed: Bool) {
+        print("didReceive \(listingPush)... when app closed: \(wasAppClosed)")
+        guard hasLoadedListingsAfterLaunch else {
+            pushReceivedWhenAppClosed = listingPush
+            return
+        }
+        
+        handle(listingPush: listingPush, wasAppClosed: wasAppClosed)
     }
+}
+
+extension MoochTabBarController: CommunityListingsManagerDelegate {
     
-    func onSellerApprovedExchange(receivedWhenAppClosed: Bool) {
-        print("onSellerApprovedExchange... when app closed: \(receivedWhenAppClosed)")
+    func communityListingsManagerDidReloadListings() {
+        hasLoadedListingsAfterLaunch = true
+        
+        //Once the Listings have loaded for the first time, show the push.
+        if let push = pushReceivedWhenAppClosed {
+            pushReceivedWhenAppClosed = nil
+            handle(listingPush: push, wasAppClosed: true)
+        }
     }
 }

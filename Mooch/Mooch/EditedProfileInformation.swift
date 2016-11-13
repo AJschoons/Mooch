@@ -16,13 +16,21 @@ struct EditedProfileInformation {
     private var fieldsShownToRequiredPairs: [(FieldType, Bool)]
     private var fieldsShownToRequiredMapping: [FieldType : Bool]
     
-    var photo: UIImage?
+    var photo: UIImage? {
+        didSet {
+            photoDidChange = true
+        }
+    }
+    
     var name: String?
     var email: String?
     var phone: String?
     var address: String?
     var password1: String?
     var password2: String?
+    var communityId: Int?
+    
+    private(set) var photoDidChange = false
     
     init(fieldsShownToRequiredPairs: [(FieldType, Bool)]) {
         self.fieldsShownToRequiredPairs = fieldsShownToRequiredPairs
@@ -40,7 +48,7 @@ struct EditedProfileInformation {
     }
     
     var isAllRequiredInformationFilledAndValid: Bool {
-        return isRequiredInformationFilled && isEmailValid && isPhoneValid && isPasswordValid && isPasswordMatchValid
+        return isRequiredInformationFilled && isEmailValid && isPhoneValid && isPasswordValid && isPasswordMatchValid && isCommunityValid
     }
     
     var isRequiredInformationFilled: Bool {
@@ -123,6 +131,42 @@ struct EditedProfileInformation {
         }
     }
     
+    var isCommunityValid: Bool {
+        //Valid if the community field isn't shown
+        let showsCommunity = fieldsShownToRequiredMapping[.community] != nil
+        guard showsCommunity else { return true }
+        
+        let isCommunityRequired = fieldsShownToRequiredMapping[.community]!
+        let isCommunityPresent = variable(forFieldType: .community) != nil
+        
+        if isCommunityRequired || isCommunityPresent {
+            guard let _ = variable(forFieldType: .community) as? Int else { return false }
+            return true
+        } else {
+            //If the community isn't required or present then it is valid
+            return true
+        }
+    }
+    
+    func isEditedInformationChanged(from user: User) -> Bool {
+        guard let name = name, let phone = phone else { return false }
+        
+        let hasRequiredVariableChanged = name != user.name || phone != user.contactInformation.phone
+        let hasAddressChanged = user.contactInformation.address != address
+        
+        return hasRequiredVariableChanged || hasAddressChanged || photoDidChange
+    }
+    
+    func string(for fieldType: FieldType) -> String? {
+        guard var string = variable(forFieldType: fieldType) as? String? else { return nil }
+        
+        if fieldType == .phone, let number = string {
+            string = PhoneNumberHandler.format(number: number)
+        }
+        
+        return string
+    }
+    
     func firstUnfilledRequiredFieldType() -> FieldType? {
         var unfilledFieldType: EditProfileConfiguration.FieldType? = nil
         
@@ -169,6 +213,10 @@ struct EditedProfileInformation {
             return password1
         case .password2:
             return password2
+        case .community:
+            return communityId
+        default:
+            return nil
         }
     }
 }

@@ -65,7 +65,7 @@ struct ListingFilter {
     
     var sortByOption: SortByOption = .bestMatch
     
-    var datePostedWithinOption: DatePostedWithinOption?
+    var datePostedWithinOption: DatePostedWithinOption = .twoWeeks
     
     var category: ListingCategory?
     

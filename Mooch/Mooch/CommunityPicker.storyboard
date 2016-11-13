@@ -21,11 +21,63 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Hr1-Hf-fvf">
                                     <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="38"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells/>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CommunityCollectionHeaderView" id="dOv-Nu-ty8" customClass="CommunityCollectionHeaderView" customModule="Mooch" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="38"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZF-aY-pkx">
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Eij-bM-c6P">
+                                                <frame key="frameInset"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n38-TC-1eo" userLabel="Header">
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wxX-pC-8pn" customClass="BottomBarDoubleSegmentedControl" customModule="Mooch" customModuleProvider="target">
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            </view>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstItem="wxX-pC-8pn" firstAttribute="top" secondItem="n38-TC-1eo" secondAttribute="top" id="Cg8-rM-wrG"/>
+                                                            <constraint firstAttribute="bottom" secondItem="wxX-pC-8pn" secondAttribute="bottom" id="cy9-j8-WSi"/>
+                                                            <constraint firstAttribute="trailing" secondItem="wxX-pC-8pn" secondAttribute="trailing" id="kfX-0I-1fn"/>
+                                                            <constraint firstItem="wxX-pC-8pn" firstAttribute="leading" secondItem="n38-TC-1eo" secondAttribute="leading" id="rE6-iB-jvz"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="n38-TC-1eo" firstAttribute="top" secondItem="Eij-bM-c6P" secondAttribute="top" id="2uR-Ro-3t0"/>
+                                                    <constraint firstAttribute="trailing" secondItem="n38-TC-1eo" secondAttribute="trailing" id="jaT-2V-V9D"/>
+                                                    <constraint firstAttribute="bottom" secondItem="n38-TC-1eo" secondAttribute="bottom" id="tmY-UU-b64"/>
+                                                    <constraint firstItem="n38-TC-1eo" firstAttribute="leading" secondItem="Eij-bM-c6P" secondAttribute="leading" id="xWV-6N-OXj"/>
+                                                </constraints>
+                                            </view>
+                                            <blurEffect style="extraLight"/>
+                                        </visualEffectView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropShadow" translatesAutoresizingMaskIntoConstraints="NO" id="6SB-eS-aDt">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="3" id="ig3-5d-aGv"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="hZF-aY-pkx" firstAttribute="leading" secondItem="dOv-Nu-ty8" secondAttribute="leading" id="3cm-fB-hea"/>
+                                        <constraint firstAttribute="bottom" secondItem="6SB-eS-aDt" secondAttribute="bottom" id="89x-gH-YLq"/>
+                                        <constraint firstAttribute="trailing" secondItem="6SB-eS-aDt" secondAttribute="trailing" id="f8V-fo-JS1"/>
+                                        <constraint firstItem="6SB-eS-aDt" firstAttribute="leading" secondItem="dOv-Nu-ty8" secondAttribute="leading" id="nNL-0O-LwC"/>
+                                        <constraint firstItem="hZF-aY-pkx" firstAttribute="top" secondItem="dOv-Nu-ty8" secondAttribute="top" id="oRe-k2-hTZ"/>
+                                        <constraint firstAttribute="trailing" secondItem="hZF-aY-pkx" secondAttribute="trailing" id="vbd-vO-IUG"/>
+                                        <constraint firstItem="6SB-eS-aDt" firstAttribute="top" secondItem="hZF-aY-pkx" secondAttribute="bottom" id="zaU-iP-3RK"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="bottomBarDoubleSegmentedControl" destination="wxX-pC-8pn" id="IlV-Ap-1vf"/>
+                                    </connections>
+                                </collectionReusableView>
                                 <connections>
                                     <outlet property="dataSource" destination="9g0-2s-GgS" id="f4h-kv-hoC"/>
                                     <outlet property="delegate" destination="9g0-2s-GgS" id="3OK-hC-pWV"/>
@@ -54,4 +106,7 @@
             <point key="canvasLocation" x="-150" y="215"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="dropShadow" width="15" height="3"/>
+    </resources>
 </document>

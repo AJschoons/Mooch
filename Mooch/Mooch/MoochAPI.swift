@@ -62,6 +62,23 @@ class MoochAPI {
         }
     }
     
+    static func GETListing(withId id: Int, completion: @escaping (Listing?, Error?) -> Void) {
+        perform(requestExpectingResponse: MoochAPIRouter.getListing(id: id)) { json, error in
+            guard let json = json else {
+                completion(nil, error)
+                return
+            }
+            
+            do {
+                let listing = try Listing(json: json)
+                return completion(listing, nil)
+            } catch let error {
+                print("couldn't create listing with JSON: \(json)")
+                return completion(nil, error)
+            }
+        }
+    }
+    
     static func GETListingCategories(completion: @escaping ([ListingCategory]?, Error?) -> Void) {
         perform(requestExpectingResponse: MoochAPIRouter.getListingCategories) { json, error in
             guard let listingCategoriesJSON = json?.array else {
@@ -157,9 +174,9 @@ class MoochAPI {
     }
     
     //The completion Bool will be true on success, false on failure/error
-    static func POSTUser(communityId: Int, photo: UIImage, name: String, email: String, phone: String, password: String, address: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
+    static func POSTUser(communityId: Int, photo: UIImage?, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
         
-        let route = MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address)
+        let route = MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address, deviceToken: deviceToken)
         
         performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostUser.photo.rawValue, imageFileName: Strings.MoochAPI.userImageFilename.rawValue) { uploadRequest, error in
             
@@ -193,6 +210,50 @@ class MoochAPI {
             validate(dataRequestNotExpectingResponse: uploadRequest) { success, json, error in
                 completion(success, json, error)
             }
+        }
+    }
+    
+    //The completion Bool will be true on success, false on failure/error
+    //This route is meant for editing a User account, and the other PUTUser[...] routes are for updating single things
+    static func PUTUserEdited(userId: Int, photo: UIImage?, name: String, email: String, phone: String, address: String?, deviceToken: String?, uploadProgressHandler: @escaping Request.ProgressHandler, completion: @escaping (LocalUser?, Error?) -> Void) {
+        
+        let route = MoochAPIRouter.putUser(userId: userId, communityId: nil, name: name, email: email, phone: phone, password: nil, address: address, deviceToken: deviceToken)
+        
+        performMultipartFormUpload(forRoute: route, withImage: photo, imageFormParameterName: MoochAPIRouter.ParameterMapping.PostUser.photo.rawValue, imageFileName: Strings.MoochAPI.userImageFilename.rawValue) { uploadRequest, error in
+            
+            guard let uploadRequest = uploadRequest else {
+                completion(nil, error)
+                return
+            }
+            
+            uploadRequest.uploadProgress(closure: uploadProgressHandler)
+            validate(dataRequestExpectingResponse: uploadRequest) { json, error in
+                let processedResult = processLocalUser(fromJSON: json, withError: error)
+                let localUser = processedResult.0
+                let error = processedResult.1
+                completion(localUser, error)
+            }
+        }
+    }
+    
+    static func PUTUserCommunity(userId: Int, communityId: Int, completion: @escaping (Bool, Error?) -> Void) {
+        let route = MoochAPIRouter.putUser(userId: userId, communityId: communityId, name: nil, email: nil, phone: nil, password: nil, address: nil, deviceToken: nil)
+        perform(requestNotExpectingResponse: route) { success, json, error in
+            completion(success, error)
+        }
+    }
+    
+    static func PUTUserDeviceToken(userId: Int, deviceToken: String, completion: @escaping (Bool, Error?) -> Void) {
+        let route = MoochAPIRouter.putUser(userId: userId, communityId: nil, name: nil, email: nil, phone: nil, password: nil, address: nil, deviceToken: deviceToken)
+        perform(requestNotExpectingResponse: route) { success, json, error in
+            completion(success, error)
+        }
+    }
+    
+    static func PUTUserPassword(userId: Int, password: String, completion: @escaping (Bool, Error?) -> Void) {
+        let route = MoochAPIRouter.putUser(userId: userId, communityId: nil, name: nil, email: nil, phone: nil, password: password, address: nil, deviceToken: nil)
+        perform(requestNotExpectingResponse: route) { success, json, error in
+            completion(success, error)
         }
     }
 

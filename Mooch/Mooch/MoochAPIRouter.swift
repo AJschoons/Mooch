@@ -23,11 +23,13 @@ enum MoochAPIRouter: URLRequestConvertible {
     static fileprivate let NoParametersDictionary = [String : AnyObject]()
     
     static private let AuthorizationHeaderKey = "Authorization"
+    static private let DeviceTypeValue = "iOS"
     
     case deleteListing(ownerId: Int, listingId: Int)
     
     case getCommunities
     case getExchangeAccept(listingOwnerId: Int, listingId: Int, exchangeId: Int)
+    case getListing(id: Int)
     case getListingCategories
     case getListings(forCommunityWithId: Int)
     case getUser(withId: Int)
@@ -37,9 +39,10 @@ enum MoochAPIRouter: URLRequestConvertible {
     case postExchange(listingOwnerId: Int, listingId: Int)
     case postListing(userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
     case postLogin(withEmail: String, andPassword: String)
-    case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?)
+    case postUser(communityId: Int, name: String, email: String, phone: String, password: String, address: String?, deviceToken: String?)
     
     case putListing(listingId: Int, userId: Int, title: String, description: String?, price: Float, isFree: Bool, quantity: Int, categoryId: Int)
+    case putUser(userId: Int, communityId: Int?, name: String?, email: String?, phone: String?, password: String?, address: String?, deviceToken: String?)
     
     //The keys to pass in as parameters mapped to strings
     enum ParameterMapping {
@@ -70,6 +73,9 @@ enum MoochAPIRouter: URLRequestConvertible {
             case email = "email"
             case phone = "phone"
             case password = "password"
+            
+            case deviceType = "device_type"
+            case deviceToken = "destination_token"
             
             //Optional
             case address = "address"
@@ -111,6 +117,9 @@ enum MoochAPIRouter: URLRequestConvertible {
         case .getExchangeAccept(let listingOwnerId, let listingId, let exchangeId):
             return ("/users/\(listingOwnerId)/listings/\(listingId)/exchanges/\(exchangeId)/accept", .get, nil, true)
             
+        case .getListing(let id):
+            return ("/listings/\(id)", .get, nil, false)
+            
         case .getListingCategories:
             return ("/categories", .get, nil, false)
             
@@ -142,16 +151,44 @@ enum MoochAPIRouter: URLRequestConvertible {
             let parameters = [ParameterMapping.PostLogin.email.rawValue : email, ParameterMapping.PostLogin.password.rawValue : password]
             return ("/sessions", .post, parameters, false)
         
-        case .postUser(let communityId, let name, let email, let phone, let password, let address):
+        case .postUser(let communityId, let name, let email, let phone, let password, let address, let deviceToken):
             typealias mapping = ParameterMapping.PostUser
-            var parameters: [String : Any] = [mapping.communityId.rawValue : communityId, mapping.name.rawValue : name, mapping.email.rawValue : email, mapping.phone.rawValue : phone, mapping.password.rawValue : password]
+            
+            var parameters: [String : Any] = [mapping.communityId.rawValue : communityId, mapping.name.rawValue : name, mapping.email.rawValue : email, mapping.phone.rawValue : phone, mapping.password.rawValue : password, mapping.deviceToken.rawValue : deviceToken, mapping.deviceType.rawValue : MoochAPIRouter.DeviceTypeValue]
+            
             if address != nil { parameters[mapping.address.rawValue] =  address! }
+            
+            if let deviceToken = deviceToken {
+                parameters[mapping.deviceToken.rawValue] = deviceToken
+                parameters[mapping.deviceType.rawValue] = MoochAPIRouter.DeviceTypeValue
+            }
+            
             return ("/users", .post, parameters, false)
             
         case .putListing(let listingId, let userId, let title, let description, let price, let isFree, let quantity, let categoryId):
             //Much of the same routing information is shared with the POST Listing route
             let postListingRoutingInformation = MoochAPIRouter.postListing(userId: userId, title: title, description: description, price: price, isFree: isFree, quantity: quantity, categoryId: categoryId).getRoutingInformation()
             return ("\(postListingRoutingInformation.path)/\(listingId)", .put, postListingRoutingInformation.parameters, true)
+            
+        case .putUser(let userId, let communityId, let name, let email, let phone, let password, let address, let deviceToken):
+            typealias mapping = ParameterMapping.PostUser
+            
+            var parameters = [String : Any]()
+            
+            //Add the parameters if they exist
+            if let communityId = communityId { parameters[mapping.communityId.rawValue] = communityId }
+            if let name = name { parameters[mapping.name.rawValue] = name }
+            if let email = email { parameters[mapping.email.rawValue] = email }
+            if let phone = phone { parameters[mapping.phone.rawValue] = phone }
+            if let password = password { parameters[mapping.password.rawValue] = password }
+            if let address = address { parameters[mapping.address.rawValue] = address }
+            
+            if let deviceToken = deviceToken {
+                parameters[mapping.deviceToken.rawValue] = deviceToken
+                parameters[mapping.deviceType.rawValue] = MoochAPIRouter.DeviceTypeValue
+            }
+            
+            return ("/users/\(userId)", .put, parameters, true)
         }
     }
 

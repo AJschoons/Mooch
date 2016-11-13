@@ -8,10 +8,11 @@
 
 import UIKit
 
-protocol EditProfileTableHandlerDelegate: class, PhotoAddingViewDelegate {
+protocol EditProfileTableHandlerDelegate: class, EditProfilePhotoCellDelegate, EditProfileActionsCellDelegate {
     func getConfiguration() -> EditProfileConfiguration
     func getTextHandler() -> EditProfileTextHandler
     func getEditedProfileInformation() -> EditedProfileInformation
+    func didSelectCommunityCell()
 }
 
 class EditProfileTableHandler: NSObject {
@@ -50,6 +51,8 @@ class EditProfileTableHandler: NSObject {
     // MARK: Public methods
     
     func reloadData() {
+        guard let tableView = tableView else { return }
+        
         tableView.reloadData()
     }
     
@@ -77,7 +80,7 @@ class EditProfileTableHandler: NSObject {
     //Returns true if a field type maps to a EditProfileTextFieldCell
     func isTextField(forFieldType fieldType: EditProfileConfiguration.FieldType) -> Bool {
         switch fieldType {
-        case .photo:
+        case .photo, .community, .actions:
             return false
         default:
             return true
@@ -97,6 +100,10 @@ class EditProfileTableHandler: NSObject {
         switch fieldType {
         case .photo:
             return EditProfilePhotoCell.Identifier
+        case .community:
+            return EditProfileCommunityCell.Identifier
+        case .actions:
+            return EditProfileActionsCell.Identifier
         default:
             return EditProfileTextCell.Identifier
         }
@@ -104,17 +111,41 @@ class EditProfileTableHandler: NSObject {
     
     //Configures an EditProfilePhotoCell
     fileprivate func configure(editProfilePhotoCell cell: EditProfilePhotoCell) {
-        cell.photoAddingView.delegate = delegate
+        cell.delegate = delegate
+        
+        cell.set(photo: delegate.getEditedProfileInformation().photo)
+    }
+    
+    //Configures an EditProfileActionsCell
+    fileprivate func configure(editProfileActionsCell cell: EditProfileActionsCell) {
+        cell.delegate = delegate
+    }
+    
+    //Configures an EditListingCategoryCell
+    fileprivate func configure(editProfileCommunityCell cell: EditProfileCommunityCell) {
+        var communityNameText = Strings.EditProfile.unselectedCommunity.rawValue
+        if let selectedCategoryId = delegate.getEditedProfileInformation().communityId {
+            if let selectedCommunity = CommunityManager.sharedInstance.getCommunity(withId: selectedCategoryId) {
+                communityNameText = selectedCommunity.name
+            } else {
+                communityNameText = Strings.SharedErrors.invalidCategory.rawValue
+            }
+        }
+        cell.selectedOptionLabel.text = communityNameText
     }
     
     //Configures an EditProfileTextCell based on the field type
     fileprivate func configure(editProfileTextCell cell: EditProfileTextCell, withFieldType fieldType: EditProfileConfiguration.FieldType, andIndexPath indexPath: IndexPath) {
         
-        cell.fieldLabel.text = fieldLabel(forTextFieldType: fieldType)
+        cell.fieldLabel.text = "\(fieldLabel(forTextFieldType: fieldType)):"
         cell.textField.keyboardType = keyboardType(forTextFieldFieldType: fieldType)
         cell.textField.fieldType = fieldType
         cell.textField.isSecureTextEntry = isSecureEntry(forTextFieldFieldType: fieldType)
         cell.textField.delegate = self
+        
+        if let text = delegate.getEditedProfileInformation().string(for: fieldType) {
+            cell.textField.text = text
+        }
         
         //Make the last cell have done key instead of next
         var returnKeyType: UIReturnKeyType!
@@ -133,6 +164,17 @@ class EditProfileTableHandler: NSObject {
         }
         
         lastTextViewConfigured = cell.textField
+        
+        
+        //
+        //Make the password fields "appear" to be the same cell ;)
+        //
+        if fieldType == .password1 {
+            cell.bottomSeperator.isHidden = true
+        } else if fieldType == .password2 {
+            cell.fieldLabel.text = "Confirm:"
+            cell.topSpacingConstraint.constant = 2
+        }
     }
     
     //Returns the field label text for fieldTypes that are used in the EditProfileText cells
@@ -187,6 +229,10 @@ extension EditProfileTableHandler: UITableViewDataSource {
             configure(editProfileTextCell: textCell, withFieldType: fieldTypeForRow, andIndexPath: indexPath)
         } else if let photoCell = cell as? EditProfilePhotoCell {
             configure(editProfilePhotoCell: photoCell)
+        } else if let communityCell = cell as? EditProfileCommunityCell {
+            configure(editProfileCommunityCell: communityCell)
+        } else if let actionsCell = cell as? EditProfileActionsCell {
+            configure(editProfileActionsCell: actionsCell)
         }
         
         return cell
@@ -195,6 +241,15 @@ extension EditProfileTableHandler: UITableViewDataSource {
 
 extension EditProfileTableHandler: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        
+        if let textCell = cell as? EditProfileTextCell {
+            textCell.textField.becomeFirstResponder()
+        } else if cell is EditProfileCommunityCell {
+            delegate.didSelectCommunityCell()
+        }
+    }
 }
 
 extension EditProfileTableHandler: UITextFieldDelegate {

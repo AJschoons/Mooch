@@ -26,7 +26,7 @@ class DummySellViewController: MoochViewController {
     }
     
     static func tabBarItem() -> UITabBarItem {
-        return UITabBarItem(title: Strings.TabBar.sell.rawValue, image: nil, selectedImage: nil)
+        return UITabBarItem(title: "", image: #imageLiteral(resourceName: "tabBarSellUnselected"), selectedImage: #imageLiteral(resourceName: "tabBarSellSelected"))
     }
     
     // MARK: Private methods

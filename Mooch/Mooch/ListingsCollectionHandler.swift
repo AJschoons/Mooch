@@ -15,11 +15,15 @@ protocol ListingsCollectionHandlerDelegate: class, ListingsCollectionHeaderViewD
     func hasListingsButNoneMatchFilter() -> Bool
     func shouldAllowPullToRefresh() -> Bool
     func areListingsFromSearch() -> Bool
+    func isInSearchMode() -> Bool
+    func getSearcListings() -> [Listing]
+    func getGivenListings() -> [Listing]
+    func setSearchListings(listings : [Listing]?)
 }
 
 class ListingsCollectionHandler: ListingCollectionHandler {
     
-    fileprivate let HeightForHeader: CGFloat = 40
+    fileprivate let HeightForHeader: CGFloat = 32
     
     private var refreshControl: UIRefreshControl!
     
@@ -47,6 +51,8 @@ class ListingsCollectionHandler: ListingCollectionHandler {
             flowLayout.sectionHeadersPinToVisibleBounds = true
         }
     }
+    
+    private var animatedCells = Set<Int>()
     
     func reloadData() {
         collectionView.reloadData()
@@ -107,25 +113,28 @@ class ListingsCollectionHandler: ListingCollectionHandler {
 extension ListingsCollectionHandler {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return delegate.getListings().count
+        return !delegate.isInSearchMode()  ? delegate.getListings().count : delegate.getSearcListings().count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let listing = delegate.getListings()[indexPath.row]
+        let listing = (!delegate.isInSearchMode()  ? delegate.getListings()  : delegate.getSearcListings())[indexPath.row]
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListingCollectionViewCell.Identifier, for: indexPath) as! ListingCollectionViewCell
         
         cell.set(bottomLabelText: listing.priceString)
         
         cell.tag = indexPath.row
+        
         //cell.photo.image = ImageManager.PlaceholderImage
+        cell.set(photo: nil, withBackgroundColor: listing.dominantColor, animated: false)
+        
         ImageManager.sharedInstance.downloadImage(url: listing.thumbnailPictureURL) { image in
             //Make sure the cell hasn't been reused by the time the image is downloaded
             guard cell.tag == indexPath.row else { return }
             
             guard let image = image else { return }
-            cell.set(photo: image)
+            cell.set(photo: image, withBackgroundColor: listing.dominantColor, animated: false)
         }
         
         return cell
@@ -140,9 +149,7 @@ extension ListingsCollectionHandler {
                 headerView.set(communityName: currentCommunity.name)
             }
         }
-        
         headerView.delegate = delegate
-        
         return headerView
     }
 }
@@ -151,7 +158,7 @@ extension ListingsCollectionHandler {
 extension ListingsCollectionHandler {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedListing = delegate!.getListings()[indexPath.row]
+        let selectedListing = (!delegate.isInSearchMode()  ? delegate.getListings()  : delegate.getSearcListings())[indexPath.row]
         delegate!.didSelect(selectedListing)
         collectionView.deselectItem(at: indexPath, animated: true)
     }
@@ -159,8 +166,33 @@ extension ListingsCollectionHandler {
 
 //MARK: UICollectionViewDelegateFlowLayout
 extension ListingsCollectionHandler {
-    
     override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: HeightForHeader)
     }
 }
+
+//MARK: UISearchViewDelegate
+
+extension ListingsCollectionHandler {
+    
+    override func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    
+    override func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //static func search(listings: [Listing], for searchInputString: String) -> [Listing] {
+        if searchText != "" {
+            let lists = ListingProcessingHandler.search(listings: delegate.getGivenListings(), for: searchText)
+            
+
+            delegate.setSearchListings(listings: lists)
+            self.reloadData()
+            
+        } else {
+            searchBar.perform(#selector(searchBar.resignFirstResponder), with: nil, afterDelay: 0.1)
+            delegate.setSearchListings(listings: nil)
+        }
+    }
+}
+

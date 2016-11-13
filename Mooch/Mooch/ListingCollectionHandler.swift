@@ -54,8 +54,16 @@ extension ListingCollectionHandler: UICollectionViewDelegate {
     
     //Subclasses have to override to use this
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) { }
+    
+    //Subclasses CAN override if needed
+    func scrollViewDidScroll(_ scrollView: UIScrollView) { }
 }
 
+extension ListingCollectionHandler: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {}
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {}
+}
 
 extension ListingCollectionHandler: UICollectionViewDelegateFlowLayout {
     

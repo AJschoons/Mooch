@@ -4,9 +4,13 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="AzoSans-Bold.otf">
+            <string>AzoSans-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Edit Profile View Controller-->
         <scene sceneID="lRv-Tf-bzu">
@@ -23,69 +27,196 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pbG-vb-czt">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfilePhotoCell" rowHeight="209" id="Cpa-5l-28J" customClass="EditProfilePhotoCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="209"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfilePhotoCell" rowHeight="190" id="Cpa-5l-28J" customClass="EditProfilePhotoCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="190"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="Cpa-5l-28J" id="DUS-bu-wlC">
-                                            <frame key="frameInset" width="375" height="208"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cpa-5l-28J" id="DUS-bu-wlC">
+                                            <frame key="frameInset" width="375" height="190"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CiD-47-1vw" customClass="PhotoAddingView" customModule="Mooch" customModuleProvider="target">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CiD-47-1vw" customClass="PhotoAddingView" customModule="Mooch" customModuleProvider="target">
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="CiD-47-1vw" secondAttribute="height" multiplier="1:1" id="3bp-ID-k5F"/>
+                                                        <constraint firstAttribute="height" constant="126" id="nwH-xr-OmB"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGi-6E-rnV">
+                                                    <frame key="frameInset" minY="-1" width="375" height="1"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="vEa-oi-u0y"/>
+                                                    </constraints>
+                                                </view>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYJ-pC-FKS">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="25" id="eWr-PK-hX9"/>
+                                                        <constraint firstAttribute="height" constant="25" id="lOW-Wo-EYb"/>
+                                                    </constraints>
+                                                    <connections>
+                                                        <action selector="onEditPhotoButton" destination="Cpa-5l-28J" eventType="touchUpInside" id="ZYW-3O-SFK"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="SYJ-pC-FKS" firstAttribute="trailing" secondItem="DUS-bu-wlC" secondAttribute="trailing" constant="-15" id="IwI-wB-v3g"/>
+                                                <constraint firstAttribute="trailing" secondItem="gGi-6E-rnV" secondAttribute="trailing" id="Msg-ue-N5a"/>
+                                                <constraint firstItem="CiD-47-1vw" firstAttribute="top" secondItem="DUS-bu-wlC" secondAttribute="top" constant="32" id="UTP-Xu-Llg"/>
+                                                <constraint firstAttribute="bottom" secondItem="SYJ-pC-FKS" secondAttribute="bottom" constant="15" id="dG6-pT-pPt"/>
+                                                <constraint firstAttribute="bottom" secondItem="gGi-6E-rnV" secondAttribute="bottom" id="dgW-YK-wOg"/>
+                                                <constraint firstItem="CiD-47-1vw" firstAttribute="centerX" secondItem="DUS-bu-wlC" secondAttribute="centerX" id="jG4-nx-SEI"/>
+                                                <constraint firstItem="gGi-6E-rnV" firstAttribute="leading" secondItem="DUS-bu-wlC" secondAttribute="leading" id="nEi-TT-h6p"/>
+                                                <constraint firstAttribute="bottom" secondItem="CiD-47-1vw" secondAttribute="bottom" constant="32" id="v1h-j9-Kkl"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="bottomSeperator" destination="gGi-6E-rnV" id="4AV-hr-FZm"/>
+                                            <outlet property="editPhotoButton" destination="SYJ-pC-FKS" id="EWI-Ff-YHM"/>
+                                            <outlet property="photoAddingView" destination="CiD-47-1vw" id="WO3-DY-Ipc"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfileTextCell" rowHeight="40" id="Srj-XL-zhP" customClass="EditProfileTextCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="218" width="375" height="40"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Srj-XL-zhP" id="5oo-pD-0dR">
+                                            <frame key="frameInset" width="375" height="40"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qqA-n9-bst">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="faf-s8-OJh"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KoQ-e4-FXc" customClass="EditProfileTextField" customModule="Mooch" customModuleProvider="target">
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hef-jv-2WT">
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="MqR-mK-Gz4"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="CiD-47-1vw" firstAttribute="width" secondItem="DUS-bu-wlC" secondAttribute="width" multiplier="0.5" id="1ZP-nc-n13"/>
-                                                <constraint firstItem="CiD-47-1vw" firstAttribute="top" secondItem="DUS-bu-wlC" secondAttribute="top" constant="14" id="UTP-Xu-Llg"/>
-                                                <constraint firstItem="CiD-47-1vw" firstAttribute="centerX" secondItem="DUS-bu-wlC" secondAttribute="centerX" id="jG4-nx-SEI"/>
-                                                <constraint firstAttribute="bottom" secondItem="CiD-47-1vw" secondAttribute="bottom" constant="7" id="v1h-j9-Kkl"/>
+                                                <constraint firstItem="KoQ-e4-FXc" firstAttribute="bottom" secondItem="qqA-n9-bst" secondAttribute="bottom" id="Bfn-4N-qpg"/>
+                                                <constraint firstAttribute="trailing" secondItem="KoQ-e4-FXc" secondAttribute="trailing" constant="15" id="Cwy-Nm-HOM"/>
+                                                <constraint firstItem="KoQ-e4-FXc" firstAttribute="leading" secondItem="qqA-n9-bst" secondAttribute="trailing" constant="8" id="QEn-ox-DJG"/>
+                                                <constraint firstItem="qqA-n9-bst" firstAttribute="top" secondItem="5oo-pD-0dR" secondAttribute="top" constant="10" id="VGz-Qa-WeG"/>
+                                                <constraint firstAttribute="trailing" secondItem="hef-jv-2WT" secondAttribute="trailing" id="cdv-Ew-TfE"/>
+                                                <constraint firstAttribute="bottom" secondItem="qqA-n9-bst" secondAttribute="bottom" constant="10" id="gGd-h7-Mbg"/>
+                                                <constraint firstItem="KoQ-e4-FXc" firstAttribute="top" secondItem="qqA-n9-bst" secondAttribute="top" id="jFb-pV-O7j"/>
+                                                <constraint firstItem="qqA-n9-bst" firstAttribute="leading" secondItem="5oo-pD-0dR" secondAttribute="leading" constant="15" id="kAk-jt-bGN"/>
+                                                <constraint firstItem="hef-jv-2WT" firstAttribute="leading" secondItem="5oo-pD-0dR" secondAttribute="leading" id="sk0-dd-ljD"/>
+                                                <constraint firstAttribute="bottom" secondItem="hef-jv-2WT" secondAttribute="bottom" id="v7j-XU-h1F"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="photoAddingView" destination="CiD-47-1vw" id="WO3-DY-Ipc"/>
+                                            <outlet property="bottomSeperator" destination="hef-jv-2WT" id="2hL-xG-6ii"/>
+                                            <outlet property="fieldLabel" destination="qqA-n9-bst" id="oLP-JP-uqO"/>
+                                            <outlet property="textField" destination="KoQ-e4-FXc" id="i3W-42-VDq"/>
+                                            <outlet property="topSpacingConstraint" destination="VGz-Qa-WeG" id="zYg-S9-pmz"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfileTextCell" rowHeight="66" id="suL-LD-syi" customClass="EditProfileTextCell" customModule="Mooch" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="237" width="375" height="66"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="EditProfileCommunityCell" rowHeight="40" id="BhK-bd-X63" customClass="EditProfileCommunityCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="258" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="suL-LD-syi" id="edR-m0-27E">
-                                            <frame key="frameInset" width="375" height="66"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BhK-bd-X63" id="PyA-E5-smD">
+                                            <frame key="frameInset" width="342" height="40"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name of Field" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wqj-XL-KVt">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Community:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y8T-b9-SLY">
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="17" id="Ak7-se-VUJ"/>
+                                                        <constraint firstAttribute="height" constant="20" id="5q6-UW-I16"/>
+                                                        <constraint firstAttribute="width" constant="105" id="CAY-u7-LTh"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Z3-1d-Xb1" customClass="EditProfileTextField" customModule="Mooch" customModuleProvider="target">
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="SiB-Q9-cFa"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Community Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oAQ-2p-IQp">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qzb-hw-tLV">
+                                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="LwP-TM-SAt"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Wqj-XL-KVt" firstAttribute="leading" secondItem="edR-m0-27E" secondAttribute="leading" constant="15" id="43f-KL-3Vn"/>
-                                                <constraint firstAttribute="trailing" secondItem="Wqj-XL-KVt" secondAttribute="trailing" constant="15" id="EZj-O0-AWA"/>
-                                                <constraint firstAttribute="trailing" secondItem="3Z3-1d-Xb1" secondAttribute="trailing" constant="15" id="GLU-sf-PgE"/>
-                                                <constraint firstItem="3Z3-1d-Xb1" firstAttribute="top" secondItem="Wqj-XL-KVt" secondAttribute="bottom" constant="5" id="H4N-e9-y0z"/>
-                                                <constraint firstItem="Wqj-XL-KVt" firstAttribute="top" secondItem="edR-m0-27E" secondAttribute="top" constant="7" id="jMW-cb-9x5"/>
-                                                <constraint firstItem="3Z3-1d-Xb1" firstAttribute="leading" secondItem="edR-m0-27E" secondAttribute="leading" constant="15" id="wbm-iy-kWF"/>
-                                                <constraint firstAttribute="bottom" secondItem="3Z3-1d-Xb1" secondAttribute="bottom" constant="7" id="xne-dK-dzz"/>
+                                                <constraint firstItem="y8T-b9-SLY" firstAttribute="leading" secondItem="PyA-E5-smD" secondAttribute="leading" constant="15" id="4I9-Vq-nQ9"/>
+                                                <constraint firstAttribute="bottom" secondItem="y8T-b9-SLY" secondAttribute="bottom" constant="10" id="6Rg-RN-XKf"/>
+                                                <constraint firstAttribute="trailing" secondItem="oAQ-2p-IQp" secondAttribute="trailing" constant="8" id="F6s-xZ-teD"/>
+                                                <constraint firstAttribute="bottom" secondItem="qzb-hw-tLV" secondAttribute="bottom" id="FQi-Q6-0O4"/>
+                                                <constraint firstItem="y8T-b9-SLY" firstAttribute="top" secondItem="PyA-E5-smD" secondAttribute="top" constant="10" id="Raz-eS-5ht"/>
+                                                <constraint firstItem="oAQ-2p-IQp" firstAttribute="bottom" secondItem="y8T-b9-SLY" secondAttribute="bottom" id="VoW-Js-wGl"/>
+                                                <constraint firstItem="oAQ-2p-IQp" firstAttribute="top" secondItem="y8T-b9-SLY" secondAttribute="top" id="hhx-0k-4To"/>
+                                                <constraint firstItem="oAQ-2p-IQp" firstAttribute="leading" secondItem="y8T-b9-SLY" secondAttribute="trailing" constant="8" id="ncw-NU-0Xp"/>
+                                                <constraint firstAttribute="trailing" secondItem="qzb-hw-tLV" secondAttribute="trailing" constant="-33" id="qVU-Js-45d"/>
+                                                <constraint firstItem="qzb-hw-tLV" firstAttribute="leading" secondItem="PyA-E5-smD" secondAttribute="leading" id="x4e-oB-ifJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="fieldLabel" destination="Wqj-XL-KVt" id="D9S-Ka-USB"/>
-                                            <outlet property="textField" destination="3Z3-1d-Xb1" id="KlX-Vn-FJO"/>
+                                            <outlet property="bottomSeperator" destination="qzb-hw-tLV" id="ByQ-d7-3eV"/>
+                                            <outlet property="selectedOptionLabel" destination="oAQ-2p-IQp" id="K4F-5i-DzY"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EditProfileActionsCell" rowHeight="138" id="087-8t-dec" customClass="EditProfileActionsCell" customModule="Mooch" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="298" width="375" height="138"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="087-8t-dec" id="aFY-nI-Wab">
+                                            <frame key="frameInset" width="375" height="138"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egl-3y-Vh9" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="MYJ-yZ-oUW"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="16"/>
+                                                    <state key="normal" title="Complete"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="onDone" destination="087-8t-dec" eventType="touchUpInside" id="3QI-Kh-uxC"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HAO-NL-zNq" customClass="RoundedButton" customModule="Mooch" customModuleProvider="target">
+                                                    <fontDescription key="fontDescription" name="AzoSans-Bold" family="Azo Sans" pointSize="16"/>
+                                                    <state key="normal" title="Cancel"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="onCancel" destination="087-8t-dec" eventType="touchUpInside" id="KoX-ku-oTv"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="HAO-NL-zNq" firstAttribute="top" secondItem="egl-3y-Vh9" secondAttribute="bottom" constant="10" id="8FX-yL-Lh2"/>
+                                                <constraint firstAttribute="bottom" secondItem="HAO-NL-zNq" secondAttribute="bottom" constant="20" id="Afv-Yv-rMY"/>
+                                                <constraint firstItem="egl-3y-Vh9" firstAttribute="top" secondItem="aFY-nI-Wab" secondAttribute="top" constant="20" id="Cd1-Ba-VIU"/>
+                                                <constraint firstItem="egl-3y-Vh9" firstAttribute="leading" secondItem="aFY-nI-Wab" secondAttribute="leadingMargin" constant="15" id="DNx-pD-VJe"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="egl-3y-Vh9" secondAttribute="trailing" constant="15" id="IZb-PA-BEV"/>
+                                                <constraint firstItem="HAO-NL-zNq" firstAttribute="leading" secondItem="egl-3y-Vh9" secondAttribute="leading" id="O35-E9-rK6"/>
+                                                <constraint firstItem="HAO-NL-zNq" firstAttribute="trailing" secondItem="egl-3y-Vh9" secondAttribute="trailing" id="hLZ-Fw-AFH"/>
+                                                <constraint firstItem="HAO-NL-zNq" firstAttribute="height" secondItem="egl-3y-Vh9" secondAttribute="height" id="pKp-dj-7t2"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cancelButton" destination="HAO-NL-zNq" id="Dbt-Hg-qFW"/>
+                                            <outlet property="doneButton" destination="egl-3y-Vh9" id="pgP-Ka-jjj"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -116,7 +247,7 @@
                 </customObject>
                 <customObject id="426-Ql-B77" customClass="EditProfileTextHandler" customModule="Mooch" customModuleProvider="target"/>
             </objects>
-            <point key="canvasLocation" x="210" y="170"/>
+            <point key="canvasLocation" x="208.80000000000001" y="169.56521739130437"/>
         </scene>
     </scenes>
 </document>

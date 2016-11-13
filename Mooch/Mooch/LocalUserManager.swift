@@ -65,8 +65,22 @@ class LocalUserManager {
     
     func updateLocalUserWithInformation(from user: User) {
         guard state == .loggedIn else { return }
+        guard var localUser = localUser else { return }
         
-        _localUser?.user = user
+        localUser.changeUser(to: user)
+
+        MoochAPI.setAuthorizationCredentials(email: localUser.user.contactInformation.email, authorizationToken: localUser.authenticationToken)
+        saveLocalUserToDefaults(localUser)
+    }
+    
+    func updateLocalUserCommunity(id communityId: Int) {
+        guard state == .loggedIn else { return }
+        guard var localUser = localUser else { return }
+        
+        var user = localUser.user
+        user.changeCommunityId(to: communityId)
+        
+        localUser.changeUser(to: user)
     }
     
     func updateGuest(communityId: Int) {

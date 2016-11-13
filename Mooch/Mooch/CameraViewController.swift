@@ -11,6 +11,13 @@ import UIKit
 //Class for using the camera to take a picture
 class CameraViewController: UIImagePickerController {
     
+    enum Mode {
+        case camera
+        case photoLibrary
+    }
+    
+    var mode: Mode = .camera
+    
     func setStatusBar(hidden: Bool) {
         let animation: UIStatusBarAnimation = hidden ? .slide : .none
         UIApplication.shared.setStatusBarHidden(hidden, with: animation)
@@ -19,8 +26,15 @@ class CameraViewController: UIImagePickerController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sourceType = .camera
-        cameraCaptureMode = .photo
+        switch mode {
+        case .camera:
+            sourceType = .camera
+            cameraCaptureMode = .photo
+            
+        case .photoLibrary:
+            sourceType = .photoLibrary
+        }
+        
         allowsEditing = false
     }
 
