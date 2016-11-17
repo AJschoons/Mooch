@@ -37,7 +37,7 @@ class ListingDetailsViewController: MoochViewController {
     fileprivate var listingImage: UIImage?
     
     fileprivate var finishAPIActionAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
-    fileprivate let apiActionMinimumDuration: Double = 1.0
+    fileprivate let apiActionMinimumDuration: Double = 0.75
     
     // MARK: Actions
     

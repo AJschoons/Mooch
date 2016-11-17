@@ -166,7 +166,7 @@ class CommunityPickerViewController: MoochViewController {
         let locationManager = INTULocationManager.sharedInstance()
         let timeout = CommunityPickerViewController.LocationTimeout
         
-        finishGettingLocationAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+        finishGettingLocationAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 0.75)
         
         currentLocation = nil
         locationManager.requestLocation(withDesiredAccuracy: .city, timeout: timeout, delayUntilAuthorized: true, block: { currentLocation, accuracy, status in
@@ -208,7 +208,7 @@ class CommunityPickerViewController: MoochViewController {
         
         showLoadingOverlayView(withInformationText: "Changing Community", overEntireWindow: true, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: false)
         
-        finishSendingToAPIAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+        finishSendingToAPIAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 0.75)
         
         MoochAPI.PUTUserCommunity(userId: localUser.user.id, communityId: community.id) { success, error in
             //The code inside this execute closure gets executed only after the minimum duration has passed

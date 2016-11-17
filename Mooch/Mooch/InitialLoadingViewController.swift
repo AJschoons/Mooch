@@ -84,7 +84,7 @@ class InitialLoadingViewController: MoochModalViewController {
     
     //Kicks off the string of API requests we need to load and launch the app
     fileprivate func getDataInitiallyNeededFromAPI() {
-        finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+        finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 0.75)
         getListingCategories()
     }
     
