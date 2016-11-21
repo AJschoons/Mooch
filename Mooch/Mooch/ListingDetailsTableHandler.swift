@@ -127,7 +127,10 @@ class ListingDetailsTableHandler: NSObject {
         guard let tableView = tableView, let headerView = headerView else { return }
         
         //We don't want to let the header view grow larger than the table view
-        let maxSize = min(tableView.bounds.height, image.size.height)
+        var maxSize = min(tableView.bounds.height, image.size.height)
+        
+        //...but we also want to make sure it's at least as tall as the header should be 
+        maxSize = max(ListingDetailsCollectionHeaderView.EstimatedHeight, maxSize)
         
         headerView.maximumContentHeight = maxSize
     }
