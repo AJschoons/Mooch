@@ -15,7 +15,7 @@ class LocalUserTests: XCTestCase {
     func testDesignatedInitAndGetterSetters() {
         let contactInformation = User.ContactInformation(address: "#406", email: "test@wow.com", phone: "123-456-7890")
         
-        let user = User(id: 5, name: "test", contactInformation: contactInformation, communityId: 4, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
+        var user = User(id: 5, name: "test", contactInformation: contactInformation, communityId: 4, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
         
         var localUser = LocalUser(user: user, authenticationToken: "CorrectPassword")
         
@@ -27,11 +27,12 @@ class LocalUserTests: XCTestCase {
         XCTAssert(localUser.user.contactInformation.email == "test@wow.com")
         XCTAssert(localUser.user.communityId == 4)
         XCTAssert(localUser.authenticationToken == "CorrectPassword")
-        
+
         //Test setters and proper modifiability
-        localUser.user.name = "the new guy"
-        localUser.user.contactInformation.address = "new apt"
-        localUser.user.contactInformation.phone = nil
+        user.name = "the new guy"
+        user.contactInformation.phone = nil
+        user.contactInformation.address = "new apt"
+        localUser.changeUser(to: user)
 
         XCTAssert(localUser.user.name == "the new guy")
         XCTAssert(localUser.user.contactInformation.phone == nil)

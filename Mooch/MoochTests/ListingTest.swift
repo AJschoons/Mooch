@@ -11,15 +11,15 @@ import XCTest
 @testable import Mooch
 
 
-extension Date
-{
-    init(dateString:String) {
-        let dateStringFormatter = DateFormatter()
-        dateStringFormatter.dateFormat = "yyyy-MM-dd"
-        dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
-        let d = dateStringFormatter.date(from: dateString)!
-        self.init(timeInterval:0, since:d)    }
-}
+//extension Date
+//{
+//    init(dateString:String) {
+//        let dateStringFormatter = DateFormatter()
+//        dateStringFormatter.dateFormat = "yyyy-MM-dd"
+//        dateStringFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
+//        let d = dateStringFormatter.date(from: dateString)!
+//        self.init(timeInterval:0, since:d)    }
+//}
 
 class ListingTest: XCTestCase {
 
@@ -32,7 +32,12 @@ class ListingTest: XCTestCase {
         let createDate = Date(dateString:"2014-06-06")
         let modifyDate = Date(dateString:"2016-07-06")
         
-        let listing = Listing(id: 4, photo:photoImage,title: "apple", description: "nice apple", price: 2.0, isFree: false, quantity: 2, categoryId: 3, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 4)
+        
+        let exchanges = Exchange (id: 1, listingId: 2, sellerUserId: 3, buyerUserId: 4, sellerAccepted: false, buyer: user, createdAt: createDate)
+
+        
+        
+        let listing = Listing(id: 4, photo:photoImage,title: "apple", description: "nice apple", price: 2.0, isFree: false, quantity: 2, categoryId: 3, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 4,exchanges: [exchanges], dominantColor: .orange)
         
         //Test that all the variables are correctly initialized
         XCTAssert(listing.id == 4)
@@ -55,7 +60,12 @@ class ListingTest: XCTestCase {
     
     //Test that a listing is constructed without failing when given JSON with all the data it needs
     func testConvenienceInitSuccess() {
+
         let userJSONDict = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.communityId.rawValue : 4] as [String : Any]
+        
+        let buyerUserJSONDict = [User.JSONMapping.id.rawValue : 432, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.communityId.rawValue : 4] as [String : Any]
+        
+        let exchangesJSONDict = [Exchange.JSONMapping.id.rawValue: 1, Exchange.JSONMapping.listingId.rawValue: 2, Exchange.JSONMapping.sellerUserId.rawValue: 3, Exchange.JSONMapping.buyerUserId.rawValue: 4, Exchange.JSONMapping.sellerAccepted.rawValue: false, Exchange.JSONMapping.buyer.rawValue: buyerUserJSONDict, Exchange.JSONMapping.createdAt.rawValue: "2016-09-24T00:12:57.000Z"]as [String : Any]
 
         let listingJSON: JSON = [
                                  Listing.JSONMapping.id.rawValue : 4532,
@@ -69,7 +79,9 @@ class ListingTest: XCTestCase {
                                  Listing.JSONMapping.pictureURL.rawValue : "picture",
                                  Listing.JSONMapping.thumbnailPictureURL.rawValue : "thumbPic",
                                  Listing.JSONMapping.communityId.rawValue : 5,
-                                 Listing.JSONMapping.owner.rawValue : userJSONDict
+                                 Listing.JSONMapping.owner.rawValue : userJSONDict,
+                                 Listing.JSONMapping.exchanges.rawValue : [exchangesJSONDict],
+                                 Listing.JSONMapping.dominantColor.rawValue : "0000ff"
                                 ]
         
 
@@ -85,8 +97,10 @@ class ListingTest: XCTestCase {
             XCTAssert(listing.owner.id == 4132)
             XCTAssert(listing.owner.name == "Bob the User")
             XCTAssert(listing.owner.contactInformation.email == "doge@example.com")
-            XCTAssert(listing.communityId == 5)
+            XCTAssert(listing.exchanges[0].id == 1)
+            XCTAssert(listing.dominantColor == .blue)
 
+            
         } catch {
             XCTFail()
         }
@@ -246,14 +260,34 @@ class ListingTest: XCTestCase {
     
     
     func testConvenienceCommunityIdError() {
-        let listJSONDictionTestCommunityId : JSON = [Listing.JSONMapping.id.rawValue : 4532,Listing.JSONMapping.title.rawValue : "apple", Listing.JSONMapping.price.rawValue : 2, Listing.JSONMapping.isFree.rawValue : true,  Listing.JSONMapping.quantity.rawValue: 2, Listing.JSONMapping.categoryId.rawValue : 4, Listing.JSONMapping.isAvailable.rawValue : true, Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z", Listing.JSONMapping.pictureURL.rawValue : "picture", Listing.JSONMapping.communityId.rawValue : 5]
+
+        let userJSONDict = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.communityId.rawValue : 4] as [String : Any]
         
+        let buyerUserJSONDict = [User.JSONMapping.id.rawValue : 432, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.communityId.rawValue : 4] as [String : Any]
+        let exchangesJSONDict = [Exchange.JSONMapping.id.rawValue: 1, Exchange.JSONMapping.listingId.rawValue: 2, Exchange.JSONMapping.sellerUserId.rawValue: 3, Exchange.JSONMapping.buyerUserId.rawValue: 4, Exchange.JSONMapping.sellerAccepted.rawValue: false, Exchange.JSONMapping.buyer.rawValue: buyerUserJSONDict, Exchange.JSONMapping.createdAt.rawValue: "2016-09-24T00:12:57.000Z"]as [String : Any]
+        let listJSONDictionTestExchanges: JSON = [
+            Listing.JSONMapping.id.rawValue : 4532,
+            Listing.JSONMapping.title.rawValue : "apple",
+            Listing.JSONMapping.price.rawValue : 2,
+            Listing.JSONMapping.isFree.rawValue: true,
+            Listing.JSONMapping.quantity.rawValue : 2,
+            Listing.JSONMapping.categoryId.rawValue : 4,
+            Listing.JSONMapping.isAvailable.rawValue : true,
+            Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z",
+            Listing.JSONMapping.pictureURL.rawValue : "picture",
+            Listing.JSONMapping.thumbnailPictureURL.rawValue : "thumbPic",
+            Listing.JSONMapping.communityId.rawValue : 5,
+            Listing.JSONMapping.owner.rawValue : userJSONDict,
+            Listing.JSONMapping.exchanges.rawValue : [exchangesJSONDict],
+        ]
+        
+
         var jsonErrorThrown = false
         
         do {
-            let _ = try Listing(json: listJSONDictionTestCommunityId)
+            let _ = try Listing(json: listJSONDictionTestExchanges)
             XCTFail()
-        } catch Listing.JSONInitializationError.owner {
+        } catch Listing.JSONInitializationError.dominantColor {
             jsonErrorThrown = true
         } catch {
             
@@ -263,7 +297,6 @@ class ListingTest: XCTestCase {
     
     
     func testConvenienceInitError() {
-        //let userJSONDict = [User.JSONMapping.id.rawValue : 4132, User.JSONMapping.name.rawValue : "Bob the User",  User.JSONMapping.email.rawValue : "doge@example.com", User.JSONMapping.currentRating.rawValue : 4.5, User.JSONMapping.ratingCount.rawValue : 5, User.JSONMapping.communityId.rawValue : 4] as [String : Any]
         let listJSONDictionTestOwner: JSON = [
             Listing.JSONMapping.id.rawValue : 4532,
             Listing.JSONMapping.title.rawValue : "apple",
@@ -274,15 +307,13 @@ class ListingTest: XCTestCase {
             Listing.JSONMapping.isAvailable.rawValue : true,
             Listing.JSONMapping.createdAt.rawValue : "2016-09-24T00:12:55.000Z",
             Listing.JSONMapping.pictureURL.rawValue : "picture",
-            Listing.JSONMapping.communityId.rawValue : 5,
-            //Listing.JSONMapping.owner.rawValue : userJSONDict
         ]
         var jsonErrorThrown = false
         
         do {
             let _ = try Listing(json: listJSONDictionTestOwner)
             XCTFail()
-        } catch Listing.JSONInitializationError.owner {
+        } catch Listing.JSONInitializationError.communityId {
             jsonErrorThrown = true
         } catch {
         }
@@ -298,7 +329,11 @@ class ListingTest: XCTestCase {
         let createDate = Date(dateString:"2014-06-06")
         let modifyDate = Date(dateString:"2016-07-06")
         
-        var listing = Listing(id: 4, photo:photoImage,title: "apple", description: "nice apple", price: 2.0, isFree: false, quantity: 2, categoryId: 3, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 4)
+        
+        
+        let exchanges = Exchange (id: 1, listingId: 2, sellerUserId: 3, buyerUserId: 4, sellerAccepted: false, buyer: user, createdAt: createDate)
+        
+        var listing = Listing(id: 4, photo:photoImage,title: "apple", description: "nice apple", price: 2.0, isFree: false, quantity: 2, categoryId: 3, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 4,exchanges: [exchanges], dominantColor: .orange)
         
         
         //Test getter
@@ -318,7 +353,7 @@ class ListingTest: XCTestCase {
         listing.title = "banana"
         _ = User(id: 12, name: "jiang", contactInformation: contactInformation, communityId : 11, pictureURL: "sample person pic", thumbnailPictureURL: "small pic")
         
-        let newList = Listing(id: 2, photo: photoImage, title: "banana", description: "nice apple", price: 3, isFree: false, quantity: 2, categoryId: 13, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 11)
+        let newList = Listing(id: 2, photo: photoImage, title: "banana", description: "nice apple", price: 3, isFree: false, quantity: 2, categoryId: 13, isAvailable: true, createdAt: createDate as Date, modifiedAt: modifyDate as Date, owner: user, pictureURL: "picture",thumbnailPictureURL: "thumbPic", communityId: 11,exchanges: [exchanges], dominantColor: .orange)
         
         //Test setters
         XCTAssert(newList.id == 2)

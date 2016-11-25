@@ -197,8 +197,9 @@ class MoochAPIRouterTests: XCTestCase {
         let phone = "ugly face"
         let password = "444444"
         let address = "hiden tree"
+        let deviceToken = "3154"
         do {
-            let urlRequest = try MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address).asURLRequest()
+            let urlRequest = try MoochAPIRouter.postUser(communityId: communityId, name: name, email: email, phone: phone, password: password, address: address,deviceToken :deviceToken).asURLRequest()
             
             //Does the correct URL get created?
             XCTAssert(urlRequest.url!.absoluteString == "\(MoochAPIRouter.baseURLString)/users")
