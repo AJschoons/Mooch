@@ -100,7 +100,7 @@ class MoochAPITests: XCTestCase {
                 return
             }
             //Are the listings information correct?
-            XCTAssert(listings.count == 0)
+            XCTAssert(listings.count == 10)
         }
     }
     
