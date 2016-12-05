@@ -59,7 +59,6 @@ struct Community {
         guard let pictureURL = json[JSONMapping.pictureURL.rawValue].string else { throw JSONInitializationError.pictureURL }
         guard let latitudeString = json[JSONMapping.latitude.rawValue].string else { throw JSONInitializationError.latitude }
         guard let longitudeString = json[JSONMapping.longitude.rawValue].string else { throw JSONInitializationError.longitude }
-        
         guard let latitude = Double(latitudeString) else {
             throw JSONInitializationError.latitude
         }

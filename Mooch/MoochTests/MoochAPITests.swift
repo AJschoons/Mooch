@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Mooch
+//@testable import Mooch
 
 import OHHTTPStubs
 
@@ -25,52 +25,14 @@ class MoochAPITests: XCTestCase {
         OHHTTPStubs.removeAllStubs()
         super.tearDown()
     }
-//    GETUser
-    
-    
-    func testGETCategories_success() {
-        guard let path = OHPathForFile("GETCategories.json", type(of: self)) else {
-            preconditionFailure("Could not find expected file in test bundle")
-        }
-        _ = stub(condition: isHost(host) && isPath("\(startOfPath)/categories"))
-        { request in
-            print("\nRequest: \(request)\n")
-            return OHHTTPStubsResponse(
-                fileAtPath:path,
-                statusCode: 200,
-                headers: [
-                    "ContentType": "application/json"
-                ]
-            )
-        }
-        let asynchronousTestExpectation = expectation(description: "the completion closure returns the correct Listings with no error")
-        var returnedListings: [ListingCategory]?
-        var returnedError: Error?
-        MoochAPI.GETListingCategories { categories, error in
-            print(categories?.count)
-            returnedListings = categories
-            returnedError = error
-            asynchronousTestExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 10) { error in
-            //Are the listings returned with no error?
-            XCTAssert(returnedError == nil)
-            guard let listings = returnedListings else {
-                XCTFail()
-                return
-            }
-            //Are the listings information correct?
-            XCTAssert(listings.count == 18)
-        }
-    }
-    
-    
-    
+
     
     func testGETListings_success() {
         guard let path = OHPathForFile("GETListings.json", type(of: self)) else {
             preconditionFailure("Could not find expected file in test bundle")
         }
+        print(path," <-")
+
         _ = stub(condition: isHost(host) && isPath("\(startOfPath)/communities/1/listings")) { request in
             print("\nRequest: \(request)\n")
             return OHHTTPStubsResponse(
@@ -98,7 +60,7 @@ class MoochAPITests: XCTestCase {
                 return
             }
             //Are the listings information correct?
-            XCTAssert(listings.count == 8)
+            XCTAssert(listings.count == 10)
         }
     }
     

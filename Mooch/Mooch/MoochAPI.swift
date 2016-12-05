@@ -103,13 +103,18 @@ class MoochAPI {
                 return
             }
             
-            do {
-                let listings = try listingsJSON.map({try Listing(json: $0)})
-                completion(listings, nil)
-            } catch let error {
-                print("couldn't create listings with JSON: \(json)")
-                completion(nil, error)
+            //Ignore invalid listings
+            var listings = [Listing]()
+            for listingJSON in listingsJSON {
+                do {
+                    let listing = try Listing(json: listingJSON)
+                    listings.append(listing)
+                } catch let error {
+                    print("error:\(error)... couldn't create listing with JSON: \(listingJSON)")
+                }
             }
+            
+            completion(listings, nil)
         }
     }
     

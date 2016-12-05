@@ -37,7 +37,8 @@ class ListingDetailsViewController: MoochViewController {
     fileprivate var listingImage: UIImage?
     
     fileprivate var finishAPIActionAfterMinimumDurationTimer: ExecuteActionAfterMinimumDurationTimer?
-    fileprivate let apiActionMinimumDuration: Double = 1.0
+    fileprivate let apiActionMinimumDuration: Double = 0.75
+    
     
     // MARK: Actions
     
@@ -86,6 +87,7 @@ class ListingDetailsViewController: MoochViewController {
         let storyboard = UIStoryboard(name: ListingDetailsViewController.StoryboardName, bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: ListingDetailsViewController.Identifier) as! ListingDetailsViewController
     }
+    
     
     // MARK: Private methods
     

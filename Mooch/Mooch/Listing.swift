@@ -166,7 +166,17 @@ struct Listing {
         
         let createdAt = date(fromAPITimespamp: createdAtString)
         let owner = try User(json: JSON(json[JSONMapping.owner.rawValue].object))
-        let exchanges = try exchangesJSON.map({try Exchange(json: $0)})
+        
+        //Ignore invalid exchanges. This can happen when the buyer of an exchange deletes their account, for example
+        var exchanges = [Exchange]()
+        for exchangeJSON in exchangesJSON {
+            do {
+                let exchange = try Exchange(json: exchangeJSON)
+                exchanges.append(exchange)
+            } catch let error {
+                print("error:\(error)... couldn't create exchange with JSON: \(exchangeJSON)")
+            }
+        }
         
         //If the thumbnail URL isn't present then default to the pictureURL
         var thumbnailPictureURL = pictureURL

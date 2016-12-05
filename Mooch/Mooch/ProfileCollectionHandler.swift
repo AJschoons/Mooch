@@ -223,6 +223,7 @@ extension ProfileCollectionHandler {
         super.scrollViewDidScroll(scrollView)
         
         if scrollView.contentOffset.y <= secretView.frame.origin.y {
+            guard secretView.frame != CGRect.zero else { return }
             delegate.onSecretView()
         }
     }

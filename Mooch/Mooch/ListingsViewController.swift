@@ -220,7 +220,7 @@ class ListingsViewController: MoochViewController {
         
         showLoadingOverlayView(withInformationText: Strings.Listings.loadingListingsOverlay.rawValue, overEntireWindow: true, withUserInteractionEnabled: false, showingProgress: false, withHiddenAlertView: isRefreshing)
         
-        finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 1.0)
+        finishLoadingAfterMinimumDurationTimer = ExecuteActionAfterMinimumDurationTimer(minimumDuration: 0.75)
         CommunityListingsManager.sharedInstance.loadListingsForCurrentCommunityAndUser() { [unowned self] success, error in
             //The code inside this execute closure gets executed only after the minimum duration has passed
             self.finishLoadingAfterMinimumDurationTimer!.execute { [unowned self] in
