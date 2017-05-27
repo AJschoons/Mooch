@@ -4,3 +4,8 @@
 
 Mooch is a social app that facilites food sharing. It improves the home cooking experience by allowing users to quickly browse for food they may have forgotten, or crave, and save a trip to the grocery store. It reduces food waste by allowing users to post food that would otherwise be unused or thrown away, and it connects people within their community with face to face food exchanges.
 
+I developed most of the iOS app for Whirlpool as part of a senior capstone team at Michigan State University. As a team we produced an iOS app, Android app, admin web portal, and an API using Ruby and Sinatra. For the full design specs, please view the PDF at the root of the project folder above.
+
+The biggest challenge overall was time management due the relative complexity of the app given the time constraints of a busy college semester. Technically, the biggest challenge was getting push notifications working correctly.
+
+<img src="https://cloud.githubusercontent.com/assets/7013639/26518951/b9fd9756-427f-11e7-95eb-26fee59683d1.png"></img>
