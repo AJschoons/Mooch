@@ -8,6 +8,6 @@ I developed most of the iOS app for Whirlpool as part of a senior capstone team 
 
 The biggest challenge overall was time management due the relative complexity of the app given the time constraints of a busy college semester. From a technical standpoint the biggest challenge was getting push notifications working correctly. Being my first experience implementing push notifications, I was ecstatic to see them appearing on my phone's home screen!
 
-This was my first experience being the project lead on an iOS app with a design firm, and it was great to work with actual designers to put the UI together. We rapidly iterated on the designs while developing prototypes, and because of this the iOS app was able to be designed to have reusable screens. I believe this was key to us successfully delivering the project. Past that, it was truly a joy to code out the beautiful designs we were provided!
+This was my first experience being the project lead on an iOS app with a design firm, and it was great to work with actual designers to put the UI together. We rapidly iterated on the designs while developing prototypes, and because of this the iOS app was able to be designed to have reusable screens. I believe this was key to us successfully delivering the project. Past that, it was truly a joy to code out the beautiful final designs we were provided! The wireframes can be seen below.
 
 <img src="https://cloud.githubusercontent.com/assets/7013639/26518951/b9fd9756-427f-11e7-95eb-26fee59683d1.png"></img>
